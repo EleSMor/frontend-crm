@@ -1,5 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { NavLink } from "react-router-dom";
 
 const ConsultantForm = () => {
   const { register, handleSubmit } = useForm();
@@ -40,8 +41,8 @@ const ConsultantForm = () => {
         <input {...register("position")} />
       </div>
       <div>
-        <label htmlFor="ocupation">Ocupación</label>
-        <input {...register("ocupation")} />
+        <label htmlFor="occupation">Ocupación</label>
+        <input {...register("occupation")} />
       </div>
       <div>
         <label htmlFor="office1">Oficina 1</label>
@@ -56,7 +57,11 @@ const ConsultantForm = () => {
         <input {...register("comments")} />
       </div>
       <button type="submit">Guardar</button>
-      <button type="">Cancelar</button>
+      <NavLink to="/consultants">
+        <button type="">
+          Cancelar
+        </button>
+      </NavLink>
     </form>
   );
 };

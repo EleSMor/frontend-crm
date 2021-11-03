@@ -21,83 +21,84 @@ const Navbar = () => {
     <nav className="nav">
       <div className="nav__left">
         <ul>
-          <li className="nav__link">
+          <div className="nav__home">
             <NavLink to="/">
-              <GvreLogo />
+              <li>
+                <GvreLogo className="nav__link--logo" />
+              </li>
+              <li>
+                <h1 className="nav__title">GV Real State</h1>
+              </li>
             </NavLink>
-          </li>
-          <li className="nav__link">
-            <div>
-              <NavLink to="/ads">
-                <Ads />
-                <span>Anuncios</span>
-              </NavLink>
-            </div>
-          </li>
-          <li className="nav__link">
-            <div>
-              <NavLink to="/requests">
-                <Requests />
-                <span>Peticiones</span>
-              </NavLink>
-            </div>
-          </li>
-          <li className="nav__link">
-            <div>
-              <NavLink to="/contacts">
-                <Contacts />
-                <span>Contactos</span>
-              </NavLink>
-            </div>
-          </li>
-          <li className="nav__link">
-            <div>
-              <NavLink to="/consultants">
-                <Consultants />
-                <span>Consultores</span>
-              </NavLink>
-            </div>
-          </li>
-          <li className="nav__link">
-            <div>
-              <NavLink to="/schedule">
-                <Calendar />
-                <span>Agenda</span>
-              </NavLink>
-            </div>
-          </li>
-          <li className="nav__link">
-            <div>
-              <NavLink to="/settings">
-                <Settings />
-                <span>Configuración</span>
-              </NavLink>
-            </div>
-          </li>
+          </div>
+          <NavLink className="nav__route" to="/ads">
+            <li>
+              <div>
+                <Ads className="nav__link--icon" />
+                <span className="nav__link--text">Anuncios</span>
+              </div>
+            </li>
+          </NavLink>
+          <NavLink className="nav__route" to="/requests">
+            <li>
+              <div>
+                <Requests className="nav__link--icon" />
+                <span className="nav__link--text">Peticiones</span>
+              </div>
+            </li>
+          </NavLink>
+          <NavLink className="nav__route" to="/contacts">
+            <li>
+              <div>
+                <Contacts className="nav__link--icon" />
+                <span className="nav__link--text">Contactos</span>
+              </div>
+            </li>
+          </NavLink>
+          <NavLink className="nav__route" to="/consultants">
+            <li>
+              <div>
+                <Consultants className="nav__link--icon" />
+                <span className="nav__link--text">Consultores</span>
+              </div>
+            </li>
+          </NavLink>
+          <NavLink className="nav__route" to="/schedule">
+            <li>
+              <div>
+                <Calendar className="nav__link--icon" />
+                <span className="nav__link--text">Agenda</span>
+              </div>
+            </li>
+          </NavLink>
+          <NavLink className="nav__route" to="/settings">
+            <li>
+              <div>
+                <Settings className="nav__link--icon" />
+                <span className="nav__link--text">Configuración</span>
+              </div>
+            </li>
+          </NavLink>
         </ul>
       </div>
 
       <div className="nav__right">
         <ul>
-          <li className="nav__link">
-            <NavLink to="/">
-              <Bell />
-            </NavLink>
-          </li>
-          <li className="nav__link">
-            <NavLink to="/">
-              <Mail />
-            </NavLink>
-          </li>
-          <li className="nav__link">
-            <NavLink to="/">
-              <Ellipse2>
-                <Ellipse3>
-                  <User />
-                </Ellipse3>
-              </Ellipse2>
-            </NavLink>
-          </li>
+          <NavLink to="/">
+            <li>
+              <Bell className="nav__link--icon-notify" />
+            </li>
+          </NavLink>
+          <NavLink to="/">
+            <li>
+              <Mail className="nav__link--icon-notify" />
+            </li>
+          </NavLink>
+          <Ellipse2 className="nav__logging-ellipse1"></Ellipse2>
+          <Ellipse3 className="nav__logging-ellipse2"></Ellipse3>
+          <NavLink activeClassName="" to="/login">
+            <User className="nav__logging-user" />
+          </NavLink>
         </ul>
       </div>
     </nav>

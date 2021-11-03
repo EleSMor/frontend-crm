@@ -1,12 +1,12 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-const Consultant = () => {
+const ConsultantsList = () => {
   return (
-    <NavLink to="/consultants/register">
-      <button>Register new consultant</button>
+    <NavLink to="/consultants/create">
+      <button>New consultant</button>
     </NavLink>
   );
 };
 
-export default Consultant;
+export default ConsultantsList;

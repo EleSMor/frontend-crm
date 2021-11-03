@@ -3,12 +3,14 @@
   justify-content: space-between;
   align-items: center;
   background-color: #2b363d;
-  width: 100%;
-  height: 2%;
-  margin-top: 1%;
-  color: white;
-  font-family: Arial, Helvetica, sans-serif;
-  font-weight: bold;
+  max-width: 100%;
+  width: 100vw;
+  height: 8vh;
+  margin-top: 1.6vh;
+  color: #f3f2f2;
+  font-family: arial;
+  font-size: 14px;
+  font-weight: 600;
 
   ul {
     margin: 0;
@@ -25,18 +27,108 @@
     border: none;
     padding: 4px 8px;
     background-color: rgba(255, 255, 255, 0.3);
-    color: white;
+    color: #f3f2f2;
     border-radius: 4px;
   }
 
   a {
     text-decoration: none;
     color: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__route {
+    position: relative;
+    top: 0.7vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5vh 1.2vw 3vh 1.2vw;
+
+    &:focus,
+    &:hover {
+      background-color: #f3f2f2;
+      border-radius: 4px;
+      color: #2b363d;
+    }
+  }
+
+  &__home {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 3vw 0 1vw;
   }
 
   &__link {
-    display: flex;
-    justify-content: space-between;
-    margin-left: 16px;
+    &--icon {
+      vertical-align: middle;
+      height: 2.8vh;
+      padding-right: 0.4vw;
+      &-notify {
+        height: 3.5vh;
+        margin-right: 1.5vw;
+        &:hover {
+          transform: scale(120%);
+        }
+      }
+    }
+
+    &--logo {
+      height: 4vh;
+    }
+
+    &--text {
+      vertical-align: middle;
+      font-size: 1.9vh;
+    }
+  }
+
+  &__title {
+    padding-left: 0.8vw;
+    align-self: baseline;
+    color: inherit;
+    font-family: Arial;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 1.8vh;
+  }
+
+  &__right {
+    margin-right: 7.2vw;
+  }
+
+  /* External ellipse */
+  &__logging-ellipse2 {
+    position: absolute;
+    width: 7.48vw;
+    height: 9.8vh;
+    left: 92.2vw;
+    top: 0.5vh;
+  }
+
+  /* Internal ellipse */
+  &__logging-ellipse1 {
+    position: absolute;
+    width: 7.9vw;
+    height: 9.2vh;
+    left: 92vw;
+    top: 0.8vh;
+    color: #f3f2f2;
+  }
+
+  /* User */
+  &__logging-user {
+    position: absolute;
+    width: 3vw;
+    height: 3.5vh;
+    left: 94.45vw;
+    top: 3.4vh;
+    color: #2b363d;
+    &:hover {
+      transform: scale(120%);
+    }
   }
 }
