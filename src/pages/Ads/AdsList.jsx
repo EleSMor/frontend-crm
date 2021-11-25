@@ -1,11 +1,27 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react";
+import { NavLink, useHistory } from "react-router-dom";
+import { getAllAds } from "../../api/ads.api";
+import AdsTable from "../../components/AdsTable/AdsTable";
+import AdForm from "./AdForm";
+import { Navbar, SubHeader } from "../../components";
+import { UserContext } from "../../components/Context/AuthUser";
 
 const AdsList = () => {
+  const [ads, setAds] = useState([]);
+  const [openForm, setOpenForm] = useState(false);
+  const { user } = useContext(UserContext);
+  const history = useHistory();
+
+  useEffect(() => getAllAds().then((res) => setAds(res)), []);
+
   return (
-    <NavLink to="/ads/create">
-      <button>New ad</button>
-    </NavLink>
+    <div>
+      {user.length === 0 && history.push("/login")}
+      <Navbar />
+      <SubHeader title="Anuncios" list={ads} setOpenForm={setOpenForm} />
+      {openForm === true && <AdForm setOpenForm={setOpenForm} />}
+      {openForm === false && <AdsTable ads={ads} />}
+    </div>
   );
 };
 

@@ -1,16 +1,16 @@
-.nav {
+.navigate {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   background-color: #2b363d;
   max-width: 100%;
   width: 100vw;
   height: 8vh;
-  margin-top: 1.6vh;
   color: #f3f2f2;
   font-family: arial;
   font-size: 14px;
   font-weight: 600;
+  margin-top: 1.5vh;
 
   ul {
     margin: 0;
@@ -47,8 +47,25 @@
     justify-content: center;
     padding: 1.5vh 1.2vw 3vh 1.2vw;
 
+    &-active {
+      position: relative;
+      top: 0.7vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5vh 1.2vw 3vh 1.2vw;
+      text-decoration: none;
+      background-color: #f3f2f2;
+      border-radius: 4px;
+      color: #2b363d !important;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+    
     &:focus,
     &:hover {
+      text-decoration: none;
       background-color: #f3f2f2;
       border-radius: 4px;
       color: #2b363d;
@@ -60,6 +77,21 @@
     justify-content: space-between;
     align-items: center;
     padding: 0 3vw 0 1vw;
+    a:hover,
+    a:focus {
+      text-decoration: none !important;
+      color: inherit !important;
+    }
+  }
+
+  &__title {
+    padding-left: 0.8vw;
+    padding-bottom: 1.2vh;
+    color: inherit;
+    font-family: Arial;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 1.8vh;
   }
 
   &__link {
@@ -67,13 +99,6 @@
       vertical-align: middle;
       height: 2.8vh;
       padding-right: 0.4vw;
-      &-notify {
-        height: 3.5vh;
-        margin-right: 1.5vw;
-        &:hover {
-          transform: scale(120%);
-        }
-      }
     }
 
     &--logo {
@@ -86,16 +111,6 @@
     }
   }
 
-  &__title {
-    padding-left: 0.8vw;
-    align-self: baseline;
-    color: inherit;
-    font-family: Arial;
-    font-style: normal;
-    font-weight: 700;
-    font-size: 1.8vh;
-  }
-
   &__right {
     margin-right: 7.2vw;
   }
@@ -103,29 +118,29 @@
   /* External ellipse */
   &__logging-ellipse2 {
     position: absolute;
-    width: 7.48vw;
-    height: 9.8vh;
-    left: 92.2vw;
-    top: 0.5vh;
+    width: 7.48%;
+    height: 9.8%;
+    left: 92.2%;
+    top: 0.5%;
   }
 
   /* Internal ellipse */
   &__logging-ellipse1 {
     position: absolute;
-    width: 7.9vw;
-    height: 9.2vh;
-    left: 92vw;
-    top: 0.8vh;
+    width: 7.9%;
+    height: 9.2%;
+    left: 92%;
+    top: 0.8%;
     color: #f3f2f2;
   }
 
   /* User */
   &__logging-user {
     position: absolute;
-    width: 3vw;
-    height: 3.5vh;
-    left: 94.45vw;
-    top: 3.4vh;
+    width: 3%;
+    height: 3.5%;
+    left: 94.45%;
+    top: 3.4%;
     color: #2b363d;
     &:hover {
       transform: scale(120%);

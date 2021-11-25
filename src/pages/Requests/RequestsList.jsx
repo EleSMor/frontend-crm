@@ -1,11 +1,27 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react";
+import { useHistory } from "react-router-dom";
+import { getAllRequests } from "../../api/requests.api";
+import RequestsTable from "../../components/RequestsTable/RequestsTable";
+import RequestForm from "./RequestForm";
+import { Navbar, SubHeader } from "../../components";
+import { UserContext } from "../../components/Context/AuthUser";
 
 const RequestsList = () => {
+  const [requests, setRequests] = useState([]);
+  const [openForm, setOpenForm] = useState(false);
+  const { user } = useContext(UserContext);
+  const history = useHistory();
+
+  useEffect(() => getAllRequests().then((res) => setRequests(res)), []);
+
   return (
-    <NavLink to="/requests/create">
-      <button>New request</button>
-    </NavLink>
+    <div>
+      {user.length === 0 && history.push("/login")}
+      <Navbar />
+      <SubHeader title="Peticiones" list={requests} setOpenForm={setOpenForm} />
+      {openForm === true && <RequestForm setOpenForm={setOpenForm} />}
+      {openForm === false && <RequestsTable requests={requests} />}
+    </div>
   );
 };
 

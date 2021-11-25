@@ -1,66 +1,380 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { NavLink } from "react-router-dom";
+import Select from "../../components/Select/Select";
+import { NavLink, useHistory } from "react-router-dom";
+import { getAllOwners } from "../../api/contacts.api";
+import { getAllConsultants } from "../../api/consultants.api";
+import { getAllResidentialZones, getAllPatrimonialZones } from "../../api/zones.api";
+import { createAd } from "../../api/ads.api.js";
 
 const AdForm = () => {
   const { register, handleSubmit } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const history = useHistory();
+  const [owners, setOwners] = useState([]);
+  const [error, setError] = useState();
+
+  const [selectedOwner, setSelectedOwner] = useState([]);
+  const [consultants, setConsultants] = useState([]);
+  const [selectedConsultant, setSelectedConsultant] = useState([]);
+  const [residentials, setResidential] = useState([]);
+  const [patrimonials, setPatrimonial] = useState([]);
+  const [residentialSelectedZones, setResidentialSelectedZones] = useState([]);
+  const [patrimonialSelectedZones, setPatrimonialSelectedZones] = useState([]);
+  
+  const onSubmit = async (data) => {
+    data.owner = selectedOwner;
+    data.consultant = selectedConsultant;
+    data.residential = residentialSelectedZones;
+    data.patrimonial = patrimonialSelectedZones;
+    
+    console.log(data);
+
+    try {
+      await createAd(data);
+      history.push("/ads");
+    } catch (err) {
+      console.log("Error en la creación del anuncio: ", err);
+      setError(error);
+    }
+  };
+
+  useEffect(() => {
+    getAllOwners().then((res) => setOwners(...owners, res));
+    getAllConsultants().then((res) => setConsultants(...consultants, res));
+    getAllResidentialZones().then((res) => setResidential(...residentials, res));
+    getAllPatrimonialZones().then((res) => setPatrimonial(...patrimonials, res));
+  }, []);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div>
-        <label htmlFor="email">Email</label>
-        <input {...register("email")} />
+        <label htmlFor="title">Título del anuncio</label>
+        <input {...register("title")} />
       </div>
       <div>
-        <label htmlFor="password">Contraseña</label>
-        <input {...register("password")} />
+        <label htmlFor="adReference">Referencia anuncio</label>
+        <input {...register("adReference")} />
       </div>
       <div>
-        <label htmlFor="avatar">Avatar</label>
-        <input type="file" {...register("avatar")} />
+        <label htmlFor="showOnWeb">Mostrar en la web</label>
+        <input type="checkbox" {...register("showOnWeb")} />
       </div>
       <div>
-        <label htmlFor="businessUnitLogo">Logo unidad de negocio</label>
-        <input type="file" {...register("businessUnitLogo")} />
+        <label htmlFor="featuredOnMain">Mostrar en la página principal</label>
+        <input type="checkbox" {...register("featuredOnMain")} />
       </div>
       <div>
-        <label htmlFor="fullName">Nombre completo</label>
-        <input {...register("fullName")} />
+        <hr />
+        <span>Dirección</span>
+        <div>
+          <label htmlFor="street">Calle</label>
+          <div>
+            <input required="yes" {...register("street")} />
+            <label htmlFor="directionNumber">Número</label>
+            <input required="yes" {...register("directionNumber")} />
+            <label htmlFor="directionFloor">Piso</label>
+            <input required="yes" {...register("directionFloor")} />
+          </div>
+          <label htmlFor="postalCode">Código Postal</label>
+          <div>
+            <input required="yes" {...register("postalCode")} />
+          </div>
+          <label htmlFor="city">Ciudad</label>
+          <div>
+            <input required="yes" {...register("city")} />
+          </div>
+          <label htmlFor="country">País</label>
+          <div>
+            <input required="yes" {...register("country")} />
+          </div>
+        </div>
       </div>
       <div>
-        <label htmlFor="mobileNumber">Teléfono móvil</label>
-        <input {...register("mobileNumber")} />
+        <span>Tipo de anuncio</span>
+        <div>
+          <label htmlFor="adType">Alquiler</label>
+          <input type="checkbox" value="Alquiler" {...register("adType")} />
+          <label htmlFor="adType">Venta</label>
+          <input type="checkbox" value="Venta" {...register("adType")} />
+        </div>
       </div>
       <div>
-        <label htmlFor="phoneNumber">Teléfono fijo</label>
-        <input {...register("phoneNumber")} />
+        <span>Cierre operación GV</span>
+        <div>
+          <label htmlFor="gvOperationClose">Alquilado</label>
+          <input type="checkbox" value="Alquilado" {...register("gvOperationClose")} />
+          <label htmlFor="gvOperationClose">Vendido</label>
+          <input type="checkbox" value="Vendido" {...register("gvOperationClose")} />
+        </div>
       </div>
       <div>
-        <label htmlFor="position">Posición</label>
-        <input {...register("position")} />
+        <label htmlFor="owner">Propietario</label>
+        <Select list={owners} fields={{ groupBy: "", text: "fullName", value: "_id" }} fn={setSelectedOwner} />
       </div>
       <div>
-        <label htmlFor="occupation">Ocupación</label>
-        <input {...register("occupation")} />
+        <label htmlFor="consultant">Consultor</label>
+        <Select
+          list={consultants}
+          fields={{ groupBy: "", text: "fullName", value: "_id" }}
+          fn={setSelectedConsultant}
+        />
       </div>
       <div>
-        <label htmlFor="office1">Oficina 1</label>
-        <input {...register("office1")} />
+        <span>Tipo de edificio</span>
+        <div>
+          <label htmlFor="adBuildingType">Casa</label>
+          <input type="checkbox" value="Casa" {...register("adBuildingType")} />
+          <label htmlFor="adBuildingType">Piso</label>
+          <input type="checkbox" value="Piso" {...register("adBuildingType")} />
+          <label htmlFor="adBuildingType">Parcela</label>
+          <input type="checkbox" value="Parcela" {...register("adBuildingType")} />
+          <label htmlFor="adBuildingType">Ático</label>
+          <input type="checkbox" value="Ático" {...register("adBuildingType")} />
+          <label htmlFor="adBuildingType">Oficina</label>
+          <input type="checkbox" value="Oficina" {...register("adBuildingType")} />
+          <label htmlFor="adBuildingType">Edificio</label>
+          <input type="checkbox" value="Edificio" {...register("adBuildingType")} />
+          <label htmlFor="adBuildingType">Local</label>
+          <input type="checkbox" value="Local" {...register("adBuildingType")} />
+          <label htmlFor="adBuildingType">Campo Rústico</label>
+          <input type="checkbox" value="Campo Rústico" {...register("adBuildingType")} />
+          <label htmlFor="adBuildingType">Activos Singulares</label>
+          <input type="checkbox" value="Activos Singulares" {...register("adBuildingType")} />
+          <label htmlFor="adBuildingType">Costa</label>
+          <input type="checkbox" value="Costa" {...register("adBuildingType")} />
+        </div>
       </div>
       <div>
-        <label htmlFor="office2">Oficina 2</label>
-        <input {...register("office2")} />
+        <label htmlFor="zone">Zonas residencial</label>
+        <Select
+          disabled={!patrimonialSelectedZones.length === 0 ? true : false}
+          list={residentials}
+          fields={{ groupBy: "zone", text: "name", value: "id" }}
+          fn={setResidentialSelectedZones}
+        />
       </div>
       <div>
-        <label htmlFor="comments">Comentarios</label>
-        <input {...register("comments")} />
+        <label htmlFor="zone">Zonas patrimonial</label>
+        <Select
+          disabled={!residentialSelectedZones.length === 0 ? true : false}
+          list={patrimonials}
+          fields={{ groupBy: "", text: "name", value: "id" }}
+          fn={setPatrimonialSelectedZones}
+        />
       </div>
+      <div>
+        <label htmlFor="department">Departamento</label>
+        <select required>
+          <option value="" hidden>
+            Seleccionar
+          </option>
+          <option value="Patrimonio" {...register("department")}>
+            Patrimonio
+          </option>
+          <option value="Residencial" {...register("department")}>
+            Residencial
+          </option>
+        </select>
+      </div>
+      <div>
+        <label htmlFor="webSubtitle">Subtítulo Web</label>
+        <input {...register("webSubtitle")} />
+      </div>
+      <div>
+        <label htmlFor="buildSurface">Superficie construida</label>
+        <input type="number" {...register("buildSurface")} />
+        m2
+      </div>
+      <div>
+        <label htmlFor="plotSurface">Superficie de parcela</label>
+        <input type="number" {...register("plotSurface")} />
+        m2
+      </div>
+      <div>
+        <label htmlFor="floor">Planta</label>
+        <input {...register("floor")} />
+      </div>
+      <div>
+        <label htmlFor="disponibility">Disponibilidad</label>
+        <input {...register("disponibility")} />
+      </div>
+      <hr />
+      <div>Cuadro Superficies</div>
+      <hr />
+      <div>
+        <div>
+          <span>Venta</span>
+          <div>
+            <label htmlFor="saleValue"></label>
+            <input type="number" {...register("saleValue")} />€
+            <br />
+            <label htmlFor="saleShowOnWeb">Mostrar Web</label>
+            <input type="checkbox" {...register("saleShowOnWeb")} />
+          </div>
+        </div>
+        <div>
+          <span>Alquiler</span>
+          <div>
+            <label htmlFor="rentValue"></label>
+            <input type="number" {...register("rentValue")} />€
+            <br />
+            <label htmlFor="rentShowOnWeb">Mostrar Web</label>
+            <input type="checkbox" {...register("rentShowOnWeb")} />
+          </div>
+        </div>
+      </div>
+      <div>
+        <label htmlFor="monthlyRent">Renta mensual</label>
+        <input type="number" {...register("monthlyRent")} />
+        €/m2/mes
+      </div>
+      <div>
+        <label htmlFor="expenses">Gastos</label>
+        <input type="number" {...register("expenses")} />
+        €/m2/mes
+      </div>
+      <div>
+        <label htmlFor="expensesIncluded">Alquiler con gastos incluidos</label>
+        <input type="number" {...register("expensesIncluded")} />
+        €/mes
+      </div>
+      <div>
+        <span>Gastos de comunidad</span>
+        <div>
+          <label htmlFor="expensesValue"></label>
+          <input type="number" {...register("expensesValue")} />
+          €/mes
+          <label htmlFor="expensesShowOnWeb">Mostrar en la web</label>
+          <input type="checkbox" {...register("expensesShowOnWeb")} />
+        </div>
+      </div>
+      <div>
+        <span>Ibi</span>
+        <div>
+          <label htmlFor="ibiValue"></label>
+          <input type="number" {...register("ibiValue")} />
+          €/mes
+          <label htmlFor="ibiShowOnWeb">Mostrar en la web</label>
+          <input type="checkbox" {...register("ibiShowOnWeb")} />
+        </div>
+      </div>
+      <div>
+        <label htmlFor="buildingYear">Año de construcción</label>
+        <input type="text" {...register("buildingYear")} />
+      </div>
+      <div>
+        <span>Quality</span>
+        <div>
+          <div>
+            <label htmlFor="bedrooms">Dormitorios</label>
+            <input type="number" {...register("bedrooms")} />
+          </div>
+          <div>
+            <label htmlFor="bathrooms">Baños</label>
+            <input type="number" {...register("bathrooms")} />
+          </div>
+          <div>
+            <label htmlFor="parking">Plaza de garaje</label>
+            <input type="number" {...register("parking")} />
+          </div>
+          <div>
+            <label htmlFor="indoorPool">Piscina interior</label>
+            <input type="number" {...register("indoorPool")} />
+          </div>
+          <div>
+            <label htmlFor="outdoorPool">Piscina exterior</label>
+            <input type="number" {...register("outdoorPool")} />
+          </div>
+          <div>
+            <label htmlFor="jobPositions">Puestos de trabajo</label>
+            <input type="number" {...register("jobPositions")} />
+          </div>
+          <div>
+            <label htmlFor="subway">Metro</label>
+            <input type="text" {...register("subway")} />
+          </div>
+          <div>
+            <label htmlFor="bus">Bus</label>
+            <input type="text" {...register("bus")} />
+          </div>
+        </div>
+        <div>
+          <span>Otros</span>
+          <div>
+            <label htmlFor="dumbwaiter">Montaplatos</label>
+            <input type="checkbox" {...register("dumbwaiter")} />
+            <label htmlFor="liftTruck">Montacargas</label>
+            <input type="checkbox" {...register("liftTruck")} />
+            <label htmlFor="airConditioning">Aire Acondicionado</label>
+            <input type="checkbox" {...register("airConditioning")} />
+            <label htmlFor="centralHeating">Calefacción Central</label>
+            <input type="checkbox" {...register("centralHeating")} />
+            <label htmlFor="floorHeating">Suelo radiante</label>
+            <input type="checkbox" {...register("floorHeating")} />
+            <label htmlFor="indoorAlarm">Alarma interior</label>
+            <input type="checkbox" {...register("indoorAlarm")} />
+            <label htmlFor="outdoorAlarm">Alarma perimetral</label>
+            <input type="checkbox" {...register("outdoorAlarm")} />
+            <label htmlFor="fullHoursSecurity">Seguridad 24 h</label>
+            <input type="checkbox" {...register("fullHoursSecurity")} />
+            <label htmlFor="gunRack">Armero</label>
+            <input type="checkbox" {...register("gunRack")} />
+            <label htmlFor="strongBox">Caja fuerte</label>
+            <input type="checkbox" {...register("strongBox")} />
+            <label htmlFor="well">Pozo</label>
+            <input type="checkbox" {...register("well")} />
+            <label htmlFor="homeAutomation">Domótica</label>
+            <input type="checkbox" {...register("homeAutomation")} />
+            <label htmlFor="centralVacuum">Aspiración centralizada</label>
+            <input type="checkbox" {...register("centralVacuum")} />
+            <label htmlFor="padelCourt">Pista de pádel</label>
+            <input type="checkbox" {...register("padelCourt")} />
+            <label htmlFor="tennisCourt">Pista de tenis</label>
+            <input type="checkbox" {...register("tennisCourt")} />
+            <label htmlFor="terrace">Terraza</label>
+            <input type="checkbox" {...register("terrace")} />
+            <label htmlFor="storage">Trastero</label>
+            <input type="checkbox" {...register("storage")} />
+            <label htmlFor="swimmingPool">Piscina</label>
+            <input type="checkbox" {...register("swimmingPool")} />
+            <label htmlFor="garage">Garaje</label>
+            <input type="checkbox" {...register("garage")} />
+            <label htmlFor="falseCeiling">Falsos techos</label>
+            <input type="checkbox" {...register("falseCeiling")} />
+            <label htmlFor="raisedFloor">Suelo técnico</label>
+            <input type="checkbox" {...register("raisedFloor")} />
+            <label htmlFor="lift">Ascensor</label>
+            <input type="checkbox" {...register("lift")} />
+            <label htmlFor="bathrooms">Aseos</label>
+            <input type="checkbox" {...register("bathrooms")} />
+            <label htmlFor="freeHeight">Altura libre &gt; 2,5 m</label>
+            <input type="checkbox" {...register("freeHeight")} />
+            <label htmlFor="smokeOutlet">Salida de humos</label>
+            <input type="checkbox" {...register("smokeOutlet")} />
+            <label htmlFor="accesControl">Control de accesos</label>
+            <input type="checkbox" {...register("accesControl")} />
+          </div>
+        </div>
+        <div>
+          <span>Descripción</span>
+          <div>
+            <label htmlFor="web">Descripción web</label>
+            <textarea {...register("web")} />
+          </div>
+          <div>
+            <label htmlFor="emailPDF">Descripción email / PDF</label>
+            <textarea max="600" {...register("emailPDF")} />
+          </div>
+          <div>
+            <label htmlFor="distribution">Distribución</label>
+            <textarea {...register("distribution")} />
+          </div>
+        </div>
+      </div>
+
       <button type="submit">Guardar</button>
-      <NavLink to="/consultants">
-        <button type="">
-          Cancelar
-        </button>
+      <NavLink to="/ads">
+        <button type="">Cancelar</button>
       </NavLink>
     </form>
   );

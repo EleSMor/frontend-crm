@@ -12,11 +12,29 @@ const getAllContacts = async () => {
         },
     });
     const allContacts = await request.json();
-    // console.log(allContacts);
+
     if(!request.ok) {
        throw new Error('Error on fetch', allContacts.message);
     };
     return allContacts;
+};
+
+const getAllOwners = async () => {
+    const request = await fetch(`${contactsURL}/owners`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+        },
+    });
+    const allOwners = await request.json();
+
+    if(!request.ok) {
+       throw new Error('Error on fetch', allOwners.message);
+    };
+    return allOwners;
 };
 
 const createContact = async (form) => {
@@ -26,7 +44,7 @@ const createContact = async (form) => {
         body: JSON.stringify(form),
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded',
             'Access-Control-Allow-Origin': '*',
         },
     });
@@ -41,5 +59,6 @@ const createContact = async (form) => {
 
 export {
     getAllContacts,
+    getAllOwners,
     createContact,
 }

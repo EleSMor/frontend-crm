@@ -1,68 +1,152 @@
 import React from "react";
-import { useForm } from "react-hook-form";
-import { NavLink } from "react-router-dom";
+import { Formik, Form } from "formik";
+import { useHistory } from "react-router-dom";
+import { createConsultant } from "../../api/consultants.api";
 
-const ConsultantForm = () => {
-  const { register, handleSubmit } = useForm();
-  const onSubmit = (data) => console.log(data);
+const ConsultantForm = ({ setOpenForm }) => {
+  const history = useHistory();
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} enctype="multipart/form-data">
-      <div>
-        <label htmlFor="email">Email</label>
-        <input {...register("email")} />
-      </div>
-      <div>
-        <label htmlFor="password">Contraseña</label>
-        <input {...register("password")} />
-      </div>
-      <div>
-        <label htmlFor="avatar">Avatar</label>
-        <input type="file" {...register("avatar")} />
-      </div>
-      <div>
-        <label htmlFor="businessUnitLogo">Logo unidad de negocio</label>
-        <input type="file" {...register("businessUnitLogo")} />
-      </div>
-      <div>
-        <label htmlFor="fullName">Nombre completo</label>
-        <input {...register("fullName")} />
-      </div>
-      <div>
-        <label htmlFor="mobileNumber">Teléfono móvil</label>
-        <input {...register("mobileNumber")} />
-      </div>
-      <div>
-        <label htmlFor="phoneNumber">Teléfono fijo</label>
-        <input {...register("phoneNumber")} />
-      </div>
-      <div>
-        <label htmlFor="position">Posición</label>
-        <input {...register("position")} />
-      </div>
-      <div>
-        <label htmlFor="occupation">Ocupación</label>
-        <input {...register("occupation")} />
-      </div>
-      <div>
-        <label htmlFor="office1">Oficina 1</label>
-        <input {...register("office1")} />
-      </div>
-      <div>
-        <label htmlFor="office2">Oficina 2</label>
-        <input {...register("office2")} />
-      </div>
-      <div>
-        <label htmlFor="comments">Comentarios</label>
-        <input {...register("comments")} />
-      </div>
-      <button type="submit">Guardar</button>
-      <NavLink to="/consultants">
-        <button type="">
-          Cancelar
-        </button>
-      </NavLink>
-    </form>
+    <>
+      <Formik
+        initialValues={{
+          consultantEmail: "",
+          consultantPassword: "",
+          fullName: "",
+          avatar: "",
+          companyUnitLogo: "",
+          consultantMobileNumber: "",
+          consultantPhoneNumber: "",
+          position: "",
+          profession: "",
+          office1: "",
+          office2: "",
+          comments: "",
+        }}
+        onSubmit={(values) => {
+          console.log(values);
+          let data = new FormData();
+
+          for (var key in values) {
+            data.append(key, values[key]);
+            console.log("clave:", key, "valor", values[key]);
+          }
+
+          createConsultant(data);
+          history.push("/consultants");
+        }}
+      >
+        {(formProps) => (
+          <Form>
+            <div>
+              <label htmlFor="consultantEmail">Email</label>
+              <input
+                type="email"
+                name="consultantEmail"
+                required
+                onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="consultantPassword">Contraseña</label>
+              <input
+                type="password"
+                name="consultantPassword"
+                required
+                onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="fullName">Nombre completo</label>
+              <input
+                type="text"
+                name="fullName"
+                required
+                onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="avatar">Avatar</label>
+              <input
+                type="file"
+                name="avatar"
+                onChange={(ev) => formProps.setFieldValue("avatar", ev.target.files[0])}
+              />
+            </div>
+            <div>
+              <label htmlFor="companyUnitLogo">Logo unidad de negocio</label>
+              <input
+                type="file"
+                name="companyUnitLogo"
+                onChange={(ev) => formProps.setFieldValue("companyUnitLogo", ev.target.files[0])}
+              />
+            </div>
+            <div>
+              <label htmlFor="consultantMobileNumber">Teléfono móvil</label>
+              <input
+                type="text"
+                name="consultantMobileNumber"
+                required
+                onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="consultantPhoneNumber">Teléfono fijo</label>
+              <input
+                type="text"
+                name="consultantPhoneNumber"
+                onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="position">Posición</label>
+              <input
+                type="text"
+                name="position"
+                required
+                onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="profession">Ocupación</label>
+              <input
+                type="text"
+                name="profession"
+                onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="office1">Oficina 1</label>
+              <input
+                type="text"
+                name="office1"
+                onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="office2">Oficina 2</label>
+              <input
+                type="text"
+                name="office2"
+                onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="comments">Comentarios</label>
+              <input
+                type="text"
+                name="comments"
+                onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+              />
+            </div>
+            <button type="submit">Guardar</button>
+            <button onClick={() => setOpenForm(false)} type="">
+              Cancelar
+            </button>
+          </Form>
+        )}
+      </Formik>
+    </>
   );
 };
 
