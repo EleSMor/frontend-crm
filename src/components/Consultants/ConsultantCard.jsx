@@ -1,9 +1,7 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
 import "./ConsultantCard.scss";
 
 const ConsultantCard = ({ consultants }) => {
-
   return (
     <div className="card">
       {consultants &&
@@ -35,9 +33,7 @@ const ConsultantCard = ({ consultants }) => {
               <div>
                 <div>Creado el {consultant.consultantCreationDate}</div>
                 <div>
-                  <NavLink to={`/consultants/${consultant._id}`}>
-                    <button>Abrir Ficha</button>
-                  </NavLink>
+                  <button>Abrir Ficha</button>
                 </div>
               </div>
             </div>

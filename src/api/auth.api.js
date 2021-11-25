@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:3500";
+const BASE_URL = "http://165.232.64.166";
 const registerUrl = `${BASE_URL}/auth/register`;
 const loginUrl = `${BASE_URL}/auth/login`;
 const logoutUrl = `${BASE_URL}/auth/logout`;

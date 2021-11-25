@@ -1,65 +1,82 @@
 import React from "react";
-import { NavLink, useHistory } from "react-router-dom";
-import { getRequestById } from "../../api/requests.api";
+import { NavLink } from "react-router-dom";
+import "./RequestTable.scss";
 
 const RequestsTable = ({ requests }) => {
   console.log(requests);
 
   return (
-    <div>
-      <table>
-        <thead>
+    <table className="tbl">
+      <colgroup span="6"></colgroup>
+      <colgroup span="2"></colgroup>
+      <colgroup span="1"></colgroup>
+      <tr>
+        <tr>
+          <th className="tbl__creationDate" colspan="1" scope="colgroup">
+            Fecha de creación
+          </th>
+          <th className="tbl__reference">Referencia</th>
+          <th className="tbl__contact">Contacto</th>
+          <th className="tbl__company">Empresa</th>
+          <th className="tbl__buildingType">Tipo de inmueble</th>
+          <th className="tbl__adType">Tipo de anuncio</th>
           <tr>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th>Precio</th>
-            <th>Superficie construida</th>
-            <th>Superficie parcela</th>
+            <th className="tbl__price" colspan="2" scope="colgroup">
+              Precio
+            </th>
+            <th className="tbl__buildSurface" colspan="2" scope="colgroup">
+              Superficie construida
+            </th>
+            <th className="tbl__plotSurface" colspan="2" scope="colgroup">
+              Superficie parcela
+            </th>
           </tr>
           <tr>
-            <th>Fecha de creación</th>
-            <th>Referencia</th>
-            <th>Contacto</th>
-            <th>Empresa</th>
-            <th>Tipo de inmueble</th>
-            <th>Tipo de anuncio</th>
-            <th>Máximo</th>
-            <th>Mínimo</th>
-            <th>Máximo</th>
-            <th>Mínimo</th>
-            <th>Máximo</th>
-            <th>Mínimo</th>
-            <th>Consultor</th>
+            <th className="tbl__price-row" scope="col">
+              Máximo
+            </th>
+            <th className="tbl__price-row" scope="col">
+              Mínimo
+            </th>
+            <th className="tbl__buildSurface-row" scope="col">
+              Máxima
+            </th>
+            <th className="tbl__buildSurface-row" scope="col">
+              Mínima
+            </th>
+            <th className="tbl__plotSurface-row" scope="col">
+              Máxima
+            </th>
+            <th className="tbl__plotSurface-row" scope="col">
+              Mínima
+            </th>
           </tr>
-          {requests &&
-            requests.map((request, index) => {
-              return (
-                <tr key={`${request._id}-${index}`}>
-                  <td>{request.creationDate}</td>
-                  <td>
-                    <NavLink to={`/requests/${request.requestReference}`}>{request.requestReference}</NavLink>
-                  </td>
-                  <td>{request.requestContact.fullName}</td>
-                  <td>{request.requestContact.company}</td>
-                  <td>{request.requestBuildingType}</td>
-                  <td>{request.requestAdType}</td>
-                  <td>{request.requestSalePrice.salePriceMax}</td>
-                  <td>{request.requestSalePrice.salePriceMin}</td>
-                  <td>{request.requestBuildSurface.buildSurfaceMax}</td>
-                  <td>{request.requestBuildSurface.buildSurfaceMin}</td>
-                  <td>{request.requestPlotSurface.plotSurfaceMax}</td>
-                  <td>{request.requestPlotSurface.plotSurfaceMin}</td>
-                  <td>{request.requestConsultant.fullName}</td>
-                </tr>
-              );
-            })}
-        </thead>
-      </table>
-    </div>
+          <th className="tbl__consultant">Consultor</th>
+        </tr>
+      </tr>
+      {requests &&
+        requests.map((request, index) => {
+          return (
+            <tr key={`${request._id}-${index}`}>
+              <td className="tbl__creationDate">{request.creationDate}</td>
+              <td className="tbl__reference">
+                <NavLink to={`/requests/${request.requestReference}`}>{request.requestReference}</NavLink>
+              </td>
+              <td className="tbl__contact">{request.requestContact.fullName}</td>
+              <td className="tbl__company">{request.requestContact.company}</td>
+              <td className="tbl__buildingType">{request.requestBuildingType}</td>
+              <td className="tbl__adType">{request.requestAdType}</td>
+              <td className="tbl__price-row">{request.requestSalePrice.salePriceMax}</td>
+              <td className="tbl__price-row">{request.requestSalePrice.salePriceMin}</td>
+              <td className="tbl__buildSurface-row">{request.requestBuildSurface.buildSurfaceMax}</td>
+              <td className="tbl__buildSurface-row">{request.requestBuildSurface.buildSurfaceMin}</td>
+              <td className="tbl__plotSurface-row">{request.requestPlotSurface.plotSurfaceMax}</td>
+              <td className="tbl__plotSurface-row">{request.requestPlotSurface.plotSurfaceMin}</td>
+              <td className="tbl__consultant">{request.requestConsultant.fullName}</td>
+            </tr>
+          );
+        })}
+    </table>
   );
 };
 

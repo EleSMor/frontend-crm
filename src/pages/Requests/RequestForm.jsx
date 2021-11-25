@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Form } from "formik";
-import { NavLink, useHistory } from "react-router-dom";
 import { getAllConsultants } from "../../api/consultants.api";
 import { getAllResidentialZones, getAllPatrimonialZones } from "../../api/zones.api";
 import { getAllContacts } from "../../api/contacts.api";
 import { createRequest, getLastReference } from "../../api/requests.api";
 
-const RequestForm = () => {
-  const history = useHistory();
+const RequestForm = ({ setOpenForm }) => {
   const [reference, setReference] = useState(0);
   const [contacts, setContacts] = useState([]);
   const [consultants, setConsultants] = useState([]);
@@ -53,7 +51,6 @@ const RequestForm = () => {
         bathroomsMin: "",
       }}
       onSubmit={(data) => {
-
         data.requestContact = selectedContact;
         data.requestConsultant = selectedConsultant;
         data.requestAdType = selectedAdType;
@@ -61,7 +58,7 @@ const RequestForm = () => {
         data.residential = residentialSelectedZones;
         data.patrimonial = patrimonialSelectedZones;
         data.requestReference = reference;
-        
+
         console.log(data);
 
         createRequest(data);
@@ -87,7 +84,11 @@ const RequestForm = () => {
             >
               {contacts &&
                 contacts.map((contact, index) => {
-                  return <option value={`${contact._id}`} key={`${index}-${contact}`}>{contact.fullName}</option>;
+                  return (
+                    <option value={`${contact._id}`} key={`${index}-${contact}`}>
+                      {contact.fullName}
+                    </option>
+                  );
                 })}
             </select>
           </div>
@@ -108,7 +109,11 @@ const RequestForm = () => {
             >
               {consultants &&
                 consultants.map((consultant, index) => {
-                  return <option value={`${consultant._id}`} key={`${index}-${consultant}`}>{consultant.fullName}</option>;
+                  return (
+                    <option value={`${consultant._id}`} key={`${index}-${consultant}`}>
+                      {consultant.fullName}
+                    </option>
+                  );
                 })}
             </select>
           </div>
@@ -208,7 +213,11 @@ const RequestForm = () => {
               <option hidden>Seleccionar</option>
               {residentials &&
                 residentials.map((residentialZone, index) => {
-                  return <option value={`${residentialZone._id}`} key={`${index}-${residentialZone}`}>{residentialZone.name}</option>;
+                  return (
+                    <option value={`${residentialZone._id}`} key={`${index}-${residentialZone}`}>
+                      {residentialZone.name}
+                    </option>
+                  );
                 })}
             </select>
             <div>
@@ -239,7 +248,11 @@ const RequestForm = () => {
               <option hidden>Seleccionar</option>
               {patrimonials &&
                 patrimonials.map((patrimonialZone, index) => {
-                  return <option value={`${patrimonialZone._id}`} key={`${index}-${patrimonialZone}`}>{patrimonialZone.name}</option>;
+                  return (
+                    <option value={`${patrimonialZone._id}`} key={`${index}-${patrimonialZone}`}>
+                      {patrimonialZone.name}
+                    </option>
+                  );
                 })}
             </select>
             <div>
@@ -361,9 +374,10 @@ const RequestForm = () => {
             </div>
           </div>
           <button type="submit">Guardar</button>
-          <NavLink to="/requests">
-            <button type="">Cancelar</button>
-          </NavLink>
+
+          <button onClick={() => setOpenForm(false)} type="">
+            Cancelar
+          </button>
         </Form>
       )}
     </Formik>

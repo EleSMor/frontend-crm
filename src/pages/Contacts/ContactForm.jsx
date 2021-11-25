@@ -3,12 +3,11 @@ import { useForm } from "react-hook-form";
 import { NavLink, useHistory } from "react-router-dom";
 import { createContact } from "../../api/contacts.api";
 
-const ContactForm = () => {
+const ContactForm = ({ setOpenForm }) => {
   const history = useHistory();
   const [error, setError] = useState();
   const { register, handleSubmit } = useForm();
-  
-  
+
   const onSubmit = async (data) => {
     console.log(data);
     setError("");
@@ -97,9 +96,9 @@ const ContactForm = () => {
         </div>
       </div>
       <button type="submit">Guardar</button>
-      <NavLink to="/contacts">
-        <button type="">Cancelar</button>
-      </NavLink>
+      <button onClick={() => setOpenForm(false)} type="">
+        Cancelar
+      </button>
     </form>
   );
 };

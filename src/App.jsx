@@ -2,7 +2,6 @@ import React, { Suspense } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import AuthUser from "./components/Context/AuthUser";
 import {
-  Home,
   AdsList,
   RequestsList,
   ContactsList,
@@ -23,8 +22,7 @@ function App() {
         <AuthUser>
           <Suspense fallback={<div>Cargando...</div>}>
             <Switch>
-              <Route exact path="/" component={Home} />
-              <Route exact path="/login" component={Login} />
+              <Route exact path="/" component={Login} />
               <Route exact path="/ads" component={AdsList} />
               <Route exact path="/requests" component={RequestsList} />
               <Route exact path="/contacts" component={ContactsList} />

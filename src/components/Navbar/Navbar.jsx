@@ -23,14 +23,12 @@ const Navbar = () => {
         <div className="navigate__left">
           <ul>
             <div className="navigate__home">
-              <NavLink to="/">
-                <li>
-                  <GvreLogo className="navigate__link--logo" />
-                </li>
-                <li>
-                  <h1 className="navigate__title">GV Real State</h1>
-                </li>
-              </NavLink>
+              <li>
+                <GvreLogo className="navigate__link--logo" />
+              </li>
+              <li>
+                <h1 className="navigate__title">GV Real State</h1>
+              </li>
             </div>
             <NavLink className={location === "/ads" ? "navigate__route-active" : "navigate__route"} to="/ads">
               <li>
@@ -67,22 +65,22 @@ const Navbar = () => {
                 </div>
               </li>
             </NavLink>
-            <NavLink className="navigate__route" to="/">
+            <span className="navigate__route" to="">
               <li>
                 <div>
                   <Calendar className="navigate__link--icon" />
                   <span className="navigate__link--text">Agenda</span>
                 </div>
               </li>
-            </NavLink>
-            <NavLink className="navigate__route" to="/">
+            </span>
+            <span className="navigate__route" to="">
               <li>
                 <div>
                   <Settings className="navigate__link--icon" />
                   <span className="navigate__link--text">Configuración</span>
                 </div>
               </li>
-            </NavLink>
+            </span>
           </ul>
         </div>
 
@@ -90,7 +88,7 @@ const Navbar = () => {
           <ul>
             <Ellipse2 className="navigate__logging-ellipse1"></Ellipse2>
             <Ellipse3 className="navigate__logging-ellipse2"></Ellipse3>
-            <NavLink activeClassName="" to="/login">
+            <NavLink activeClassName="" to="/">
               <User className="navigate__logging-user" />
             </NavLink>
           </ul>

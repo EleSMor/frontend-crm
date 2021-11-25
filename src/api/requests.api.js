@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:3500'; // NODE Server Url
+const BASE_URL = 'http://165.232.64.166'; // NODE Server Url
 const requestsURL = `${BASE_URL}/requests`;
 
 const getAllRequests = async () => {

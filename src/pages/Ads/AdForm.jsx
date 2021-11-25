@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Select from "../../components/Select/Select";
-import { NavLink, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { getAllOwners } from "../../api/contacts.api";
 import { getAllConsultants } from "../../api/consultants.api";
 import { getAllResidentialZones, getAllPatrimonialZones } from "../../api/zones.api";
 import { createAd } from "../../api/ads.api.js";
 
-const AdForm = () => {
+const AdForm = ({ setOpenForm }) => {
   const { register, handleSubmit } = useForm();
   const history = useHistory();
   const [owners, setOwners] = useState([]);
@@ -20,13 +20,13 @@ const AdForm = () => {
   const [patrimonials, setPatrimonial] = useState([]);
   const [residentialSelectedZones, setResidentialSelectedZones] = useState([]);
   const [patrimonialSelectedZones, setPatrimonialSelectedZones] = useState([]);
-  
+
   const onSubmit = async (data) => {
     data.owner = selectedOwner;
     data.consultant = selectedConsultant;
     data.residential = residentialSelectedZones;
     data.patrimonial = patrimonialSelectedZones;
-    
+
     console.log(data);
 
     try {
@@ -373,9 +373,9 @@ const AdForm = () => {
       </div>
 
       <button type="submit">Guardar</button>
-      <NavLink to="/ads">
-        <button type="">Cancelar</button>
-      </NavLink>
+      <button onClick={() => setOpenForm(false)} type="">
+        Cancelar
+      </button>
     </form>
   );
 };

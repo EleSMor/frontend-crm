@@ -16,7 +16,7 @@ const ConsultantsList = () => {
 
   return (
     <div>
-      {user.length === 0 && history.push("/login")}
+      {user.length === 0 && history.push("/")}
       <Navbar />
       <SubHeader title="Consultores" list={consultants} setOpenForm={setOpenForm} />
       {openForm === true && <ConsultantForm setOpenForm={setOpenForm} />}

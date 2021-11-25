@@ -1,4 +1,3 @@
-import Home from "./Home/Home";
 import AdsList from "./Ads/AdsList";
 import RequestsList from "./Requests/RequestsList";
 import ContactsList from "./Contacts/ContactsList";
@@ -10,7 +9,6 @@ import ConsultantForm from "./Consultants/ConsultantForm";
 import Login from "./Login/Login";
 
 export {
-    Home,
     AdsList,
     RequestsList,
     ContactsList,

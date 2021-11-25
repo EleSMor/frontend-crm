@@ -1,0 +1,86 @@
+.tbl {
+  display: flex;
+  flex-direction: column;
+  margin: 1vh 1vw;
+
+  & th {
+    box-sizing: border-box;
+    border: 1px solid black;
+    background-color: #e5e5e5;
+    text-align: center;
+  }
+
+  & td {
+    box-sizing: border-box;
+    border: 1px solid black;
+    background-color: white;
+  }
+
+  &__useless {
+    width: 0% !important;
+  }
+
+  &__half-header {
+    width: 2.5%;
+    background-color: #e5e5e5;
+    border: 1px solid black;
+  }
+
+  &__creationDate {
+    max-width: 10vw;
+    min-width: 10vw;
+    align-items: center;
+    border: 1px solid black;
+  }
+  &__reference {
+    max-width: 6vw;
+    min-width: 6vw;
+  }
+  &__contact {
+    max-width: 12vw;
+    min-width: 12vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  &__company {
+    max-width: 12vw;
+    min-width: 12vw;
+  }
+  &__buildingType {
+    max-width: 8vw;
+    min-width: 8vw;
+  }
+  &__adType {
+    max-width: 8vw;
+    min-width: 8vw;
+  }
+  &__price {
+    max-width: 12vw;
+    min-width: 12vw;
+    &-row {
+      max-width: 6vw;
+      min-width: 6vw;
+    }
+  }
+  &__buildSurface {
+    max-width: 12vw;
+    min-width: 12vw;
+    &-row {
+      max-width: 6vw;
+      min-width: 6vw;
+    }
+  }
+  &__plotSurface {
+    max-width: 12vw;
+    min-width: 12vw;
+    &-row {
+      max-width: 6vw;
+      min-width: 6vw;
+    }
+  }
+  &__consultant {
+    max-width: 12vw;
+    min-width: 12vw;
+  }
+}

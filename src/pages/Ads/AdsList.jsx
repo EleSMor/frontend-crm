@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { NavLink, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { getAllAds } from "../../api/ads.api";
 import AdsTable from "../../components/AdsTable/AdsTable";
 import AdForm from "./AdForm";
@@ -16,7 +16,7 @@ const AdsList = () => {
 
   return (
     <div>
-      {user.length === 0 && history.push("/login")}
+      {user.length === 0 && history.push("/")}
       <Navbar />
       <SubHeader title="Anuncios" list={ads} setOpenForm={setOpenForm} />
       {openForm === true && <AdForm setOpenForm={setOpenForm} />}

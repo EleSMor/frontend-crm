@@ -16,7 +16,7 @@ const RequestsList = () => {
 
   return (
     <div>
-      {user.length === 0 && history.push("/login")}
+      {user.length === 0 && history.push("/")}
       <Navbar />
       <SubHeader title="Peticiones" list={requests} setOpenForm={setOpenForm} />
       {openForm === true && <RequestForm setOpenForm={setOpenForm} />}

@@ -19,7 +19,7 @@ const ContactsList = () => {
 
   return (
     <>
-      {!user && history.push("/login")}
+      {!user && history.push("/")}
       <Navbar />
       <SubHeader title="Contactos" list={contacts} setOpenForm={setOpenForm} />
       {openForm === true && <ContactForm setOpenForm={setOpenForm} />}

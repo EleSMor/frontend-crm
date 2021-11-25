@@ -1,47 +1,58 @@
 import React from "react";
+import moment from "moment";
 import "./ContactCard.scss";
 
 const ContactCard = ({ contacts }) => {
   return (
-    <div>
+    <div className="contact">
       {contacts &&
         contacts.map((contact, index) => {
           return (
-            <div className="card__box" key={`${contact._id}-${index}`}>
-              <div>
-                <div>
+            <div className="contact__box" key={`${contact._id}-${index}`}>
+              <div className="contact__box-allInfo">
+                <div className="contact__box-personalInfo">
                   <div>
-                    <a href={`/contacts/${contact._id}`}>{contact.fullName}</a>
+                    <span className="contact__box-name">{contact.fullName}</span>
                   </div>
-                  <div>
-                    <p>{`${contact.contactDirection.address.street} ${contact.contactDirection.address.directionNumber} ${contact.contactDirection.address.directionFloor}`}</p>
+                  <div className="contact__box-details">
+                    <div>
+                      <span>{`${contact.contactDirection.address.street}, ${contact.contactDirection.address.directionNumber}, ${contact.contactDirection.address.directionFloor}`}</span>
+                    </div>
+                    <div>
+                      <span>{`${contact.contactDirection.postalCode} ${contact.contactDirection.city}, ${contact.contactDirection.country}`}</span>
+                    </div>
+                    <div>
+                      <span>{contact.company}</span>
+                    </div>
                   </div>
-                  <div>
-                    <p>{`${contact.contactDirection.postalCode} ${contact.contactDirection.city}, ${contact.contactDirection.country}`}</p>
-                  </div>
-                  <div>
-                    <p>{contact.company}</p>
+                  <div className="contact__box-tags">
+                    {contact.tag.map((tag, index) => {
+                      return (
+                        <>
+                          <span className="contact__box-tag">{tag} </span>
+                        </>
+                      );
+                    })}
                   </div>
                 </div>
-                <div>
-                  {contact.tag.map((tag, index) => {
-                    return (
-                      <>
-                        <span>{tag} </span>
-                      </>
-                    );
-                  })}
+                <div className="contact__box-contact">
+                  <div>
+                    <span>{contact.contactMobileNumber}</span>
+                    <span> | </span>
+                    <span>{contact.contactPhoneNumber}</span>
+                  </div>
+                  <p>{contact.email}</p>
+                  <div>
+                    <span>0 peticiones</span>
+                  </div>
                 </div>
-              </div>
-              <div>
-                <div>
-                  <span>{contact.contactMobileNumber}</span>
-                  <span> | </span>
-                  <span>{contact.contactPhoneNumber}</span>
+                <div className="contact__box-comments">
+                  <span>Comentarios</span>
+                  <textarea>{contact.contactComments}</textarea>
                 </div>
-                <p>{contact.email}</p>
-                <div>
-                  <span>Nº peticiones</span>
+                <div className="contact__box-end">
+                  <span>Creado el {moment(contact.createdAt).format("L")}</span>
+                  <button>Abrir Ficha</button>
                 </div>
               </div>
             </div>
