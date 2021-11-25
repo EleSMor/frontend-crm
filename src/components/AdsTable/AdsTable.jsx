@@ -51,9 +51,9 @@ const AdsTable = ({ ads }) => {
                   <td className="tbl__title">{ad.title}</td>
                   <td className="tbl__status">{ad.adStatus}</td>
                   <td className="tbl__closeOperation">{ad.gvOperationClose}</td>
-                  <td className="tbl__price-row">{ad.price.sale.saleValue}</td>
-                  <td className="tbl__price-row">{ad.price.rent.rentValue}</td>
-                  <td className="tbl__buildSurface">{ad.buildSurface}</td>
+                  <td className="tbl__price-row">{ad.price.sale.saleValue} €</td>
+                  <td className="tbl__price-row">{ad.price.rent.rentValue} €</td>
+                  <td className="tbl__buildSurface">{ad.buildSurface} m2</td>
                   <td className="tbl__buildingType">{ad.adBuildingType}</td>
                   <td className="tbl__adType">{ad.adType}</td>
                   <td className="tbl__contact">{ad.owner.fullName}</td>

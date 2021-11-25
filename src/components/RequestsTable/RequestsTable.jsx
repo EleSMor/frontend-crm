@@ -66,12 +66,12 @@ const RequestsTable = ({ requests }) => {
               <td className="tbl__company">{request.requestContact.company}</td>
               <td className="tbl__buildingType">{request.requestBuildingType}</td>
               <td className="tbl__adType">{request.requestAdType}</td>
-              <td className="tbl__price-row">{request.requestSalePrice.salePriceMax}</td>
-              <td className="tbl__price-row">{request.requestSalePrice.salePriceMin}</td>
-              <td className="tbl__buildSurface-row">{request.requestBuildSurface.buildSurfaceMax}</td>
-              <td className="tbl__buildSurface-row">{request.requestBuildSurface.buildSurfaceMin}</td>
-              <td className="tbl__plotSurface-row">{request.requestPlotSurface.plotSurfaceMax}</td>
-              <td className="tbl__plotSurface-row">{request.requestPlotSurface.plotSurfaceMin}</td>
+              <td className="tbl__price-row">{request.requestSalePrice.salePriceMax} €</td>
+              <td className="tbl__price-row">{request.requestSalePrice.salePriceMin} €</td>
+              <td className="tbl__buildSurface-row">{request.requestBuildSurface.buildSurfaceMax} m2</td>
+              <td className="tbl__buildSurface-row">{request.requestBuildSurface.buildSurfaceMin} m2</td>
+              <td className="tbl__plotSurface-row">{request.requestPlotSurface.plotSurfaceMax} m2</td>
+              <td className="tbl__plotSurface-row">{request.requestPlotSurface.plotSurfaceMin} m2</td>
               <td className="tbl__consultant">{request.requestConsultant.fullName}</td>
             </tr>
           );
