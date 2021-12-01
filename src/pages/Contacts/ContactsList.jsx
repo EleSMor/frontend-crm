@@ -14,7 +14,7 @@ const ContactsList = () => {
   console.log(user);
 
   useEffect(() => {
-    getAllContacts().then((res) => setContacts(res), []);
+    getAllContacts().then((res) => setContacts(res), [contacts]);
   }, []);
 
   return (

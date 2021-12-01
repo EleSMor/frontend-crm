@@ -1,5 +1,4 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
 import moment from "moment";
 import "./AdsTable.scss";
 
@@ -12,7 +11,7 @@ const AdsTable = ({ ads }) => {
         <colgroup span="2">
           <col />
         </colgroup>
-        <tr>
+        <thead>
           <tr>
             <th className="tbl__creationDate">Fecha de creación</th>
             <th className="tbl__reference">Referencia</th>
@@ -21,7 +20,7 @@ const AdsTable = ({ ads }) => {
             <th className="tbl__status">Estado anuncio</th>
             <th className="tbl__closeOperation">Cierre operación GV</th>
             <tr>
-              <th className="tbl__price" colspan="2" scope="colgroup">
+              <th className="tbl__price" colSpan="2" scope="colgroup">
                 Precio
               </th>
             </tr>
@@ -39,7 +38,7 @@ const AdsTable = ({ ads }) => {
             <th className="tbl__contact">Propietario</th>
             <th className="tbl__consultant">Consultor</th>
           </tr>
-        </tr>
+        </thead>
         <tbody>
           {ads &&
             ads.map((ad, index) => {

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { NavLink, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { createContact } from "../../api/contacts.api";
 
 const ContactForm = ({ setOpenForm }) => {
