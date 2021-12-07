@@ -1,10 +1,7 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
 import "./RequestTable.scss";
 
-const RequestsTable = ({ requests }) => {
-  console.log(requests);
-
+const RequestsTable = ({ requests, setOpenForm, setIdRequest }) => {
   return (
     <table className="tbl">
       <colgroup span="6"></colgroup>
@@ -59,8 +56,15 @@ const RequestsTable = ({ requests }) => {
           return (
             <tr key={`${request._id}-${index}`}>
               <td className="tbl__creationDate">{request.creationDate}</td>
-              <td className="tbl__reference">
-                <NavLink to={`/requests/${request.requestReference}`}>{request.requestReference}</NavLink>
+              <td
+                className="tbl__reference"
+                id={request._id}
+                onClick={(ev) => {
+                  setIdRequest(ev.target.id);
+                  setOpenForm(true);
+                }}
+              >
+                {request.requestReference}
               </td>
               <td className="tbl__contact">{request.requestContact.fullName}</td>
               <td className="tbl__company">{request.requestContact.company}</td>

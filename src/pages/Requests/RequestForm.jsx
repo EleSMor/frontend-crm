@@ -1,11 +1,38 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import { Formik, Form } from "formik";
+import { Select } from "../../components";
 import { getAllConsultants } from "../../api/consultants.api";
 import { getAllResidentialZones, getAllPatrimonialZones } from "../../api/zones.api";
 import { getAllContacts } from "../../api/contacts.api";
-import { createRequest, getLastReference } from "../../api/requests.api";
+import { createRequest, getLastReference, getRequestById } from "../../api/requests.api";
 
-const RequestForm = ({ setOpenForm }) => {
+const RequestForm = ({ setOpenForm, idRequest, setIdRequest }) => {
+  const history = useHistory();
+
+  const [request, setRequest] = useState({
+    requestContact: "",
+    requestConsultant: "",
+    requestComment: "",
+    requestAdType: "",
+    requestBuildingType: "",
+    requestReference: "",
+    residential: "",
+    patrimonial: "",
+    salePriceMax: "",
+    salePriceMin: "",
+    rentPriceMax: "",
+    rentPriceMin: "",
+    buildSurfaceMax: "",
+    buildSurfaceMin: "",
+    plotSurfaceMax: "",
+    plotSurfaceMin: "",
+    bedroomsMax: "",
+    bedroomsMin: "",
+    bathroomsMax: "",
+    bathroomsMin: "",
+  });
+
   const [reference, setReference] = useState(0);
   const [contacts, setContacts] = useState([]);
   const [consultants, setConsultants] = useState([]);
@@ -19,37 +46,31 @@ const RequestForm = ({ setOpenForm }) => {
   const [patrimonialSelectedZones, setPatrimonialSelectedZones] = useState([]);
 
   useEffect(() => {
-    getAllContacts().then((res) => setContacts(...contacts, res));
-    getAllConsultants().then((res) => setConsultants(...consultants, res));
-    getAllResidentialZones().then((res) => setResidential(...residentials, res));
-    getAllPatrimonialZones().then((res) => setPatrimonial(...patrimonials, res));
+    if (idRequest) {
+      console.log(idRequest);
+      getRequestById(idRequest).then((res) => setRequest(res));
+    }
+    getAllContacts().then((res) => setContacts(res));
+    getAllConsultants().then((res) => setConsultants(res));
+    getAllResidentialZones().then((res) => setResidential(res));
+    getAllPatrimonialZones().then((res) => setPatrimonial(res));
     getLastReference().then((res) => setReference(res));
-  }, []);
+  }, [idRequest]);
 
+  const newSelect = (selected, setSelected, ev) => {
+    if (selected.includes(ev.target.value)) {
+      const newSelected = selected.filter((selected) => selected !== ev.target.value);
+      console.log(newSelected);
+      setSelected(newSelected);
+    } else {
+      setSelected(ev.target.value);
+    }
+  };
+
+  console.log(request);
   return (
     <Formik
-      initialValues={{
-        requestContact: "",
-        requestConsultant: "",
-        requestComment: "",
-        requestAdType: "",
-        requestBuildingType: "",
-        requestReference: "",
-        residential: "",
-        patrimonial: "",
-        salePriceMax: "",
-        salePriceMin: "",
-        rentPriceMax: "",
-        rentPriceMin: "",
-        buildSurfaceMax: "",
-        buildSurfaceMin: "",
-        plotSurfaceMax: "",
-        plotSurfaceMin: "",
-        bedroomsMax: "",
-        bedroomsMin: "",
-        bathroomsMax: "",
-        bathroomsMin: "",
-      }}
+      initialValues={request}
       onSubmit={(data) => {
         data.requestContact = selectedContact;
         data.requestConsultant = selectedConsultant;
@@ -62,26 +83,14 @@ const RequestForm = ({ setOpenForm }) => {
         console.log(data);
 
         createRequest(data);
-        // history.push("/consultants");
+        history.push("/requests");
       }}
     >
       {(formProps) => (
         <Form>
           <div>
             <label htmlFor="contact">Contacto</label>
-            <select
-              onChange={(ev) => {
-                if (selectedContact.includes(ev.target.value)) {
-                  const newSelectedContact = selectedContact.filter(
-                    (selectedContact) => selectedContact !== ev.target.value
-                  );
-                  console.log(newSelectedContact);
-                  setSelectedContact(newSelectedContact);
-                } else {
-                  setSelectedContact(ev.target.value);
-                }
-              }}
-            >
+            <select onChange={(ev) => newSelect(selectedContact, setSelectedContact, ev)}>
               {contacts &&
                 contacts.map((contact, index) => {
                   return (
@@ -94,19 +103,7 @@ const RequestForm = ({ setOpenForm }) => {
           </div>
           <div>
             <label htmlFor="consultant">Consultor</label>
-            <select
-              onChange={(ev) => {
-                if (selectedConsultant.includes(ev.target.value)) {
-                  const newSelectedConsultant = selectedConsultant.filter(
-                    (selectedConsultant) => selectedConsultant !== ev.target.value
-                  );
-                  console.log(newSelectedConsultant);
-                  setSelectedConsultant(newSelectedConsultant);
-                } else {
-                  setSelectedConsultant(ev.target.value);
-                }
-              }}
-            >
+            <select onChange={(ev) => newSelect(selectedConsultant, setSelectedConsultant, ev)}>
               {consultants &&
                 consultants.map((consultant, index) => {
                   return (
@@ -118,24 +115,21 @@ const RequestForm = ({ setOpenForm }) => {
             </select>
           </div>
           <div>
-            <label
-              htmlFor="adType"
-              onChange={(ev) => {
-                if (selectedAdType.includes(ev.target.value)) {
-                  const newSelectedAdType = selectedAdType.filter(
-                    (selectedAdType) => selectedAdType !== ev.target.value
-                  );
-                  setSelectedAdType(newSelectedAdType);
-                } else {
-                  setSelectedAdType([...selectedAdType, ev.target.value]);
-                }
-              }}
-            >
+            <label htmlFor="adType" onChange={(ev) => newSelect(selectedAdType, setSelectedAdType, ev)}>
               Tipo de anuncio
               <div>
-                <input type="checkbox" value="Alquiler" />
+                {request.requestAdType.includes("Alquiler") ? (
+                  <input type="checkbox" checked value="Alquiler" />
+                ) : (
+                  <input type="checkbox" value="Alquiler" />
+                )}
                 <span>Alquiler</span>
-                <input type="checkbox" value="Venta" />
+
+                {request.requestAdType.includes("Venta") ? (
+                  <input type="checkbox" checked value="Venta" />
+                ) : (
+                  <input type="checkbox" value="Venta" />
+                )}
                 <span>Venta</span>
               </div>
             </label>
@@ -144,16 +138,7 @@ const RequestForm = ({ setOpenForm }) => {
             <label
               htmlFor="adBuildingType"
               name="adBuildingType"
-              onChange={(ev) => {
-                if (selectedBuildingType.includes(ev.target.value)) {
-                  const newSelectedBuildingType = selectedBuildingType.filter(
-                    (selectedBuildingType) => selectedBuildingType !== ev.target.value
-                  );
-                  setSelectedBuildingType(newSelectedBuildingType);
-                } else {
-                  setSelectedBuildingType([...selectedBuildingType, ev.target.value]);
-                }
-              }}
+              onChange={(ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev)}
             >
               Tipo de inmueble
               <div>
@@ -195,73 +180,19 @@ const RequestForm = ({ setOpenForm }) => {
           </div>
           <div>
             <label htmlFor="residentialZone">Zonas residencial</label>
-            <select
-              name="residentialZone"
-              value="Seleccionar"
-              onChange={(ev) => {
-                if (residentialSelectedZones.includes(ev.target.value)) {
-                  const newResidentialSelectedZones = residentialSelectedZones.filter(
-                    (residentialSelectedZones) => residentialSelectedZones !== ev.target.value
-                  );
-                  console.log(newResidentialSelectedZones);
-                  setResidentialSelectedZones(newResidentialSelectedZones);
-                } else {
-                  setResidentialSelectedZones([...residentialSelectedZones, ev.target.value]);
-                }
-              }}
-            >
-              <option hidden>Seleccionar</option>
-              {residentials &&
-                residentials.map((residentialZone, index) => {
-                  return (
-                    <option value={`${residentialZone._id}`} key={`${index}-${residentialZone}`}>
-                      {residentialZone.name}
-                    </option>
-                  );
-                })}
-            </select>
-            <div>
-              {residentialSelectedZones.length === 0 ? (
-                <div>Ningúna selección</div>
-              ) : (
-                <div>{residentialSelectedZones}</div>
-              )}
-            </div>
+            <Select
+              list={residentials}
+              fields={{ groupBy: "zone", text: "name", value: "name" }}
+              fn={setResidentialSelectedZones}
+            />
           </div>
           <div>
             <label htmlFor="patrimonialZone">Zonas patrimonial</label>
-            <select
-              name="patrimonialZone"
-              value="Seleccionar"
-              onChange={(ev) => {
-                if (patrimonialSelectedZones.includes(ev.target.value)) {
-                  const newPatrimonialSelectedZones = patrimonialSelectedZones.filter(
-                    (patrimonialSelectedZones) => patrimonialSelectedZones !== ev.target.value
-                  );
-                  console.log(newPatrimonialSelectedZones);
-                  setPatrimonialSelectedZones(newPatrimonialSelectedZones);
-                } else {
-                  setPatrimonialSelectedZones([...patrimonialSelectedZones, ev.target.value]);
-                }
-              }}
-            >
-              <option hidden>Seleccionar</option>
-              {patrimonials &&
-                patrimonials.map((patrimonialZone, index) => {
-                  return (
-                    <option value={`${patrimonialZone._id}`} key={`${index}-${patrimonialZone}`}>
-                      {patrimonialZone.name}
-                    </option>
-                  );
-                })}
-            </select>
-            <div>
-              {patrimonialSelectedZones.length === 0 ? (
-                <div>Ningúna selección</div>
-              ) : (
-                <div>{patrimonialSelectedZones}</div>
-              )}
-            </div>
+            <Select
+              list={patrimonials}
+              fields={{ groupBy: "zone", text: "name", value: "name" }}
+              fn={setPatrimonialSelectedZones}
+            />
           </div>
           <div>
             <div className="">
@@ -375,7 +306,13 @@ const RequestForm = ({ setOpenForm }) => {
           </div>
           <button type="submit">Guardar</button>
 
-          <button onClick={() => setOpenForm(false)} type="">
+          <button
+            onClick={() => {
+              setIdRequest("");
+              setOpenForm(false);
+            }}
+            type=""
+          >
             Cancelar
           </button>
         </Form>

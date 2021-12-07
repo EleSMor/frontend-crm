@@ -10,7 +10,7 @@ import { ReactComponent as Mail } from "./mail.svg";
 import { ReactComponent as Ellipse2 } from "./Ellipse_2.svg";
 import { ReactComponent as Ellipse3 } from "./Ellipse_3.svg";
 import { ReactComponent as User } from "./user.svg";
-import { ReactComponent as Attomo_Logo } from "./Attomo_white.svg";
+import { ReactComponent as AttomoLogo } from "./Attomo_white.svg";
 import { ReactComponent as VisiblePassword } from "./VisiblePassword.svg";
 import { ReactComponent as HidePassword } from "./HidePassword.svg";
 import { ReactComponent as Search } from "./search.svg";
@@ -28,7 +28,7 @@ export {
     Ellipse2,
     Ellipse3,
     User,
-    Attomo_Logo,
+    AttomoLogo,
     VisiblePassword,
     HidePassword,
     Search

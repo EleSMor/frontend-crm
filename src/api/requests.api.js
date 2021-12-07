@@ -58,6 +58,24 @@ const getLastReference = async () => {
     return lr;
 };
 
+const getAdsMatched = async (id) => {
+    const request = await fetch(`${requestsURL}/matching/${id}`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+        },
+    });
+    const adsMatched = await request.json();
+
+    if(!request.ok) {
+       throw new Error('Error on fetch', adsMatched.message);
+    };
+    return adsMatched;
+};
+
 const createRequest = async (form) => {
     const request = await fetch(`${requestsURL}/create`, {
         method: 'POST',
@@ -83,4 +101,5 @@ export {
     getRequestById,
     getLastReference,
     createRequest,
+    getAdsMatched
 }

@@ -9,6 +9,7 @@ import { UserContext } from "../../components/Context/AuthUser";
 const RequestsList = () => {
   const [requests, setRequests] = useState([]);
   const [openForm, setOpenForm] = useState(false);
+  const [idRequest, setIdRequest] = useState("");
   const { user } = useContext(UserContext);
   const history = useHistory();
 
@@ -19,8 +20,10 @@ const RequestsList = () => {
       {user.length === 0 && history.push("/")}
       <Navbar />
       <SubHeader title="Peticiones" list={requests} setOpenForm={setOpenForm} />
-      {openForm === true && <RequestForm setOpenForm={setOpenForm} />}
-      {openForm === false && <RequestsTable requests={requests} />}
+      {openForm === true && <RequestForm setOpenForm={setOpenForm} idRequest={idRequest} setIdRequest={setIdRequest} />}
+      {openForm === false && (
+        <RequestsTable requests={requests} setIdRequest={setIdRequest} setOpenForm={setOpenForm} />
+      )}
     </div>
   );
 };

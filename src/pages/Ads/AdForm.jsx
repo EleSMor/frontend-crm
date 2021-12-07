@@ -108,7 +108,7 @@ const AdForm = ({ setOpenForm }) => {
             <label htmlFor="directionNumber">Número</label>
             <input required="yes" {...register("directionNumber")} />
             <label htmlFor="directionFloor">Piso</label>
-            <input required="yes" {...register("directionFloor")} />
+            <input {...register("directionFloor")} />
           </div>
           <label htmlFor="postalCode">Código Postal</label>
           <div>
@@ -128,9 +128,9 @@ const AdForm = ({ setOpenForm }) => {
         <span>Tipo de anuncio</span>
         <div>
           <label htmlFor="adType">Alquiler</label>
-          <input type="checkbox" value="Alquiler" required="yes" {...register("adType")} />
+          <input type="checkbox" value="Alquiler" {...register("adType")} />
           <label htmlFor="adType">Venta</label>
-          <input type="checkbox" value="Venta" required="yes" {...register("adType")} />
+          <input type="checkbox" value="Venta" {...register("adType")} />
         </div>
       </div>
       <div>

@@ -3,7 +3,7 @@ import { UserContext } from "../../components/Context/AuthUser";
 import { loginApi } from "../../api/auth.api";
 import { useHistory } from "react-router-dom";
 import "./Login.scss";
-import { GvreLogo, Attomo_Logo } from "../../icons";
+import { GvreLogo, AttomoLogo } from "../../icons";
 import storage from "../../services/storage";
 
 const Login = () => {
@@ -58,7 +58,7 @@ const Login = () => {
         </div>
         <div className="login__footer">
           <span>Powered by</span>
-          <Attomo_Logo className="login__footer-logo" />
+          <AttomoLogo className="login__footer-logo" />
         </div>
       </div>
     </form>

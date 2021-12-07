@@ -47,7 +47,7 @@ const ContactForm = ({ setOpenForm }) => {
         <div>
           <label htmlFor="mobileNumber">Teléfono móvil</label>
           <div>
-            <input type="tel" required="yes" {...register("mobileNumber")} />
+            <input type="tel" {...register("mobileNumber")} />
           </div>
         </div>
         <div>
@@ -59,7 +59,7 @@ const ContactForm = ({ setOpenForm }) => {
         <div>
           <label htmlFor="company">Empresa</label>
           <div>
-            <input required="yes" {...register("company")} />
+            <input {...register("company")} />
           </div>
         </div>
         <div>
@@ -68,19 +68,19 @@ const ContactForm = ({ setOpenForm }) => {
           <div>
             <label htmlFor="street">Calle</label>
             <div>
-              <input required="yes" {...register("street")} />
+              <input{...register("street")} />
             </div>
             <label htmlFor="postalCode">Código Postal</label>
             <div>
-              <input required="yes" {...register("postalCode")} />
+              <input {...register("postalCode")} />
             </div>
             <label htmlFor="city">Ciudad</label>
             <div>
-              <input required="yes" {...register("city")} />
+              <input {...register("city")} />
             </div>
             <label htmlFor="country">País</label>
             <div>
-              <input required="yes" {...register("country")} />
+              <input {...register("country")} />
             </div>
           </div>
         </div>
@@ -92,7 +92,7 @@ const ContactForm = ({ setOpenForm }) => {
         </div>
         <div>
           <label htmlFor="communications">No recibir emails automáticos</label>
-          <input type="checkbox" defaultChecked="true" {...register("communications")} />
+          <input type="checkbox" defaultChecked="false" {...register("communications")} />
         </div>
       </div>
       <button type="submit">Guardar</button>
