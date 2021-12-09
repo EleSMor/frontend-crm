@@ -18,7 +18,6 @@ const ContactForm = () => {
   }, []);
 
   const onSubmit = async (data) => {
-    console.log(data);
     setError("");
     try {
       await createContact(data);

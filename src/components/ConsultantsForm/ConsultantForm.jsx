@@ -32,12 +32,10 @@ const ConsultantForm = () => {
           comments: "",
         }}
         onSubmit={(values) => {
-          console.log(values);
           let data = new FormData();
 
           for (var key in values) {
             data.append(key, values[key]);
-            console.log("clave:", key, "valor", values[key]);
           }
 
           createConsultant(data);

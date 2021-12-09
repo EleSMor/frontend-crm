@@ -49,7 +49,6 @@ const getContactsByMobileNumber = async (mobileNumber) => {
         },
     });
     const contactsByMobileNumber = await request.json();
-    console.log("respuesta del back en mobile:", contactsByMobileNumber)
 
     if(!request.ok) {
        throw new Error('Error on fetch', contactsByMobileNumber.message);

@@ -65,8 +65,6 @@ const DetailsAds = ({
   };
 
   const newSelect = (selected, setSelected, ev) => {
-    console.log(ev.target.value);
-    console.log(selected)
     if (selected.includes(ev.target.value)) {
       const newSelected = selected.filter((selected) => selected !== ev.target.value);
       setSelected(newSelected);

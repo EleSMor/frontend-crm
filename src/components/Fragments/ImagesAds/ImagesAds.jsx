@@ -6,9 +6,6 @@ const ImagesAds = ({ formProps, othersImg, setOthersImg }) => {
   const [blueprintPreview, setBlueprintPreview] = useState("");
   const [othersPreview, setOthersPreview] = useState([]);
 
-  console.log("otras", othersPreview);
-  console.log("array de otras:", othersImg);
-
   const handleChangeFile = (e, setter) => {
     let reader = new FileReader();
     reader.onload = () => {
@@ -86,7 +83,6 @@ const ImagesAds = ({ formProps, othersImg, setOthersImg }) => {
           accept="image/*"
           multiple
           onChange={(ev) => {
-            console.log(ev);
             setOthersImg(ev.target.files);
             handleChangeFiles(ev.target.files);
           }}

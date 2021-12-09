@@ -114,7 +114,6 @@ const AdForm = () => {
           data.adType = selectedAdType;
           data.adBuildingType = selectedBuildingType;
 
-          console.log(data);
           createAd(data);
           // history.push("/ads");
         }}
@@ -139,10 +138,10 @@ const AdForm = () => {
                   setPatrimonialZones={setPatrimonialSelectedZones}
                 />
               </TabPanel>
-              <TabPanel header="Imágenes">
+              {/* <TabPanel header="Imágenes">
                 <ImagesAds formProps={formProps} othersImg={othersImg} setOthersImg={setOthersImg} />
               </TabPanel>
-              <TabPanel header="Matching"></TabPanel>
+              <TabPanel header="Matching"></TabPanel> */}
             </TabView>
             <button type="submit">Guardar</button>
             <button onClick={() => history.push("/ads")}>Cancelar</button>

@@ -30,7 +30,6 @@ const getRequestById = async (id) => {
         },
     });
     const allOwners = await request.json();
-    // console.log(allOwners);
     if (!request.ok) {
         throw new Error('Error on fetch', allOwners.message);
     };

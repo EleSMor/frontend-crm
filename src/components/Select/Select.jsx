@@ -32,7 +32,6 @@ const CheckBoxGrouping = ({ list, fields, fn, disabled, placeholder }) => {
             enableSelectionOrder={false}
             disabled={disabled}
             onChange={(e) => {
-              console.log("Valor seleccionado: ", e.value)
               fn(e.value);
             }}
           >

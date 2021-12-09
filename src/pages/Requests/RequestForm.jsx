@@ -59,14 +59,11 @@ const RequestForm = () => {
   }, []);
 
   const newSelect = (selected, setSelected, ev) => {
-    // if (selected.includes(ev.target.value)) {
-    //   const newSelected = selected.filter((selected) => selected !== ev.target.value);
-    //   console.log(newSelected);
-    //   setSelected(newSelected);
-    // } else {
-    console.log(ev.target.value);
-    setSelected(ev.target.value);
-    // }
+    if (selected.includes(ev.target.value)) {
+      const newSelected = selected.filter((selected) => selected !== ev.target.value);
+      setSelected(newSelected);
+    } else {
+    setSelected([...selected,ev.target.value]);
   };
 
   return (
@@ -85,8 +82,6 @@ const RequestForm = () => {
           data.patrimonial = patrimonialSelectedZones;
           data.requestReference = reference;
 
-          console.log(data);
-
           createRequest(data);
           history.push("/requests");
         }}
@@ -95,7 +90,7 @@ const RequestForm = () => {
           <Form>
             <div>
               <label htmlFor="contact">Contacto</label>
-              <select onChange={(ev) => newSelect(selectedContact, setSelectedContact, ev)}>
+              <select onChange={(ev) => setSelectedContact(ev.target.value)}>
                 <option value="" hidden>
                   Seleccionar
                 </option>
@@ -111,7 +106,7 @@ const RequestForm = () => {
             </div>
             <div>
               <label htmlFor="consultant">Consultor</label>
-              <select onChange={(ev) => newSelect(selectedConsultant, setSelectedConsultant, ev)}>
+              <select onChange={(ev) => setSelectedConsultant(ev.target.value)}>
                 <option value="" hidden>
                   Seleccionar
                 </option>

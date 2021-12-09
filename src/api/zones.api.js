@@ -13,7 +13,6 @@ const getAllResidentialZones = async () => {
         },
     });
     const allResidentialZones = await request.json();
-    // console.log(allContacts);
     if(!request.ok) {
        throw new Error('Error on fetch', allResidentialZones.message);
     };
@@ -31,7 +30,6 @@ const getAllPatrimonialZones = async () => {
         },
     });
     const allPatrimonialZones = await request.json();
-    // console.log(allPatrimonialZones);
     if(!request.ok) {
        throw new Error('Error on fetch', allPatrimonialZones.message);
     };

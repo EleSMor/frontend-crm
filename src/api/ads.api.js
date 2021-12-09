@@ -13,7 +13,6 @@ const getAllAds = async () => {
         },
     });
     const allAds = await request.json();
-    // console.log(allAds);
     if (!request.ok) {
         throw new Error('Error on fetch', allAds.message);
     };
@@ -31,7 +30,6 @@ const getMatchedRequests = async (id) => {
         },
     });
     const allRequests = await request.json();
-    // console.log(allRequests);
     if (!request.ok) {
         throw new Error('Error on fetch', allRequests.message);
     };

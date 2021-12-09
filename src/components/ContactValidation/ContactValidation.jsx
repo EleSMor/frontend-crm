@@ -4,7 +4,6 @@ import { getContactsByFullName, getContactsByMobileNumber, getContactsByEmail } 
 
 const ContactValidation = ({ setOpenForm }) => {
   const [contacts, setContacts] = useState([]);
-  console.log(contacts);
 
   const findBy = (getFunction, value, setter) => {
     getFunction(value).then((res) =>

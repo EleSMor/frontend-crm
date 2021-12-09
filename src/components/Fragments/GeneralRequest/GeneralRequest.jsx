@@ -8,7 +8,6 @@ import { Select } from "../../index";
 
 const GeneralRequest = () => {
   const { id } = useParams();
-  console.log("id:", id);
 
   const [request, setRequest] = useState([]);
   const [contacts, setContacts] = useState([]);
@@ -29,7 +28,6 @@ const GeneralRequest = () => {
     getAllPatrimonialZones().then((res) => setPatrimonial(res));
     getLastReference().then((res) => setReference(res));
   }, [id]);
-  console.log(request);
 
   return (
     <div>

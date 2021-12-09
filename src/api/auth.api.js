@@ -5,7 +5,6 @@ const loginUrl = `${BASE_URL}/auth/login`;
 const logoutUrl = `${BASE_URL}/auth/logout`;
 
 export const registerApi = async (form) => {
-  console.log(form)
   const request = await fetch(registerUrl, {
     method: "POST",
     credentials: "include",

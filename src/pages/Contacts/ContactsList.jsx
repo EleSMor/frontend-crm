@@ -9,7 +9,6 @@ const ContactsList = () => {
   const [contacts, setContacts] = useState([]);
   const { user } = useContext(UserContext);
   const history = useHistory();
-  console.log(user);
 
   useEffect(() => {
     getAllContacts().then((res) => setContacts(res));

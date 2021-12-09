@@ -13,9 +13,6 @@ const AdsById = () => {
   const history = useHistory();
   const { user } = useContext(UserContext);
 
-  console.log("id:", id);
-  console.log("requests:", requests);
-
   useEffect(() => {
     getMatchedRequests(id).then((res) => setRequests(res));
   }, []);

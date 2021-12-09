@@ -34,10 +34,8 @@ const RequestsById = () => {
 
           for (var key in values) {
             data.append(key, values[key]);
-            console.log("clave:", key, "valor", values[key]);
           }
 
-          console.log(data);
           sendNewRequest(data);
           // history.push("/ads");
         }}

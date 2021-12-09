@@ -4,7 +4,6 @@ import moment from "moment";
 import "./AdsTable.scss";
 
 const AdsTable = ({ ads }) => {
-  console.log(ads);
 
   return (
     <div>
