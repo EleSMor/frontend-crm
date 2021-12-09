@@ -115,7 +115,7 @@ const AdForm = () => {
           data.adBuildingType = selectedBuildingType;
 
           createAd(data);
-          // history.push("/ads");
+          history.push("/ads");
         }}
       >
         {(formProps) => (

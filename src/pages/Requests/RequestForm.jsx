@@ -63,7 +63,8 @@ const RequestForm = () => {
       const newSelected = selected.filter((selected) => selected !== ev.target.value);
       setSelected(newSelected);
     } else {
-    setSelected([...selected,ev.target.value]);
+      setSelected([...selected, ev.target.value]);
+    }
   };
 
   return (
