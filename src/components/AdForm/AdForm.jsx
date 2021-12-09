@@ -104,14 +104,17 @@ const AdForm = () => {
           accesControl: false,
           web: "",
           emailPDF: "",
-          distribution: ""
+          distribution: "",
         }}
         onSubmit={(data) => {
           data.owner = selectedOwner;
           data.consultant = selectedConsultant;
           data.residential = residentialSelectedZones;
           data.patrimonial = patrimonialSelectedZones;
+          data.adType = selectedAdType;
+          data.adBuildingType = selectedBuildingType;
 
+          console.log(data);
           createAd(data);
           // history.push("/ads");
         }}
@@ -120,24 +123,24 @@ const AdForm = () => {
           <Form>
             <TabView>
               <TabPanel header="Detalles">
-                  <DetailsAds
-                    formProps={formProps}
-                    owner={selectedOwner}
-                    buildingType={selectedBuildingType}
-                    setBuildingType={setSelectedBuildingType}
-                    adType={selectedAdType}
-                    setAdType={setSelectedAdType}
-                    setOwner={setSelectedOwner}
-                    consultant={selectedConsultant}
-                    setConsultant={setSelectedConsultant}
-                    residentialZones={residentialSelectedZones}
-                    setResidentialZones={setResidentialSelectedZones}
-                    patrimonialZones={patrimonialSelectedZones}
-                    setPatrimonialZones={setPatrimonialSelectedZones}
-                  />
+                <DetailsAds
+                  formProps={formProps}
+                  owner={selectedOwner}
+                  buildingType={selectedBuildingType}
+                  setBuildingType={setSelectedBuildingType}
+                  adType={selectedAdType}
+                  setAdType={setSelectedAdType}
+                  setOwner={setSelectedOwner}
+                  consultant={selectedConsultant}
+                  setConsultant={setSelectedConsultant}
+                  residentialZones={residentialSelectedZones}
+                  setResidentialZones={setResidentialSelectedZones}
+                  patrimonialZones={patrimonialSelectedZones}
+                  setPatrimonialZones={setPatrimonialSelectedZones}
+                />
               </TabPanel>
               <TabPanel header="Imágenes">
-                  <ImagesAds formProps={formProps} othersImg={othersImg} setOthersImg={setOthersImg} />
+                <ImagesAds formProps={formProps} othersImg={othersImg} setOthersImg={setOthersImg} />
               </TabPanel>
               <TabPanel header="Matching"></TabPanel>
             </TabView>

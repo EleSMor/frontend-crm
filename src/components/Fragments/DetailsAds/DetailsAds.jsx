@@ -65,12 +65,13 @@ const DetailsAds = ({
   };
 
   const newSelect = (selected, setSelected, ev) => {
+    console.log(ev.target.value);
+    console.log(selected)
     if (selected.includes(ev.target.value)) {
       const newSelected = selected.filter((selected) => selected !== ev.target.value);
-      console.log(newSelected);
       setSelected(newSelected);
     } else {
-      setSelected(ev.target.value);
+      setSelected([...selected, ev.target.value]);
     }
   };
 
@@ -106,7 +107,6 @@ const DetailsAds = ({
           type="checkbox"
           name="featuredOnMain"
           onChange={(ev) => {
-            console.log(ev.target.checked);
             formProps.setFieldValue(ev.target.name, ev.target.checked);
           }}
         />
@@ -205,29 +205,29 @@ const DetailsAds = ({
               onChange={(ev) => newSelect(buildingType, setBuildingType, ev)}
             >
               Tipo de edificio
+              <div>
+                <span>Casa</span>
+                <input type="checkbox" value="Casa" />
+                <span>Piso</span>
+                <input type="checkbox" value="Piso" />
+                <span>Parcela</span>
+                <input type="checkbox" value="Parcela" />
+                <span>Ático</span>
+                <input type="checkbox" value="Ático" />
+                <span>Oficina</span>
+                <input type="checkbox" value="Oficina" />
+                <span>Edificio</span>
+                <input type="checkbox" value="Edificio" />
+                <span>Local</span>
+                <input type="checkbox" value="Local" />
+                <span>Campo Rústico</span>
+                <input type="checkbox" value="Campo Rústico" />
+                <span>Activos Singulares</span>
+                <input type="checkbox" value="Activos Singulares" />
+                <span>Costa</span>
+                <input type="checkbox" value="Costa" />
+              </div>
             </label>
-            <div>
-              <span>Casa</span>
-              <input type="checkbox" value="Casa" {...register("adBuildingType")} />
-              <span>Piso</span>
-              <input type="checkbox" value="Piso" {...register("adBuildingType")} />
-              <span>Parcela</span>
-              <input type="checkbox" value="Parcela" {...register("adBuildingType")} />
-              <span>Ático</span>
-              <input type="checkbox" value="Ático" {...register("adBuildingType")} />
-              <span>Oficina</span>
-              <input type="checkbox" value="Oficina" {...register("adBuildingType")} />
-              <span>Edificio</span>
-              <input type="checkbox" value="Edificio" {...register("adBuildingType")} />
-              <span>Local</span>
-              <input type="checkbox" value="Local" {...register("adBuildingType")} />
-              <span>Campo Rústico</span>
-              <input type="checkbox" value="Campo Rústico" {...register("adBuildingType")} />
-              <span>Activos Singulares</span>
-              <input type="checkbox" value="Activos Singulares" {...register("adBuildingType")} />
-              <span>Costa</span>
-              <input type="checkbox" value="Costa" {...register("adBuildingType")} />
-            </div>
           </div>
           <div>
             <label htmlFor="zone">Zonas residencial</label>
