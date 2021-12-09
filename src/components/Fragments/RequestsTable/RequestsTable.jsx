@@ -1,7 +1,10 @@
 import React from "react";
+import { useHistory, NavLink } from "react-router-dom";
 import "./RequestTable.scss";
 
-const RequestsTable = ({ requests, setOpenForm, setIdRequest }) => {
+const RequestsTable = ({ requests }) => {
+  const history = useHistory();
+
   return (
     <table className="tbl">
       <colgroup span="6"></colgroup>
@@ -56,15 +59,8 @@ const RequestsTable = ({ requests, setOpenForm, setIdRequest }) => {
           return (
             <tr key={`${request._id}-${index}`}>
               <td className="tbl__creationDate">{request.creationDate}</td>
-              <td
-                className="tbl__reference"
-                id={request._id}
-                onClick={(ev) => {
-                  setIdRequest(ev.target.id);
-                  setOpenForm(true);
-                }}
-              >
-                {request.requestReference}
+              <td className="tbl__reference" id={request._id}>
+                <NavLink to={`/requests/matching/${request._id}`}>{request.requestReference}</NavLink>
               </td>
               <td className="tbl__contact">{request.requestContact.fullName}</td>
               <td className="tbl__company">{request.requestContact.company}</td>

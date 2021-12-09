@@ -1,15 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { getAllRequests } from "../../api/requests.api";
-import RequestsTable from "../../components/RequestsTable/RequestsTable";
-import RequestForm from "./RequestForm";
+import RequestsTable from "../../components/Fragments/RequestsTable/RequestsTable";
 import { Navbar, SubHeader } from "../../components";
 import { UserContext } from "../../components/Context/AuthUser";
 
 const RequestsList = () => {
   const [requests, setRequests] = useState([]);
-  const [openForm, setOpenForm] = useState(false);
-  const [idRequest, setIdRequest] = useState("");
   const { user } = useContext(UserContext);
   const history = useHistory();
 
@@ -19,11 +16,8 @@ const RequestsList = () => {
     <div>
       {user.length === 0 && history.push("/")}
       <Navbar />
-      <SubHeader title="Peticiones" list={requests} setOpenForm={setOpenForm} />
-      {openForm === true && <RequestForm setOpenForm={setOpenForm} idRequest={idRequest} setIdRequest={setIdRequest} />}
-      {openForm === false && (
-        <RequestsTable requests={requests} setIdRequest={setIdRequest} setOpenForm={setOpenForm} />
-      )}
+      <SubHeader title="Peticiones" location="/requests/create" />
+      <RequestsTable requests={requests} />
     </div>
   );
 };

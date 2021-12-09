@@ -11,7 +11,7 @@ import {
   Ellipse2,
   Ellipse3,
   User,
-} from "../../icons/index.js";
+} from "../../../icons/index.js";
 import "./Navbar.scss";
 
 const Navbar = () => {
@@ -38,7 +38,7 @@ const Navbar = () => {
                 </div>
               </li>
             </NavLink>
-            <NavLink className={location === "/requests" ? "navigate__route-active" : "navigate__route"} to="/requests">
+            <NavLink className={location.includes("/requests") ? "navigate__route-active" : "navigate__route"} to="/requests">
               <li>
                 <div>
                   <Requests className="navigate__link--icon" />
@@ -65,7 +65,7 @@ const Navbar = () => {
                 </div>
               </li>
             </NavLink>
-            <span className="navigate__route" to="">
+            {/* <span className="navigate__route" to="">
               <li>
                 <div>
                   <Calendar className="navigate__link--icon" />
@@ -80,7 +80,7 @@ const Navbar = () => {
                   <span className="navigate__link--text">Configuración</span>
                 </div>
               </li>
-            </span>
+            </span> */}
           </ul>
         </div>
 

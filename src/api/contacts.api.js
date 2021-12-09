@@ -20,6 +20,61 @@ const getAllContacts = async () => {
     return allContacts;
 };
 
+const getContactsByFullName = async (fullName) => {
+    const request = await fetch(`${contactsURL}/fullName/${fullName}`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+        },
+    });
+    const contactsByFullName = await request.json();
+
+    if(!request.ok) {
+       throw new Error('Error on fetch', contactsByFullName.message);
+    };
+    return contactsByFullName;
+};
+
+const getContactsByMobileNumber = async (mobileNumber) => {
+    const request = await fetch(`${contactsURL}/mobileNumber/${mobileNumber}`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+        },
+    });
+    const contactsByMobileNumber = await request.json();
+    console.log("respuesta del back en mobile:", contactsByMobileNumber)
+
+    if(!request.ok) {
+       throw new Error('Error on fetch', contactsByMobileNumber.message);
+    };
+    return contactsByMobileNumber;
+};
+
+const getContactsByEmail = async (email) => {
+    const request = await fetch(`${contactsURL}/email/${email}`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+        },
+    });
+    const contactsByEmail = await request.json();
+
+    if(!request.ok) {
+       throw new Error('Error on fetch', contactsByEmail.message);
+    };
+    return contactsByEmail;
+};
+
 const getAllOwners = async () => {
     const request = await fetch(`${contactsURL}/owners`, {
         method: 'GET',
@@ -60,6 +115,9 @@ const createContact = async (form) => {
 
 export {
     getAllContacts,
+    getContactsByFullName,
+    getContactsByMobileNumber,
+    getContactsByEmail,
     getAllOwners,
     createContact,
 }

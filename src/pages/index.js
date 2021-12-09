@@ -2,10 +2,10 @@ import AdsList from "./Ads/AdsList";
 import RequestsList from "./Requests/RequestsList";
 import ContactsList from "./Contacts/ContactsList";
 import ConsultantsList from "./Consultants/ConsultantsList";
-import AdForm from "./Ads/AdForm";
+import AdForm from "../components/AdForm/AdForm";
 import RequestForm from "./Requests/RequestForm";
-import ContactForm from "./Contacts/ContactForm";
-import ConsultantForm from "./Consultants/ConsultantForm";
+import ContactForm from "../components/ContactForm/ContactForm";
+import ConsultantForm from "../components/ConsultantsForm/ConsultantForm";
 import Login from "./Login/Login";
 
 export {

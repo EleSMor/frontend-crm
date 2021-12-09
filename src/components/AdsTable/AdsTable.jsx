@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import moment from "moment";
 import "./AdsTable.scss";
 
@@ -45,7 +46,9 @@ const AdsTable = ({ ads }) => {
               return (
                 <tr key={`${ad._id}-${index}`}>
                   <td className="tbl__creationDate">{moment(ad.createdAt).format("L")}</td>
-                  <td className="tbl__reference">{ad.adReference}</td>
+                  <td className="tbl__reference">
+                    <NavLink to={`/ads/matching/${ad._id}`}>{ad.adReference}</NavLink>
+                  </td>
                   <td className="tbl__direction">{`${ad.adDirection.address.street} ${ad.adDirection.address.directionNumber} ${ad.adDirection.address.directionFloor} ${ad.adDirection.postalCode} ${ad.adDirection.city} ${ad.adDirection.country}`}</td>
                   <td className="tbl__title">{ad.title}</td>
                   <td className="tbl__status">{ad.adStatus}</td>

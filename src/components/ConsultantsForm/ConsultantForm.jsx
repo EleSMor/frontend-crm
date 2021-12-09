@@ -1,13 +1,21 @@
-import React from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Formik, Form } from "formik";
-import { useHistory } from "react-router-dom";
-import { createConsultant } from "../../api/consultants.api";
+import { useHistory, NavLink } from "react-router-dom";
+import { getAllConsultants, createConsultant } from "../../api/consultants.api";
+import { Navbar, SubHeader } from "../../components";
+import { UserContext } from "../../components/Context/AuthUser";
 
-const ConsultantForm = ({ setOpenForm }) => {
+const ConsultantForm = () => {
   const history = useHistory();
+  const [consultants, setConsultants] = useState();
+  const { user } = useContext(UserContext);
+
+  useEffect(() => getAllConsultants().then((res) => setConsultants(res)), []);
 
   return (
     <>
+      <Navbar />
+      <SubHeader title="Consultores" list={consultants} location="/consultants/create" />
       <Formik
         initialValues={{
           consultantEmail: "",
@@ -140,8 +148,8 @@ const ConsultantForm = ({ setOpenForm }) => {
               />
             </div>
             <button type="submit">Guardar</button>
-            <button onClick={() => setOpenForm(false)} type="">
-              Cancelar
+            <button>
+              <NavLink to="/consultants">Cancelar</NavLink>
             </button>
           </Form>
         )}

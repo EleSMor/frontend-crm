@@ -1,6 +1,7 @@
 import React, { Suspense } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import AuthUser from "./components/Context/AuthUser";
+import { GeneralRequest, AdsById, RequestsById } from "./components";
 import {
   AdsList,
   RequestsList,
@@ -27,10 +28,15 @@ function App() {
               <Route exact path="/requests" component={RequestsList} />
               <Route exact path="/contacts" component={ContactsList} />
               <Route exact path="/consultants" component={ConsultantsList} />
+
               <Route exact path="/ads/create" component={AdForm} />
               <Route exact path="/requests/create" component={RequestForm} />
               <Route exact path="/contacts/create" component={ContactForm} />
               <Route exact path="/consultants/create" component={ConsultantForm} />
+
+              <Route exact path="/requests/:id" children={<GeneralRequest />} />
+              <Route exact path="/ads/matching/:id" children={<AdsById />} />
+              <Route exact path="/requests/matching/:id" children={<RequestsById />} />
             </Switch>
           </Suspense>
         </AuthUser>

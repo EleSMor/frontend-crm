@@ -2,11 +2,11 @@ import * as React from "react";
 import { MultiSelectComponent, CheckBoxSelection, Inject } from "@syncfusion/ej2-react-dropdowns";
 import "./Select.scss";
 
-const CheckBoxGrouping = ({ list, fields, fn, disabled }) => {
+const CheckBoxGrouping = ({ list, fields, fn, disabled, placeholder }) => {
   const zones = list;
   const checkFields = fields;
   // set the placeholder to the MultiSelect input
-  const checkWaterMark = "Seleccionar zonas";
+  const checkWaterMark = placeholder ? placeholder : "Seleccionar zonas";
   // set enableGroupCheckBox value to the Multiselect input
   const enableGroupCheckBox = true;
   // set mode value to the multiselect input

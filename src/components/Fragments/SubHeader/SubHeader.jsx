@@ -1,8 +1,11 @@
 import React from "react";
-import { Search } from "../../icons";
+import { useHistory } from "react-router-dom";
+import { Search } from "../../../icons";
 import "./SubHeader.scss";
 
-const SubHeader = ({ title, list, setOpenForm }) => {
+const SubHeader = ({ title, list, location }) => {
+  const history = useHistory();
+  
   return (
     <div className="subHeader">
       <div className="subHeader__title">
@@ -17,7 +20,7 @@ const SubHeader = ({ title, list, setOpenForm }) => {
           <Search className="subHeader__searcher-lens" />
           <input className="subHeader__searcher-text" type="text" placeholder="Buscar en esta lista" />
         </div>
-        <button className="subHeader__btn" onClick={() => setOpenForm(true)}>
+        <button className="subHeader__btn" onClick={() => history.push(location)}>
           Nuevo
         </button>
       </div>

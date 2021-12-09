@@ -14,6 +14,7 @@ import { ReactComponent as AttomoLogo } from "./Attomo_white.svg";
 import { ReactComponent as VisiblePassword } from "./VisiblePassword.svg";
 import { ReactComponent as HidePassword } from "./HidePassword.svg";
 import { ReactComponent as Search } from "./search.svg";
+import { ReactComponent as DefaultImage } from "./defaultImage.svg";
 
 export {
     GvreLogo,
@@ -31,5 +32,6 @@ export {
     AttomoLogo,
     VisiblePassword,
     HidePassword,
-    Search
+    Search,
+    DefaultImage
 }
