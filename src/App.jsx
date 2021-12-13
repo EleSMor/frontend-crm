@@ -37,6 +37,7 @@ function App() {
               <Route exact path="/ads/:id" children={<AdForm />} />
               <Route exact path="/consultants/:id" children={<ConsultantForm />} />
               <Route exact path="/requests/:id" children={<GeneralRequest />} />
+              <Route exact path="/contacts/:id" children={<ContactForm />} />
               <Route exact path="/ads/matching/:id" children={<AdsById />} />
               <Route exact path="/requests/matching/:id" children={<RequestsById />} />
             </Switch>

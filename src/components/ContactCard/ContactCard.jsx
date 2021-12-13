@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import moment from "moment";
 import "./ContactCard.scss";
 
@@ -48,11 +49,13 @@ const ContactCard = ({ contacts }) => {
                 </div>
                 <div className="contact__box-comments">
                   <span>Comentarios</span>
-                  <textarea>{contact.contactComments}</textarea>
+                  <textarea value={contact.contactComments}></textarea>
                 </div>
                 <div className="contact__box-end">
                   <span>Creado el {moment(contact.createdAt).format("L")}</span>
-                  <button>Abrir Ficha</button>
+                  <NavLink to={`/contacts/${contact._id}`}>
+                    <button>Abrir Ficha</button>
+                  </NavLink>
                 </div>
               </div>
             </div>

@@ -173,14 +173,14 @@ const DetailsAds = ({
           <div>
             <input
               type="checkbox"
-              defaultChecked={formProps.values.adType.includes("Alquiler") ? "Alquiler" : ""}
+              defaultChecked={adType.includes("Alquiler") ? true : false}
               value="Alquiler"
             />
             <span>Alquiler</span>
 
             <input
               type="checkbox"
-              defaultChecked={formProps.values.adType.includes("Venta") ? "checked" : ""}
+              defaultChecked={adType.includes("Venta") ? true : false}
               value="Venta"
             />
             <span>Venta</span>

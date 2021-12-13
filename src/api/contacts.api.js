@@ -14,10 +14,28 @@ const getAllContacts = async () => {
     });
     const allContacts = await request.json();
 
-    if(!request.ok) {
-       throw new Error('Error on fetch', allContacts.message);
+    if (!request.ok) {
+        throw new Error('Error on fetch', allContacts.message);
     };
     return allContacts;
+};
+
+const getContactById = async (id) => {
+    const request = await fetch(`${contactsURL}/${id}`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+        },
+    });
+    const contactsByFullName = await request.json();
+
+    if (!request.ok) {
+        throw new Error('Error on fetch', contactsByFullName.message);
+    };
+    return contactsByFullName;
 };
 
 const getContactsByFullName = async (fullName) => {
@@ -32,8 +50,8 @@ const getContactsByFullName = async (fullName) => {
     });
     const contactsByFullName = await request.json();
 
-    if(!request.ok) {
-       throw new Error('Error on fetch', contactsByFullName.message);
+    if (!request.ok) {
+        throw new Error('Error on fetch', contactsByFullName.message);
     };
     return contactsByFullName;
 };
@@ -50,8 +68,8 @@ const getContactsByMobileNumber = async (mobileNumber) => {
     });
     const contactsByMobileNumber = await request.json();
 
-    if(!request.ok) {
-       throw new Error('Error on fetch', contactsByMobileNumber.message);
+    if (!request.ok) {
+        throw new Error('Error on fetch', contactsByMobileNumber.message);
     };
     return contactsByMobileNumber;
 };
@@ -68,8 +86,8 @@ const getContactsByEmail = async (email) => {
     });
     const contactsByEmail = await request.json();
 
-    if(!request.ok) {
-       throw new Error('Error on fetch', contactsByEmail.message);
+    if (!request.ok) {
+        throw new Error('Error on fetch', contactsByEmail.message);
     };
     return contactsByEmail;
 };
@@ -86,8 +104,8 @@ const getAllOwners = async () => {
     });
     const allOwners = await request.json();
 
-    if(!request.ok) {
-       throw new Error('Error on fetch', allOwners.message);
+    if (!request.ok) {
+        throw new Error('Error on fetch', allOwners.message);
     };
     return allOwners;
 };
@@ -99,15 +117,15 @@ const createContact = async (form) => {
         body: JSON.stringify(form),
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*',
         },
     });
 
     const newContact = await request.json();
 
-    if(!request.ok) {
-       throw new Error('Error creating new Contact', newContact.message);
+    if (!request.ok) {
+        throw new Error('Error creating new Contact', newContact.message);
     };
     return newContact;
 };
@@ -115,6 +133,7 @@ const createContact = async (form) => {
 export {
     getAllContacts,
     getContactsByFullName,
+    getContactById,
     getContactsByMobileNumber,
     getContactsByEmail,
     getAllOwners,
