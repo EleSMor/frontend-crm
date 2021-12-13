@@ -19,6 +19,23 @@ const getAllAds = async () => {
     return allAds;
 };
 
+const getAdById = async (id) => {
+    const request = await fetch(`${adsURL}/${id}`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+        },
+    });
+    const adById = await request.json();
+    if (!request.ok) {
+        throw new Error('Error on fetch', adById.message);
+    };
+    return adById;
+}
+
 const getMatchedRequests = async (id) => {
     const request = await fetch(`${adsURL}/matching/${id}`, {
         method: 'GET',
@@ -56,8 +73,29 @@ const createAd = async (form) => {
     return newAd;
 };
 
+const updateAd = async (form) => {
+    const request = await fetch(`${adsURL}/edit`, {
+        method: 'PUT',
+        credentials: 'include',
+        body: JSON.stringify(form),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    const updatedAd = await request.json();
+    console.log(updatedAd)
+
+    if (!request.ok) {
+        throw new Error('Error creating new Contact', updatedAd.message);
+    };
+    return updatedAd;
+};
+
 export {
     getAllAds,
+    getAdById,
     createAd,
+    updateAd,
     getMatchedRequests
 }

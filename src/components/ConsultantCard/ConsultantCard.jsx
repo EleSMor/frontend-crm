@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import "./ConsultantCard.scss";
 
 const ConsultantCard = ({ consultants }) => {
@@ -13,8 +14,8 @@ const ConsultantCard = ({ consultants }) => {
               </div>
               <div className="card__box-info">
                 <div>
-                  <a href={`/consultants/${consultant._id}`}>{consultant.fullName}</a>
-                  <a href={`/consultants/${consultant._id}`}>{consultant.position}</a>
+                  <NavLink to={`/consultants/${consultant._id}`}>{consultant.fullName}</NavLink>
+                  <NavLink to={`/consultants/${consultant._id}`}>{consultant.position}</NavLink>
                 </div>
                 <div>
                   <p>{consultant.email}</p>
@@ -33,7 +34,9 @@ const ConsultantCard = ({ consultants }) => {
               <div>
                 <div>Creado el {consultant.consultantCreationDate}</div>
                 <div>
-                  <button>Abrir Ficha</button>
+                  <button>
+                    <NavLink to={`/consultants/${consultant._id}`}>Abrir Ficha</NavLink>
+                  </button>
                 </div>
               </div>
             </div>

@@ -7,17 +7,23 @@ import { UserContext } from "../../components/Context/AuthUser";
 
 const AdsList = () => {
   const [ads, setAds] = useState([]);
+  const [adsFiltered, setAdsFiltered] = useState([]);
   const { user } = useContext(UserContext);
   const history = useHistory();
 
-  useEffect(() => getAllAds().then((res) => setAds(res)), []);
+  useEffect(() => {
+    getAllAds().then((res) => {
+      setAds(res);
+      setAdsFiltered(res);
+    });
+  }, []);
 
   return (
     <div>
       {user.length === 0 && history.push("/")}
       <Navbar />
-      <SubHeader title="Anuncios" list={ads} location="/ads/create" />
-      <AdsTable ads={ads} />
+      <SubHeader title="Anuncios" list={ads} setter={setAdsFiltered} location="/ads/create" />
+      <AdsTable ads={adsFiltered.length !== 0 ? adsFiltered : []} />
     </div>
   );
 };

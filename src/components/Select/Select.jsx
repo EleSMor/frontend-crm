@@ -2,11 +2,11 @@ import * as React from "react";
 import { MultiSelectComponent, CheckBoxSelection, Inject } from "@syncfusion/ej2-react-dropdowns";
 import "./Select.scss";
 
-const CheckBoxGrouping = ({ list, fields, fn, disabled, placeholder }) => {
-  const zones = list;
+const CheckBoxGrouping = ({ list, fields, fn, disabled, defaultValues }) => {
+  const data = list;
   const checkFields = fields;
   // set the placeholder to the MultiSelect input
-  const checkWaterMark = placeholder ? placeholder : "Seleccionar zonas";
+  const checkWaterMark = "Seleccionar";
   // set enableGroupCheckBox value to the Multiselect input
   const enableGroupCheckBox = true;
   // set mode value to the multiselect input
@@ -20,18 +20,20 @@ const CheckBoxGrouping = ({ list, fields, fn, disabled, placeholder }) => {
         <div id="multigroup" className="control-styles">
           <MultiSelectComponent
             id="checkbox"
-            dataSource={zones}
+            dataSource={data}
             ignoreAccent={true}
             allowFiltering={true}
             filterBarPlaceholder={filterBarPlaceholder}
             fields={checkFields}
             placeholder={checkWaterMark}
             mode={mode}
+            value={defaultValues}
             enableGroupCheckBox={enableGroupCheckBox}
             showDropDownIcon={true}
             enableSelectionOrder={false}
             disabled={disabled}
             onChange={(e) => {
+              console.log(e.value);
               fn(e.value);
             }}
           >

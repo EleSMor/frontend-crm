@@ -34,6 +34,8 @@ function App() {
               <Route exact path="/contacts/create" component={ContactForm} />
               <Route exact path="/consultants/create" component={ConsultantForm} />
 
+              <Route exact path="/ads/:id" children={<AdForm />} />
+              <Route exact path="/consultants/:id" children={<ConsultantForm />} />
               <Route exact path="/requests/:id" children={<GeneralRequest />} />
               <Route exact path="/ads/matching/:id" children={<AdsById />} />
               <Route exact path="/requests/matching/:id" children={<RequestsById />} />
