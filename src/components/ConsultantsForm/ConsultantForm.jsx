@@ -15,7 +15,7 @@ const ConsultantForm = () => {
   const [ads, setAds] = useState([]);
   const [adsFiltered, setAdsFiltered] = useState([]);
   const [consultants, setConsultants] = useState();
-  const [consultantById, setConsultantById] = useState();
+  const [consultantById, setConsultantById] = useState("");
   const { user } = useContext(UserContext);
 
   useEffect(() => {
@@ -53,9 +53,17 @@ const ConsultantForm = () => {
           office2: consultantById ? consultantById.office2 : "",
           consultantComments: consultantById ? consultantById.consultantComments : "",
         }}
-        onSubmit={(data) => {
+        onSubmit={(values) => {
+          let data = new FormData();
+
+          for (var key in values) {
+            data.append(key, values[key]);
+            console.log("clave:", key, "valor", values[key]);
+          }
+
           if (!id) {
-            createConsultant(data).then((res) => history.push(`/consultants`));
+            console.log(data);
+            createConsultant(data);
           } else {
             data.id = id;
             updateConsultant(data).then((res) => {
