@@ -23,17 +23,20 @@ function App() {
         <AuthUser>
           <Suspense fallback={<div>Cargando...</div>}>
             <Switch>
+              {/* Pages */}
               <Route exact path="/" component={Login} />
               <Route exact path="/ads" component={AdsList} />
               <Route exact path="/requests" component={RequestsList} />
               <Route exact path="/contacts" component={ContactsList} />
               <Route exact path="/consultants" component={ConsultantsList} />
-
+              
+              {/* Components */}
               <Route exact path="/ads/create" component={AdForm} />
               <Route exact path="/requests/create" component={RequestForm} />
               <Route exact path="/contacts/create" component={ContactForm} />
               <Route exact path="/consultants/create" component={ConsultantForm} />
 
+              {/* Components */}
               <Route exact path="/ads/:id" children={<AdForm />} />
               <Route exact path="/requests/:id" children={<RequestForm />} />
               <Route exact path="/contacts/:id" children={<ContactForm />} />

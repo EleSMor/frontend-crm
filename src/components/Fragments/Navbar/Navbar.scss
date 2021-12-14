@@ -1,3 +1,9 @@
+@use "../../../styles/utils.scss" as *;
+
+.navigateXS {
+  background-color: green;
+}
+
 .navigate {
   display: flex;
   justify-content: flex-start;
@@ -147,3 +153,4 @@
     }
   }
 }
+
