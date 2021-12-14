@@ -4,7 +4,7 @@ import { FileUpload } from "primereact/fileupload";
 import { ProgressBar } from "primereact/progressbar";
 import { Tag } from "primereact/tag";
 import { Toast } from "primereact/toast";
-import { DefaultImage } from "../../../icons";
+import { DefaultImage } from "../../icons";
 
 const ImagesAds = ({ formProps, mainImg, setMainImg, blueprintImg, setBlueprintImg, othersImg, setOthersImg }) => {
   const [mainPreview, setMainPreview] = useState("");

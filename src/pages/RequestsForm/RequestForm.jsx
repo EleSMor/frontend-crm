@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import { useHistory, NavLink, useParams } from "react-router-dom";
 import { Formik, Form } from "formik";
 import { TabView, TabPanel } from "primereact/tabview";
-
 import { Select, Navbar, SubHeader, RequestsMatching } from "../../components";
 import { getAllConsultants } from "../../api/consultants.api";
 import { getAllResidentialZones, getAllPatrimonialZones } from "../../api/zones.api";
@@ -37,7 +36,21 @@ const RequestForm = () => {
   const [residentialSelectedZones, setResidentialSelectedZones] = useState([]);
   const [patrimonialSelectedZones, setPatrimonialSelectedZones] = useState([]);
 
+  const validateZone = (zones) => {
+    return zones.some((zone) => requestById.requestZone.includes(zone._id));
+  };
+
   useEffect(() => {
+    getAllResidentialZones().then((res) => {
+      setResidential(res);
+      validateZone(res)
+      
+    });
+    getAllPatrimonialZones().then((res) => {
+      setPatrimonial(res);
+      validateZone(res)
+    });
+
     if (id) {
       getRequestById(id).then((res) => {
         setRequestById(res);
@@ -48,13 +61,12 @@ const RequestForm = () => {
       });
       getAdsMatched(id).then((res) => setAds(res));
     }
+
     getAllRequests().then((res) => setRequests(res));
     getAllContacts().then((res) => setContacts(res));
     getAllConsultants().then((res) => setConsultants(res));
     getLastReference().then((res) => setReference(res));
-    getAllResidentialZones().then((res) => setResidential(res));
-    getAllPatrimonialZones().then((res) => setPatrimonial(res));
-  }, []);
+  }, [id]);
 
   const newSelect = (selected, setSelected, ev) => {
     if (selected.includes(ev.target.value)) {
@@ -63,10 +75,6 @@ const RequestForm = () => {
     } else {
       setSelected([...selected, ev.target.value]);
     }
-  };
-
-  const validateZone = (zones) => {
-    return zones.some((zone) => requestById.requestZone.includes(zone._id));
   };
 
   return (
@@ -293,7 +301,7 @@ const RequestForm = () => {
                     list={residentials}
                     fields={{ groupBy: "zone", text: "name", value: "_id" }}
                     fn={setResidentialSelectedZones}
-                    defaultValues={validateZone(residentials) ? formProps.values.requestZone : ""}
+                    // defaultValues={validateZone(residentials) ? formProps.values.requestZone : ""}
                   />
                 </div>
                 <div>
@@ -302,7 +310,7 @@ const RequestForm = () => {
                     list={patrimonials}
                     fields={{ groupBy: "zone", text: "name", value: "_id" }}
                     fn={setPatrimonialSelectedZones}
-                    defaultValues={validateZone(patrimonials) ? formProps.values.requestZone : ""}
+                    // defaultValues={validateZone(patrimonials) ? formProps.values.requestZone : ""}
                   />
                 </div>
                 <div>

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Accordion, AccordionTab } from "primereact/accordion";
-import { Select } from "../../index";
-import { getAllOwners } from "../../../api/contacts.api";
-import { getAllConsultants } from "../../../api/consultants.api";
-import { getAllResidentialZones, getAllPatrimonialZones } from "../../../api/zones.api";
+import { Select } from "./../index";
+import { getAllOwners } from "../../api/contacts.api";
+import { getAllConsultants } from "../../api/consultants.api";
+import { getAllResidentialZones, getAllPatrimonialZones } from "../../api/zones.api";
 
 const DetailsAds = ({
   formProps,

@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import useWindowSize from "../../../hooks/useWindowSize"
+import useWindowSize from "../../hooks/useWindowSize";
 
 import {
   GvreLogo,
@@ -13,17 +13,16 @@ import {
   Ellipse2,
   Ellipse3,
   User,
-} from "../../../icons/index.js";
+} from "../../icons/index.js";
 import "./Navbar.scss";
 
 const Navbar = () => {
   let location = window.location.pathname;
-  const size = useWindowSize()
+  const size = useWindowSize();
 
   return (
     <>
-    {
-      size < 880 ? (
+      {size < 880 ? (
         <nav className="navigateXS">
           <h1>NAVBAR SMALL MENU</h1>
         </nav>
@@ -39,7 +38,7 @@ const Navbar = () => {
                   <h1 className="navigate__title">GV Real State</h1>
                 </li>
               </div>
-              <NavLink className={location === "/ads" ? "navigate__route-active" : "navigate__route"} to="/ads">
+              <NavLink className={location.includes("/ads") ? "navigate__route-active" : "navigate__route"} to="/ads">
                 <li>
                   <div>
                     <Ads className="navigate__link--icon" />
@@ -47,7 +46,10 @@ const Navbar = () => {
                   </div>
                 </li>
               </NavLink>
-              <NavLink className={location.includes("/requests") ? "navigate__route-active" : "navigate__route"} to="/requests">
+              <NavLink
+                className={location.includes("/requests") ? "navigate__route-active" : "navigate__route"}
+                to="/requests"
+              >
                 <li>
                   <div>
                     <Requests className="navigate__link--icon" />
@@ -55,7 +57,10 @@ const Navbar = () => {
                   </div>
                 </li>
               </NavLink>
-              <NavLink className={location === "/contacts" ? "navigate__route-active" : "navigate__route"} to="/contacts">
+              <NavLink
+                className={location.includes("/contacts") ? "navigate__route-active" : "navigate__route"}
+                to="/contacts"
+              >
                 <li>
                   <div>
                     <Contacts className="navigate__link--icon" />
@@ -64,7 +69,7 @@ const Navbar = () => {
                 </li>
               </NavLink>
               <NavLink
-                className={location === "/consultants" ? "navigate__route-active" : "navigate__route"}
+                className={location.includes("/consultants") ? "navigate__route-active" : "navigate__route"}
                 to="/consultants"
               >
                 <li>
@@ -103,8 +108,7 @@ const Navbar = () => {
             </ul>
           </div>
         </nav>
-      )
-    }
+      )}
     </>
   );
 };
