@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { getAllRequests } from "../../api/requests.api";
-import RequestsTable from "../../components/Fragments/RequestsTable/RequestsTable";
+import RequestsTable from "../../components/RequestsTable/RequestsTable";
 import { Navbar, SubHeader } from "../../components";
 import { UserContext } from "../../components/Context/AuthUser";
 

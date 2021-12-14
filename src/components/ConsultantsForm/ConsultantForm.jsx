@@ -23,7 +23,7 @@ const ConsultantForm = () => {
       getConsultantById(id).then((res) => setConsultantById(res));
       getAllAds().then((res) => {
         res = res.filter((ad) => {
-          return ad.consultant._id !== id;
+          return ad.consultant._id === id;
         });
         setAds(res);
         setAdsFiltered(res);

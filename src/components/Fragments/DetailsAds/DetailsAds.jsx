@@ -168,19 +168,23 @@ const DetailsAds = ({
         </div>
       </div>
       <div>
-        <label htmlFor="adType" onChange={(ev) => newSelect(adType, setAdType, ev)}>
+        <label htmlFor="adType">
           Tipo de anuncio
           <div>
             <input
               type="checkbox"
-              defaultChecked={adType.includes("Alquiler") ? true : false}
+              name="adType"
+              checked={adType.includes("Alquiler") ? true : ""}
+              onChange={(ev) => newSelect(adType, setAdType, ev)}
               value="Alquiler"
             />
             <span>Alquiler</span>
 
             <input
               type="checkbox"
-              defaultChecked={adType.includes("Venta") ? true : false}
+              name="adType"
+              checked={adType.includes("Venta") ? true : ""}
+              onChange={(ev) => newSelect(adType, setAdType, ev)}
               value="Venta"
             />
             <span>Venta</span>
@@ -188,26 +192,26 @@ const DetailsAds = ({
         </label>
       </div>
       <div>
-        <label
-          htmlFor="gvOperationClose"
-          name="gvOperationClose"
-          onChange={(ev) => {
-            formProps.setFieldValue(ev.target.name, ev.target.value);
-          }}
-        >
+        <label htmlFor="gvOperationClose">
           Cierre operación GV
           <div>
             <span>Alquilado</span>
             <input
               type="radio"
               name="gvOperationClose"
-              defaultChecked={formProps.values.gvOperationClose === "Alquilado" ? "checked" : ""}
+              checked={formProps.values.gvOperationClose === "Alquilado" ? true : ""}
+              onChange={(ev) => {
+                formProps.setFieldValue(ev.target.name, ev.target.value);
+              }}
               value="Alquilado"
             />
             <span>Vendido</span>
             <input
               type="radio"
-              defaultChecked={formProps.values.gvOperationClose === "Vendido" ? "checked" : ""}
+              checked={formProps.values.gvOperationClose === "Vendido" ? true : ""}
+              onChange={(ev) => {
+                formProps.setFieldValue(ev.target.name, ev.target.value);
+              }}
               name="gvOperationClose"
               value="Vendido"
             />
@@ -218,7 +222,6 @@ const DetailsAds = ({
         <label htmlFor="owner">Propietario</label>
         <Select
           list={owners}
-          mode={"Delimiter"}
           fields={{ groupBy: "", text: "fullName", value: "_id" }}
           fn={setOwner}
           defaultValues={formProps.values.owner}
@@ -228,7 +231,6 @@ const DetailsAds = ({
         <label htmlFor="consultant">Consultor</label>
         <Select
           list={consultants}
-          mode={"Delimiter"}
           fields={{ groupBy: "", text: "fullName", value: "_id" }}
           fn={setConsultant}
           defaultValues={formProps.values.consultant}
@@ -237,73 +239,77 @@ const DetailsAds = ({
       <Accordion multiple>
         <AccordionTab header="Información básica">
           <div>
-            <label
-              htmlFor="adBuildingType"
-              name="adBuildingType"
-              onChange={(ev) => newSelect(buildingType, setBuildingType, ev)}
-            >
+            <label htmlFor="adBuildingType" name="adBuildingType">
               Tipo de edificio
               <div>
                 <span>Casa</span>
                 <input
                   type="checkbox"
-                  defaultChecked={formProps.values.adBuildingType.includes("Casa") === true ? "checked" : ""}
+                  checked={buildingType.includes("Casa") ? true : ""}
+                  onChange={(ev) => newSelect(buildingType, setBuildingType, ev)}
                   value="Casa"
                 />
                 <span>Piso</span>
                 <input
                   type="checkbox"
-                  defaultChecked={formProps.values.adBuildingType.includes("Piso") === true ? "checked" : ""}
+                  checked={buildingType.includes("Piso") ? true : ""}
+                  onChange={(ev) => newSelect(buildingType, setBuildingType, ev)}
                   value="Piso"
                 />
                 <span>Parcela</span>
                 <input
                   type="checkbox"
-                  defaultChecked={formProps.values.adBuildingType.includes("Parcela") === true ? "checked" : ""}
+                  checked={buildingType.includes("Parcela") ? true : ""}
+                  onChange={(ev) => newSelect(buildingType, setBuildingType, ev)}
                   value="Parcela"
                 />
                 <span>Ático</span>
                 <input
                   type="checkbox"
-                  defaultChecked={formProps.values.adBuildingType.includes("Ático") === true ? "checked" : ""}
+                  checked={buildingType.includes("Ático") ? true : ""}
+                  onChange={(ev) => newSelect(buildingType, setBuildingType, ev)}
                   value="Ático"
                 />
                 <span>Oficina</span>
                 <input
                   type="checkbox"
-                  defaultChecked={formProps.values.adBuildingType.includes("Oficina") === true ? "checked" : ""}
+                  checked={buildingType.includes("Oficina") ? true : ""}
+                  onChange={(ev) => newSelect(buildingType, setBuildingType, ev)}
                   value="Oficina"
                 />
                 <span>Edificio</span>
                 <input
                   type="checkbox"
-                  defaultChecked={formProps.values.adBuildingType.includes("Edificio") === true ? "checked" : ""}
+                  checked={buildingType.includes("Edificio") ? true : ""}
+                  onChange={(ev) => newSelect(buildingType, setBuildingType, ev)}
                   value="Edificio"
                 />
                 <span>Local</span>
                 <input
                   type="checkbox"
-                  defaultChecked={formProps.values.adBuildingType.includes("Local") === true ? "checked" : ""}
+                  checked={buildingType.includes("Local") ? true : ""}
+                  onChange={(ev) => newSelect(buildingType, setBuildingType, ev)}
                   value="Local"
                 />
                 <span>Campo Rústico</span>
                 <input
                   type="checkbox"
-                  defaultChecked={formProps.values.adBuildingType.includes("Campo Rústico") === true ? "checked" : ""}
+                  checked={buildingType.includes("Campo Rústico") ? true : ""}
+                  onChange={(ev) => newSelect(buildingType, setBuildingType, ev)}
                   value="Campo Rústico"
                 />
                 <span>Activos Singulares</span>
                 <input
                   type="checkbox"
-                  defaultChecked={
-                    formProps.values.adBuildingType.includes("Activos Singulares") === true ? "checked" : ""
-                  }
+                  checked={buildingType.includes("Activos Singulares") ? true : ""}
+                  onChange={(ev) => newSelect(buildingType, setBuildingType, ev)}
                   value="Activos Singulares"
                 />
                 <span>Costa</span>
                 <input
                   type="checkbox"
-                  defaultChecked={formProps.values.adBuildingType.includes("Costa") === true ? "checked" : ""}
+                  checked={buildingType.includes("Costa") ? true : ""}
+                  onChange={(ev) => newSelect(buildingType, setBuildingType, ev)}
                   value="Costa"
                 />
               </div>
@@ -334,7 +340,7 @@ const DetailsAds = ({
             <select
               required
               name="department"
-              defaultValue={formProps.values.department}
+              value={formProps.values.department}
               onChange={(ev) => {
                 formProps.setFieldValue(ev.target.name, ev.target.value);
               }}
@@ -642,182 +648,182 @@ const DetailsAds = ({
                 <input
                   type="checkbox"
                   name="lift"
-                  defaultChecked={formProps.values.lift}
+                  checked={formProps.values.lift}
                   onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                 />
                 <label htmlFor="dumbwaiter">Montaplatos</label>
                 <input
                   type="checkbox"
                   name="dumbwaiter"
-                  defaultChecked={formProps.values.dumbwaiter}
+                  checked={formProps.values.dumbwaiter}
                   onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                 />
                 <label htmlFor="liftTruck">Montacargas</label>
                 <input
                   type="checkbox"
                   name="liftTruck"
-                  defaultChecked={formProps.values.liftTruck}
+                  checked={formProps.values.liftTruck}
                   onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                 />
                 <label htmlFor="airConditioning">Aire Acondicionado</label>
                 <input
                   type="checkbox"
                   name="airConditioning"
-                  defaultChecked={formProps.values.airConditioning}
+                  checked={formProps.values.airConditioning}
                   onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                 />
                 <label htmlFor="centralHeating">Calefacción Central</label>
                 <input
                   type="checkbox"
                   name="centralHeating"
-                  defaultChecked={formProps.values.centralHeating}
+                  checked={formProps.values.centralHeating}
                   onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                 />
                 <label htmlFor="floorHeating">Suelo radiante</label>
                 <input
                   type="checkbox"
                   name="floorHeating"
-                  defaultChecked={formProps.values.floorHeating}
+                  checked={formProps.values.floorHeating}
                   onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                 />
                 <label htmlFor="indoorAlarm">Alarma interior</label>
                 <input
                   type="checkbox"
                   name="indoorAlarm"
-                  defaultChecked={formProps.values.indoorAlarm}
+                  checked={formProps.values.indoorAlarm}
                   onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                 />
                 <label htmlFor="outdoorAlarm">Alarma perimetral</label>
                 <input
                   type="checkbox"
                   name="outdoorAlarm"
-                  defaultChecked={formProps.values.outdoorAlarm}
+                  checked={formProps.values.outdoorAlarm}
                   onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                 />
                 <label htmlFor="fullHoursSecurity">Seguridad 24 h</label>
                 <input
                   type="checkbox"
                   name="fullHoursSecurity"
-                  defaultChecked={formProps.values.fullHoursSecurity}
+                  checked={formProps.values.fullHoursSecurity}
                   onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                 />
                 <label htmlFor="gunRack">Armero</label>
                 <input
                   type="checkbox"
                   name="gunRack"
-                  defaultChecked={formProps.values.gunRack}
+                  checked={formProps.values.gunRack}
                   onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                 />
                 <label htmlFor="strongBox">Caja fuerte</label>
                 <input
                   type="checkbox"
                   name="strongBox"
-                  defaultChecked={formProps.values.strongBox}
+                  checked={formProps.values.strongBox}
                   onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                 />
                 <label htmlFor="well">Pozo</label>
                 <input
                   type="checkbox"
                   name="well"
-                  defaultChecked={formProps.values.well}
+                  checked={formProps.values.well}
                   onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                 />
                 <label htmlFor="homeAutomation">Domótica</label>
                 <input
                   type="checkbox"
                   name="homeAutomation"
-                  defaultChecked={formProps.values.homeAutomation}
+                  checked={formProps.values.homeAutomation}
                   onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                 />
                 <label htmlFor="centralVacuum">Aspiración centralizada</label>
                 <input
                   type="checkbox"
                   name="centralVacuum"
-                  defaultChecked={formProps.values.centralVacuum}
+                  checked={formProps.values.centralVacuum}
                   onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                 />
                 <label htmlFor="padelCourt">Pista de pádel</label>
                 <input
                   type="checkbox"
                   name="padelCourt"
-                  defaultChecked={formProps.values.padelCourt}
+                  checked={formProps.values.padelCourt}
                   onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                 />
                 <label htmlFor="tennisCourt">Pista de tenis</label>
                 <input
                   type="checkbox"
                   name="tennisCourt"
-                  defaultChecked={formProps.values.tennisCourt}
+                  checked={formProps.values.tennisCourt}
                   onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                 />
                 <label htmlFor="terrace">Terraza</label>
                 <input
                   type="checkbox"
                   name="terrace"
-                  defaultChecked={formProps.values.terrace}
+                  checked={formProps.values.terrace}
                   onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                 />
                 <label htmlFor="storage">Trastero</label>
                 <input
                   type="checkbox"
                   name="storage"
-                  defaultChecked={formProps.values.storage}
+                  checked={formProps.values.storage}
                   onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                 />
                 <label htmlFor="swimmingPool">Piscina</label>
                 <input
                   type="checkbox"
                   name="swimmingPool"
-                  defaultChecked={formProps.values.swimmingPool}
+                  checked={formProps.values.swimmingPool}
                   onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                 />
                 <label htmlFor="garage">Garaje</label>
                 <input
                   type="checkbox"
                   name="garage"
-                  defaultChecked={formProps.values.garage}
+                  checked={formProps.values.garage}
                   onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                 />
                 <label htmlFor="falseCeiling">Falso techo</label>
                 <input
                   type="checkbox"
                   name="falseCeiling"
-                  defaultChecked={formProps.values.falseCeiling}
+                  checked={formProps.values.falseCeiling}
                   onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                 />
                 <label htmlFor="raisedFloor">Suelo técnico</label>
                 <input
                   type="checkbox"
                   name="raisedFloor"
-                  defaultChecked={formProps.values.raisedFloor}
+                  checked={formProps.values.raisedFloor}
                   onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                 />
                 <label htmlFor="bathrooms">Baños</label>
                 <input
                   type="checkbox"
                   name="bathrooms"
-                  defaultChecked={formProps.values.bathrooms}
+                  checked={formProps.values.bathrooms}
                   onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                 />
                 <label htmlFor="freeHeight">Altura libre &gt; 2,5 m</label>
                 <input
                   type="checkbox"
                   name="freeHeight"
-                  defaultChecked={formProps.values.freeHeight}
+                  checked={formProps.values.freeHeight}
                   onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                 />
                 <label htmlFor="smokeOutlet">Salida de humos</label>
                 <input
                   type="checkbox"
                   name="smokeOutlet"
-                  defaultChecked={formProps.values.smokeOutlet}
+                  checked={formProps.values.smokeOutlet}
                   onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                 />
                 <label htmlFor="accessControl">Control de accesos</label>
                 <input
                   type="checkbox"
                   name="accessControl"
-                  defaultChecked={formProps.values.accessControl}
+                  checked={formProps.values.accessControl}
                   onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                 />
               </div>

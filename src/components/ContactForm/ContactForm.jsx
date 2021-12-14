@@ -32,7 +32,7 @@ const ContactForm = () => {
       });
       getAllAds().then((res) => {
         res = res.filter((ad) => {
-          return ad.owner._id !== id;
+          return ad.owner._id === id;
         });
         setAds(res);
         setAdsFiltered(res);
@@ -105,9 +105,9 @@ const ContactForm = () => {
                     <label htmlFor="tag" onChange={(ev) => newSelect(selTag, setSelTag, ev)}>
                       Etiqueta
                       <div>
-                        <input type="checkbox" value="Cliente" defaultChecked={tagClient ? true : false} />
+                        <input type="checkbox" value="Cliente" checked={tagClient ? true : ""} />
                         <span>Cliente</span>
-                        <input type="checkbox" value="Propietario" defaultChecked={tagOwner ? true : false} />
+                        <input type="checkbox" value="Propietario" checked={tagOwner ? true : ""} />
                         <span>Propietario</span>
                       </div>
                     </label>

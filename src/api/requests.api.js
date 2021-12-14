@@ -95,6 +95,26 @@ const createRequest = async (form) => {
     return newRequest;
 };
 
+const updateRequest = async (form) => {
+    const request = await fetch(`${requestsURL}/edit`, {
+        method: 'PUT',
+        credentials: 'include',
+        body: JSON.stringify(form),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+        },
+    });
+
+    const newRequest = await request.json();
+
+    if (!request.ok) {
+        throw new Error('Error creating new Request', newRequest.message);
+    };
+    return newRequest;
+};
+
 const sendNewRequest = async (form) => {
     const request = await fetch(`${requestsURL}/create`, {
         method: 'POST',
@@ -121,5 +141,6 @@ export {
     getLastReference,
     getAdsMatched,
     createRequest,
+    updateRequest,
     sendNewRequest
 }

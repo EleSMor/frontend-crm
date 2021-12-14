@@ -59,11 +59,11 @@ const AdForm = () => {
           postalCode: adById ? adById.adDirection.postalCode : "",
           city: adById ? adById.adDirection.city : "Madrid",
           country: adById ? adById.adDirection.country : "España",
-          adType: adById ? adById.adType : [],
+          adType: adById ? selectedAdType : [],
           gvOperationClose: adById ? adById.gvOperationClose : [],
           owner: adById ? [adById.owner] : "",
           consultant: adById ? [adById.consultant] : "",
-          adBuildingType: adById ? adById.adBuildingType : [],
+          adBuildingType: adById ? selectedBuildingType : [],
           zone: adById ? adById.zone : [],
           department: adById ? adById.department : "",
           webSubtitle: adById ? adById.webSubtitle : "",
@@ -132,15 +132,14 @@ const AdForm = () => {
           data.consultant = selectedConsultant;
           if (residentialSelectedZones.length !== 0) data.zone = residentialSelectedZones;
           else if (patrimonialSelectedZones.length !== 0) data.zone = patrimonialSelectedZones;
-          data.adType = selectedAdType;
-          data.adBuildingType = selectedBuildingType;
+          else if (patrimonialSelectedZones.length === 0 && residentialSelectedZones.length === 0) data.zone = [];
 
           if (!id) {
             createAd(data).then((res) => history.push(`/ads`));
           } else
             updateAd(data).then((res) => {
               alert(`El anuncio ${res.adReference} ha sido actualizado`);
-              history.push("/ads");
+              history.go(0);
             });
         }}
       >
