@@ -15,8 +15,6 @@ const ContactForm = () => {
   const [ads, setAds] = useState([]);
   const [adsFiltered, setAdsFiltered] = useState([]);
   const [selTag, setSelTag] = useState([]);
-  const [tagClient, setSelTagClient] = useState(false);
-  const [tagOwner, setSelTagOwner] = useState(false);
 
   const history = useHistory();
   const { id } = useParams();
@@ -27,8 +25,7 @@ const ContactForm = () => {
     if (id) {
       getContactById(id).then((res) => {
         setContactById(res);
-        if (res.tag.includes("Cliente")) setSelTagClient(true);
-        if (res.tag.includes("Propietario")) setSelTagOwner(true);
+        setSelTag(res.tag)
       });
       getAllAds().then((res) => {
         res = res.filter((ad) => {
@@ -50,8 +47,7 @@ const ContactForm = () => {
       setSelected([...selected, ev.target.value]);
     }
   };
-  console.log(tagClient);
-  console.log(tagOwner);
+  
 
   return (
     <>
@@ -62,7 +58,7 @@ const ContactForm = () => {
         enableReinitialize={true}
         initialValues={{
           fullName: contactById ? contactById.fullName : "",
-          tag: contactById ? contactById.tag : [],
+          tag: contactById ? selTag : [],
           email: contactById ? contactById.email : "",
           contactMobileNumber: contactById ? contactById.contactMobileNumber : "",
           contactPhoneNumber: contactById ? contactById.contactPhoneNumber : "",
@@ -74,7 +70,7 @@ const ContactForm = () => {
           city: contactById ? contactById.contactDirection.city : "",
           country: contactById ? contactById.contactDirection.country : "",
           contactComments: contactById ? contactById.contactComments : "",
-          notReceiveCommunications: contactById ? contactById.notReceiveCommunications : false,
+          notReceiveCommunications: contactById ? contactById.notReceiveCommunications : "",
         }}
         onSubmit={(data) => {
           data.tag = selTag;
@@ -102,12 +98,22 @@ const ContactForm = () => {
                     </div>
                   </div>
                   <div>
-                    <label htmlFor="tag" onChange={(ev) => newSelect(selTag, setSelTag, ev)}>
+                    <label htmlFor="tag">
                       Etiqueta
                       <div>
-                        <input type="checkbox" value="Cliente" checked={tagClient ? true : ""} />
+                        <input
+                          type="checkbox"
+                          value="Cliente"
+                          onChange={(ev) => newSelect(selTag, setSelTag, ev)}
+                          checked={selTag.includes('Cliente') ? true : ""}
+                        />
                         <span>Cliente</span>
-                        <input type="checkbox" value="Propietario" checked={tagOwner ? true : ""} />
+                        <input
+                          type="checkbox"
+                          value="Propietario"
+                          onChange={(ev) => newSelect(selTag, setSelTag, ev)}
+                          checked={selTag.includes('Propietario') ? true : ""}
+                        />
                         <span>Propietario</span>
                       </div>
                     </label>
@@ -208,7 +214,7 @@ const ContactForm = () => {
                     <input
                       type="checkbox"
                       name="notReceiveCommunications"
-                      defaultChecked={formProps.values.notReceiveCommunications}
+                      checked={formProps.values.notReceiveCommunications}
                       onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                     />
                   </div>

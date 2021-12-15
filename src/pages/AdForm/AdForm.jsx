@@ -24,7 +24,7 @@ const AdForm = () => {
   const [selectedConsultant, setSelectedConsultant] = useState([]);
   const [residentialSelectedZones, setResidentialSelectedZones] = useState([]);
   const [patrimonialSelectedZones, setPatrimonialSelectedZones] = useState([]);
-  const [selectedBuildingType, setSelectedBuildingType] = useState([]);
+  const [selectedAdBuildingType, setSelectedAdBuildingType] = useState([]);
   const [selectedAdType, setSelectedAdType] = useState([]);
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const AdForm = () => {
         setAdById(res);
         setSelectedOwner(res.owner);
         setSelectedConsultant(res.consultant);
-        setSelectedBuildingType(res.adBuildingType);
+        setSelectedAdBuildingType(res.adBuildingType);
         setSelectedAdType(res.adType);
       });
       getMatchedRequests(id).then((res) => setRequests(res));
@@ -63,7 +63,7 @@ const AdForm = () => {
           gvOperationClose: adById ? adById.gvOperationClose : [],
           owner: adById ? [adById.owner] : "",
           consultant: adById ? [adById.consultant] : "",
-          adBuildingType: adById ? selectedBuildingType : [],
+          adBuildingType: adById ? selectedAdBuildingType : [],
           zone: adById ? adById.zone : [],
           department: adById ? adById.department : "",
           webSubtitle: adById ? adById.webSubtitle : "",
@@ -128,12 +128,15 @@ const AdForm = () => {
         }}
         onSubmit={(data) => {
           if (id) data.id = id;
-          data.owner = selectedOwner;
-          data.consultant = selectedConsultant;
+          data.owner = selectedOwner[0] ? selectedOwner[0] : "";
+          data.consultant = selectedConsultant[0] ? selectedConsultant[0] : "";
+          data.adType = selectedAdType;
+          data.adBuildingType = selectedAdBuildingType;
           if (residentialSelectedZones.length !== 0) data.zone = residentialSelectedZones;
           else if (patrimonialSelectedZones.length !== 0) data.zone = patrimonialSelectedZones;
           else if (patrimonialSelectedZones.length === 0 && residentialSelectedZones.length === 0) data.zone = [];
 
+          console.log(data);
           if (!id) {
             createAd(data).then((res) => history.push(`/ads`));
           } else
@@ -150,8 +153,8 @@ const AdForm = () => {
                 <DetailsAds
                   formProps={formProps}
                   owner={selectedOwner}
-                  buildingType={selectedBuildingType}
-                  setBuildingType={setSelectedBuildingType}
+                  buildingType={selectedAdBuildingType}
+                  setBuildingType={setSelectedAdBuildingType}
                   adType={selectedAdType}
                   setAdType={setSelectedAdType}
                   setOwner={setSelectedOwner}

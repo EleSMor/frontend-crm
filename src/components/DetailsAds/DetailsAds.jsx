@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Accordion, AccordionTab } from "primereact/accordion";
-import { Select } from "./../index";
+import { Select, MultiSelect } from "./../index";
 import { getAllOwners } from "../../api/contacts.api";
 import { getAllConsultants } from "../../api/consultants.api";
 import { getAllResidentialZones, getAllPatrimonialZones } from "../../api/zones.api";
@@ -63,6 +63,8 @@ const DetailsAds = ({
   };
 
   const newSelect = (selected, setSelected, ev) => {
+    console.log(selected);
+    console.log(ev.target.value);
     if (selected.includes(ev.target.value)) {
       const newSelected = selected.filter((selected) => selected !== ev.target.value);
       setSelected(newSelected);
@@ -317,7 +319,7 @@ const DetailsAds = ({
           </div>
           <div>
             <label htmlFor="zone">Zonas residencial</label>
-            <Select
+            <MultiSelect
               list={residentials}
               mode={"Checkbox"}
               fields={{ groupBy: "zone", text: "name", value: "_id" }}
@@ -327,7 +329,7 @@ const DetailsAds = ({
           </div>
           <div>
             <label htmlFor="zone">Zonas patrimonial</label>
-            <Select
+            <MultiSelect
               list={patrimonials}
               mode={"Checkbox"}
               fields={{ groupBy: "", text: "name", value: "_id" }}
