@@ -61,7 +61,7 @@ const ConsultantForm = () => {
             console.log("clave:", key, "valor", values[key]);
           }
 
-          data.append('id', id)
+          data.append("id", id);
           if (!id) {
             console.log(data);
             createConsultant(data).then(() => history.push("/consultants"));
@@ -190,7 +190,9 @@ const ConsultantForm = () => {
                   />
                 </div>
                 <button type="submit">Guardar</button>
-                <NavLink to="/consultants">{id ? <button>Volver</button> : <button>Cancelar</button>}</NavLink>
+                <NavLink to="/consultants">
+                  <button>Cancelar</button>
+                </NavLink>
               </TabPanel>
               {id && (
                 <TabPanel header="Anuncios">
