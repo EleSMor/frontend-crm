@@ -22,11 +22,11 @@ const Navbar = () => {
 
   return (
     <>
-      {size < 880 ? (
+      {/* {size < 880 ? (
         <nav className="navigateXS">
           <h1>NAVBAR SMALL MENU</h1>
         </nav>
-      ) : (
+      ) : ( */}
         <nav className="navigate">
           <div className="navigate__left">
             <ul>
@@ -108,7 +108,7 @@ const Navbar = () => {
             </ul>
           </div>
         </nav>
-      )}
+      {/* )} */}
     </>
   );
 };

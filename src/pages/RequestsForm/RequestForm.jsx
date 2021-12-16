@@ -39,7 +39,7 @@ const RequestForm = () => {
   const [validateForm, setValidateForm] = useState(false);
 
   const validateZone = (zones) => {
-    if (id && loader === false) return zones.some((zone) => requestById.requestZone.includes(zone._id));
+    if (id && requestById.length !== 0) return zones.some((zone) => requestById.requestZone.includes(zone._id));
     else return "";
   };
 
@@ -324,7 +324,7 @@ const RequestForm = () => {
                       list={residentials}
                       fields={{ groupBy: "zone", text: "name", value: "_id" }}
                       fn={setResidentialSelectedZones}
-                      defaultValues={validateZone(residentials) ? formProps.values.requestZone : ""}
+                      defaultValues={validateZone(residentials) ? requestById.requestZone : ""}
                     />
                   </div>
                   <div>
@@ -333,7 +333,7 @@ const RequestForm = () => {
                       list={patrimonials}
                       fields={{ groupBy: "zone", text: "name", value: "_id" }}
                       fn={setPatrimonialSelectedZones}
-                      defaultValues={validateZone(patrimonials) ? formProps.values.requestZone : ""}
+                      defaultValues={validateZone(patrimonials) ? requestById.requestZone : ""}
                     />
                   </div>
                   <div>
