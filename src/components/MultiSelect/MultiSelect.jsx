@@ -22,6 +22,7 @@ const CheckBoxGrouping = ({ list, fields, fn, disabled, defaultValues }) => {
             id="checkbox"
             dataSource={data}
             ignoreAccent={true}
+            ignoreCase={true}
             allowFiltering={true}
             filterBarPlaceholder={filterBarPlaceholder}
             fields={checkFields}

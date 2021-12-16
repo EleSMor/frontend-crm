@@ -27,8 +27,8 @@ const RequestForm = () => {
   const [requestById, setRequestById] = useState([]);
   const [contacts, setContacts] = useState([]);
   const [consultants, setConsultants] = useState([]);
-  const [selectedContact, setSelectedContact] = useState([]);
-  const [selectedConsultant, setSelectedConsultant] = useState([]);
+  const [selectedContact, setSelectedContact] = useState("");
+  const [selectedConsultant, setSelectedConsultant] = useState("");
   const [selectedBuildingType, setSelectedBuildingType] = useState([]);
   const [selectedAdType, setSelectedAdType] = useState([]);
   const [residentials, setResidential] = useState([]);
@@ -36,6 +36,7 @@ const RequestForm = () => {
   const [residentialSelectedZones, setResidentialSelectedZones] = useState([]);
   const [patrimonialSelectedZones, setPatrimonialSelectedZones] = useState([]);
   const [loader, setLoader] = useState(true);
+  const [validateForm, setValidateForm] = useState(false);
 
   const validateZone = (zones) => {
     if (id && !loader) return zones.some((zone) => requestById.requestZone.includes(zone._id));
@@ -43,6 +44,17 @@ const RequestForm = () => {
   };
 
   const getFetchs = () => {
+    getAllRequests().then((res) => setRequests(res));
+    getAllContacts().then((res) => setContacts(res));
+    getAllConsultants().then((res) => setConsultants(res));
+    getLastReference().then((res) => setReference(res));
+    getAllResidentialZones().then((res) => {
+      setResidential(res);
+    });
+    getAllPatrimonialZones().then((res) => {
+      setPatrimonial(res);
+    });
+
     if (id) {
       getRequestById(id).then((res) => {
         setRequestById(res);
@@ -54,16 +66,9 @@ const RequestForm = () => {
       });
       getAdsMatched(id).then((res) => setAds(res));
     }
-    getAllResidentialZones().then((res) => {
-      setResidential(res);
-    });
-    getAllPatrimonialZones().then((res) => {
-      setPatrimonial(res);
-    });
-    getAllRequests().then((res) => setRequests(res));
-    getAllContacts().then((res) => setContacts(res));
-    getAllConsultants().then((res) => setConsultants(res));
-    getLastReference().then((res) => setReference(res));
+    if (!id) {
+      setLoader(false);
+    }
   };
 
   useEffect(() => {
@@ -84,7 +89,7 @@ const RequestForm = () => {
       {user.length === 0 && history.push("/")}
       <Navbar />
       <SubHeader title="Peticiones" list={requests} />
-      {console.log(loader) && loader ? (
+      {loader ? (
         <p>spinner</p>
       ) : (
         <Formik
@@ -112,13 +117,19 @@ const RequestForm = () => {
             bathroomsMin: requestById.length !== 0 ? requestById.requestBathrooms.bathroomsMin : "",
           }}
           onSubmit={(data) => {
+            setValidateForm(true);
             if (id) data.id = id;
-            data.owner = selectedContact[0] ? selectedContact[0] : "";
-            data.consultant = selectedConsultant[0] ? selectedConsultant[0] : "";
-            if (residentialSelectedZones.length !== 0) data.requestZone = residentialSelectedZones;
-            else if (patrimonialSelectedZones.length !== 0) data.requestZone = patrimonialSelectedZones;
-            else if (patrimonialSelectedZones.length === 0 && residentialSelectedZones.length === 0)
+            data.requestContact = selectedContact[0];
+            data.requestConsultant = selectedConsultant[0];
+            data.requestAdType = selectedAdType;
+            data.requestBuildingType = selectedBuildingType;
+            if (residentialSelectedZones.length !== 0) {
+              data.requestZone = residentialSelectedZones;
+            } else if (patrimonialSelectedZones.length !== 0) {
+              data.requestZone = patrimonialSelectedZones;
+            } else if (patrimonialSelectedZones.length === 0 && residentialSelectedZones.length === 0) {
               data.requestZone = [];
+            }
 
             if (data.salePriceMax === "") data.salePriceMax = 99999999;
             if (data.salePriceMin === "") data.salePriceMin = 0;
@@ -132,11 +143,10 @@ const RequestForm = () => {
             if (data.bedroomsMin === "") data.bedroomsMin = 0;
             if (data.bathroomsMax === "") data.bathroomsMax = 99;
             if (data.bathroomsMin === "") data.bathroomsMin = 0;
-            console.log(data.salePriceMax === null);
 
-            if (!id) {
+            if (!id && selectedContact.length !== 0 && selectedConsultant.length !== 0) {
               createRequest(data).then(() => history.push("/requests"));
-            } else
+            } else if (id)
               updateRequest(data).then(() => {
                 alert(`La Petición ${requestById.requestReference} ha sido actualizada`);
                 history.go(0);
@@ -148,22 +158,28 @@ const RequestForm = () => {
               <TabView>
                 <TabPanel header="Detalles">
                   <div>
-                    <label htmlFor="requestContact">Contacto</label>
+                    <label required htmlFor="requestContact">
+                      Contacto
+                    </label>
                     <Select
                       list={contacts}
                       fields={{ groupBy: "", text: "fullName", value: "_id" }}
                       fn={setSelectedContact}
-                      defaultValues={!loader ? [formProps.values.requestContact] : ""}
+                      defaultValues={!loader ? formProps.values.requestContact : ""}
                     />
+                    {validateForm && selectedContact.length === 0 && <p style={{ color: "red" }}>* Seleccione un contacto</p>}
                   </div>
                   <div>
-                    <label htmlFor="requestConsultant">Consultor</label>
+                    <label required htmlFor="requestConsultant">
+                      Consultor
+                    </label>
                     <Select
                       list={consultants}
                       fields={{ groupBy: "", text: "fullName", value: "_id" }}
                       fn={setSelectedConsultant}
-                      defaultValues={!loader ? [formProps.values.requestConsultant] : ""}
+                      defaultValues={!loader ? formProps.values.requestConsultant : ""}
                     />
+                    {validateForm && selectedConsultant.length === 0 && <p style={{ color: "red" }}>* Seleccione un consultor</p>}
                   </div>
                   <div>
                     <label htmlFor="adType">
@@ -197,6 +213,7 @@ const RequestForm = () => {
                       <div>
                         <span>Casa</span>
                         <input
+                          required={selectedBuildingType.length === 0 ? true : false}
                           type="checkbox"
                           onChange={(ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev)}
                           checked={selectedBuildingType.includes("Casa") ? true : ""}
@@ -205,6 +222,7 @@ const RequestForm = () => {
                         <span>Piso</span>
                         <input
                           type="checkbox"
+                          required={selectedBuildingType.length === 0 ? true : false}
                           onChange={(ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev)}
                           checked={selectedBuildingType.includes("Piso") ? true : ""}
                           value="Piso"
@@ -212,6 +230,7 @@ const RequestForm = () => {
                         <span>Parcela</span>
                         <input
                           type="checkbox"
+                          required={selectedBuildingType.length === 0 ? true : false}
                           onChange={(ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev)}
                           checked={selectedBuildingType.includes("Parcela") ? true : ""}
                           value="Parcela"
@@ -219,6 +238,7 @@ const RequestForm = () => {
                         <span>Ático</span>
                         <input
                           type="checkbox"
+                          required={selectedBuildingType.length === 0 ? true : false}
                           onChange={(ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev)}
                           checked={selectedBuildingType.includes("Ático") ? true : ""}
                           value="Ático"
@@ -226,6 +246,7 @@ const RequestForm = () => {
                         <span>Oficina</span>
                         <input
                           type="checkbox"
+                          required={selectedBuildingType.length === 0 ? true : false}
                           onChange={(ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev)}
                           checked={selectedBuildingType.includes("Oficina") ? true : ""}
                           value="Oficina"
@@ -233,6 +254,7 @@ const RequestForm = () => {
                         <span>Edificio</span>
                         <input
                           type="checkbox"
+                          required={selectedBuildingType.length === 0 ? true : false}
                           onChange={(ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev)}
                           checked={selectedBuildingType.includes("Edificio") ? true : ""}
                           value="Edificio"
@@ -240,6 +262,7 @@ const RequestForm = () => {
                         <span>Local</span>
                         <input
                           type="checkbox"
+                          required={selectedBuildingType.length === 0 ? true : false}
                           onChange={(ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev)}
                           checked={selectedBuildingType.includes("Local") ? true : ""}
                           value="Local"
@@ -247,6 +270,7 @@ const RequestForm = () => {
                         <span>Campo Rústico</span>
                         <input
                           type="checkbox"
+                          required={selectedBuildingType.length === 0 ? true : false}
                           onChange={(ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev)}
                           checked={selectedBuildingType.includes("Campo Rústico") ? true : ""}
                           value="Campo Rústico"
@@ -254,6 +278,7 @@ const RequestForm = () => {
                         <span>Activos Singulares</span>
                         <input
                           type="checkbox"
+                          required={selectedBuildingType.length === 0 ? true : false}
                           onChange={(ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev)}
                           checked={selectedBuildingType.includes("Activos Singulares") ? true : ""}
                           value="Activos Singulares"
@@ -261,6 +286,7 @@ const RequestForm = () => {
                         <span>Costa</span>
                         <input
                           type="checkbox"
+                          required={selectedBuildingType.length === 0 ? true : false}
                           onChange={(ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev)}
                           checked={selectedBuildingType.includes("Costa") ? true : ""}
                           value="Costa"

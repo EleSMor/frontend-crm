@@ -22,12 +22,14 @@ const CheckBoxGrouping = ({ list, fields, fn, disabled, defaultValues }) => {
             id="boxelement"
             dataSource={data}
             ignoreAccent={true}
+            ignoreCase={true}
             maximumSelectionLength={1}
             allowFiltering={true}
             filterBarPlaceholder={filterBarPlaceholder}
             fields={checkFields}
             placeholder={checkWaterMark}
             mode={mode}
+            required={true}
             value={defaultValues}
             enableGroupCheckBox={enableGroupCheckBox}
             showDropDownIcon={true}
