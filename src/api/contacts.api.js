@@ -1,5 +1,6 @@
-import { BASE_URL } from "./constants"
-const contactsURL = `${BASE_URL}/contacts`;
+// import { BASE_URL } from "./constants"
+import { BASE_URL_LOCAL } from "./constants"
+const contactsURL = `${BASE_URL_LOCAL}/contacts`;
 
 const getAllContacts = async () => {
     const request = await fetch(contactsURL, {
@@ -129,6 +130,26 @@ const createContact = async (form) => {
     return newContact;
 };
 
+const updateContact = async (form) => {
+    const request = await fetch(`${contactsURL}/edit`, {
+        method: 'PUT',
+        credentials: 'include',
+        body: JSON.stringify(form),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+        },
+    });
+
+    const updatedContact = await request.json();
+
+    if (!request.ok) {
+        throw new Error('Error creating new Contact', updatedContact.message);
+    };
+    return updatedContact;
+};
+
 export {
     getAllContacts,
     getContactsByFullName,
@@ -137,4 +158,5 @@ export {
     getContactsByEmail,
     getAllOwners,
     createContact,
+    updateContact,
 }

@@ -112,6 +112,7 @@ const RequestForm = () => {
             bathroomsMin: requestById.length !== 0 ? requestById.requestBathrooms.bathroomsMin : "",
           }}
           onSubmit={(data) => {
+            if (id) data.id = id
             if (residentialSelectedZones.length !== 0) data.requestZone = residentialSelectedZones;
             else if (patrimonialSelectedZones.length !== 0) data.requestZone = patrimonialSelectedZones;
             else if (patrimonialSelectedZones.length === 0 && residentialSelectedZones.length === 0)

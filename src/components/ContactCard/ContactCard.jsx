@@ -9,7 +9,7 @@ const ContactCard = ({ contacts }) => {
       {contacts &&
         contacts.map((contact, index) => {
           return (
-            <div className="contact__box" key={`${contact._id}-${index}`}>
+            <div className="contact__box" key={`${index}-${contact._id}`}>
               <div className="contact__box-allInfo">
                 <div className="contact__box-personalInfo">
                   <div>
@@ -29,9 +29,9 @@ const ContactCard = ({ contacts }) => {
                   <div className="contact__box-tags">
                     {contact.tag.map((tag, index) => {
                       return (
-                        <>
-                          <span className="contact__box-tag">{tag} </span>
-                        </>
+                        <span key={`${index}-${tag}`} className="contact__box-tag">
+                          {tag}{" "}
+                        </span>
                       );
                     })}
                   </div>
@@ -47,9 +47,11 @@ const ContactCard = ({ contacts }) => {
                     <span>0 peticiones</span>
                   </div>
                 </div>
-                <div className="contact__box-comments">
+                <div>
                   <span>Comentarios</span>
-                  <textarea value={contact.contactComments}></textarea>
+                  <div className="contact__box-comments">
+                    <textarea defaultValue={contact.contactComments}></textarea>
+                  </div>
                 </div>
                 <div className="contact__box-end">
                   <span>Creado el {moment(contact.createdAt).format("L")}</span>

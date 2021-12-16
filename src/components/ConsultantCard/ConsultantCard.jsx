@@ -8,7 +8,7 @@ const ConsultantCard = ({ consultants }) => {
       {consultants &&
         consultants.map((consultant, index) => {
           return (
-            <div className="card__box" key={`${consultant._id}-${index}`}>
+            <div className="card__box" key={`${index}-${consultant._id}`}>
               <div>
                 <img className="card__box-avatar" src={`${consultant.avatar}`} alt={consultant.fullName} />
               </div>

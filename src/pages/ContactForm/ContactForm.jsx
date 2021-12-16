@@ -4,9 +4,9 @@ import { useHistory, NavLink, useParams } from "react-router-dom";
 import { TabView, TabPanel } from "primereact/tabview";
 import AdsTable from "../../components/AdsTable/AdsTable";
 import { getAllAds } from "../../api/ads.api";
-import { getAllContacts, createContact, getContactById } from "../../api/contacts.api";
 import { Navbar, SubHeader } from "../../components";
 import { UserContext } from "../../components/Context/AuthUser";
+import { getAllContacts, createContact, getContactById, updateContact } from "../../api/contacts.api";
 
 const ContactForm = () => {
   const [error, setError] = useState();
@@ -25,7 +25,7 @@ const ContactForm = () => {
     if (id) {
       getContactById(id).then((res) => {
         setContactById(res);
-        setSelTag(res.tag)
+        setSelTag(res.tag);
       });
       getAllAds().then((res) => {
         res = res.filter((ad) => {
@@ -47,7 +47,6 @@ const ContactForm = () => {
       setSelected([...selected, ev.target.value]);
     }
   };
-  
 
   return (
     <>
@@ -70,15 +69,23 @@ const ContactForm = () => {
           city: contactById ? contactById.contactDirection.city : "",
           country: contactById ? contactById.contactDirection.country : "",
           contactComments: contactById ? contactById.contactComments : "",
-          notReceiveCommunications: contactById ? contactById.notReceiveCommunications : "",
+          notReceiveCommunications: contactById ? contactById.notReceiveCommunications : false,
         }}
         onSubmit={(data) => {
+          if (id) data.id = id;
           data.tag = selTag;
 
+          console.log(data);
           if (!id) {
-            console.log(data);
-            createContact(data).then(() => history.push("/contacts"));
-          }
+            createContact(data).then((res) => {
+              alert(`El contacto ${res.fullName} ha sido creado`);
+              history.push("/contacts");
+            });
+          } else
+            updateContact(data).then((res) => {
+              alert(`El contacto ${res.fullName} ha sido actualizado`);
+              history.go(0);
+            });
         }}
       >
         {(formProps) => (
@@ -92,7 +99,7 @@ const ContactForm = () => {
                       <input
                         name="fullName"
                         required="yes"
-                        defaultValue={formProps.values.fullName}
+                        value={formProps.values.fullName}
                         onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                       />
                     </div>
@@ -105,14 +112,14 @@ const ContactForm = () => {
                           type="checkbox"
                           value="Cliente"
                           onChange={(ev) => newSelect(selTag, setSelTag, ev)}
-                          checked={selTag.includes('Cliente') ? true : ""}
+                          checked={selTag.includes("Cliente") ? true : ""}
                         />
                         <span>Cliente</span>
                         <input
                           type="checkbox"
                           value="Propietario"
                           onChange={(ev) => newSelect(selTag, setSelTag, ev)}
-                          checked={selTag.includes('Propietario') ? true : ""}
+                          checked={selTag.includes("Propietario") ? true : ""}
                         />
                         <span>Propietario</span>
                       </div>
@@ -125,7 +132,7 @@ const ContactForm = () => {
                         name="email"
                         type="email"
                         required="yes"
-                        defaultValue={formProps.values.email}
+                        value={formProps.values.email}
                         onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                       />
                     </div>
@@ -136,7 +143,7 @@ const ContactForm = () => {
                       <input
                         name="contactMobileNumber"
                         type="text"
-                        defaultValue={formProps.values.contactMobileNumber}
+                        value={formProps.values.contactMobileNumber}
                         onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                       />
                     </div>
@@ -146,7 +153,7 @@ const ContactForm = () => {
                     <div>
                       <input
                         name="contactPhoneNumber"
-                        defaultValue={formProps.values.contactPhoneNumber}
+                        value={formProps.values.contactPhoneNumber}
                         onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                       />
                     </div>
@@ -156,7 +163,7 @@ const ContactForm = () => {
                     <div>
                       <input
                         name="company"
-                        defaultValue={formProps.values.company}
+                        value={formProps.values.company}
                         onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                       />
                     </div>
@@ -169,7 +176,7 @@ const ContactForm = () => {
                       <div>
                         <input
                           name="street"
-                          defaultValue={formProps.values.street}
+                          value={formProps.values.street}
                           onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                         />
                       </div>
@@ -177,7 +184,7 @@ const ContactForm = () => {
                       <div>
                         <input
                           name="postalCode"
-                          defaultValue={formProps.values.postalCode}
+                          value={formProps.values.postalCode}
                           onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                         />
                       </div>
@@ -185,7 +192,7 @@ const ContactForm = () => {
                       <div>
                         <input
                           name="city"
-                          defaultValue={formProps.values.city}
+                          value={formProps.values.city}
                           onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                         />
                       </div>
@@ -193,7 +200,7 @@ const ContactForm = () => {
                       <div>
                         <input
                           name="country"
-                          defaultValue={formProps.values.country}
+                          value={formProps.values.country}
                           onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                         />
                       </div>
@@ -204,7 +211,7 @@ const ContactForm = () => {
                     <div>
                       <textarea
                         name="contactComments"
-                        defaultValue={formProps.values.contactComments}
+                        value={formProps.values.contactComments}
                         onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                       />
                     </div>
@@ -215,11 +222,11 @@ const ContactForm = () => {
                       type="checkbox"
                       name="notReceiveCommunications"
                       checked={formProps.values.notReceiveCommunications}
-                      onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                      onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.notReceiveCommunications)}
                     />
                   </div>
                 </div>
-                {!id && <button type="submit">Guardar</button>}
+                <button type="submit">Guardar</button>
                 <NavLink to="/contacts">
                   <button type="">Cancelar</button>
                 </NavLink>
