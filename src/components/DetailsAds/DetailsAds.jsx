@@ -651,182 +651,182 @@ const DetailsAds = ({
                   type="checkbox"
                   name="lift"
                   checked={formProps.values.lift}
-                  onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                  onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.lift)}
                 />
                 <label htmlFor="dumbwaiter">Montaplatos</label>
                 <input
                   type="checkbox"
                   name="dumbwaiter"
                   checked={formProps.values.dumbwaiter}
-                  onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                  onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.dumbwaiter)}
                 />
                 <label htmlFor="liftTruck">Montacargas</label>
                 <input
                   type="checkbox"
                   name="liftTruck"
                   checked={formProps.values.liftTruck}
-                  onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                  onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.liftTruck)}
                 />
                 <label htmlFor="airConditioning">Aire Acondicionado</label>
                 <input
                   type="checkbox"
                   name="airConditioning"
                   checked={formProps.values.airConditioning}
-                  onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                  onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.airConditioning)}
                 />
                 <label htmlFor="centralHeating">Calefacción Central</label>
                 <input
                   type="checkbox"
                   name="centralHeating"
                   checked={formProps.values.centralHeating}
-                  onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                  onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.centralHeating)}
                 />
                 <label htmlFor="floorHeating">Suelo radiante</label>
                 <input
                   type="checkbox"
                   name="floorHeating"
                   checked={formProps.values.floorHeating}
-                  onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                  onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.floorHeating)}
                 />
                 <label htmlFor="indoorAlarm">Alarma interior</label>
                 <input
                   type="checkbox"
                   name="indoorAlarm"
                   checked={formProps.values.indoorAlarm}
-                  onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                  onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.indoorAlarm)}
                 />
                 <label htmlFor="outdoorAlarm">Alarma perimetral</label>
                 <input
                   type="checkbox"
                   name="outdoorAlarm"
                   checked={formProps.values.outdoorAlarm}
-                  onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                  onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.outdoorAlarm)}
                 />
                 <label htmlFor="fullHoursSecurity">Seguridad 24 h</label>
                 <input
                   type="checkbox"
                   name="fullHoursSecurity"
                   checked={formProps.values.fullHoursSecurity}
-                  onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                  onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.fullHoursSecurity)}
                 />
                 <label htmlFor="gunRack">Armero</label>
                 <input
                   type="checkbox"
                   name="gunRack"
                   checked={formProps.values.gunRack}
-                  onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                  onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.gunRack)}
                 />
                 <label htmlFor="strongBox">Caja fuerte</label>
                 <input
                   type="checkbox"
                   name="strongBox"
                   checked={formProps.values.strongBox}
-                  onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                  onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.strongBox)}
                 />
                 <label htmlFor="well">Pozo</label>
                 <input
                   type="checkbox"
                   name="well"
                   checked={formProps.values.well}
-                  onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                  onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.well)}
                 />
                 <label htmlFor="homeAutomation">Domótica</label>
                 <input
                   type="checkbox"
                   name="homeAutomation"
                   checked={formProps.values.homeAutomation}
-                  onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                  onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.homeAutomation)}
                 />
                 <label htmlFor="centralVacuum">Aspiración centralizada</label>
                 <input
                   type="checkbox"
                   name="centralVacuum"
                   checked={formProps.values.centralVacuum}
-                  onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                  onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.centralVacuum)}
                 />
                 <label htmlFor="padelCourt">Pista de pádel</label>
                 <input
                   type="checkbox"
                   name="padelCourt"
                   checked={formProps.values.padelCourt}
-                  onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                  onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.padelCourt)}
                 />
                 <label htmlFor="tennisCourt">Pista de tenis</label>
                 <input
                   type="checkbox"
                   name="tennisCourt"
                   checked={formProps.values.tennisCourt}
-                  onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                  onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.tennisCourt)}
                 />
                 <label htmlFor="terrace">Terraza</label>
                 <input
                   type="checkbox"
                   name="terrace"
                   checked={formProps.values.terrace}
-                  onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                  onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.terrace)}
                 />
                 <label htmlFor="storage">Trastero</label>
                 <input
                   type="checkbox"
                   name="storage"
                   checked={formProps.values.storage}
-                  onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                  onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.storage)}
                 />
                 <label htmlFor="swimmingPool">Piscina</label>
                 <input
                   type="checkbox"
                   name="swimmingPool"
                   checked={formProps.values.swimmingPool}
-                  onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                  onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.swimmingPool)}
                 />
                 <label htmlFor="garage">Garaje</label>
                 <input
                   type="checkbox"
                   name="garage"
                   checked={formProps.values.garage}
-                  onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                  onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.garage)}
                 />
                 <label htmlFor="falseCeiling">Falso techo</label>
                 <input
                   type="checkbox"
                   name="falseCeiling"
                   checked={formProps.values.falseCeiling}
-                  onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                  onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.falseCeiling)}
                 />
                 <label htmlFor="raisedFloor">Suelo técnico</label>
                 <input
                   type="checkbox"
                   name="raisedFloor"
                   checked={formProps.values.raisedFloor}
-                  onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                  onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.raisedFloor)}
                 />
                 <label htmlFor="bathrooms">Baños</label>
                 <input
                   type="checkbox"
                   name="bathrooms"
                   checked={formProps.values.bathrooms}
-                  onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                  onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.bathrooms)}
                 />
                 <label htmlFor="freeHeight">Altura libre &gt; 2,5 m</label>
                 <input
                   type="checkbox"
                   name="freeHeight"
                   checked={formProps.values.freeHeight}
-                  onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                  onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.freeHeight)}
                 />
                 <label htmlFor="smokeOutlet">Salida de humos</label>
                 <input
                   type="checkbox"
                   name="smokeOutlet"
                   checked={formProps.values.smokeOutlet}
-                  onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                  onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.smokeOutlet)}
                 />
                 <label htmlFor="accessControl">Control de accesos</label>
                 <input
                   type="checkbox"
                   name="accessControl"
                   checked={formProps.values.accessControl}
-                  onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                  onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.accessControl)}
                 />
               </div>
             </div>
