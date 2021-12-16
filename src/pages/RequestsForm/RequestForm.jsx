@@ -39,36 +39,43 @@ const RequestForm = () => {
   const [validateForm, setValidateForm] = useState(false);
 
   const validateZone = (zones) => {
-    if (id && !loader) return zones.some((zone) => requestById.requestZone.includes(zone._id));
+    if (id && loader === false) return zones.some((zone) => requestById.requestZone.includes(zone._id));
     else return "";
   };
 
-  const getFetchs = () => {
+  const getFetchs = async () => {
     getAllRequests().then((res) => setRequests(res));
-    getAllContacts().then((res) => setContacts(res));
     getAllConsultants().then((res) => setConsultants(res));
     getLastReference().then((res) => setReference(res));
-    getAllResidentialZones().then((res) => {
-      setResidential(res);
-    });
-    getAllPatrimonialZones().then((res) => {
-      setPatrimonial(res);
-    });
-
-    if (id) {
-      getRequestById(id).then((res) => {
-        setRequestById(res);
-        setSelectedContact(res.requestContact);
-        setSelectedConsultant(res.requestConsultant);
-        setSelectedBuildingType(res.requestBuildingType);
-        setSelectedAdType(res.requestAdType);
-        setLoader(false);
+    getAllContacts()
+      .then((res) => setContacts(res))
+      .then(() => {
+        if (id) {
+          getRequestById(id).then((res) => {
+            setRequestById(res);
+            setSelectedContact([res.requestContact]);
+            setSelectedConsultant([res.requestConsultant]);
+            setSelectedBuildingType(res.requestBuildingType);
+            setSelectedAdType(res.requestAdType);
+          });
+          getAdsMatched(id).then((res) => setAds(res));
+        }
+      })
+      .then(
+        getAllResidentialZones()
+          .then((res) => {
+            setResidential(res);
+          })
+          .then(
+            getAllPatrimonialZones().then((res) => {
+              setPatrimonial(res);
+            })
+          )
+      )
+      .then(() => {
+        if (id && requestById.length !== 0 && residentials.length !== 0 && patrimonials.length !== 0) setLoader(false);
+        else if (!id) setLoader(false)
       });
-      getAdsMatched(id).then((res) => setAds(res));
-    }
-    if (!id) {
-      setLoader(false);
-    }
   };
 
   useEffect(() => {
@@ -89,7 +96,7 @@ const RequestForm = () => {
       {user.length === 0 && history.push("/")}
       <Navbar />
       <SubHeader title="Peticiones" list={requests} />
-      {loader ? (
+      {residentialSelectedZones.length !== 0 && patrimonialSelectedZones.length !== 0 && loader ? (
         <p>spinner</p>
       ) : (
         <Formik
@@ -167,7 +174,9 @@ const RequestForm = () => {
                       fn={setSelectedContact}
                       defaultValues={selectedContact}
                     />
-                    {validateForm && selectedContact.length === 0 && <p style={{ color: "red" }}>* Seleccione un contacto</p>}
+                    {validateForm && selectedContact.length === 0 && (
+                      <p style={{ color: "red" }}>* Seleccione un contacto</p>
+                    )}
                   </div>
                   <div>
                     <label required htmlFor="requestConsultant">
@@ -179,7 +188,9 @@ const RequestForm = () => {
                       fn={setSelectedConsultant}
                       defaultValues={selectedConsultant}
                     />
-                    {validateForm && selectedConsultant.length === 0 && <p style={{ color: "red" }}>* Seleccione un consultor</p>}
+                    {validateForm && selectedConsultant.length === 0 && (
+                      <p style={{ color: "red" }}>* Seleccione un consultor</p>
+                    )}
                   </div>
                   <div>
                     <label htmlFor="adType">
@@ -313,7 +324,7 @@ const RequestForm = () => {
                       list={residentials}
                       fields={{ groupBy: "zone", text: "name", value: "_id" }}
                       fn={setResidentialSelectedZones}
-                      defaultValues={!loader ? (validateZone(residentials) ? formProps.values.requestZone : "") : ""}
+                      defaultValues={validateZone(residentials) ? formProps.values.requestZone : ""}
                     />
                   </div>
                   <div>
@@ -322,7 +333,7 @@ const RequestForm = () => {
                       list={patrimonials}
                       fields={{ groupBy: "zone", text: "name", value: "_id" }}
                       fn={setPatrimonialSelectedZones}
-                      defaultValues={!loader ? (validateZone(patrimonials) ? formProps.values.requestZone : "") : ""}
+                      defaultValues={validateZone(patrimonials) ? formProps.values.requestZone : ""}
                     />
                   </div>
                   <div>

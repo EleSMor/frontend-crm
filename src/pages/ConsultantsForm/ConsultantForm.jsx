@@ -61,6 +61,7 @@ const ConsultantForm = () => {
             console.log("clave:", key, "valor", values[key]);
           }
 
+          data.append('id', id)
           if (!id) {
             console.log(data);
             createConsultant(data).then(() => history.push("/consultants"));
@@ -68,7 +69,7 @@ const ConsultantForm = () => {
             data.id = id;
             updateConsultant(data).then((res) => {
               alert(`El consultor ${res.fullName} ha sido actualizado`);
-              // history.go(0);
+              history.go(0);
             });
           }
         }}
@@ -188,7 +189,7 @@ const ConsultantForm = () => {
                     onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                   />
                 </div>
-                {!id && <button type="submit">Guardar</button>}
+                <button type="submit">Guardar</button>
                 <NavLink to="/consultants">{id ? <button>Volver</button> : <button>Cancelar</button>}</NavLink>
               </TabPanel>
               {id && (
