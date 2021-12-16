@@ -165,7 +165,7 @@ const RequestForm = () => {
                       list={contacts}
                       fields={{ groupBy: "", text: "fullName", value: "_id" }}
                       fn={setSelectedContact}
-                      defaultValues={!loader ? formProps.values.requestContact : ""}
+                      defaultValues={selectedContact}
                     />
                     {validateForm && selectedContact.length === 0 && <p style={{ color: "red" }}>* Seleccione un contacto</p>}
                   </div>
@@ -177,7 +177,7 @@ const RequestForm = () => {
                       list={consultants}
                       fields={{ groupBy: "", text: "fullName", value: "_id" }}
                       fn={setSelectedConsultant}
-                      defaultValues={!loader ? formProps.values.requestConsultant : ""}
+                      defaultValues={selectedConsultant}
                     />
                     {validateForm && selectedConsultant.length === 0 && <p style={{ color: "red" }}>* Seleccione un consultor</p>}
                   </div>
