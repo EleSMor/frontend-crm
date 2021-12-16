@@ -3,12 +3,13 @@ import { Accordion, AccordionTab } from "primereact/accordion";
 import { Select, MultiSelect } from "./../index";
 import { getAllOwners } from "../../api/contacts.api";
 import { getAllConsultants } from "../../api/consultants.api";
-import { getAllResidentialZones, getAllPatrimonialZones } from "../../api/zones.api";
 
 const DetailsAds = ({
   formProps,
   setOwner,
   setConsultant,
+  residentials,
+  patrimonials,
   residentialZones,
   setResidentialZones,
   patrimonialZones,
@@ -20,17 +21,14 @@ const DetailsAds = ({
 }) => {
   const [owners, setOwners] = useState([]);
   const [consultants, setConsultants] = useState([]);
-  const [residentials, setResidential] = useState([]);
-  const [patrimonials, setPatrimonial] = useState([]);
-
+  
   const columnsArray = ["Planta", "Uso", "m2", "Precio (€)", "Disponibilidad"];
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
     getAllOwners().then((res) => setOwners(...owners, res));
     getAllConsultants().then((res) => setConsultants(...consultants, res));
-    getAllResidentialZones().then((res) => setResidential(...residentials, res));
-    getAllPatrimonialZones().then((res) => setPatrimonial(...patrimonials, res));
+    
   }, []);
 
   const handleAddRow = () => {
