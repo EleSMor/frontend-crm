@@ -135,7 +135,9 @@ const DetailsAds = ({
               onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
             />
             <label htmlFor="directionFloor">Piso</label>
-            <input name="directionFloor" onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)} />
+            <input name="directionFloor" 
+              defaultValue={formProps.values.directionFloor}
+            onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)} />
           </div>
           <label htmlFor="postalCode">Código Postal</label>
           <div>
