@@ -63,12 +63,12 @@ const ConsultantForm = () => {
 
           if (!id) {
             console.log(data);
-            createConsultant(data);
+            createConsultant(data).then(() => history.push("/consultants"));
           } else {
             data.id = id;
             updateConsultant(data).then((res) => {
               alert(`El consultor ${res.fullName} ha sido actualizado`);
-              history.push("/consultants");
+              // history.go(0);
             });
           }
         }}
@@ -82,7 +82,7 @@ const ConsultantForm = () => {
                   <input
                     type="email"
                     name="consultantEmail"
-                    defaultValue={formProps.values.consultantEmail}
+                    value={formProps.values.consultantEmail}
                     required
                     onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                   />
@@ -92,7 +92,7 @@ const ConsultantForm = () => {
                   <input
                     type="password"
                     name="consultantPassword"
-                    defaultValue={formProps.values.consultantPassword}
+                    value={formProps.values.consultantPassword}
                     required
                     onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                   />
@@ -102,7 +102,7 @@ const ConsultantForm = () => {
                   <input
                     type="text"
                     name="fullName"
-                    defaultValue={formProps.values.fullName}
+                    value={formProps.values.fullName}
                     required
                     onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                   />
@@ -128,7 +128,7 @@ const ConsultantForm = () => {
                   <input
                     type="text"
                     name="consultantMobileNumber"
-                    defaultValue={formProps.values.consultantMobileNumber}
+                    value={formProps.values.consultantMobileNumber}
                     required
                     onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                   />
@@ -138,7 +138,7 @@ const ConsultantForm = () => {
                   <input
                     type="text"
                     name="consultantPhoneNumber"
-                    defaultValue={formProps.values.consultantPhoneNumber}
+                    value={formProps.values.consultantPhoneNumber}
                     onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                   />
                 </div>
@@ -147,7 +147,7 @@ const ConsultantForm = () => {
                   <input
                     type="text"
                     name="position"
-                    defaultValue={formProps.values.position}
+                    value={formProps.values.position}
                     required
                     onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                   />
@@ -157,7 +157,7 @@ const ConsultantForm = () => {
                   <input
                     type="text"
                     name="profession"
-                    defaultValue={formProps.values.profession}
+                    value={formProps.values.profession}
                     onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                   />
                 </div>
@@ -166,7 +166,7 @@ const ConsultantForm = () => {
                   <input
                     type="text"
                     name="office1"
-                    defaultValue={formProps.values.office1}
+                    value={formProps.values.office1}
                     onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                   />
                 </div>
@@ -175,7 +175,7 @@ const ConsultantForm = () => {
                   <input
                     type="text"
                     name="office2"
-                    defaultValue={formProps.values.office2}
+                    value={formProps.values.office2}
                     onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                   />
                 </div>
@@ -184,7 +184,7 @@ const ConsultantForm = () => {
                   <input
                     type="text"
                     name="consultantComments"
-                    defaultValue={formProps.values.consultantComments}
+                    value={formProps.values.consultantComments}
                     onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                   />
                 </div>

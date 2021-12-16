@@ -1,6 +1,5 @@
-// import { BASE_URL } from "./constants"
-import { BASE_URL_LOCAL } from "./constants"
-const contactsURL = `${BASE_URL_LOCAL}/contacts`;
+import { BASE_URL } from "./constants"
+const contactsURL = `${BASE_URL}/contacts`;
 
 const getAllContacts = async () => {
     const request = await fetch(contactsURL, {
