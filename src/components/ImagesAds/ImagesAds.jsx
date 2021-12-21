@@ -1,5 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import { Formik, Form } from "formik";
 import { Button } from "primereact/button";
 import { FileUpload } from "primereact/fileupload";
@@ -7,24 +6,21 @@ import { DefaultImage } from "../../icons";
 import { uploadImage, deleteImage } from "../../api/ads.api";
 import "./ImagesAds.scss";
 
-const ImagesAds = ({ id, setActiveIndex, adById }) => {
-  const history = useHistory();
-  const mainRef = useRef(adById.images.main);
-  const blueprintRef = useRef(adById.images.blueprint);
-  const othersRef = useRef(adById.images.others);
+const ImagesAds = ({ id, adById }) => {
   const [mainPreview, setMainPreview] = useState("");
   const [blueprintPreview, setBlueprintPreview] = useState("");
   const [othersPreview, setOthersPreview] = useState([]);
 
   useEffect(() => {
-    setMainPreview(adById.images.main);
-    setBlueprintPreview(adById.images.blueprint);
-    setOthersPreview(adById.images.others);
-  }, [mainPreview, blueprintPreview, othersPreview.length]);
+    if (adById) {
+      setMainPreview(adById.images.main);
+      setBlueprintPreview(adById.images.blueprint);
+      setOthersPreview(adById.images.others);
+    }
+  }, [id]);
 
   const upload = (e) => {
     let data = new FormData();
-    console.log(e);
     if (e.options.props.name === "others") {
       for (let file of e.files) {
         data.append("others", file);
@@ -33,12 +29,14 @@ const ImagesAds = ({ id, setActiveIndex, adById }) => {
       data.append(e.options.props.name, e.files[0]);
     }
 
-    uploadImage(id, data, e.options.props.name).then((res) => {
-      alert(`Imagen  ${res.title}`);
-      console.log(res);
-      history.go(0);
-      setActiveIndex(1);
-    });
+    uploadImage(id, data, e.options.props.name)
+      .then((res) => {
+        alert(`Imagen subida al anuncio ${res.title}`);
+        if (e.options.props.name === "main") setMainPreview(res.images.main);
+        if (e.options.props.name === "blueprint") setBlueprintPreview(res.images.blueprint);
+        if (e.options.props.name === "others") setOthersPreview(res.images.others);
+      })
+      .then(e.options.clear());
   };
 
   const deleteImg = (url, from) => {
@@ -47,7 +45,6 @@ const ImagesAds = ({ id, setActiveIndex, adById }) => {
 
     deleteImage(id, data, from).then((res) => {
       alert(`Imagen borrada del anuncio ${res.title}`);
-      history.go(0);
     });
   };
 
@@ -63,9 +60,15 @@ const ImagesAds = ({ id, setActiveIndex, adById }) => {
 
   const handleChangeFiles = (images) => {
     if (images) {
-      const imageArray = Array.from(images).map((image) => URL.createObjectURL(image));
-      setOthersPreview((prevImages) => prevImages.concat(imageArray));
-      Array.from(images).map((image) => URL.revokeObjectURL(image));
+      const preview = []
+      for (let image of images) {
+        console.log("imagen: ", image.name)
+        preview.push(image.objectURL)
+      }
+      setOthersPreview(preview);
+      // const imageArray = Array.from(images).map((image) => URL.createObjectURL(image));
+      // setOthersPreview((prevImages) => prevImages.concat(imageArray));
+      // Array.from(images).map((image) => URL.revokeObjectURL(image));
     }
   };
 
@@ -88,36 +91,6 @@ const ImagesAds = ({ id, setActiveIndex, adById }) => {
         </div>
       </div>
     );
-  };
-
-  // const itemTemplate = (file, props) => {
-  //   return (
-  //     <div className="p-d-flex p-flex-column p-ai-center">
-  //       <img alt={file.name} role="presentation" src={file.objectURL} width={266} height={232} />
-  //       <Button
-  //         type="button"
-  //         icon="pi pi-trash p-ml-auto"
-  //         style={{
-  //           width: "100%",
-  //           background: "#2b363d",
-  //           border: "none",
-  //           borderRadius: "0",
-  //           paddingRight: "5%",
-  //           fontSize: "150%",
-  //           marginTop: "1%",
-  //         }}
-  //         onClick={() => {
-  //           console.log(props);
-  //           onTemplateRemove(file, props.onRemove, props.props.name);
-  //         }}
-  //       />
-  //     </div>
-  //   );
-  // };
-
-  const onTemplateRemove = async (file, callback, name) => {
-    // await deleteImage(id, file, name).then((res) => console.log(res));
-    callback();
   };
 
   const renderOthers = (source) => {
@@ -170,13 +143,13 @@ const ImagesAds = ({ id, setActiveIndex, adById }) => {
           <div>
             <h5>Imagen Principal</h5>
             <FileUpload
-              ref={mainRef}
               name="main"
               chooseLabel="Cargar imagen principal"
               uploadHandler={upload}
               customUpload={true}
               accept="image/*"
-              maxFileSize={10000000}
+              maxFileSize={6000000}
+              onRemove={() => setMainPreview("")}
               onSelect={(e) => {
                 formProps.setFieldValue("main", e.files[0]);
                 handleChangeFile(e.files[0], setMainPreview);
@@ -189,21 +162,21 @@ const ImagesAds = ({ id, setActiveIndex, adById }) => {
               <div style={{ margin: "0.5%", marginTop: "2.5%", width: 200, height: 200 }}>
                 <img src={mainPreview} width={200} height={200} />
                 <Button
-                type="button"
-                icon="pi pi-trash p-ml-auto"
-                style={{
-                  width: "100%",
-                  background: "#2b363d",
-                  border: "none",
-                  borderRadius: "0",
-                  paddingRight: "5%",
-                  marginTop: "1%",
-                }}
-                onClick={() => {
-                  setMainPreview("");
-                  deleteImg(mainPreview, "main");
-                }}
-              />
+                  type="button"
+                  icon="pi pi-trash p-ml-auto"
+                  style={{
+                    width: "100%",
+                    background: "#2b363d",
+                    border: "none",
+                    borderRadius: "0",
+                    paddingRight: "5%",
+                    marginTop: "1%",
+                  }}
+                  onClick={() => {
+                    setMainPreview("");
+                    deleteImg(mainPreview, "main");
+                  }}
+                />
               </div>
             ) : (
               emptyTemplate()
@@ -211,13 +184,13 @@ const ImagesAds = ({ id, setActiveIndex, adById }) => {
 
             <h5>Planos</h5>
             <FileUpload
-              ref={blueprintRef}
               name="blueprint"
               chooseLabel="Cargar plano"
               uploadHandler={upload}
               customUpload={true}
               accept="image/*"
-              maxFileSize={10000000}
+              maxFileSize={6000000}
+              onRemove={() => setBlueprintPreview("")}
               onSelect={(e) => {
                 formProps.setFieldValue("blueprint", e.files[0]);
                 handleChangeFile(e.files[0], setBlueprintPreview);
@@ -230,21 +203,21 @@ const ImagesAds = ({ id, setActiveIndex, adById }) => {
               <div style={{ margin: "0.5%", marginTop: "2.5%", width: 200, height: 200 }}>
                 <img src={blueprintPreview} width={200} height={200} />
                 <Button
-                type="button"
-                icon="pi pi-trash p-ml-auto"
-                style={{
-                  width: "100%",
-                  background: "#2b363d",
-                  border: "none",
-                  borderRadius: "0",
-                  paddingRight: "5%",
-                  marginTop: "1%",
-                }}
-                onClick={() => {
-                  setBlueprintPreview("");
-                  deleteImg(blueprintPreview, "blueprint");
-                }}
-              />
+                  type="button"
+                  icon="pi pi-trash p-ml-auto"
+                  style={{
+                    width: "100%",
+                    background: "#2b363d",
+                    border: "none",
+                    borderRadius: "0",
+                    paddingRight: "5%",
+                    marginTop: "1%",
+                  }}
+                  onClick={() => {
+                    setBlueprintPreview("");
+                    deleteImg(blueprintPreview, "blueprint");
+                  }}
+                />
               </div>
             ) : (
               emptyTemplate()
@@ -252,7 +225,6 @@ const ImagesAds = ({ id, setActiveIndex, adById }) => {
 
             <h5>Otras imágenes</h5>
             <FileUpload
-              ref={othersRef}
               name="others"
               chooseLabel="Cargar imágenes"
               uploadHandler={upload}
@@ -260,14 +232,20 @@ const ImagesAds = ({ id, setActiveIndex, adById }) => {
               onUpload={(props) => props.onClear()}
               className="p-fileupload"
               multiple
+              onRemove={(ev) => {
+                const newPreview = othersPreview.filter((preview) => preview !== ev.file.objectURL);
+                console.log(ev.file);
+                console.log(newPreview);
+                setOthersPreview(newPreview);
+              }}
               onSelect={(ev) => {
-                console.log(ev);
+                console.log("archivos seleccionados", ev);
                 formProps.setFieldValue("others", ev.files);
                 handleChangeFiles(ev.files);
               }}
               accept="image/*"
-              maxFileSize={100000000}
-              // itemTemplate={itemTemplate}
+              maxFileSize={6000000}
+              // itemTemplate={<span></span>}
               headerTemplate={headerTemplate}
               // emptyTemplate={emptyTemplate}
             />
