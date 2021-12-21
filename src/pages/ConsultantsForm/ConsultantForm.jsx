@@ -12,7 +12,6 @@ const ConsultantForm = () => {
   const history = useHistory();
   const { id } = useParams();
 
-  const [ads, setAds] = useState([]);
   const [adsFiltered, setAdsFiltered] = useState([]);
   const [consultants, setConsultants] = useState();
   const [consultantById, setConsultantById] = useState("");
@@ -25,7 +24,6 @@ const ConsultantForm = () => {
         res = res.filter((ad) => {
           return ad.consultant._id === id;
         });
-        setAds(res);
         setAdsFiltered(res);
       });
     }

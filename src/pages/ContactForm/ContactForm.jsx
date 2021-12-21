@@ -9,7 +9,6 @@ import { UserContext } from "../../components/Context/AuthUser";
 import { getAllContacts, createContact, getContactById, updateContact } from "../../api/contacts.api";
 
 const ContactForm = () => {
-  const [error, setError] = useState();
   const [contacts, setContacts] = useState([]);
   const [contactById, setContactById] = useState("");
   const [ads, setAds] = useState([]);

@@ -58,10 +58,8 @@ const createAd = async (form) => {
         credentials: 'include',
         body: JSON.stringify(form),
         headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-        },
+            'Content-Type': 'application/json'
+        }
     });
 
     const newAd = await request.json();
@@ -91,10 +89,45 @@ const updateAd = async (form) => {
     return updatedAd;
 };
 
+const uploadImage = async (id, form, from) => {
+    const request = await fetch(`${adsURL}/upload/${from}/${id}`, {
+        method: 'PUT',
+        credentials: 'include',
+        body: form,
+    });
+
+    const uploadedMain = await request.json();
+
+    if (!request.ok) {
+        throw new Error('Error creating new Contact', uploadedMain.message);
+    };
+    return uploadedMain;
+};
+
+const deleteImage = async (id, form, from) => {
+    const request = await fetch(`${adsURL}/delete/${from}/${id}`, {
+        method: 'PUT',
+        credentials: 'include',
+        body: JSON.stringify(form),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    const uploadedMain = await request.json();
+
+    if (!request.ok) {
+        throw new Error('Error creating new Contact', uploadedMain.message);
+    };
+    return uploadedMain;
+};
+
 export {
     getAllAds,
     getAdById,
     createAd,
     updateAd,
+    uploadImage,
+    deleteImage,
     getMatchedRequests
 }

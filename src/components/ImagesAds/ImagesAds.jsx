@@ -1,19 +1,55 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import { Formik, Form } from "formik";
 import { Button } from "primereact/button";
 import { FileUpload } from "primereact/fileupload";
-import { ProgressBar } from "primereact/progressbar";
-import { Tag } from "primereact/tag";
-import { Toast } from "primereact/toast";
 import { DefaultImage } from "../../icons";
+import { uploadImage, deleteImage } from "../../api/ads.api";
+import "./ImagesAds.scss";
 
-const ImagesAds = ({ formProps, mainImg, setMainImg, blueprintImg, setBlueprintImg, othersImg, setOthersImg }) => {
+const ImagesAds = ({ id, setActiveIndex, adById }) => {
+  const history = useHistory();
+  const mainRef = useRef(adById.images.main);
+  const blueprintRef = useRef(adById.images.blueprint);
+  const othersRef = useRef(adById.images.others);
   const [mainPreview, setMainPreview] = useState("");
   const [blueprintPreview, setBlueprintPreview] = useState("");
   const [othersPreview, setOthersPreview] = useState([]);
 
-  const [totalSize, setTotalSize] = useState(0);
-  const toast = useRef(null);
-  const fileUploadRef = useRef(null);
+  useEffect(() => {
+    setMainPreview(adById.images.main);
+    setBlueprintPreview(adById.images.blueprint);
+    setOthersPreview(adById.images.others);
+  }, [mainPreview, blueprintPreview, othersPreview.length]);
+
+  const upload = (e) => {
+    let data = new FormData();
+    console.log(e);
+    if (e.options.props.name === "others") {
+      for (let file of e.files) {
+        data.append("others", file);
+      }
+    } else {
+      data.append(e.options.props.name, e.files[0]);
+    }
+
+    uploadImage(id, data, e.options.props.name).then((res) => {
+      alert(`Imagen  ${res.title}`);
+      console.log(res);
+      history.go(0);
+      setActiveIndex(1);
+    });
+  };
+
+  const deleteImg = (url, from) => {
+    console.log("archivo:", url);
+    let data = { toDelete: url };
+
+    deleteImage(id, data, from).then((res) => {
+      alert(`Imagen borrada del anuncio ${res.title}`);
+      history.go(0);
+    });
+  };
 
   const handleChangeFile = (e, setter) => {
     let reader = new FileReader();
@@ -33,127 +69,214 @@ const ImagesAds = ({ formProps, mainImg, setMainImg, blueprintImg, setBlueprintI
     }
   };
 
-  const renderOthers = (source) => {
-    return source.map((photo, index) => {
-      return (
-        <div key={`${photo}-${index}`}>
-          <img src={photo} width="5%" />
-          <span
-            onClick={() => {
-              const delIndex = source.indexOf(photo);
-              const newFileList = Array.from(othersImg).filter((file, index) => index !== delIndex);
-              setOthersImg(newFileList);
+  const headerTemplate = (options) => {
+    const { className, chooseButton, uploadButton } = options;
 
-              const newPreviews = othersPreview.filter((other) => other !== photo);
-              setOthersPreview(newPreviews);
-            }}
-          >
-            Eliminar
-          </span>
-        </div>
-      );
-    });
+    return (
+      <div className={className} style={{ backgroundColor: "transparent", display: "flex", justifyContent: "right" }}>
+        {chooseButton}
+        {uploadButton}
+      </div>
+    );
   };
 
-  const onTemplateRemove = (file, callback) => {
-    setTotalSize(totalSize - file.size);
+  const emptyTemplate = () => {
+    return (
+      <div className="p-d-flex p-ai-left p-flex-wrap p-order-6">
+        <div style={{ border: "1px solid lightgrey", padding: "3%", margin: "0.5%", marginTop: "2.5%" }}>
+          <DefaultImage />
+        </div>
+      </div>
+    );
+  };
+
+  // const itemTemplate = (file, props) => {
+  //   return (
+  //     <div className="p-d-flex p-flex-column p-ai-center">
+  //       <img alt={file.name} role="presentation" src={file.objectURL} width={266} height={232} />
+  //       <Button
+  //         type="button"
+  //         icon="pi pi-trash p-ml-auto"
+  //         style={{
+  //           width: "100%",
+  //           background: "#2b363d",
+  //           border: "none",
+  //           borderRadius: "0",
+  //           paddingRight: "5%",
+  //           fontSize: "150%",
+  //           marginTop: "1%",
+  //         }}
+  //         onClick={() => {
+  //           console.log(props);
+  //           onTemplateRemove(file, props.onRemove, props.props.name);
+  //         }}
+  //       />
+  //     </div>
+  //   );
+  // };
+
+  const onTemplateRemove = async (file, callback, name) => {
+    // await deleteImage(id, file, name).then((res) => console.log(res));
     callback();
   };
 
-  const headerTemplate = (options) => {
-    const { className, chooseButton, uploadButton, cancelButton } = options;
-    const value = totalSize / 10000;
-    const formatedValue = fileUploadRef && fileUploadRef.current ? fileUploadRef.current.formatSize(totalSize) : "0 B";
-
+  const renderOthers = (source) => {
     return (
-      <div className={className} style={{ backgroundColor: "transparent", display: "flex", alignItems: "center" }}>
-        {chooseButton}
-        {uploadButton}
-        <ProgressBar
-          value={value}
-          displayValueTemplate={() => `${formatedValue} / 1 MB`}
-          style={{ width: "300px", height: "20px", marginLeft: "auto" }}
-        ></ProgressBar>
+      <div className="p-d-flex p-ai-left p-flex-wrap p-order-6">
+        {source.map((imgURL, index) => {
+          return (
+            <div key={`${imgURL}-${index}`} style={{ margin: "0.5%", marginTop: "2.5%", width: 200, height: 200 }}>
+              <img src={imgURL} width={200} height={200} />
+              <Button
+                type="button"
+                icon="pi pi-trash p-ml-auto"
+                style={{
+                  width: "100%",
+                  background: "#2b363d",
+                  border: "none",
+                  borderRadius: "0",
+                  paddingRight: "5%",
+                  marginTop: "1%",
+                }}
+                onClick={() => {
+                  const delIndex = source.indexOf(imgURL);
+                  const newFileList = Array.from(othersPreview).filter((file, index) => index !== delIndex);
+                  setOthersPreview(newFileList);
+
+                  const newPreviews = othersPreview.filter((other) => other !== imgURL);
+                  setOthersPreview(newPreviews);
+
+                  deleteImg(imgURL, "others");
+                }}
+              />
+            </div>
+          );
+        })}
       </div>
     );
-  };
-
-  const itemTemplate = (file, props) => {
-    return (
-      <div className="p-d-flex p-flex-column p-ai-center p-flex-wrap">
-        <div className="p-d-flex p-ai-center" style={{ width: "40%" }}>
-          <img alt={file.name} role="presentation" src={file.objectURL} width={100} />
-        </div>
-        <Button
-          type="button"
-          icon="pi pi-trash"
-          // className="p-button-outlined p-button-rounded p-button-danger p-ml-auto"
-          onClick={() => onTemplateRemove(file, props.onRemove)}
-        />
-      </div>
-    );
-  };
-
-  const onUpload = () => {
-    toast.current.show({ severity: "info", summary: "Success", detail: "File Uploaded" });
   };
 
   return (
-    <div>
-      <h5>Imagen Principal</h5>
-      <FileUpload
-        ref={fileUploadRef}
-        name="main"
-        chooseLabel="Cargar imagen"
-        // url="https://primefaces.org/primereact/showcase/upload.php"
-        onUpload={onUpload}
-        multiple
-        itemTemplate={itemTemplate}
-        accept="image/*"
-        maxFileSize={1000000}
-        emptyTemplate={<DefaultImage />}
-      />
-      <h3>Imagen principal</h3>
-      <hr />
-      <div>
-        {mainPreview ? <img src={mainPreview} alt="main" width="5%" /> : <DefaultImage />}
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => {
-            formProps.setFieldValue("main", e.target.files[0]);
-            handleChangeFile(e.target.files[0], setMainPreview);
-          }}
-        />
-      </div>
-      <h3>Planos</h3>
-      <hr />
-      <div>
-        {blueprintPreview ? <img src={blueprintPreview} alt="blueprint" width="5%" /> : <DefaultImage />}
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => {
-            formProps.setFieldValue("blueprint", e.target.files[0]);
-            handleChangeFile(e.target.files[0], setBlueprintPreview);
-          }}
-        />
-      </div>
-      <h3>Otras imágenes</h3>
-      <hr />
-      <div>
-        {othersPreview.length !== 0 ? renderOthers(othersPreview) : <DefaultImage />}
-        <input
-          type="file"
-          accept="image/*"
-          multiple
-          onChange={(ev) => {
-            setOthersImg(ev.target.files);
-            handleChangeFiles(ev.target.files);
-          }}
-        />
-      </div>
-    </div>
+    <Formik
+      enableReinitialize={true}
+      initialValues={{
+        main: mainPreview ? mainPreview : "",
+        blueprint: blueprintPreview ? blueprintPreview : "",
+        others: othersPreview.length !== 0 ? othersPreview : [],
+      }}
+    >
+      {(formProps) => (
+        <Form>
+          <div>
+            <h5>Imagen Principal</h5>
+            <FileUpload
+              ref={mainRef}
+              name="main"
+              chooseLabel="Cargar imagen principal"
+              uploadHandler={upload}
+              customUpload={true}
+              accept="image/*"
+              maxFileSize={10000000}
+              onSelect={(e) => {
+                formProps.setFieldValue("main", e.files[0]);
+                handleChangeFile(e.files[0], setMainPreview);
+              }}
+              // itemTemplate={itemTemplate}
+              headerTemplate={headerTemplate}
+              // emptyTemplate={emptyTemplate}
+            />
+            {mainPreview ? (
+              <div style={{ margin: "0.5%", marginTop: "2.5%", width: 200, height: 200 }}>
+                <img src={mainPreview} width={200} height={200} />
+                <Button
+                type="button"
+                icon="pi pi-trash p-ml-auto"
+                style={{
+                  width: "100%",
+                  background: "#2b363d",
+                  border: "none",
+                  borderRadius: "0",
+                  paddingRight: "5%",
+                  marginTop: "1%",
+                }}
+                onClick={() => {
+                  setMainPreview("");
+                  deleteImg(mainPreview, "main");
+                }}
+              />
+              </div>
+            ) : (
+              emptyTemplate()
+            )}
+
+            <h5>Planos</h5>
+            <FileUpload
+              ref={blueprintRef}
+              name="blueprint"
+              chooseLabel="Cargar plano"
+              uploadHandler={upload}
+              customUpload={true}
+              accept="image/*"
+              maxFileSize={10000000}
+              onSelect={(e) => {
+                formProps.setFieldValue("blueprint", e.files[0]);
+                handleChangeFile(e.files[0], setBlueprintPreview);
+              }}
+              // itemTemplate={<img src={blueprintPreview.objectURL} alt="blueprint" width={266} height={232} />}
+              headerTemplate={headerTemplate}
+              // emptyTemplate={emptyTemplate}
+            />
+            {blueprintPreview ? (
+              <div style={{ margin: "0.5%", marginTop: "2.5%", width: 200, height: 200 }}>
+                <img src={blueprintPreview} width={200} height={200} />
+                <Button
+                type="button"
+                icon="pi pi-trash p-ml-auto"
+                style={{
+                  width: "100%",
+                  background: "#2b363d",
+                  border: "none",
+                  borderRadius: "0",
+                  paddingRight: "5%",
+                  marginTop: "1%",
+                }}
+                onClick={() => {
+                  setBlueprintPreview("");
+                  deleteImg(blueprintPreview, "blueprint");
+                }}
+              />
+              </div>
+            ) : (
+              emptyTemplate()
+            )}
+
+            <h5>Otras imágenes</h5>
+            <FileUpload
+              ref={othersRef}
+              name="others"
+              chooseLabel="Cargar imágenes"
+              uploadHandler={upload}
+              customUpload={true}
+              onUpload={(props) => props.onClear()}
+              className="p-fileupload"
+              multiple
+              onSelect={(ev) => {
+                console.log(ev);
+                formProps.setFieldValue("others", ev.files);
+                handleChangeFiles(ev.files);
+              }}
+              accept="image/*"
+              maxFileSize={100000000}
+              // itemTemplate={itemTemplate}
+              headerTemplate={headerTemplate}
+              // emptyTemplate={emptyTemplate}
+            />
+            {othersPreview.length !== 0 ? renderOthers(othersPreview) : emptyTemplate()}
+            <hr />
+          </div>
+        </Form>
+      )}
+    </Formik>
   );
 };
 
