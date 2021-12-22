@@ -36,7 +36,7 @@
       position: relative;
       width: 100%;
       height: 30px;
-      background-color: #2b363d;
+      background-color: $c-background-dark;
       color: #fff;
       text-align: center;
 
@@ -115,7 +115,7 @@
   }
 }
 
-@media (max-width: 880px) {
+@media (max-width: $break-point) {
   .PopUp__overlay {
     padding-top: 20%;
     &__container {
