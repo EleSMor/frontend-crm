@@ -1,21 +1,49 @@
-import { Suspense } from "react";
+import React, { Suspense } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { Navbar } from "./components";
-import { ConsultantForm, ConsultantsList } from "./pages";
+import AuthUser from "./components/Context/AuthUser";
+import {
+  AdsList,
+  RequestsList,
+  ContactsList,
+  ConsultantsList,
+  AdForm,
+  RequestForm,
+  ContactForm,
+  ConsultantForm,
+  Login,
+} from "./pages";
 
 import "./App.scss";
 
 function App() {
   return (
     <Router>
-      <div className="App"></div>
-      <Navbar />
-      <Suspense fallback={<div>Cargando...</div>}>
-        <Switch>
-        <Route exact path="/consultants/register"  component={ConsultantForm}/>
-        <Route exact path="/consultants"  component={ConsultantsList}/>
-        </Switch>
-      </Suspense>
+      <div className="App">
+        <AuthUser>
+          <Suspense fallback={<div>Cargando...</div>}>
+            <Switch>
+              {/* Pages */}
+              <Route exact path="/" component={Login} />
+              <Route exact path="/ads" component={AdsList} />
+              <Route exact path="/requests" component={RequestsList} />
+              <Route exact path="/contacts" component={ContactsList} />
+              <Route exact path="/consultants" component={ConsultantsList} />
+              
+              {/* Components */}
+              <Route exact path="/ads/create" component={AdForm} />
+              <Route exact path="/requests/create" component={RequestForm} />
+              <Route exact path="/contacts/create" component={ContactForm} />
+              <Route exact path="/consultants/create" component={ConsultantForm} />
+
+              {/* Components */}
+              <Route exact path="/ads/:id" children={<AdForm />} />
+              <Route exact path="/requests/:id" children={<RequestForm />} />
+              <Route exact path="/contacts/:id" children={<ContactForm />} />
+              <Route exact path="/consultants/:id" children={<ConsultantForm />} />
+            </Switch>
+          </Suspense>
+        </AuthUser>
+      </div>
     </Router>
   );
 }

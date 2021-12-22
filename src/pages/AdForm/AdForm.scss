@@ -1,0 +1,28 @@
+@import url("https://unpkg.com/primeicons/primeicons.css");
+@import url("https://unpkg.com/primereact/resources/themes/lara-light-indigo/theme.css");
+@import url("https://unpkg.com/primereact/resources/primereact.min.css");
+@import url("https://unpkg.com/primeflex@2.0.0/primeflex.min.css");
+
+/* AccordionDemo.css */
+
+.surfaceBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.accordion-demo .accordion-custom i,
+.accordion-demo .accordion-custom span {
+  vertical-align: middle;
+}
+
+.accordion-demo .accordion-custom span {
+  margin: 0 0.5rem;
+}
+
+.accordion-demo .p-accordion p {
+  line-height: 1.5;
+  margin: 0;
+}
+
+

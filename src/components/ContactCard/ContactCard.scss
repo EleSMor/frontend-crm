@@ -1,0 +1,88 @@
+@use "/src/styles/utils.scss" as *;
+
+.ContactCard__Card {
+  background-color: #fff;
+  margin: 16px;
+  padding: 18px;
+  border-radius: 3px;
+  box-shadow: rgba(0, 0, 0, 0.046) 0px 1px 4px;
+  border: 1px solid rgba(0, 0, 0, 0.089);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &--item {
+    text-align: left;
+    > h3 {
+      margin: 0;
+      margin-bottom: 8px;
+      font-size: 24px;
+    }
+    > p {
+      margin-bottom: 8px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+    }
+
+    &__tags {
+      margin-top: 25px;
+      &__tag {
+        padding: 4px 22px;
+        background: #dfdfdf;
+        border-radius: 2px;
+        margin-right: 8px;
+      }
+    }
+  }
+}
+
+.contact {
+  &__box {
+
+    &-tags {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: row;
+    }
+
+    &-tag {
+      padding: 0.3vh 0.6vw;
+      background: #dfdfdf;
+      border-radius: 3px;
+      margin-right: 0.2vw;
+    }
+
+    &-personalInfo {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    &-details {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      font-size: small;
+    }
+
+    &-contact {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &-offices {
+      border-left: 1.5px solid #2b363d;
+    }
+
+    &-end {
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+}
