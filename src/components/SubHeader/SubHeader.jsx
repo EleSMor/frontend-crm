@@ -80,7 +80,7 @@ const SubHeader = ({ title, list, location, setter }) => {
           checkIfIncludes(contact.fullName, text) ||
           checkIfIncludes(contact.email, text) ||
           checkIfIncludes(contact.company, text) ||
-          checkIfIncludes(contact.mobilePhoneNumber, text)
+          checkIfIncludes(contact.contactMobileNumber, text)
         )
           return contact;
       });
@@ -105,7 +105,7 @@ const SubHeader = ({ title, list, location, setter }) => {
         )}
         <div className="p-input-icon-left">
           <i className="pi pi-search" />
-          <InputText onChange={(ev) => customFilter(ev.target.value)} placeholder="Keyword Search" />
+          <InputText onChange={(ev) => customFilter(ev.target.value)} placeholder="Buscar en esta lista" />
         </div>
       </div>
     </div>
