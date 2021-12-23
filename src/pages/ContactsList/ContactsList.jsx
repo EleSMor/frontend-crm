@@ -1,14 +1,21 @@
 import { useEffect, useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "../../components/Context/AuthUser";
-import { Navbar, SubHeader } from "../../components";
 import ContactCard from "../../components/ContactCard/ContactCard";
 import { getAllContacts } from "../../api/contacts.api";
 import PopUp from "../../components/PopUp/PopUp";
+import Layout from "../Layout/Layout";
+import Spinner from "../../Spinner/Spinner";
+import Pagination from "../../components/Pagination/Pagination";
 
 const ContactsList = () => {
   const [contacts, setContacts] = useState([]);
   const [popUp, setPopUp] = useState(false);
+
+  const [ currentPage, setCurrentPage] = useState(1)
+  const [ qPerPage ] = useState(5)
+  const [loader, setLoader] = useState(true);
+
   const { user } = useContext(UserContext);
   const history = useHistory();
 
@@ -17,23 +24,42 @@ const ContactsList = () => {
   };
 
   useEffect(() => {
-    getAllContacts().then((res) => setContacts(res));
+    getAllContacts().then((res) => {
+      setContacts(res)
+      setLoader(false)
+    });
   }, []);
+
+  const indexOfLastContact = currentPage * qPerPage
+  const indexOfFirstContact = indexOfLastContact - qPerPage
+  let currentContacts = contacts?.slice(indexOfFirstContact, indexOfLastContact)
+  let contactsLength = contacts?.length
+
+  const paginate = (n) => {
+    setCurrentPage(n)
+    window.scrollTo({top: 0})
+  }
+
+  const ContactListFooter = () => (
+    <Pagination 
+      qPerPage={qPerPage}
+      totalQ={contactsLength} 
+      paginate={paginate}
+      currentPage={currentPage}
+    />
+  )
 
   return (
     <>
       {!user && history.push("/")}
-      <Navbar />
-      <SubHeader
-        title="Contactos"
-        list={contacts}
-        location="/contacts/create"
-      />
+      <Layout
+        subTitle="Contactos"
+        subList={contacts}
+        subLocation="/contacts/create"
+        footContent={<ContactListFooter />}
+      >
+      {/* <button onClick={() => handlePopUp()}>Nuevo</button> */}
       
-      <ContactCard contacts={contacts} />
-
-      <button onClick={() => handlePopUp()}>Open</button>
-
       {popUp && (
         <PopUp handlePopUp={handlePopUp} height="40%" width="50%" fixedButtons={true} buttons="holka">
           <p>
@@ -45,6 +71,14 @@ const ContactsList = () => {
           </p>
         </PopUp>
       )}
+      {
+        loader ? (<Spinner />) : (
+          <ContactCard contacts={currentContacts} />
+        )
+      }
+
+
+      </Layout>
 
     </>
   );
