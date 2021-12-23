@@ -5,7 +5,7 @@ import ContactCard from "../../components/ContactCard/ContactCard";
 import { getAllContacts } from "../../api/contacts.api";
 import PopUp from "../../components/PopUp/PopUp";
 import Layout from "../Layout/Layout";
-import Spinner from "../../Spinner/Spinner";
+import Spinner from "../../components/Spinner/Spinner";
 import Pagination from "../../components/Pagination/Pagination";
 
 const ContactsList = () => {
