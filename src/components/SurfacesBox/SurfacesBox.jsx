@@ -1,78 +1,83 @@
 import React, { useState } from "react";
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
+import { InputText } from "primereact/inputtext";
 
 const SurfacesBox = ({ formProps }) => {
-  const columnsArray = ["Planta", "Uso", "m2", "Precio (€)", "Disponibilidad"];
-  const [rows, setRows] = useState([{}]);
+  const [surfacesBox, setSurfacesBox] = useState(formProps.values.surfacesBox);
 
   const handleAddRow = () => {
-    const item = {};
-    setRows([...rows, item]);
+    const item = {
+      surfaceFloor: "",
+      surfaceUse: "",
+      metersAvailables: "",
+      metersPrice: "",
+      surfaceDisponibility: "",
+    };
+    setSurfacesBox([...surfacesBox, item]);
   };
 
-  const handleRemoveSpecificRow = (idx) => {
-    const tempRows = [...rows]; // to avoid  direct state mutation
-    tempRows.splice(idx, 1);
-    setRows(tempRows);
+  const textEditor = (options) => {
+    return <InputText type="text" value={options.value} onChange={(e) => options.editorCallback(e.target.value)} />;
   };
 
-  const updateState = (e) => {
-      console.log("evento:", e.target)
-    console.log("Columna:", e.target.attributes.column.value);
-    console.log("Fila:", e.target.attributes.index.value);
-    console.log("Valor:", e.target.value);
+  const onRowEditComplete = (e) => {
+    let updateSurface = surfacesBox;
+    let { newData, index } = e;
 
-    let prope = e.target.attributes.column.value; // the custom column attribute
-    let index = e.target.attributes.index.value; // index of state array -rows
-    let fieldValue = e.target.value; // value
+    updateSurface[index] = newData;
 
-    const tempRows = [...rows]; // avoid direct state mutation
-    const tempObj = rows[index]; // copy state object at index to a temporary object
-    tempObj[prope] = fieldValue; // modify temporary object
-
-    // return object to rows` clone
-    tempRows[index] = tempObj;
-    setRows(tempRows); // update state
+    setSurfacesBox(updateSurface);
+    formProps.setFieldValue("surfacesBox", surfacesBox);
   };
 
   return (
     <div>
-      <div>Cuadro Superficies</div>
-      <table className="surfaceBox">
-        <thead>
-          <tr>
-            {columnsArray.map((column, index) => (
-              <th className="text-center" key={index}>
-                {column}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((item, idx) => (
-            <tr key={idx}>
-              {columnsArray.map((column, index) => (
-                <td key={index}>
-                  <input
-                    type="text"
-                    column={column}
-                    value={rows.length !== 0 ? rows[idx][column] : ""}
-                    index={idx}
-                    className="form-control"
-                    onChange={(e) => updateState(e)}
-                  />
-                </td>
-              ))}
-
-              <td>
-                <button className="btn btn-outline-danger btn-sm" type="button" onClick={() => handleRemoveSpecificRow(idx)}>
-                  Eliminar fila
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <button type="button" onClick={handleAddRow} className="btn btn-primary">
+      <h4>Cuadro Superficies</h4>
+      <DataTable
+        value={surfacesBox}
+        editMode="row"
+        onRowEditComplete={onRowEditComplete}
+        className="editable-cells-table"
+        responsiveLayout="scroll"
+      >
+        <Column
+          field="surfaceFloor"
+          header="Planta"
+          editor={(options) => textEditor(options)}
+          style={{ width: "20%" }}
+        ></Column>
+        <Column
+          field="surfaceUse"
+          header="Uso"
+          editor={(options) => textEditor(options)}
+          style={{ width: "20%" }}
+        ></Column>
+        <Column
+          field="metersAvailables"
+          header={
+            <>
+              m<sup>2</sup>{" "}
+            </>
+          }
+          editor={(options) => textEditor(options)}
+          style={{ width: "20%" }}
+        ></Column>
+        <Column
+          field="metersPrice"
+          header="Precio (€)"
+          editor={(options) => textEditor(options)}
+          style={{ width: "20%" }}
+        ></Column>
+        <Column
+          field="surfaceDisponibility"
+          header="Disponibilidad"
+          editor={(options) => textEditor(options)}
+          style={{ width: "20%" }}
+        ></Column>
+        <Column rowEditor headerStyle={{ width: "10%", minWidth: "8rem" }} bodyStyle={{ textAlign: "center" }}></Column>
+      </DataTable>
+      <button type="button" onClick={handleAddRow} className="btn">
         Añadir fila
       </button>
       <hr />

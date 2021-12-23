@@ -405,7 +405,7 @@ const DetailsAds = ({
               />
             </div>
             <hr />
-            {/* <SurfacesBox formProps={formProps} /> */}
+            <SurfacesBox formProps={formProps} />
             <h4>Precio</h4>
             <div>
               <div>
@@ -488,14 +488,6 @@ const DetailsAds = ({
               />
               €/m2/mes
             </div>
-            {/* {console.log(
-              "alquiler:",
-              formProps.values.rentValue,
-              "gastos de comunidad:",
-              formProps.values.expensesValue,
-              "alquiler con gastos includos:",
-              formProps.values.expensesIncluded
-            )} */}
             <div>
               <label htmlFor="expensesIncluded">Alquiler con gastos incluidos</label>
               <input

@@ -35,6 +35,23 @@ const getRequestById = async (id) => {
     return allOwners;
 };
 
+const getRequestByContacts = async (id) => {
+    const request = await fetch(`${requestsURL}/contact/${id}`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+        },
+    });
+    const allRequests = await request.json();
+    if (!request.ok) {
+        throw new Error('Error on fetch', allRequests.message);
+    };
+    return allRequests;
+};
+
 const getLastReference = async () => {
     const request = await fetch(`${requestsURL}/lastReference`, {
         method: 'GET',
@@ -137,6 +154,7 @@ const sendNewRequest = async (form) => {
 export {
     getAllRequests,
     getRequestById,
+    getRequestByContacts,
     getLastReference,
     getAdsMatched,
     createRequest,

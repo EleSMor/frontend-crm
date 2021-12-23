@@ -96,12 +96,17 @@ const AdForm = () => {
                 plotSurface: adById ? adById.plotSurface : 0,
                 floor: adById ? adById.floor : "",
                 disponibility: adById ? adById.disponibility : "",
-                surfacesBox: adById ? adById.surfacesBox : [],
-                surfaceFloor: adById ? adById.surfacesBox.surfaceFloor : "",
-                surfaceUse: adById ? adById.surfacesBox.surfaceUse : "",
-                metersAvailables: adById ? adById.surfacesBox.metersAvailables : "",
-                meterPrice: adById ? adById.surfacesBox.meterPrice : "",
-                surfaceDisponibility: adById ? adById.surfacesBox.surfaceDisponibility : "",
+                surfacesBox: adById
+                  ? adById.surfacesBox
+                  : [
+                      {
+                        surfaceFloor: "",
+                        surfaceUse: "",
+                        metersAvailables: "",
+                        metersPrice: "",
+                        surfaceDisponibility: "",
+                      },
+                    ],
                 saleValue: adById ? adById.price.sale.saleValue : 0,
                 saleShowOnWeb: adById ? adById.price.sale.saleShowOnWeb : true,
                 rentValue: adById ? adById.price.rent.rentValue : 0,
@@ -170,11 +175,12 @@ const AdForm = () => {
 
                 if (!id) {
                   createAd(data).then((res) => history.push(`/anuncios`));
-                } else
-                  updateAd(data).then((res) => {
-                    alert(`El anuncio ${res.adReference} ha sido actualizado`);
-                    history.push(`/anuncios`);
-                  });
+                } else 
+                // console.log(data);
+                updateAd(data).then((res) => {
+                  alert(`El anuncio ${res.adReference} ha sido actualizado`);
+                  history.push(`/anuncios`);
+                });
               }}
             >
               {(formProps) => (

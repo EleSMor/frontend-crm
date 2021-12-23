@@ -4,12 +4,17 @@ import { Button } from "primereact/button";
 import { FileUpload } from "primereact/fileupload";
 import { DefaultImage } from "../../icons";
 import { uploadImage, deleteImage } from "../../api/ads.api";
+import Lightbox from "react-image-lightbox";
+import "react-image-lightbox/style.css";
 import "./ImagesAds.scss";
 
 const ImagesAds = ({ id, adById }) => {
   const [mainPreview, setMainPreview] = useState("");
   const [blueprintPreview, setBlueprintPreview] = useState("");
   const [othersPreview, setOthersPreview] = useState([]);
+  const [photoIndex, setPhotoIndex] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
+  const [images, setImages] = useState([]);
 
   useEffect(() => {
     if (adById) {
@@ -40,7 +45,6 @@ const ImagesAds = ({ id, adById }) => {
   };
 
   const deleteImg = (url, from) => {
-    console.log("archivo:", url);
     let data = { toDelete: url };
 
     deleteImage(id, data, from).then((res) => {
@@ -60,15 +64,11 @@ const ImagesAds = ({ id, adById }) => {
 
   const handleChangeFiles = (images) => {
     if (images) {
-      const preview = [];
+      const preview = othersPreview;
       for (let image of images) {
-        console.log("imagen: ", image.name);
         preview.push(image.objectURL);
       }
       setOthersPreview(preview);
-      // const imageArray = Array.from(images).map((image) => URL.createObjectURL(image));
-      // setOthersPreview((prevImages) => prevImages.concat(imageArray));
-      // Array.from(images).map((image) => URL.revokeObjectURL(image));
     }
   };
 
@@ -99,7 +99,16 @@ const ImagesAds = ({ id, adById }) => {
         {source.map((imgURL, index) => {
           return (
             <div key={`${imgURL}-${index}`} style={{ margin: "0.5%", marginTop: "2.5%", width: 200, height: 200 }}>
-              <img src={imgURL} width={200} height={200} />
+              <img
+                src={imgURL}
+                alt="Otras imágenes"
+                width={200}
+                height={200}
+                onClick={() => {
+                  setIsOpen(true);
+                  setImages(othersPreview);
+                }}
+              />
               <Button
                 type="button"
                 icon="pi pi-trash p-ml-auto"
@@ -141,6 +150,17 @@ const ImagesAds = ({ id, adById }) => {
       {(formProps) => (
         <Form>
           <div>
+            {/* Previsualización de las imágenes */}
+            {isOpen && (
+              <Lightbox
+                mainSrc={images[photoIndex]}
+                nextSrc={images[(photoIndex + 1) % images.length]}
+                prevSrc={images[(photoIndex + images.length - 1) % images.length]}
+                onCloseRequest={() => setIsOpen(false)}
+                onMovePrevRequest={() => setPhotoIndex((photoIndex + images.length - 1) % images.length)}
+                onMoveNextRequest={() => setPhotoIndex((photoIndex + 1) % images.length)}
+              />
+            )}
             <h5>Imagen Principal</h5>
             <FileUpload
               name="main"
@@ -149,7 +169,7 @@ const ImagesAds = ({ id, adById }) => {
               customUpload={true}
               accept="image/*"
               maxFileSize={6000000}
-              onRemove={() => setMainPreview("")}
+              onRemove={() => setMainPreview(adById ? adById.images.main : "")}
               onSelect={(e) => {
                 formProps.setFieldValue("main", e.files[0]);
                 handleChangeFile(e.files[0], setMainPreview);
@@ -158,7 +178,16 @@ const ImagesAds = ({ id, adById }) => {
             />
             {mainPreview ? (
               <div style={{ margin: "0.5%", marginTop: "2.5%", width: 200, height: 200 }}>
-                <img src={mainPreview} width={200} height={200} />
+                <img
+                  src={mainPreview}
+                  alt="Imagen principal"
+                  width={200}
+                  height={200}
+                  onClick={() => {
+                    setIsOpen(true);
+                    setImages([mainPreview]);
+                  }}
+                />
                 <Button
                   type="button"
                   icon="pi pi-trash p-ml-auto"
@@ -191,12 +220,9 @@ const ImagesAds = ({ id, adById }) => {
               multiple
               onRemove={(ev) => {
                 const newPreview = othersPreview.filter((preview) => preview !== ev.file.objectURL);
-                console.log(ev.file);
-                console.log(newPreview);
-                setOthersPreview(newPreview);
+                setOthersPreview(newPreview.length === 0 ? (adById ? adById.images.others : []) : newPreview);
               }}
               onSelect={(ev) => {
-                console.log("archivos seleccionados", ev);
                 formProps.setFieldValue("others", ev.files);
                 handleChangeFiles(ev.files);
               }}
@@ -206,7 +232,6 @@ const ImagesAds = ({ id, adById }) => {
             />
             {othersPreview.length !== 0 ? renderOthers(othersPreview) : emptyTemplate()}
             <hr />
-
             <h5>Planos</h5>
             <FileUpload
               name="blueprint"
@@ -215,7 +240,7 @@ const ImagesAds = ({ id, adById }) => {
               customUpload={true}
               accept="image/*"
               maxFileSize={6000000}
-              onRemove={() => setBlueprintPreview("")}
+              onRemove={() => setBlueprintPreview(adById ? adById.images.blueprint : "")}
               onSelect={(e) => {
                 formProps.setFieldValue("blueprint", e.files[0]);
                 handleChangeFile(e.files[0], setBlueprintPreview);
@@ -224,7 +249,16 @@ const ImagesAds = ({ id, adById }) => {
             />
             {blueprintPreview ? (
               <div style={{ margin: "0.5%", marginTop: "2.5%", width: 200, height: 200 }}>
-                <img src={blueprintPreview} width={200} height={200} />
+                <img
+                  src={blueprintPreview}
+                  alt="Planos"
+                  width={200}
+                  height={200}
+                  onClick={() => {
+                    setIsOpen(true);
+                    setImages([blueprintPreview]);
+                  }}
+                />
                 <Button
                   type="button"
                   icon="pi pi-trash p-ml-auto"
