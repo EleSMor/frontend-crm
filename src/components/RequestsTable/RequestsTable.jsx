@@ -15,7 +15,6 @@ const RequestsTable = ({ requests }) => {
   useEffect(() => {
     if (requests.length !== 0) {
       const newRequests = requests.map((request) => {
-        console.log("petición", request)
         if (request.requestBuildingType && !loader) request.requestBuildingType = request.requestBuildingType.join(" ");
         if (request.requestAdType && !loader) request.requestAdType = request.requestAdType.join(" ");
         if (!loader) request.createdAt = moment(request.createdAt).locale("es").format("L");
