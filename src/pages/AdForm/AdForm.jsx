@@ -76,7 +76,7 @@ const AdForm = () => {
               initialValues={{
                 title: adById ? adById.title : "",
                 adReference: adById ? adById.adReference : "",
-                showOnWeb: adById ? adById.showOnWeb : false,
+                showOnWeb: adById ? adById.showOnWeb : true,
                 featuredOnMain: adById ? adById.featuredOnMain : false,
                 street: adById ? adById.adDirection.address.street : "",
                 directionNumber: adById ? adById.adDirection.address.directionNumber : "",
@@ -96,14 +96,19 @@ const AdForm = () => {
                 plotSurface: adById ? adById.plotSurface : 0,
                 floor: adById ? adById.floor : "",
                 disponibility: adById ? adById.disponibility : "",
-                surfacesBox: adById ? adById.surfacesBox : [],
-                surfaceFloor: adById ? adById.surfacesBox.surfaceFloor : "",
-                surfaceUse: adById ? adById.surfacesBox.surfaceUse : "",
-                metersAvailables: adById ? adById.surfacesBox.metersAvailables : "",
-                meterPrice: adById ? adById.surfacesBox.meterPrice : "",
-                surfaceDisponibility: adById ? adById.surfacesBox.surfaceDisponibility : "",
+                surfacesBox: adById
+                  ? adById.surfacesBox
+                  : [
+                      {
+                        surfaceFloor: "",
+                        surfaceUse: "",
+                        metersAvailables: "",
+                        metersPrice: "",
+                        surfaceDisponibility: "",
+                      },
+                    ],
                 saleValue: adById ? adById.price.sale.saleValue : 0,
-                saleShowOnWeb: adById ? adById.price.sale.saleShowOnWeb : false,
+                saleShowOnWeb: adById ? adById.price.sale.saleShowOnWeb : true,
                 rentValue: adById ? adById.price.rent.rentValue : 0,
                 rentShowOnWeb: adById ? adById.price.rent.rentShowOnWeb : false,
                 monthlyRent: adById ? adById.monthlyRent : 0,
@@ -169,12 +174,13 @@ const AdForm = () => {
                 else if (patrimonialSelectedZones.length === 0 && residentialSelectedZones.length === 0) data.zone = [];
 
                 if (!id) {
-                  createAd(data).then((res) => history.push(`/ads`));
-                } else
-                  updateAd(data).then((res) => {
-                    alert(`El anuncio ${res.adReference} ha sido actualizado`);
-                    history.go(0);
-                  });
+                  createAd(data).then((res) => history.push(`/anuncios`));
+                } else 
+                // console.log(data);
+                updateAd(data).then((res) => {
+                  alert(`El anuncio ${res.adReference} ha sido actualizado`);
+                  history.push(`/anuncios`);
+                });
               }}
             >
               {(formProps) => (
@@ -196,7 +202,9 @@ const AdForm = () => {
                     setPatrimonialZones={setPatrimonialSelectedZones}
                   />
                   <button type="submit">Guardar</button>
-                  <button onClick={() => history.push("/ads")}>Cancelar</button>
+                  <button type="button" onClick={() => history.push("/anuncios")}>
+                    Cancelar
+                  </button>
                 </Form>
               )}
             </Formik>

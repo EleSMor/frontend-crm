@@ -51,7 +51,7 @@ const ContactForm = () => {
     <>
       {!user && history.push("/")}
       <Navbar />
-      <SubHeader title="Contactos" list={contacts} location="/contacts/create" />
+      <SubHeader title="Contactos" list={contacts} location="/contactos/crear" />
       <Formik
         enableReinitialize={true}
         initialValues={{
@@ -78,12 +78,12 @@ const ContactForm = () => {
           if (!id) {
             createContact(data).then((res) => {
               alert(`El contacto ${res.fullName} ha sido creado`);
-              history.push("/contacts");
+              history.push("/contactos");
             });
           } else
             updateContact(data).then((res) => {
               alert(`El contacto ${res.fullName} ha sido actualizado`);
-              history.go(0);
+              history.push("/contactos");
             });
         }}
       >
@@ -226,7 +226,7 @@ const ContactForm = () => {
                   </div>
                 </div>
                 <button type="submit">Guardar</button>
-                <NavLink to="/contacts">
+                <NavLink to="/contactos">
                   <button type="">Cancelar</button>
                 </NavLink>
               </TabPanel>
