@@ -2,7 +2,7 @@
 
 .ContactCard__Card {
   background-color: #fff;
-  margin: 16px;
+  margin: 16px 0px;
   padding: 18px;
   border-radius: 3px;
   box-shadow: rgba(0, 0, 0, 0.046) 0px 1px 4px;
@@ -10,6 +10,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 182px;
 
   &--item {
     text-align: left;
@@ -25,64 +26,58 @@
       align-items: center;
     }
 
+    &--border {
+      border: 1px solid rgba(0, 0, 0, 0.329);
+      border-radius: 3px;
+      padding: 0 16px;
+    }
+
+    > textarea {
+      border: 1px solid rgba(0, 0, 0, 0.329);
+      resize: none;
+      border-radius: 3px;
+      width: 100%;
+      height: 107px;
+
+      &:focus {
+        border: 1px solid $c-background-dark;
+        outline: none;
+      }
+    }
+
     &__tags {
       margin-top: 25px;
       &__tag {
-        padding: 4px 22px;
-        background: #dfdfdf;
-        border-radius: 2px;
-        margin-right: 8px;
+        @include tag
       }
     }
   }
-}
 
-.contact {
-  &__box {
+  .ContactCard__Card--item-genInfo {
+    width: calc(30%);
+  }
+  .ContactCard__Card--item-iconsInfo {
+    width: calc(26%);
+  }
+  .ContactCard__Card--item-textArea {
+    width: calc(28%);
+    border-left: 1px solid rgba(0, 0, 0, 0.329);
+    padding-left: 16px;
+  }
+  .ContactCard__Card--item-cta {
+    width: calc(15%);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
 
-    &-tags {
-      display: flex;
-      justify-content: space-between;
-      flex-direction: row;
+    > span {
+      color: $c-text-light;
     }
 
-    &-tag {
-      padding: 0.3vh 0.6vw;
-      background: #dfdfdf;
-      border-radius: 3px;
-      margin-right: 0.2vw;
-    }
-
-    &-personalInfo {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    &-details {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      font-size: small;
-    }
-
-    &-contact {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    &-offices {
-      border-left: 1.5px solid #2b363d;
-    }
-
-    &-end {
-      min-height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
+    &--button {
+      @include button-dark
     }
   }
 }

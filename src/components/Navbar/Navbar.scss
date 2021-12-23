@@ -5,18 +5,19 @@
 }
 
 .navigate {
+  position: fixed;
+  top: 17px;
+  height: 56px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  background-color: #2b363d;
+  background-color: $c-background-dark;
   max-width: 100%;
   width: 100vw;
-  height: 8vh;
   color: #f3f2f2;
   font-family: arial;
   font-size: 14px;
   font-weight: 600;
-  margin-top: 1.5vh;
 
   ul {
     margin: 0;
