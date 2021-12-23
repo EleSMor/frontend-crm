@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import SurfacesBox from "../SurfacesBox/SurfacesBox";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { Select, MultiSelect } from "./../index";
 import { getAllOwners } from "../../api/contacts.api";
@@ -21,46 +22,12 @@ const DetailsAds = ({
   const [owners, setOwners] = useState([]);
   const [consultants, setConsultants] = useState([]);
 
-  const columnsArray = ["Planta", "Uso", "m2", "Precio (€)", "Disponibilidad"];
-  const [rows, setRows] = useState([]);
-
   useEffect(() => {
     getAllOwners().then((res) => setOwners(...owners, res));
     getAllConsultants().then((res) => setConsultants(...consultants, res));
   }, []);
 
-  const handleAddRow = () => {
-    const item = {};
-    setRows([...rows, item]);
-  };
-
-  const handleRemoveSpecificRow = (idx) => {
-    const tempRows = [...rows]; // to avoid  direct state mutation
-    tempRows.splice(idx, 1);
-    setRows(tempRows);
-  };
-
-  const updateState = (e) => {
-    console.log("Columna:", e.target.attributes.column.value);
-    console.log("Fila:", e.target.attributes.index.value);
-    console.log("Valor:", e.target.value);
-
-    let prope = e.target.attributes.column.value; // the custom column attribute
-    let index = e.target.attributes.index.value; // index of state array -rows
-    let fieldValue = e.target.value; // value
-
-    const tempRows = [...rows]; // avoid direct state mutation
-    const tempObj = rows[index]; // copy state object at index to a temporary object
-    tempObj[prope] = fieldValue; // modify temporary object
-
-    // return object to rows` clone
-    tempRows[index] = tempObj;
-    setRows(tempRows); // update state
-  };
-
   const newSelect = (selected, setSelected, ev) => {
-    console.log(selected);
-    console.log(ev.target.value);
     if (selected.includes(ev.target.value)) {
       const newSelected = selected.filter((selected) => selected !== ev.target.value);
       setSelected(newSelected);
@@ -81,7 +48,7 @@ const DetailsAds = ({
           <input
             required="required"
             name="title"
-            defaultValue={formProps.values.title}
+            value={formProps.values.title}
             onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
           />
         </div>
@@ -90,7 +57,7 @@ const DetailsAds = ({
           <input
             required="required"
             name="adReference"
-            defaultValue={formProps.values.adReference}
+            value={formProps.values.adReference}
             onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
           />
         </div>
@@ -99,7 +66,7 @@ const DetailsAds = ({
           <input
             type="checkbox"
             name="showOnWeb"
-            defaultValue={formProps.values.showOnWeb}
+            value={formProps.values.showOnWeb}
             onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.checked)}
           />
         </div>
@@ -108,7 +75,7 @@ const DetailsAds = ({
           <input
             type="checkbox"
             name="featuredOnMain"
-            defaultValue={formProps.values.featuredOnMain}
+            value={formProps.values.featuredOnMain}
             onChange={(ev) => {
               formProps.setFieldValue(ev.target.name, ev.target.checked);
             }}
@@ -123,20 +90,20 @@ const DetailsAds = ({
               <input
                 required="yes"
                 name="street"
-                defaultValue={formProps.values.street}
+                value={formProps.values.street}
                 onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
               />
               <label htmlFor="directionNumber">Número</label>
               <input
                 required="yes"
                 name="directionNumber"
-                defaultValue={formProps.values.directionNumber}
+                value={formProps.values.directionNumber}
                 onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
               />
               <label htmlFor="directionFloor">Piso</label>
               <input
                 name="directionFloor"
-                defaultValue={formProps.values.directionFloor}
+                value={formProps.values.directionFloor}
                 onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
               />
             </div>
@@ -146,7 +113,7 @@ const DetailsAds = ({
                 required="yes"
                 type="text"
                 name="postalCode"
-                defaultValue={formProps.values.postalCode}
+                value={formProps.values.postalCode}
                 onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
               />
             </div>
@@ -154,7 +121,7 @@ const DetailsAds = ({
             <div>
               <input
                 required="yes"
-                defaultValue={formProps.values.city}
+                value={formProps.values.city}
                 name="city"
                 onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
               />
@@ -163,7 +130,7 @@ const DetailsAds = ({
             <div>
               <input
                 required="yes"
-                defaultValue={formProps.values.country}
+                value={formProps.values.country}
                 name="country"
                 onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
               />
@@ -227,7 +194,6 @@ const DetailsAds = ({
             <>
               <div>
                 <label htmlFor="owner">Propietario</label>
-                {console.log(formProps.values.owner)}
                 <Select
                   list={owners}
                   fields={{ groupBy: "", text: "fullName", value: "_id" }}
@@ -241,7 +207,9 @@ const DetailsAds = ({
                   list={consultants}
                   fields={{ groupBy: "", text: "fullName", value: "_id" }}
                   fn={setConsultant}
-                  defaultValues={id ? (formProps.values.consultant.length !== 0 ? formProps.values.consultant : []) : []}
+                  defaultValues={
+                    id ? (formProps.values.consultant.length !== 0 ? formProps.values.consultant : []) : []
+                  }
                 />
               </div>
             </>
@@ -250,7 +218,6 @@ const DetailsAds = ({
           <>
             <div>
               <label htmlFor="owner">Propietario</label>
-              {console.log(formProps.values.owner)}
               <Select
                 list={owners}
                 fields={{ groupBy: "", text: "fullName", value: "_id" }}
@@ -390,7 +357,7 @@ const DetailsAds = ({
               <input
                 type="text"
                 name="webSubtitle"
-                defaultValue={formProps.values.webSubtitle}
+                value={formProps.values.webSubtitle}
                 onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
               />
             </div>
@@ -400,8 +367,12 @@ const DetailsAds = ({
                 type="number"
                 required="yes"
                 name="buildSurface"
-                defaultValue={formProps.values.buildSurface}
-                onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                value={formProps.values.buildSurface}
+                onChange={(ev) => {
+                  formProps.setFieldValue(ev.target.name, ev.target.value);
+                  formProps.setFieldValue("rentValue", ev.target.value * formProps.values.monthlyRent);
+                  formProps.setFieldValue("expensesValue", ev.target.value * formProps.values.expenses);
+                }}
               />
               m2
             </div>
@@ -410,7 +381,7 @@ const DetailsAds = ({
               <input
                 type="number"
                 name="plotSurface"
-                defaultValue={formProps.values.plotSurface}
+                value={formProps.values.plotSurface}
                 onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
               />
               m2
@@ -420,7 +391,7 @@ const DetailsAds = ({
               <input
                 type="text"
                 name="floor"
-                defaultValue={formProps.values.floor}
+                value={formProps.values.floor}
                 onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
               />
             </div>
@@ -429,51 +400,12 @@ const DetailsAds = ({
               <input
                 type="text"
                 name="disponibility"
-                defaultValue={formProps.values.disponibility}
+                value={formProps.values.disponibility}
                 onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
               />
             </div>
             <hr />
-            {/* <div>Cuadro Superficies</div> */}
-            {/* <table className="surfaceBox">
-            <thead>
-              <tr>
-                {columnsArray.map((column, index) => (
-                  <th className="text-center" key={index}>
-                    {column}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((item, idx) => (
-                <tr key={idx}>
-                  {columnsArray.map((column, index) => (
-                    <td key={index}>
-                      <input
-                        type="text"
-                        column={column}
-                        value={rows[idx][column]}
-                        index={idx}
-                        className="form-control"
-                        onChange={(e) => updateState(e)}
-                      />
-                    </td>
-                  ))}
-
-                  <td>
-                    <button className="btn btn-outline-danger btn-sm" onClick={() => handleRemoveSpecificRow(idx)}>
-                      Remove
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table> 
-          <button onClick={handleAddRow} className="btn btn-primary">
-            Add Row
-          </button>
-          <hr /> */}
+            {/* <SurfacesBox formProps={formProps} /> */}
             <h4>Precio</h4>
             <div>
               <div>
@@ -483,7 +415,7 @@ const DetailsAds = ({
                   <input
                     type="number"
                     name="saleValue"
-                    defaultValue={formProps.values.saleValue}
+                    value={formProps.values.saleValue}
                     onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                   />
                   €
@@ -492,7 +424,7 @@ const DetailsAds = ({
                   <input
                     type="checkbox"
                     name="saleShowOnWeb"
-                    defaultValue={formProps.values.saleShowOnWeb}
+                    value={formProps.values.saleShowOnWeb}
                     onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.checked)}
                   />
                 </div>
@@ -505,7 +437,7 @@ const DetailsAds = ({
                     type="number"
                     name="rentValue"
                     value={formProps.values.buildSurface * formProps.values.monthlyRent}
-                    onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                    onChange={() => ""}
                   />
                   €
                   <br />
@@ -513,7 +445,7 @@ const DetailsAds = ({
                   <input
                     type="checkbox"
                     name="rentShowOnWeb"
-                    defaultValue={formProps.values.rentShowOnWeb}
+                    value={formProps.values.rentShowOnWeb}
                     onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.checked)}
                   />
                 </div>
@@ -526,7 +458,15 @@ const DetailsAds = ({
                 type="number"
                 name="monthlyRent"
                 value={formProps.values.monthlyRent}
-                onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                onChange={(ev) => {
+                  formProps.setFieldValue(ev.target.name, ev.target.value);
+                  formProps.setFieldValue("rentValue", ev.target.value * formProps.values.buildSurface);
+                  formProps.setFieldValue(
+                    "expensesIncluded",
+                    ev.target.value * formProps.values.buildSurface +
+                      formProps.values.expenses * formProps.values.buildSurface
+                  );
+                }}
               />
               €/m2/mes
             </div>
@@ -535,11 +475,27 @@ const DetailsAds = ({
               <input
                 type="number"
                 name="expenses"
-                defaultValue={formProps.values.expenses}
-                onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                value={formProps.values.expenses}
+                onChange={(ev) => {
+                  formProps.setFieldValue(ev.target.name, ev.target.value);
+                  formProps.setFieldValue("expensesValue", ev.target.value * formProps.values.buildSurface);
+                  formProps.setFieldValue(
+                    "expensesIncluded",
+                    formProps.values.monthlyRent * formProps.values.buildSurface +
+                      formProps.values.buildSurface * ev.target.value
+                  );
+                }}
               />
               €/m2/mes
             </div>
+            {/* {console.log(
+              "alquiler:",
+              formProps.values.rentValue,
+              "gastos de comunidad:",
+              formProps.values.expensesValue,
+              "alquiler con gastos includos:",
+              formProps.values.expensesIncluded
+            )} */}
             <div>
               <label htmlFor="expensesIncluded">Alquiler con gastos incluidos</label>
               <input
@@ -549,7 +505,7 @@ const DetailsAds = ({
                   formProps.values.buildSurface * formProps.values.monthlyRent +
                   formProps.values.buildSurface * formProps.values.expenses
                 }
-                onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                onChange={() => ""}
               />
               €/mes
             </div>
@@ -561,14 +517,14 @@ const DetailsAds = ({
                   type="number"
                   name="expensesValue"
                   value={formProps.values.buildSurface * formProps.values.expenses}
-                  onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                  onChange={() => ""}
                 />
                 €/mes
                 <label htmlFor="expensesShowOnWeb">Mostrar en la web</label>
                 <input
                   type="checkbox"
                   name="expensesShowOnWeb"
-                  defaultValue={formProps.values.expensesShowOnWeb}
+                  value={formProps.values.expensesShowOnWeb}
                   onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.checked)}
                 />
               </div>
@@ -580,7 +536,7 @@ const DetailsAds = ({
                 <input
                   type="number"
                   name="ibiValue"
-                  defaultValue={formProps.values.ibiValue}
+                  value={formProps.values.ibiValue}
                   onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                 />
                 €/mes
@@ -588,7 +544,7 @@ const DetailsAds = ({
                 <input
                   type="checkbox"
                   name="ibiShowOnWeb"
-                  defaultValue={formProps.values.ibiShowOnWeb}
+                  value={formProps.values.ibiShowOnWeb}
                   onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.checked)}
                 />
               </div>
@@ -598,7 +554,7 @@ const DetailsAds = ({
               <input
                 type="text"
                 name="buildingYear"
-                defaultValue={formProps.values.buildingYear}
+                value={formProps.values.buildingYear}
                 onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
               />
             </div>
@@ -611,7 +567,7 @@ const DetailsAds = ({
                   <input
                     type="number"
                     name="bedrooms"
-                    defaultValue={formProps.values.bedrooms}
+                    value={formProps.values.bedrooms}
                     onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                   />
                 </div>
@@ -620,7 +576,7 @@ const DetailsAds = ({
                   <input
                     type="number"
                     name="bathrooms"
-                    defaultValue={formProps.values.bathrooms}
+                    value={formProps.values.bathrooms}
                     onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                   />
                 </div>
@@ -629,7 +585,7 @@ const DetailsAds = ({
                   <input
                     type="number"
                     name="parking"
-                    defaultValue={formProps.values.parking}
+                    value={formProps.values.parking}
                     onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                   />
                 </div>
@@ -638,7 +594,7 @@ const DetailsAds = ({
                   <input
                     type="number"
                     name="indoorPool"
-                    defaultValue={formProps.values.indoorPool}
+                    value={formProps.values.indoorPool}
                     onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                   />
                 </div>
@@ -647,7 +603,7 @@ const DetailsAds = ({
                   <input
                     type="number"
                     name="outdoorPool"
-                    defaultValue={formProps.values.outdoorPool}
+                    value={formProps.values.outdoorPool}
                     onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                   />
                 </div>
@@ -656,7 +612,7 @@ const DetailsAds = ({
                   <input
                     type="number"
                     name="jobPositions"
-                    defaultValue={formProps.values.jobPositions}
+                    value={formProps.values.jobPositions}
                     onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                   />
                 </div>
@@ -665,7 +621,7 @@ const DetailsAds = ({
                   <input
                     type="text"
                     name="subway"
-                    defaultValue={formProps.values.subway}
+                    value={formProps.values.subway}
                     onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                   />
                 </div>
@@ -674,7 +630,7 @@ const DetailsAds = ({
                   <input
                     type="text"
                     name="bus"
-                    defaultValue={formProps.values.bus}
+                    value={formProps.values.bus}
                     onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                   />
                 </div>
@@ -840,7 +796,7 @@ const DetailsAds = ({
                   <input
                     type="checkbox"
                     name="bathrooms"
-                    checked={formProps.values.bathrooms}
+                    checked={formProps.values.qualityBathrooms}
                     onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.bathrooms)}
                   />
                   <label htmlFor="freeHeight">Altura libre &gt; 2,5 m</label>
@@ -874,7 +830,7 @@ const DetailsAds = ({
                 <label htmlFor="web">Descripción web</label>
                 <textarea
                   name="web"
-                  defaultValue={formProps.values.web}
+                  value={formProps.values.web}
                   onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                 />
               </div>
@@ -883,7 +839,7 @@ const DetailsAds = ({
                 <textarea
                   max="600"
                   name="emailPDF"
-                  defaultValue={formProps.values.emailPDF}
+                  value={formProps.values.emailPDF}
                   onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                 />
               </div>
@@ -891,7 +847,7 @@ const DetailsAds = ({
                 <label htmlFor="distribution">Distribución</label>
                 <textarea
                   name="distribution"
-                  defaultValue={formProps.values.distribution}
+                  value={formProps.values.distribution}
                   onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                 />
               </div>

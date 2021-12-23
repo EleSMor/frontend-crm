@@ -60,10 +60,10 @@ const ImagesAds = ({ id, adById }) => {
 
   const handleChangeFiles = (images) => {
     if (images) {
-      const preview = []
+      const preview = [];
       for (let image of images) {
-        console.log("imagen: ", image.name)
-        preview.push(image.objectURL)
+        console.log("imagen: ", image.name);
+        preview.push(image.objectURL);
       }
       setOthersPreview(preview);
       // const imageArray = Array.from(images).map((image) => URL.createObjectURL(image));
@@ -154,9 +154,7 @@ const ImagesAds = ({ id, adById }) => {
                 formProps.setFieldValue("main", e.files[0]);
                 handleChangeFile(e.files[0], setMainPreview);
               }}
-              // itemTemplate={itemTemplate}
               headerTemplate={headerTemplate}
-              // emptyTemplate={emptyTemplate}
             />
             {mainPreview ? (
               <div style={{ margin: "0.5%", marginTop: "2.5%", width: 200, height: 200 }}>
@@ -175,47 +173,6 @@ const ImagesAds = ({ id, adById }) => {
                   onClick={() => {
                     setMainPreview("");
                     deleteImg(mainPreview, "main");
-                  }}
-                />
-              </div>
-            ) : (
-              emptyTemplate()
-            )}
-
-            <h5>Planos</h5>
-            <FileUpload
-              name="blueprint"
-              chooseLabel="Cargar plano"
-              uploadHandler={upload}
-              customUpload={true}
-              accept="image/*"
-              maxFileSize={6000000}
-              onRemove={() => setBlueprintPreview("")}
-              onSelect={(e) => {
-                formProps.setFieldValue("blueprint", e.files[0]);
-                handleChangeFile(e.files[0], setBlueprintPreview);
-              }}
-              // itemTemplate={<img src={blueprintPreview.objectURL} alt="blueprint" width={266} height={232} />}
-              headerTemplate={headerTemplate}
-              // emptyTemplate={emptyTemplate}
-            />
-            {blueprintPreview ? (
-              <div style={{ margin: "0.5%", marginTop: "2.5%", width: 200, height: 200 }}>
-                <img src={blueprintPreview} width={200} height={200} />
-                <Button
-                  type="button"
-                  icon="pi pi-trash p-ml-auto"
-                  style={{
-                    width: "100%",
-                    background: "#2b363d",
-                    border: "none",
-                    borderRadius: "0",
-                    paddingRight: "5%",
-                    marginTop: "1%",
-                  }}
-                  onClick={() => {
-                    setBlueprintPreview("");
-                    deleteImg(blueprintPreview, "blueprint");
                   }}
                 />
               </div>
@@ -245,12 +202,49 @@ const ImagesAds = ({ id, adById }) => {
               }}
               accept="image/*"
               maxFileSize={6000000}
-              // itemTemplate={<span></span>}
               headerTemplate={headerTemplate}
-              // emptyTemplate={emptyTemplate}
             />
             {othersPreview.length !== 0 ? renderOthers(othersPreview) : emptyTemplate()}
             <hr />
+
+            <h5>Planos</h5>
+            <FileUpload
+              name="blueprint"
+              chooseLabel="Cargar plano"
+              uploadHandler={upload}
+              customUpload={true}
+              accept="image/*"
+              maxFileSize={6000000}
+              onRemove={() => setBlueprintPreview("")}
+              onSelect={(e) => {
+                formProps.setFieldValue("blueprint", e.files[0]);
+                handleChangeFile(e.files[0], setBlueprintPreview);
+              }}
+              headerTemplate={headerTemplate}
+            />
+            {blueprintPreview ? (
+              <div style={{ margin: "0.5%", marginTop: "2.5%", width: 200, height: 200 }}>
+                <img src={blueprintPreview} width={200} height={200} />
+                <Button
+                  type="button"
+                  icon="pi pi-trash p-ml-auto"
+                  style={{
+                    width: "100%",
+                    background: "#2b363d",
+                    border: "none",
+                    borderRadius: "0",
+                    paddingRight: "5%",
+                    marginTop: "1%",
+                  }}
+                  onClick={() => {
+                    setBlueprintPreview("");
+                    deleteImg(blueprintPreview, "blueprint");
+                  }}
+                />
+              </div>
+            ) : (
+              emptyTemplate()
+            )}
           </div>
         </Form>
       )}

@@ -38,7 +38,7 @@ const Navbar = () => {
                   <h1 className="navigate__title">GV Real State</h1>
                 </li>
               </div>
-              <NavLink className={location.includes("/ads") ? "navigate__route-active" : "navigate__route"} to="/ads">
+              <NavLink className={location.includes("/anuncios") ? "navigate__route-active" : "navigate__route"} to="/anuncios">
                 <li>
                   <div>
                     <Ads className="navigate__link--icon" />
@@ -47,8 +47,8 @@ const Navbar = () => {
                 </li>
               </NavLink>
               <NavLink
-                className={location.includes("/requests") ? "navigate__route-active" : "navigate__route"}
-                to="/requests"
+                className={location.includes("/peticiones") ? "navigate__route-active" : "navigate__route"}
+                to="/peticiones"
               >
                 <li>
                   <div>
@@ -58,8 +58,8 @@ const Navbar = () => {
                 </li>
               </NavLink>
               <NavLink
-                className={location.includes("/contacts") ? "navigate__route-active" : "navigate__route"}
-                to="/contacts"
+                className={location.includes("/contactos") ? "navigate__route-active" : "navigate__route"}
+                to="/contactos"
               >
                 <li>
                   <div>
@@ -69,8 +69,8 @@ const Navbar = () => {
                 </li>
               </NavLink>
               <NavLink
-                className={location.includes("/consultants") ? "navigate__route-active" : "navigate__route"}
-                to="/consultants"
+                className={location.includes("/consultores") ? "navigate__route-active" : "navigate__route"}
+                to="/consultores"
               >
                 <li>
                   <div>

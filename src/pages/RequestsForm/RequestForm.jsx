@@ -74,7 +74,7 @@ const RequestForm = () => {
       )
       .then(() => {
         if (id && requestById.length !== 0 && residentials.length !== 0 && patrimonials.length !== 0) setLoader(false);
-        else if (!id) setLoader(false)
+        else if (!id) setLoader(false);
       });
   };
 
@@ -152,11 +152,11 @@ const RequestForm = () => {
             if (data.bathroomsMin === "") data.bathroomsMin = 0;
 
             if (!id && selectedContact.length !== 0 && selectedConsultant.length !== 0) {
-              createRequest(data).then(() => history.push("/requests"));
+              createRequest(data).then(() => history.push("/peticiones"));
             } else if (id)
               updateRequest(data).then(() => {
                 alert(`La Petición ${requestById.requestReference} ha sido actualizada`);
-                history.go(0);
+                history.push("/peticiones");
               });
           }}
         >
@@ -465,7 +465,7 @@ const RequestForm = () => {
               </TabView>
               <button type="submit">Guardar</button>
 
-              <NavLink to="/requests">
+              <NavLink to="/peticiones">
                 <button>Cancelar</button>
               </NavLink>
             </Form>

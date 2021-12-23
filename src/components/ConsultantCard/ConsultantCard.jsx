@@ -14,8 +14,8 @@ const ConsultantCard = ({ consultants }) => {
               </div>
               <div className="card__box-info">
                 <div>
-                  <NavLink to={`/consultants/${consultant._id}`}>{consultant.fullName}</NavLink>
-                  <NavLink to={`/consultants/${consultant._id}`}>{consultant.position}</NavLink>
+                  <NavLink to={`/consultores/${consultant._id}`}>{consultant.fullName}</NavLink>
+                  <NavLink to={`/consultores/${consultant._id}`}>{consultant.position}</NavLink>
                 </div>
                 <div>
                   <p>{consultant.email}</p>
@@ -35,7 +35,7 @@ const ConsultantCard = ({ consultants }) => {
                 <div>Creado el {consultant.consultantCreationDate}</div>
                 <div>
                   <button>
-                    <NavLink to={`/consultants/${consultant._id}`}>Abrir Ficha</NavLink>
+                    <NavLink to={`/consultores/${consultant._id}`}>Abrir Ficha</NavLink>
                   </button>
                 </div>
               </div>

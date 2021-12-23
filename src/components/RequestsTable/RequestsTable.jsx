@@ -4,19 +4,25 @@ import { Column } from "primereact/column";
 import { ColumnGroup } from "primereact/columngroup";
 import { Row } from "primereact/row";
 import { NavLink } from "react-router-dom";
+import * as moment from "moment";
+import "moment/locale/es";
 import "./RequestTable.scss";
 
 const RequestsTable = ({ requests }) => {
   const [requestsFormated, setRequestsFormated] = useState([]);
+  const [loader, setLoader] = useState(false)
 
   useEffect(() => {
     if (requests.length !== 0) {
       const newRequests = requests.map((request) => {
-        request.requestBuildingType = request.requestBuildingType.join(" ");
-        request.requestAdType = request.requestAdType.join(" ");
+        console.log("petición", request)
+        if (request.requestBuildingType && !loader) request.requestBuildingType = request.requestBuildingType.join(" ");
+        if (request.requestAdType && !loader) request.requestAdType = request.requestAdType.join(" ");
+        if (!loader) request.createdAt = moment(request.createdAt).locale("es").format("L");
         return request;
       });
       setRequestsFormated(newRequests);
+      setLoader(true);
     }
   }, [requests]);
 
@@ -90,7 +96,7 @@ const RequestsTable = ({ requests }) => {
   };
 
   const referenceBodyTemplate = (rowData) => {
-    return <NavLink to={`/requests/${rowData._id}`}>{rowData.requestReference}</NavLink>;
+    return <NavLink to={`/peticiones/${rowData._id}`}>{rowData.requestReference}</NavLink>;
   };
 
   const priceMaxBodyTemplate = (rowData) => {
@@ -107,15 +113,19 @@ const RequestsTable = ({ requests }) => {
 
   return (
     <DataTable
+      dataKey="id"
       value={requests.length !== 0 ? requestsFormated : []}
       headerColumnGroup={headerGroup}
       paginator
-      rows={10}
+      paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+      rowsPerPageOptions={[100, 250, 500]}
+      rows={100}
       removableSort
+      sortField="createdAt"
+      sortOrder={-1}
       resizableColumns
       responsiveLayout="scroll"
-      paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink"
-      dataKey="id"
+      currentPageReportTemplate="Mostrando de {first} a {last} registros de {totalRecords}"
     >
       <Column field="createdAt"></Column>
       <Column field="requestReference" body={referenceBodyTemplate}></Column>

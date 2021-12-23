@@ -22,7 +22,7 @@ const AdsList = () => {
     <div>
       {user.length === 0 && history.push("/")}
       <Navbar />
-      <SubHeader title="Anuncios" list={ads} setter={setAdsFiltered} location="/ads/create" />
+      <SubHeader title="Anuncios" list={ads} setter={setAdsFiltered} location="/anuncios/crear" />
       <AdsTable ads={adsFiltered.length !== 0 ? adsFiltered : []} />
     </div>
   );

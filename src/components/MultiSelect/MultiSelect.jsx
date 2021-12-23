@@ -24,6 +24,16 @@ const CheckBoxGrouping = ({ list, fields, fn, disabled, defaultValues }) => {
             ignoreAccent={true}
             ignoreCase={true}
             allowFiltering={true}
+            filtering={(e) => {
+              const searchData = data.filter((zone) =>
+                zone.name
+                  .normalize("NFD")
+                  .replace(/[\u0300-\u036f]/g, "")
+                  .toLowerCase()
+                  .includes(e.text.toLowerCase())
+              );
+              e.updateData(searchData);
+            }}
             filterBarPlaceholder={filterBarPlaceholder}
             fields={checkFields}
             placeholder={checkWaterMark}

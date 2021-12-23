@@ -24,22 +24,22 @@ function App() {
             <Switch>
               {/* Pages */}
               <Route exact path="/" component={Login} />
-              <Route exact path="/ads" component={AdsList} />
-              <Route exact path="/requests" component={RequestsList} />
-              <Route exact path="/contacts" component={ContactsList} />
-              <Route exact path="/consultants" component={ConsultantsList} />
+              <Route exact path="/anuncios" component={AdsList} />
+              <Route exact path="/peticiones" component={RequestsList} />
+              <Route exact path="/contactos" component={ContactsList} />
+              <Route exact path="/consultores" component={ConsultantsList} />
               
               {/* Components */}
-              <Route exact path="/ads/create" component={AdForm} />
-              <Route exact path="/requests/create" component={RequestForm} />
-              <Route exact path="/contacts/create" component={ContactForm} />
-              <Route exact path="/consultants/create" component={ConsultantForm} />
+              <Route exact path="/anuncios/crear" component={AdForm} />
+              <Route exact path="/peticiones/crear" component={RequestForm} />
+              <Route exact path="/contactos/crear" component={ContactForm} />
+              <Route exact path="/consultores/crear" component={ConsultantForm} />
 
               {/* Components */}
-              <Route exact path="/ads/:id" children={<AdForm />} />
-              <Route exact path="/requests/:id" children={<RequestForm />} />
-              <Route exact path="/contacts/:id" children={<ContactForm />} />
-              <Route exact path="/consultants/:id" children={<ConsultantForm />} />
+              <Route exact path="/anuncios/:id" children={<AdForm />} />
+              <Route exact path="/peticiones/:id" children={<RequestForm />} />
+              <Route exact path="/contactos/:id" children={<ContactForm />} />
+              <Route exact path="/consultores/:id" children={<ConsultantForm />} />
             </Switch>
           </Suspense>
         </AuthUser>

@@ -55,7 +55,7 @@ const ContactCard = ({ contacts }) => {
 
               <div className="ContactCard__Card--item">
                 <span>Creado el {moment(contact.createdAt).format("L")}</span>
-                <NavLink to={`/contacts/${contact._id}`}>
+                <NavLink to={`/contactos/${contact._id}`}>
                   <button>Abrir Ficha</button>
                 </NavLink>
               </div>

@@ -76,7 +76,7 @@ const AdForm = () => {
               initialValues={{
                 title: adById ? adById.title : "",
                 adReference: adById ? adById.adReference : "",
-                showOnWeb: adById ? adById.showOnWeb : false,
+                showOnWeb: adById ? adById.showOnWeb : true,
                 featuredOnMain: adById ? adById.featuredOnMain : false,
                 street: adById ? adById.adDirection.address.street : "",
                 directionNumber: adById ? adById.adDirection.address.directionNumber : "",
@@ -103,7 +103,7 @@ const AdForm = () => {
                 meterPrice: adById ? adById.surfacesBox.meterPrice : "",
                 surfaceDisponibility: adById ? adById.surfacesBox.surfaceDisponibility : "",
                 saleValue: adById ? adById.price.sale.saleValue : 0,
-                saleShowOnWeb: adById ? adById.price.sale.saleShowOnWeb : false,
+                saleShowOnWeb: adById ? adById.price.sale.saleShowOnWeb : true,
                 rentValue: adById ? adById.price.rent.rentValue : 0,
                 rentShowOnWeb: adById ? adById.price.rent.rentShowOnWeb : false,
                 monthlyRent: adById ? adById.monthlyRent : 0,
@@ -169,11 +169,11 @@ const AdForm = () => {
                 else if (patrimonialSelectedZones.length === 0 && residentialSelectedZones.length === 0) data.zone = [];
 
                 if (!id) {
-                  createAd(data).then((res) => history.push(`/ads`));
+                  createAd(data).then((res) => history.push(`/anuncios`));
                 } else
                   updateAd(data).then((res) => {
                     alert(`El anuncio ${res.adReference} ha sido actualizado`);
-                    history.go(0);
+                    history.push(`/anuncios`);
                   });
               }}
             >
@@ -196,7 +196,9 @@ const AdForm = () => {
                     setPatrimonialZones={setPatrimonialSelectedZones}
                   />
                   <button type="submit">Guardar</button>
-                  <button onClick={() => history.push("/ads")}>Cancelar</button>
+                  <button type="button" onClick={() => history.push("/anuncios")}>
+                    Cancelar
+                  </button>
                 </Form>
               )}
             </Formik>

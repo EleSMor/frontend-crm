@@ -34,7 +34,7 @@ const ConsultantForm = () => {
     <>
       {user.length === 0 && history.push("/")}
       <Navbar />
-      <SubHeader title="Consultores" list={consultants} location="/consultants/create" />
+      <SubHeader title="Consultores" list={consultants} location="/consultores/crear" />
       <Formik
         enableReinitialize={true}
         initialValues={{
@@ -62,12 +62,12 @@ const ConsultantForm = () => {
           data.append("id", id);
           if (!id) {
             console.log(data);
-            createConsultant(data).then(() => history.push("/consultants"));
+            createConsultant(data).then(() => history.push("/consultores"));
           } else {
             data.id = id;
             updateConsultant(data).then((res) => {
               alert(`El consultor ${res.fullName} ha sido actualizado`);
-              history.go(0);
+              history.push("/consultores");
             });
           }
         }}
@@ -188,7 +188,7 @@ const ConsultantForm = () => {
                   />
                 </div>
                 <button type="submit">Guardar</button>
-                <NavLink to="/consultants">
+                <NavLink to="/consultores">
                   <button>Cancelar</button>
                 </NavLink>
               </TabPanel>
