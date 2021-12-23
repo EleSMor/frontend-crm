@@ -7,17 +7,25 @@ import { UserContext } from "../../components/Context/AuthUser";
 
 const RequestsList = () => {
   const [requests, setRequests] = useState([]);
+  const [requestsFiltered, setRequestsFiltered] = useState([]);
   const { user } = useContext(UserContext);
   const history = useHistory();
 
-  useEffect(() => getAllRequests().then((res) => setRequests(res)), []);
+  useEffect(
+    () =>
+      getAllRequests().then((res) => {
+        setRequests(res);
+        setRequestsFiltered(res);
+      }),
+    []
+  );
 
   return (
     <div>
       {user.length === 0 && history.push("/")}
       <Navbar />
-      <SubHeader title="Peticiones" location="/requests/create" />
-      <RequestsTable requests={requests} />
+      <SubHeader title="Peticiones" list={requests} location="/peticiones/crear" setter={setRequestsFiltered} />
+      <RequestsTable requests={requestsFiltered.length !== 0 ? requestsFiltered : []} />
     </div>
   );
 };

@@ -23,7 +23,7 @@ const Login = () => {
       };
       const user = await loginApi(form);
       storeUser(user);
-      history.push("/ads");
+      history.push("/anuncios");
       storage.set("user", user);
     } catch (error) {
       setError(error.message);

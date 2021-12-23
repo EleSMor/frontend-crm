@@ -1,5 +1,6 @@
 import * as React from "react";
 import { MultiSelectComponent } from "@syncfusion/ej2-react-dropdowns";
+import { DataManager, Query } from "@syncfusion/ej2-data";
 import "./Select.scss";
 
 const CheckBoxGrouping = ({ list, fields, fn, disabled, defaultValues }) => {
@@ -25,6 +26,16 @@ const CheckBoxGrouping = ({ list, fields, fn, disabled, defaultValues }) => {
             ignoreCase={true}
             maximumSelectionLength={1}
             allowFiltering={true}
+            filtering={(e) => {
+              const searchData = data.filter((person) =>
+                person.fullName
+                  .normalize("NFD")
+                  .replace(/[\u0300-\u036f]/g, "")
+                  .toLowerCase()
+                  .includes(e.text.toLowerCase())
+              );
+              e.updateData(searchData);
+            }}
             filterBarPlaceholder={filterBarPlaceholder}
             fields={checkFields}
             placeholder={checkWaterMark}
