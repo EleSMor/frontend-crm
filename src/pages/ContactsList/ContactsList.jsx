@@ -58,12 +58,13 @@ const ContactsList = () => {
       <Layout
         subTitle="Contactos"
         subList={contacts}
-        subLocation="/contacts/create"
+        subLocation="/contactos/crear"
         footContent={<ContactListFooter />}
-        // subUndertitle={<GoBack />}
+        subUndertitle={<GoBack />}
+        //subBreadcrumbs="Nuevo crear"
       >
       {/* <button onClick={() => handlePopUp()}>Nuevo</button> */}
-      
+
       {popUp && (
         <PopUp handlePopUp={handlePopUp} height="40%" width="50%" fixedButtons={true} buttons="holka">
           <p>
