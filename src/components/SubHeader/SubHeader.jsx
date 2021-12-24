@@ -4,7 +4,7 @@ import { InputText } from "primereact/inputtext";
 import { AiOutlineRight } from "react-icons/ai"
 import "./SubHeader.scss";
 
-const SubHeader = ({ title, titleBreadcrumb, underTitle, underTitleListing, list, location, setter }) => {
+const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter }) => {
   const history = useHistory();
 
   const checkIfIncludes = (origin, text) => {
