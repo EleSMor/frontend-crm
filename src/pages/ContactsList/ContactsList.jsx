@@ -7,6 +7,7 @@ import PopUp from "../../components/PopUp/PopUp";
 import Layout from "../Layout/Layout";
 import Spinner from "../../components/Spinner/Spinner";
 import Pagination from "../../components/Pagination/Pagination";
+import GoBack from "../../components/GoBack/GoBack";
 
 const ContactsList = () => {
   const [contacts, setContacts] = useState([]);
@@ -59,6 +60,7 @@ const ContactsList = () => {
         subList={contacts}
         subLocation="/contacts/create"
         footContent={<ContactListFooter />}
+        // subUndertitle={<GoBack />}
       >
       {/* <button onClick={() => handlePopUp()}>Nuevo</button> */}
       
