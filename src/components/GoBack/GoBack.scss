@@ -1,0 +1,6 @@
+@use "src/styles/utils.scss" as *;
+
+
+.GoBack {
+  @include button-light-sm
+}
