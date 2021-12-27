@@ -7,6 +7,7 @@ import PopUp from "../../components/PopUp/PopUp";
 import Layout from "../Layout/Layout";
 import Spinner from "../../components/Spinner/Spinner";
 import Pagination from "../../components/Pagination/Pagination";
+import GoBack from "../../components/GoBack/GoBack";
 
 const ContactsList = () => {
   const [contacts, setContacts] = useState([]);
@@ -55,6 +56,8 @@ const ContactsList = () => {
         subLocation="/contactos/crear"
         subSetter={setContactsFiltered}
         footContent={<ContactListFooter />}
+        subUndertitle={<GoBack />}
+        //subBreadcrumbs="Nuevo crear"
       >
         {/* <button onClick={() => handlePopUp()}>Nuevo</button> */}
 

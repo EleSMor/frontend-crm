@@ -11,6 +11,8 @@ const Layout = ({
   subBreadcrumbs,
   subUndertitle,
   subSetter,
+  subBreadcrumbs,
+  subUndertitle,
   footContent,
 }) => {
   return (

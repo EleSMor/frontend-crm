@@ -15,10 +15,18 @@
     text-align: left;
     margin-top:5px;
     margin-bottom: 8px;
+    display: flex;
+    align-items: flex-end;
+
     > h2 {
-      margin: 0;
       font-size: 24px;
       font-weight: 700;
+    }
+
+    > p {
+      display: flex;
+      align-items: center;
+      margin-left: 10px;
     }
   }
   
@@ -29,8 +37,8 @@
     align-items: center;
     font-size: 12px;
     
-    &-items {
-      display: flex;
+    &-item {
+      
     }
   }
   

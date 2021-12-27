@@ -8,7 +8,22 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
+<<<<<<< HEAD
   background-color: $c-background-light !important;
+=======
+
+  p {
+    margin: 0;
+  }
+
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 0
+  }
+>>>>>>> e6c769250676edcb0737ec761c6e45fb68ac3735
 }
 
 code {

@@ -1,9 +1,10 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { InputText } from "primereact/inputtext";
+import { AiOutlineRight } from "react-icons/ai";
 import "./SubHeader.scss";
 
-const SubHeader = ({ title, list, location, setter }) => {
+const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter }) => {
   const history = useHistory();
 
   const checkIfIncludes = (origin, text) => {
@@ -92,22 +93,34 @@ const SubHeader = ({ title, list, location, setter }) => {
     <div className="subHeader">
       <div className="subHeader__title">
         <h2>{title}</h2>
+        {titleBreadcrumb && (
+          <p>
+            <AiOutlineRight fontSize="0.9em" style={{ marginRight: 10 }} /> {titleBreadcrumb}
+          </p>
+        )}
       </div>
 
       <div className="subHeader__subtitle">
-        <div className="subHeader__subtitle-details">
-          <span>{list && (list.length > 50 ? list.length : list.length)} elementos</span>{" "}
-          <span>· Ordenado por fecha de última modificación ·</span> <span>Se actualizó hace unos segundos</span>
+        <div className="subHeader__subtitle-item">
+          {underTitle && <span>{underTitle}</span>}
+          {list && (
+            <span>
+              {list.length > 50 ? list.length : list.length}
+              elementos · Ordenado por fecha de última modificación · Se actualizó hace unos segundos
+            </span>
+          )}
         </div>
-        <div className="p-input-icon-left">
+
+        <div className="subHeader__subtitle-item">
           <i className="pi pi-search" />
           <InputText onChange={(ev) => customFilter(ev.target.value)} placeholder="Buscar en esta lista" />
+
+          {!window.location.pathname.includes(`${title.toLowerCase()}/`) && (
+            <button className="subHeader__btn" onClick={() => history.push(location)}>
+              Nuevo
+            </button>
+          )}
         </div>
-        {!window.location.pathname.includes(`${title.toLowerCase()}/`) && (
-          <button className="subHeader__btn" onClick={() => history.push(location)}>
-            Nuevo
-          </button>
-        )}
       </div>
     </div>
   );
