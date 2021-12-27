@@ -90,16 +90,11 @@ const AdsTable = ({ ads }) => {
           dataKey="id"
           headerColumnGroup={headerGroup}
           value={ads.length !== 0 ? adsFormated : []}
-          paginator
-          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-          rowsPerPageOptions={[100, 250, 500]}
-          rows={100}
           removableSort
           sortField="createdAt"
           sortOrder={-1}
           resizableColumns
           responsiveLayout="scroll"
-          currentPageReportTemplate="Mostrando de {first} a {last} registros de {totalRecords}"
         >
           <Column field="createdAt"></Column>
           <Column field="adReference" body={referenceBodyTemplate}></Column>

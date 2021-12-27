@@ -1,7 +1,7 @@
 @use "src/styles/utils.scss" as *;
 
 .subHeader {
-  position: fixed;
+  position: relative;
   top: calc($navbar-height + $navBar-margin-top);
   height: $subHeader-height;
   background-color: $c-background-light;
@@ -33,9 +33,10 @@
       display: flex;
     }
   }
-
+  
   &__btn {
     @include button-dark-sm;
-    margin-left: 10px;
+    padding: 14px 20px;
+    margin-right: 12px;
   }
 }

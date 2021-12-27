@@ -6,8 +6,8 @@
 
 .navigate {
   position: fixed;
-  top: 17px;
-  height: 56px;
+  top: $navBar-margin-top;
+  height: $navbar-height;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -120,34 +120,35 @@
 
   &__right {
     margin-right: 7.2vw;
+    height: 100%;
   }
 
   /* External ellipse */
   &__logging-ellipse2 {
-    position: absolute;
-    width: 7.48%;
-    height: 9.8%;
-    left: 92.2%;
-    top: 0.5%;
+    position: fixed;
+    width: 10vw;
+    height: 9.5vh;
+    left: 90vw;
+    top: 0.8vh;
   }
 
   /* Internal ellipse */
   &__logging-ellipse1 {
-    position: absolute;
-    width: 7.9%;
-    height: 9.2%;
-    left: 92%;
-    top: 0.8%;
+    position: fixed;
+    width: 10vw;
+    height: 9vh;
+    left: 90vw;
+    top: 1vh;
     color: #f3f2f2;
   }
 
   /* User */
   &__logging-user {
-    position: absolute;
-    width: 3%;
-    height: 3.5%;
-    left: 94.45%;
-    top: 3.4%;
+    position: fixed;
+    width: 3vw;
+    height: 4vh;
+    left: 93.5vw;
+    top: 3vh;
     color: #2b363d;
     &:hover {
       transform: scale(120%);

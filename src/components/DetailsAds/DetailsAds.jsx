@@ -536,8 +536,8 @@ const DetailsAds = ({
                 <input
                   type="checkbox"
                   name="ibiShowOnWeb"
-                  value={formProps.values.ibiShowOnWeb}
-                  onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.checked)}
+                  checked={formProps.values.ibiShowOnWeb}
+                  onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.ibiShowOnWeb)}
                 />
               </div>
             </div>

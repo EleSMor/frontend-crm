@@ -1,47 +1,47 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { DefaultImage } from "../../icons";
 import "./ConsultantCard.scss";
 
-const ConsultantCard = ({ consultants }) => {
+const ConsultantCard = ({ consultant }) => {
   return (
     <div className="card">
-      {consultants &&
-        consultants.map((consultant, index) => {
-          return (
-            <div className="card__box" key={`${index}-${consultant._id}`}>
-              <div>
-                <img className="card__box-avatar" src={`${consultant.avatar}`} alt={consultant.fullName} />
-              </div>
-              <div className="card__box-info">
-                <div>
-                  <NavLink to={`/consultores/${consultant._id}`}>{consultant.fullName}</NavLink>
-                  <NavLink to={`/consultores/${consultant._id}`}>{consultant.position}</NavLink>
-                </div>
-                <div>
-                  <p>{consultant.email}</p>
-                </div>
-                <div>
-                  <span>{consultant.consultantMobileNumber}</span>
-                  <span>|</span>
-                  <span>{consultant.consultantPhoneNumber}</span>
-                </div>
-              </div>
-              <div className="card__box-offices">
-                <p>Oficinas</p>
-                <p>{consultant.office1}</p>
-                <p>{consultant.office2}</p>
-              </div>
-              <div>
-                <div>Creado el {consultant.consultantCreationDate}</div>
-                <div>
-                  <button>
-                    <NavLink to={`/consultores/${consultant._id}`}>Abrir Ficha</NavLink>
-                  </button>
-                </div>
-              </div>
-            </div>
-          );
-        })}
+      <div className="card__box" id={consultant._id}>
+        <div>
+          {consultant.avatar ? (
+            <img className="card__box-avatar" src={`${consultant.avatar}`} alt={consultant.fullName} />
+          ) : (
+            <DefaultImage />
+          )}
+        </div>
+        <div className="card__box-info">
+          <div>
+            <NavLink to={`/consultores/${consultant._id}`}>{consultant.fullName}</NavLink>
+            <NavLink to={`/consultores/${consultant._id}`}>{consultant.position}</NavLink>
+          </div>
+          <div>
+            <p>{consultant.email}</p>
+          </div>
+          <div>
+            <span>{consultant.consultantMobileNumber}</span>
+            <span>|</span>
+            <span>{consultant.consultantPhoneNumber}</span>
+          </div>
+        </div>
+        <div className="card__box-offices">
+          <p>Oficinas</p>
+          <p>{consultant.office1}</p>
+          <p>{consultant.office2}</p>
+        </div>
+        <div>
+          <div>Creado el {consultant.consultantCreationDate}</div>
+          <div>
+            <button>
+              <NavLink to={`/consultores/${consultant._id}`}>Abrir Ficha</NavLink>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

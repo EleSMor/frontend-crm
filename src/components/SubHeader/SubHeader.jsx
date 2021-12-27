@@ -99,15 +99,15 @@ const SubHeader = ({ title, list, location, setter }) => {
           <span>{list && (list.length > 50 ? list.length : list.length)} elementos</span>{" "}
           <span>· Ordenado por fecha de última modificación ·</span> <span>Se actualizó hace unos segundos</span>
         </div>
+        <div className="p-input-icon-left">
+          <i className="pi pi-search" />
+          <InputText onChange={(ev) => customFilter(ev.target.value)} placeholder="Buscar en esta lista" />
+        </div>
         {!window.location.pathname.includes(`${title.toLowerCase()}/`) && (
           <button className="subHeader__btn" onClick={() => history.push(location)}>
             Nuevo
           </button>
         )}
-        <div className="p-input-icon-left">
-          <i className="pi pi-search" />
-          <InputText onChange={(ev) => customFilter(ev.target.value)} placeholder="Buscar en esta lista" />
-        </div>
       </div>
     </div>
   );

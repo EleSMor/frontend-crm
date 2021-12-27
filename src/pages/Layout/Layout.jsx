@@ -8,6 +8,8 @@ const Layout = ({
   subTitle,
   subList,
   subLocation,
+  subBreadcrumbs,
+  subUndertitle,
   subSetter,
   footContent,
 }) => {
@@ -19,6 +21,8 @@ const Layout = ({
         list={subList}
         location={subLocation}
         setter={subSetter}
+        titleBreadcrumb={subBreadcrumbs}
+        underTitle={subUndertitle}
       />
       
       {footContent && <Footer>{footContent}</Footer>}
