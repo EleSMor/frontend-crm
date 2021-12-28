@@ -7,14 +7,36 @@
   border-radius: 3px;
   box-shadow: rgba(0, 0, 0, 0.046) 0px 1px 4px;
   border: 1px solid rgba(0, 0, 0, 0.089);
+  border-left: 8px solid rgba(0, 0, 0, 0.089);
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 182px;
 
-  &--content-header {
+  &--content {
     display: flex;
-    flex-direction: row
+    flex-direction: column;
+
+    &-header {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;    
+      font-size: 14px;  
+    }
+
+    &-body {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      padding-top: 16px;
+      &--title {
+        padding-right: 8px;
+      }
+      &--item {
+        display: flex;
+        padding: 16px 16px 0 0;
+      }
+    }
   }
 
   &--item {
@@ -34,7 +56,7 @@
     &--border {
       border: 1px solid rgba(0, 0, 0, 0.329);
       border-radius: 3px;
-      padding: 0 16px;
+      padding: 4px 16px;
     }
 
     > textarea {
@@ -83,6 +105,9 @@
 
     &--button {
       @include button-dark;
+      font-weight: bold;
+      font-size: 20px;
+      padding: 12px 48px;
     }
   }
 }

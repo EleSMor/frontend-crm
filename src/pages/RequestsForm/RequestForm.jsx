@@ -2,7 +2,10 @@ import React, { useState, useEffect, useContext } from "react";
 import { useHistory, NavLink, useParams } from "react-router-dom";
 import { Formik, Form } from "formik";
 import { TabView, TabPanel } from "primereact/tabview";
-import { Select, MultiSelect, Navbar, SubHeader, RequestsMatching } from "../../components";
+import { Select, MultiSelect, RequestsMatching } from "../../components";
+import Layout from "../Layout/Layout";
+import Spinner from "../../components/Spinner/Spinner";
+import GoBack from "../../components/GoBack/GoBack";
 import { getAllConsultants } from "../../api/consultants.api";
 import { getAllResidentialZones, getAllPatrimonialZones } from "../../api/zones.api";
 import { getAllContacts } from "../../api/contacts.api";
@@ -94,384 +97,384 @@ const RequestForm = () => {
   return (
     <>
       {user.length === 0 && history.push("/")}
-      <Navbar />
-      <SubHeader title="Peticiones" list={requests} />
-      {residentialSelectedZones.length !== 0 && patrimonialSelectedZones.length !== 0 && loader ? (
-        <p>spinner</p>
-      ) : (
-        <Formik
-          enableReinitialize={true}
-          initialValues={{
-            id: requestById.length !== 0 ? requestById._id : "",
-            requestReference: requestById.length !== 0 ? requestById.requestReference : reference,
-            requestContact: requestById.length !== 0 ? selectedContact : "",
-            requestConsultant: requestById.length !== 0 ? selectedConsultant : "",
-            requestAdType: requestById.length !== 0 ? selectedAdType : [],
-            requestComment: requestById.length !== 0 ? requestById.requestComment : "",
-            requestBuildingType: requestById.length !== 0 ? selectedBuildingType : [],
-            requestZone: requestById.length !== 0 ? requestById.requestZone : [],
-            salePriceMax: requestById.length !== 0 ? requestById.requestSalePrice.salePriceMax : "",
-            salePriceMin: requestById.length !== 0 ? requestById.requestSalePrice.salePriceMin : "",
-            rentPriceMax: requestById.length !== 0 ? requestById.requestRentPrice.rentPriceMax : "",
-            rentPriceMin: requestById.length !== 0 ? requestById.requestRentPrice.rentPriceMin : "",
-            buildSurfaceMax: requestById.length !== 0 ? requestById.requestBuildSurface.buildSurfaceMax : "",
-            buildSurfaceMin: requestById.length !== 0 ? requestById.requestBuildSurface.buildSurfaceMin : "",
-            plotSurfaceMax: requestById.length !== 0 ? requestById.requestPlotSurface.plotSurfaceMax : "",
-            plotSurfaceMin: requestById.length !== 0 ? requestById.requestPlotSurface.plotSurfaceMin : "",
-            bedroomsMax: requestById.length !== 0 ? requestById.requestBedrooms.bedroomsMax : "",
-            bedroomsMin: requestById.length !== 0 ? requestById.requestBedrooms.bedroomsMin : "",
-            bathroomsMax: requestById.length !== 0 ? requestById.requestBathrooms.bathroomsMax : "",
-            bathroomsMin: requestById.length !== 0 ? requestById.requestBathrooms.bathroomsMin : "",
-          }}
-          onSubmit={(data) => {
-            setValidateForm(true);
-            if (id) data.id = id;
-            data.requestContact = selectedContact[0];
-            data.requestConsultant = selectedConsultant[0];
-            data.requestAdType = selectedAdType;
-            data.requestBuildingType = selectedBuildingType;
-            if (residentialSelectedZones.length !== 0) {
-              data.requestZone = residentialSelectedZones;
-            } else if (patrimonialSelectedZones.length !== 0) {
-              data.requestZone = patrimonialSelectedZones;
-            } else if (patrimonialSelectedZones.length === 0 && residentialSelectedZones.length === 0) {
-              data.requestZone = [];
-            }
+      <Layout subTitle="Peticiones" subUndertitle={<GoBack />} subLocation="/peticiones/crear">
+        {residentialSelectedZones.length !== 0 && patrimonialSelectedZones.length !== 0 && loader ? (
+          <Spinner />
+        ) : (
+          <TabView>
+            <TabPanel header="Detalles">
+              <Formik
+                enableReinitialize={true}
+                initialValues={{
+                  id: requestById.length !== 0 ? requestById._id : "",
+                  requestReference: requestById.length !== 0 ? requestById.requestReference : reference,
+                  requestContact: requestById.length !== 0 ? selectedContact : "",
+                  requestConsultant: requestById.length !== 0 ? selectedConsultant : "",
+                  requestAdType: requestById.length !== 0 ? selectedAdType : [],
+                  requestComment: requestById.length !== 0 ? requestById.requestComment : "",
+                  requestBuildingType: requestById.length !== 0 ? selectedBuildingType : [],
+                  requestZone: requestById.length !== 0 ? requestById.requestZone : [],
+                  salePriceMax: requestById.length !== 0 ? requestById.requestSalePrice.salePriceMax : "",
+                  salePriceMin: requestById.length !== 0 ? requestById.requestSalePrice.salePriceMin : "",
+                  rentPriceMax: requestById.length !== 0 ? requestById.requestRentPrice.rentPriceMax : "",
+                  rentPriceMin: requestById.length !== 0 ? requestById.requestRentPrice.rentPriceMin : "",
+                  buildSurfaceMax: requestById.length !== 0 ? requestById.requestBuildSurface.buildSurfaceMax : "",
+                  buildSurfaceMin: requestById.length !== 0 ? requestById.requestBuildSurface.buildSurfaceMin : "",
+                  plotSurfaceMax: requestById.length !== 0 ? requestById.requestPlotSurface.plotSurfaceMax : "",
+                  plotSurfaceMin: requestById.length !== 0 ? requestById.requestPlotSurface.plotSurfaceMin : "",
+                  bedroomsMax: requestById.length !== 0 ? requestById.requestBedrooms.bedroomsMax : "",
+                  bedroomsMin: requestById.length !== 0 ? requestById.requestBedrooms.bedroomsMin : "",
+                  bathroomsMax: requestById.length !== 0 ? requestById.requestBathrooms.bathroomsMax : "",
+                  bathroomsMin: requestById.length !== 0 ? requestById.requestBathrooms.bathroomsMin : "",
+                }}
+                onSubmit={(data) => {
+                  setValidateForm(true);
+                  if (id) data.id = id;
+                  data.requestContact = selectedContact[0];
+                  data.requestConsultant = selectedConsultant[0];
+                  data.requestAdType = selectedAdType;
+                  data.requestBuildingType = selectedBuildingType;
+                  if (residentialSelectedZones.length !== 0) {
+                    data.requestZone = residentialSelectedZones;
+                  } else if (patrimonialSelectedZones.length !== 0) {
+                    data.requestZone = patrimonialSelectedZones;
+                  } else if (patrimonialSelectedZones.length === 0 && residentialSelectedZones.length === 0) {
+                    data.requestZone = [];
+                  }
 
-            if (data.salePriceMax === "") data.salePriceMax = 99999999;
-            if (data.salePriceMin === "") data.salePriceMin = 0;
-            if (data.rentPriceMax === "") data.rentPriceMax = 99999;
-            if (data.rentPriceMin === "") data.rentPriceMin = 0;
-            if (data.buildSurfaceMax === "") data.buildSurfaceMax = 9999;
-            if (data.buildSurfaceMin === "") data.buildSurfaceMin = 0;
-            if (data.plotSurfaceMax === "") data.plotSurfaceMax = 99999;
-            if (data.plotSurfaceMin === "") data.plotSurfaceMin = 0;
-            if (data.bedroomsMax === "") data.bedroomsMax = 99;
-            if (data.bedroomsMin === "") data.bedroomsMin = 0;
-            if (data.bathroomsMax === "") data.bathroomsMax = 99;
-            if (data.bathroomsMin === "") data.bathroomsMin = 0;
+                  if (data.salePriceMax === "") data.salePriceMax = 99999999;
+                  if (data.salePriceMin === "") data.salePriceMin = 0;
+                  if (data.rentPriceMax === "") data.rentPriceMax = 99999;
+                  if (data.rentPriceMin === "") data.rentPriceMin = 0;
+                  if (data.buildSurfaceMax === "") data.buildSurfaceMax = 9999;
+                  if (data.buildSurfaceMin === "") data.buildSurfaceMin = 0;
+                  if (data.plotSurfaceMax === "") data.plotSurfaceMax = 99999;
+                  if (data.plotSurfaceMin === "") data.plotSurfaceMin = 0;
+                  if (data.bedroomsMax === "") data.bedroomsMax = 99;
+                  if (data.bedroomsMin === "") data.bedroomsMin = 0;
+                  if (data.bathroomsMax === "") data.bathroomsMax = 99;
+                  if (data.bathroomsMin === "") data.bathroomsMin = 0;
 
-            if (!id && selectedContact.length !== 0 && selectedConsultant.length !== 0) {
-              createRequest(data).then(() => history.push("/peticiones"));
-            } else if (id)
-              updateRequest(data).then(() => {
-                alert(`La Petición ${requestById.requestReference} ha sido actualizada`);
-                history.push("/peticiones");
-              });
-          }}
-        >
-          {(formProps) => (
-            <Form>
-              <TabView>
-                <TabPanel header="Detalles">
-                  <div>
-                    <label required htmlFor="requestContact">
-                      Contacto
-                    </label>
-                    <Select
-                      list={contacts}
-                      fields={{ groupBy: "", text: "fullName", value: "_id" }}
-                      fn={setSelectedContact}
-                      defaultValues={selectedContact}
-                    />
-                    {validateForm && selectedContact.length === 0 && (
-                      <p style={{ color: "red" }}>* Seleccione un contacto</p>
-                    )}
-                  </div>
-                  <div>
-                    <label required htmlFor="requestConsultant">
-                      Consultor
-                    </label>
-                    <Select
-                      list={consultants}
-                      fields={{ groupBy: "", text: "fullName", value: "_id" }}
-                      fn={setSelectedConsultant}
-                      defaultValues={selectedConsultant}
-                    />
-                    {validateForm && selectedConsultant.length === 0 && (
-                      <p style={{ color: "red" }}>* Seleccione un consultor</p>
-                    )}
-                  </div>
-                  <div>
-                    <label htmlFor="adType">
-                      Tipo de anuncio
-                      <div>
+                  if (!id && selectedContact.length !== 0 && selectedConsultant.length !== 0) {
+                    createRequest(data).then(() => history.push("/peticiones"));
+                  } else if (id)
+                    updateRequest(data).then(() => {
+                      alert(`La Petición ${requestById.requestReference} ha sido actualizada`);
+                      history.push("/peticiones");
+                    });
+                }}
+              >
+                {(formProps) => (
+                  <Form>
+                    <div>
+                      <label required htmlFor="requestContact">
+                        Contacto
+                      </label>
+                      <Select
+                        list={contacts}
+                        fields={{ groupBy: "", text: "fullName", value: "_id" }}
+                        fn={setSelectedContact}
+                        defaultValues={selectedContact}
+                      />
+                      {validateForm && selectedContact.length === 0 && (
+                        <p style={{ color: "red" }}>* Seleccione un contacto</p>
+                      )}
+                    </div>
+                    <div>
+                      <label required htmlFor="requestConsultant">
+                        Consultor
+                      </label>
+                      <Select
+                        list={consultants}
+                        fields={{ groupBy: "", text: "fullName", value: "_id" }}
+                        fn={setSelectedConsultant}
+                        defaultValues={selectedConsultant}
+                      />
+                      {validateForm && selectedConsultant.length === 0 && (
+                        <p style={{ color: "red" }}>* Seleccione un consultor</p>
+                      )}
+                    </div>
+                    <div>
+                      <label htmlFor="adType">
+                        Tipo de anuncio
+                        <div>
+                          <input
+                            type="checkbox"
+                            required={selectedAdType.length === 0 ? true : false}
+                            checked={selectedAdType.includes("Alquiler") ? true : ""}
+                            onChange={(ev) => newSelect(selectedAdType, setSelectedAdType, ev)}
+                            name="requestAdType"
+                            value="Alquiler"
+                          />
+                          <span>Alquiler</span>
+
+                          <input
+                            type="checkbox"
+                            name="requestAdType"
+                            required={selectedAdType.length === 0 ? true : false}
+                            checked={selectedAdType.includes("Venta") ? true : ""}
+                            onChange={(ev) => newSelect(selectedAdType, setSelectedAdType, ev)}
+                            value="Venta"
+                          />
+                          <span>Venta</span>
+                        </div>
+                      </label>
+                    </div>
+                    <div>
+                      <label htmlFor="requestBuildingType" name="requestBuildingType">
+                        Tipo de inmueble
+                        <div>
+                          <span>Casa</span>
+                          <input
+                            required={selectedBuildingType.length === 0 ? true : false}
+                            type="checkbox"
+                            onChange={(ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev)}
+                            checked={selectedBuildingType.includes("Casa") ? true : ""}
+                            value="Casa"
+                          />
+                          <span>Piso</span>
+                          <input
+                            type="checkbox"
+                            required={selectedBuildingType.length === 0 ? true : false}
+                            onChange={(ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev)}
+                            checked={selectedBuildingType.includes("Piso") ? true : ""}
+                            value="Piso"
+                          />
+                          <span>Parcela</span>
+                          <input
+                            type="checkbox"
+                            required={selectedBuildingType.length === 0 ? true : false}
+                            onChange={(ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev)}
+                            checked={selectedBuildingType.includes("Parcela") ? true : ""}
+                            value="Parcela"
+                          />
+                          <span>Ático</span>
+                          <input
+                            type="checkbox"
+                            required={selectedBuildingType.length === 0 ? true : false}
+                            onChange={(ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev)}
+                            checked={selectedBuildingType.includes("Ático") ? true : ""}
+                            value="Ático"
+                          />
+                          <span>Oficina</span>
+                          <input
+                            type="checkbox"
+                            required={selectedBuildingType.length === 0 ? true : false}
+                            onChange={(ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev)}
+                            checked={selectedBuildingType.includes("Oficina") ? true : ""}
+                            value="Oficina"
+                          />
+                          <span>Edificio</span>
+                          <input
+                            type="checkbox"
+                            required={selectedBuildingType.length === 0 ? true : false}
+                            onChange={(ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev)}
+                            checked={selectedBuildingType.includes("Edificio") ? true : ""}
+                            value="Edificio"
+                          />
+                          <span>Local</span>
+                          <input
+                            type="checkbox"
+                            required={selectedBuildingType.length === 0 ? true : false}
+                            onChange={(ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev)}
+                            checked={selectedBuildingType.includes("Local") ? true : ""}
+                            value="Local"
+                          />
+                          <span>Campo Rústico</span>
+                          <input
+                            type="checkbox"
+                            required={selectedBuildingType.length === 0 ? true : false}
+                            onChange={(ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev)}
+                            checked={selectedBuildingType.includes("Campo Rústico") ? true : ""}
+                            value="Campo Rústico"
+                          />
+                          <span>Activos Singulares</span>
+                          <input
+                            type="checkbox"
+                            required={selectedBuildingType.length === 0 ? true : false}
+                            onChange={(ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev)}
+                            checked={selectedBuildingType.includes("Activos Singulares") ? true : ""}
+                            value="Activos Singulares"
+                          />
+                          <span>Costa</span>
+                          <input
+                            type="checkbox"
+                            required={selectedBuildingType.length === 0 ? true : false}
+                            onChange={(ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev)}
+                            checked={selectedBuildingType.includes("Costa") ? true : ""}
+                            value="Costa"
+                          />
+                        </div>
+                      </label>
+                    </div>
+                    <div>
+                      <label htmlFor="requestReference">Id Petición</label>
+                      <input type="text" name="requestReference" value={formProps.values.requestReference} disabled />
+                    </div>
+                    <div>
+                      <label htmlFor="requestComment">Comentarios</label>
+                      <textarea
+                        name="requestComment"
+                        onChange={(ev) => {
+                          formProps.setFieldValue(ev.target.name, ev.target.value);
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="residentialZone">Zonas residencial</label>
+                      <MultiSelect
+                        list={residentials}
+                        fields={{ groupBy: "zone", text: "name", value: "_id" }}
+                        fn={setResidentialSelectedZones}
+                        defaultValues={validateZone(residentials) ? requestById.requestZone : ""}
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="patrimonialZone">Zonas patrimonial</label>
+                      <MultiSelect
+                        list={patrimonials}
+                        fields={{ groupBy: "zone", text: "name", value: "_id" }}
+                        fn={setPatrimonialSelectedZones}
+                        defaultValues={validateZone(patrimonials) ? requestById.requestZone : ""}
+                      />
+                    </div>
+                    <div>
+                      <div className="">
+                        <h4>Precio de venta</h4>
+                        <label htmlFor="salePriceMax">Máximo</label>
                         <input
-                          type="checkbox"
-                          required={selectedAdType.length === 0 ? true : false}
-                          checked={selectedAdType.includes("Alquiler") ? true : ""}
-                          onChange={(ev) => newSelect(selectedAdType, setSelectedAdType, ev)}
-                          name="requestAdType"
-                          value="Alquiler"
+                          type="number"
+                          name="salePriceMax"
+                          value={formProps.values.salePriceMax}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                         />
-                        <span>Alquiler</span>
-
+                        €<label htmlFor="salePriceMin">Mínimo</label>
                         <input
-                          type="checkbox"
-                          name="requestAdType"
-                          required={selectedAdType.length === 0 ? true : false}
-                          checked={selectedAdType.includes("Venta") ? true : ""}
-                          onChange={(ev) => newSelect(selectedAdType, setSelectedAdType, ev)}
-                          value="Venta"
+                          type="number"
+                          name="salePriceMin"
+                          value={formProps.values.salePriceMin}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                         />
-                        <span>Venta</span>
+                        €
                       </div>
-                    </label>
-                  </div>
-                  <div>
-                    <label htmlFor="requestBuildingType" name="requestBuildingType">
-                      Tipo de inmueble
-                      <div>
-                        <span>Casa</span>
+                    </div>
+                    <div>
+                      <div className="">
+                        <h4>Precio de alquiler</h4>
+                        <label htmlFor="rentPriceMax">Máximo</label>
                         <input
-                          required={selectedBuildingType.length === 0 ? true : false}
-                          type="checkbox"
-                          onChange={(ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev)}
-                          checked={selectedBuildingType.includes("Casa") ? true : ""}
-                          value="Casa"
+                          type="number"
+                          name="rentPriceMax"
+                          value={formProps.values.rentPriceMax}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                         />
-                        <span>Piso</span>
+                        €<label htmlFor="rentPriceMin">Mínimo</label>
                         <input
-                          type="checkbox"
-                          required={selectedBuildingType.length === 0 ? true : false}
-                          onChange={(ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev)}
-                          checked={selectedBuildingType.includes("Piso") ? true : ""}
-                          value="Piso"
+                          type="number"
+                          name="rentPriceMin"
+                          value={formProps.values.rentPriceMin}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                         />
-                        <span>Parcela</span>
+                        €
+                      </div>
+                    </div>
+                    <div>
+                      <div className="">
+                        <h4>Superficie construida</h4>
+                        <label htmlFor="buildSurfaceMax">Máximo</label>
                         <input
-                          type="checkbox"
-                          required={selectedBuildingType.length === 0 ? true : false}
-                          onChange={(ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev)}
-                          checked={selectedBuildingType.includes("Parcela") ? true : ""}
-                          value="Parcela"
+                          type="number"
+                          name="buildSurfaceMax"
+                          value={formProps.values.buildSurfaceMax}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                         />
-                        <span>Ático</span>
+                        m2
+                        <label htmlFor="buildSurfaceMin">Mínimo</label>
                         <input
-                          type="checkbox"
-                          required={selectedBuildingType.length === 0 ? true : false}
-                          onChange={(ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev)}
-                          checked={selectedBuildingType.includes("Ático") ? true : ""}
-                          value="Ático"
+                          type="number"
+                          name="buildSurfaceMin"
+                          value={formProps.values.buildSurfaceMin}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                         />
-                        <span>Oficina</span>
+                        m2
+                      </div>
+                    </div>
+                    <div>
+                      <div className="">
+                        <h4>Superficie de parcela</h4>
+                        <label htmlFor="plotSurfaceMax">Máximo</label>
                         <input
-                          type="checkbox"
-                          required={selectedBuildingType.length === 0 ? true : false}
-                          onChange={(ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev)}
-                          checked={selectedBuildingType.includes("Oficina") ? true : ""}
-                          value="Oficina"
+                          type="number"
+                          name="plotSurfaceMax"
+                          value={formProps.values.plotSurfaceMax}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                         />
-                        <span>Edificio</span>
+                        m2
+                        <label htmlFor="plotSurfaceMin">Mínimo</label>
                         <input
-                          type="checkbox"
-                          required={selectedBuildingType.length === 0 ? true : false}
-                          onChange={(ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev)}
-                          checked={selectedBuildingType.includes("Edificio") ? true : ""}
-                          value="Edificio"
+                          type="number"
+                          name="plotSurfaceMin"
+                          value={formProps.values.plotSurfaceMin}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                         />
-                        <span>Local</span>
+                        m2
+                      </div>
+                    </div>
+                    <div>
+                      <div className="">
+                        <h4>Número de dormitorios</h4>
+                        <label htmlFor="bedroomsMax">Máximo</label>
                         <input
-                          type="checkbox"
-                          required={selectedBuildingType.length === 0 ? true : false}
-                          onChange={(ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev)}
-                          checked={selectedBuildingType.includes("Local") ? true : ""}
-                          value="Local"
+                          type="number"
+                          name="bedroomsMax"
+                          value={formProps.values.bedroomsMax}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                         />
-                        <span>Campo Rústico</span>
+                        m2
+                        <label htmlFor="bedroomsMin">Mínimo</label>
                         <input
-                          type="checkbox"
-                          required={selectedBuildingType.length === 0 ? true : false}
-                          onChange={(ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev)}
-                          checked={selectedBuildingType.includes("Campo Rústico") ? true : ""}
-                          value="Campo Rústico"
+                          type="number"
+                          name="bedroomsMin"
+                          value={formProps.values.bedroomsMin}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                         />
-                        <span>Activos Singulares</span>
+                        m2
+                      </div>
+                    </div>
+                    <div>
+                      <div className="">
+                        <h4>Número de baños</h4>
+                        <label htmlFor="bathroomsMax">Máximo</label>
                         <input
-                          type="checkbox"
-                          required={selectedBuildingType.length === 0 ? true : false}
-                          onChange={(ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev)}
-                          checked={selectedBuildingType.includes("Activos Singulares") ? true : ""}
-                          value="Activos Singulares"
+                          type="number"
+                          name="bathroomsMax"
+                          value={formProps.values.bathroomsMax}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                         />
-                        <span>Costa</span>
+                        <label htmlFor="bathroomsMin">Mínimo</label>
                         <input
-                          type="checkbox"
-                          required={selectedBuildingType.length === 0 ? true : false}
-                          onChange={(ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev)}
-                          checked={selectedBuildingType.includes("Costa") ? true : ""}
-                          value="Costa"
+                          type="number"
+                          name="bathroomsMin"
+                          value={formProps.values.bathroomsMin}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                         />
                       </div>
-                    </label>
-                  </div>
-                  <div>
-                    <label htmlFor="requestReference">Id Petición</label>
-                    <input type="text" name="requestReference" value={formProps.values.requestReference} disabled />
-                  </div>
-                  <div>
-                    <label htmlFor="requestComment">Comentarios</label>
-                    <textarea
-                      name="requestComment"
-                      onChange={(ev) => {
-                        formProps.setFieldValue(ev.target.name, ev.target.value);
-                      }}
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="residentialZone">Zonas residencial</label>
-                    <MultiSelect
-                      list={residentials}
-                      fields={{ groupBy: "zone", text: "name", value: "_id" }}
-                      fn={setResidentialSelectedZones}
-                      defaultValues={validateZone(residentials) ? requestById.requestZone : ""}
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="patrimonialZone">Zonas patrimonial</label>
-                    <MultiSelect
-                      list={patrimonials}
-                      fields={{ groupBy: "zone", text: "name", value: "_id" }}
-                      fn={setPatrimonialSelectedZones}
-                      defaultValues={validateZone(patrimonials) ? requestById.requestZone : ""}
-                    />
-                  </div>
-                  <div>
-                    <div className="">
-                      <h4>Precio de venta</h4>
-                      <label htmlFor="salePriceMax">Máximo</label>
-                      <input
-                        type="number"
-                        name="salePriceMax"
-                        value={formProps.values.salePriceMax}
-                        onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                      />
-                      €<label htmlFor="salePriceMin">Mínimo</label>
-                      <input
-                        type="number"
-                        name="salePriceMin"
-                        value={formProps.values.salePriceMin}
-                        onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                      />
-                      €
                     </div>
-                  </div>
-                  <div>
-                    <div className="">
-                      <h4>Precio de alquiler</h4>
-                      <label htmlFor="rentPriceMax">Máximo</label>
-                      <input
-                        type="number"
-                        name="rentPriceMax"
-                        value={formProps.values.rentPriceMax}
-                        onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                      />
-                      €<label htmlFor="rentPriceMin">Mínimo</label>
-                      <input
-                        type="number"
-                        name="rentPriceMin"
-                        value={formProps.values.rentPriceMin}
-                        onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                      />
-                      €
-                    </div>
-                  </div>
-                  <div>
-                    <div className="">
-                      <h4>Superficie construida</h4>
-                      <label htmlFor="buildSurfaceMax">Máximo</label>
-                      <input
-                        type="number"
-                        name="buildSurfaceMax"
-                        value={formProps.values.buildSurfaceMax}
-                        onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                      />
-                      m2
-                      <label htmlFor="buildSurfaceMin">Mínimo</label>
-                      <input
-                        type="number"
-                        name="buildSurfaceMin"
-                        value={formProps.values.buildSurfaceMin}
-                        onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                      />
-                      m2
-                    </div>
-                  </div>
-                  <div>
-                    <div className="">
-                      <h4>Superficie de parcela</h4>
-                      <label htmlFor="plotSurfaceMax">Máximo</label>
-                      <input
-                        type="number"
-                        name="plotSurfaceMax"
-                        value={formProps.values.plotSurfaceMax}
-                        onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                      />
-                      m2
-                      <label htmlFor="plotSurfaceMin">Mínimo</label>
-                      <input
-                        type="number"
-                        name="plotSurfaceMin"
-                        value={formProps.values.plotSurfaceMin}
-                        onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                      />
-                      m2
-                    </div>
-                  </div>
-                  <div>
-                    <div className="">
-                      <h4>Número de dormitorios</h4>
-                      <label htmlFor="bedroomsMax">Máximo</label>
-                      <input
-                        type="number"
-                        name="bedroomsMax"
-                        value={formProps.values.bedroomsMax}
-                        onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                      />
-                      m2
-                      <label htmlFor="bedroomsMin">Mínimo</label>
-                      <input
-                        type="number"
-                        name="bedroomsMin"
-                        value={formProps.values.bedroomsMin}
-                        onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                      />
-                      m2
-                    </div>
-                  </div>
-                  <div>
-                    <div className="">
-                      <h4>Número de baños</h4>
-                      <label htmlFor="bathroomsMax">Máximo</label>
-                      <input
-                        type="number"
-                        name="bathroomsMax"
-                        value={formProps.values.bathroomsMax}
-                        onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                      />
-                      <label htmlFor="bathroomsMin">Mínimo</label>
-                      <input
-                        type="number"
-                        name="bathroomsMin"
-                        value={formProps.values.bathroomsMin}
-                        onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                      />
-                    </div>
-                  </div>
-                </TabPanel>
-                <TabPanel header="Matching">
-                  <RequestsMatching ads={ads} />
-                </TabPanel>
-              </TabView>
-              <button type="submit">Guardar</button>
+                    <button type="submit">Guardar</button>
 
-              <NavLink to="/peticiones">
-                <button>Cancelar</button>
-              </NavLink>
-            </Form>
-          )}
-        </Formik>
-      )}
+                    <NavLink to="/peticiones">
+                      <button>Cancelar</button>
+                    </NavLink>
+                  </Form>
+                )}
+              </Formik>
+            </TabPanel>
+            <TabPanel header="Matching">
+              <RequestsMatching ads={ads} />
+            </TabPanel>
+          </TabView>
+        )}
+      </Layout>
     </>
   );
 };

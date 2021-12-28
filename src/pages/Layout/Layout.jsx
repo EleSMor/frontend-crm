@@ -8,8 +8,6 @@ const Layout = ({
   subTitle,
   subList,
   subLocation,
-  subBreadcrumbs,
-  subUndertitle,
   subSetter,
   subBreadcrumbs,
   subUndertitle,

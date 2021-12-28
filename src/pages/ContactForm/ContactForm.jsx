@@ -5,13 +5,12 @@ import Spinner from "../../components/Spinner/Spinner";
 import { useHistory, NavLink, useParams } from "react-router-dom";
 import { TabView, TabPanel } from "primereact/tabview";
 import ContactRequestCard from "../../components/ContactRequestCard/ContactRequestCard";
+import GoBack from "../../components/GoBack/GoBack";
 import { getRequestByContacts } from "../../api/requests.api";
 import { UserContext } from "../../components/Context/AuthUser";
-
-import { getAllContacts, createContact, getContactById, updateContact } from "../../api/contacts.api";
+import { createContact, getContactById, updateContact } from "../../api/contacts.api";
 
 const ContactForm = () => {
-  const [contacts, setContacts] = useState([]);
   const [contactById, setContactById] = useState("");
   const [requests, setRequests] = useState([]);
   const [selTag, setSelTag] = useState([]);
@@ -33,7 +32,6 @@ const ContactForm = () => {
         setLoader(false);
       });
     }
-    getAllContacts().then((res) => setContacts(res));
   }, []);
 
   const newSelect = (selected, setSelected, ev) => {
@@ -49,7 +47,7 @@ const ContactForm = () => {
   return (
     <>
       {!user && history.push("/")}
-      <Layout subTitle="Contactos" subList={contacts} subLocation="/contactos/crear">
+      <Layout subTitle="Contactos" subUndertitle={<GoBack />} subLocation="/contactos/crear">
         {loader ? (
           <Spinner />
         ) : (
@@ -239,11 +237,7 @@ const ContactForm = () => {
             {id && (
               <TabPanel header="Peticiones">
                 {requests.map((request, index) => {
-                  return (
-                    <div key={`${index}-${request.requestReference}`}>
-                      <ContactRequestCard index={index} request={request} />
-                    </div>
-                  );
+                  return <ContactRequestCard index={index} request={request} />;
                 })}
               </TabPanel>
             )}

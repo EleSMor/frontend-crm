@@ -10,18 +10,17 @@ import "./RequestTable.scss";
 
 const RequestsTable = ({ requests }) => {
   const [requestsFormated, setRequestsFormated] = useState([]);
-  const [loader, setLoader] = useState(false)
+  const [loader, setLoader] = useState(true);
 
   useEffect(() => {
     if (requests.length !== 0) {
       const newRequests = requests.map((request) => {
-        if (request.requestBuildingType && !loader) request.requestBuildingType = request.requestBuildingType.join(" ");
-        if (request.requestAdType && !loader) request.requestAdType = request.requestAdType.join(" ");
-        if (!loader) request.createdAt = moment(request.createdAt).locale("es").format("L");
+        if (request.requestBuildingType && loader) request.requestBuildingType = request.requestBuildingType.join(" ");
+        if (request.requestAdType && loader) request.requestAdType = request.requestAdType.join(" ");
         return request;
       });
       setRequestsFormated(newRequests);
-      setLoader(true);
+      setLoader(false);
     }
   }, [requests]);
 
@@ -55,43 +54,43 @@ const RequestsTable = ({ requests }) => {
   };
 
   const buildSurfaceMaxBodyTemplate = (rowData) => {
-    return (
-      rowData.requestBuildSurface.buildSurfaceMax && (
+    if (rowData.requestBuildSurface.buildSurfaceMax !== 0 && rowData.requestBuildSurface.buildSurfaceMax !== 9999) {
+      return (
         <p>
           {rowData.requestBuildSurface.buildSurfaceMax.toLocaleString("es-ES")} m<sup>2</sup>
         </p>
-      )
-    );
+      );
+    }
   };
 
   const buildSurfaceMinBodyTemplate = (rowData) => {
-    return (
-      rowData.requestBuildSurface.buildSurfaceMin && (
+    if (rowData.requestBuildSurface.buildSurfaceMin !== 0) {
+      return (
         <p>
           {rowData.requestBuildSurface.buildSurfaceMin.toLocaleString("es-ES")} m<sup>2</sup>
         </p>
-      )
-    );
+      );
+    }
   };
 
   const plotSurfaceMaxBodyTemplate = (rowData) => {
-    return (
-      rowData.requestPlotSurface.plotSurfaceMax && (
+    if (rowData.requestPlotSurface.plotSurfaceMax !== 0 && rowData.requestPlotSurface.plotSurfaceMax !== 99999) {
+      return (
         <p>
           {rowData.requestPlotSurface.plotSurfaceMax.toLocaleString("es-ES")} m<sup>2</sup>
         </p>
-      )
-    );
+      );
+    }
   };
 
   const plotSurfaceMinBodyTemplate = (rowData) => {
-    return (
-      rowData.requestPlotSurface.plotSurfaceMin && (
+    if (rowData.requestPlotSurface.plotSurfaceMin !== 0) {
+      return (
         <p>
           {rowData.requestPlotSurface.plotSurfaceMin.toLocaleString("es-ES")} m<sup>2</sup>
         </p>
-      )
-    );
+      );
+    }
   };
 
   const referenceBodyTemplate = (rowData) => {
@@ -99,15 +98,15 @@ const RequestsTable = ({ requests }) => {
   };
 
   const priceMaxBodyTemplate = (rowData) => {
-    return rowData.requestSalePrice.salePriceMax
-      ? formatCurrency(rowData.requestSalePrice.salePriceMax)
-      : rowData.requestSalePrice.salePriceMax;
+    if (rowData.requestSalePrice.salePriceMax !== 0 && rowData.requestSalePrice.salePriceMax !== 99999999) {
+      return formatCurrency(rowData.requestSalePrice.salePriceMax);
+    }
   };
 
   const priceMinBodyTemplate = (rowData) => {
-    return rowData.requestSalePrice.salePriceMin
-      ? formatCurrency(rowData.requestSalePrice.salePriceMin)
-      : rowData.requestSalePrice.salePriceMin;
+    if (rowData.requestSalePrice.salePriceMin !== 0) {
+      return formatCurrency(rowData.requestSalePrice.salePriceMin);
+    }
   };
 
   return (
@@ -115,18 +114,18 @@ const RequestsTable = ({ requests }) => {
       dataKey="id"
       value={requests.length !== 0 ? requestsFormated : []}
       headerColumnGroup={headerGroup}
-      paginator
-      paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-      rowsPerPageOptions={[100, 250, 500]}
-      rows={100}
       removableSort
       sortField="createdAt"
       sortOrder={-1}
       resizableColumns
       responsiveLayout="scroll"
-      currentPageReportTemplate="Mostrando de {first} a {last} registros de {totalRecords}"
     >
-      <Column field="createdAt"></Column>
+      <Column
+        field="createdAt"
+        body={(rowData) => {
+          return moment(rowData.createdAt).locale("es").format("L");
+        }}
+      ></Column>
       <Column field="requestReference" body={referenceBodyTemplate}></Column>
       <Column field="requestContact.fullName"></Column>
       <Column field="requestContact.company"></Column>

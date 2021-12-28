@@ -33,7 +33,11 @@ const ContactCard = ({ contact }) => {
         <div className="ContactCard__Card--item ContactCard__Card--item-genInfo">
           <h3>{contact.fullName}</h3>
           {renderDirection(contact)}
-          <p>{`${contact.contactDirection.postalCode} ${contact.contactDirection.city}, ${contact.contactDirection.country}`}</p>
+          <p>
+            {contact.contactDirection.postalCode
+              ? `${contact.contactDirection.postalCode} ${contact.contactDirection.city}, ${contact.contactDirection.country}`
+              : "España"}
+          </p>
           <p>{contact.company}</p>
 
           <div className="ContactCard__Card--item__tags">

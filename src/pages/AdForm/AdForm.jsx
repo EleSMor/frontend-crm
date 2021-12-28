@@ -3,12 +3,13 @@ import { Formik, Form } from "formik";
 import { TabView, TabPanel } from "primereact/tabview";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { useHistory, useParams } from "react-router-dom";
-import Layout from "../Layout/Layout";
-import Spinner from "../../components/Spinner/Spinner";
+import { useHistory, useParams, Link } from "react-router-dom";
 import { DetailsAds, ImagesAds } from "../../components";
 import { UserContext } from "../../components/Context/AuthUser";
 import { createAd, updateAd, getAllAds, getAdById, getMatchedRequests } from "../../api/ads.api.js";
+import Layout from "../Layout/Layout";
+import Spinner from "../../components/Spinner/Spinner";
+import GoBack from "../../components/GoBack/GoBack";
 import { getAllResidentialZones, getAllPatrimonialZones } from "../../api/zones.api";
 import "./AdForm.scss";
 
@@ -17,7 +18,6 @@ const AdForm = () => {
   const { id } = useParams();
   const { user } = useContext(UserContext);
 
-  const [ads, setAds] = useState([]);
   const [adById, setAdById] = useState("");
   const [requests, setRequests] = useState([]);
 
@@ -36,7 +36,6 @@ const AdForm = () => {
 
   useEffect(() => {
     getAllAds()
-      .then((res) => setAds(res))
       .then(
         getAllResidentialZones()
           .then((res) => {
@@ -69,7 +68,7 @@ const AdForm = () => {
   return (
     <div>
       {user.length === 0 && history.push("/")}
-      <Layout subTitle="Anuncios" subList={ads} subLocation="/anuncios/crear">
+      <Layout subTitle="Anuncios" subUndertitle={<GoBack />} subLocation="/anuncios/crear">
         {residentialSelectedZones.length !== 0 && patrimonialSelectedZones.length !== 0 && loader ? (
           <Spinner />
         ) : (
@@ -226,7 +225,7 @@ const AdForm = () => {
                     rowsPerPageOptions={[10, 25, 50]}
                     dataKey="id"
                   >
-                    <Column field="requestReference" header="Id Petición" sortable></Column>
+                    <Column field="requestReference" header="Id Petición" body={(ev) => <Link to={`/peticiones/${ev._id}`}>{ev.requestReference}</Link>} sortable></Column>
                     <Column field="requestContact.fullName" header="Nombre Completo" sortable></Column>
                     <Column field="requestContact.company" header="Empresa" sortable></Column>
                     <Column field="requestContact.email" header="Email" sortable></Column>

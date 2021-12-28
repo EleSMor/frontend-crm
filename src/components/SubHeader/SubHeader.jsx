@@ -31,6 +31,7 @@ const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter 
       const adsFiltered = list.filter((ad) => {
         if (
           checkIfIncludes(ad.adReference, text) ||
+          checkIfIncludes(ad.title, text) ||
           checkIfIncludes(ad.owner.fullName, text) ||
           checkIfIncludes(ad.adDirection, text)
         )
@@ -101,26 +102,29 @@ const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter 
       </div>
 
       <div className="subHeader__subtitle">
-        <div className="subHeader__subtitle-item">
-          {underTitle && <span>{underTitle}</span>}
-          {list && (
-            <span>
-              {list.length > 50 ? list.length : list.length}
-              elementos · Ordenado por fecha de última modificación · Se actualizó hace unos segundos
-            </span>
-          )}
-        </div>
-
-        <div className="subHeader__subtitle-item">
-          <i className="pi pi-search" />
-          <InputText onChange={(ev) => customFilter(ev.target.value)} placeholder="Buscar en esta lista" />
-
-          {!window.location.pathname.includes(`${title.toLowerCase()}/`) && (
-            <button className="subHeader__btn" onClick={() => history.push(location)}>
-              Nuevo
-            </button>
-          )}
-        </div>
+        {underTitle ? (
+          <div className="subHeader__subtitle-item">
+            <span>{underTitle}</span>
+          </div>
+        ) : (
+          <>
+            <div className="subHeader__subtitle-item">
+              <span>
+                {list.length !== 0 ? (list.length > 50 ? list.length : list.length) : 0}
+                &nbsp;elementos · Ordenado por fecha de última modificación · Se actualizó hace unos segundos
+              </span>
+            </div>
+            <div className="p-input-icon-left">
+              <i className="pi pi-search" />
+              <InputText onChange={(ev) => customFilter(ev.target.value)} placeholder="Buscar en esta lista" />
+            </div>
+          </>
+        )}
+        {!window.location.pathname.includes(`${title.toLowerCase()}/`) && (
+          <button tpye="button" className="subHeader__btn" onClick={() => history.push(location)}>
+            Nuevo
+          </button>
+        )}
       </div>
     </div>
   );

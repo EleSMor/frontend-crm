@@ -7,7 +7,6 @@ import PopUp from "../../components/PopUp/PopUp";
 import Layout from "../Layout/Layout";
 import Spinner from "../../components/Spinner/Spinner";
 import Pagination from "../../components/Pagination/Pagination";
-import GoBack from "../../components/GoBack/GoBack";
 
 const ContactsList = () => {
   const [contacts, setContacts] = useState([]);
@@ -15,7 +14,7 @@ const ContactsList = () => {
   const [popUp, setPopUp] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [qPerPage] = useState(5);
+  const [qPerPage] = useState(10);
   const [loader, setLoader] = useState(true);
 
   const { user } = useContext(UserContext);
@@ -56,7 +55,6 @@ const ContactsList = () => {
         subLocation="/contactos/crear"
         subSetter={setContactsFiltered}
         footContent={<ContactListFooter />}
-        subUndertitle={<GoBack />}
         //subBreadcrumbs="Nuevo crear"
       >
         {/* <button onClick={() => handlePopUp()}>Nuevo</button> */}

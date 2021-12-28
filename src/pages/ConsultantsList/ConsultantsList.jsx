@@ -8,7 +8,7 @@ import Spinner from "../../components/Spinner/Spinner";
 import Pagination from "../../components/Pagination/Pagination";
 
 const ConsultantsList = () => {
-  const [consultants, setConsultants] = useState();
+  const [consultants, setConsultants] = useState([]);
   const [consultantsFiltered, setConsultantsFiltered] = useState([]);
   const [loader, setLoader] = useState(true);
 
@@ -21,8 +21,9 @@ const ConsultantsList = () => {
   useEffect(
     () =>
       getAllConsultants().then((res) => {
-        setConsultants(res);
+        console.log(res);
         setConsultantsFiltered(res);
+        setConsultants(res);
         setLoader(false);
       }),
     []
