@@ -415,6 +415,7 @@ const DetailsAds = ({
                   <input
                     type="number"
                     name="saleValue"
+                    lang="es-ES"
                     value={formProps.values.saleValue}
                     onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                   />
