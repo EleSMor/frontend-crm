@@ -14,7 +14,7 @@ const ContactForm = () => {
   const [contactById, setContactById] = useState("");
   const [requests, setRequests] = useState([]);
   const [selTag, setSelTag] = useState([]);
-  const [loader, setLoader] = useState(true);
+  const [loader, setLoader] = useState(false);
 
   const history = useHistory();
   const { id } = useParams();

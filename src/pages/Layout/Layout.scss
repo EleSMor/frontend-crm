@@ -26,5 +26,7 @@
 }
 
 .plusFooter {
-  height: calc(70vh - $footer-height - $navbar-height + $navBar-margin-top + $subHeader-height) !important;
+  height: calc(
+    100vh - $footer-height - $navbar-height - $navBar-margin-top - $subHeader-height
+    ) !important;
 }
