@@ -1,0 +1,52 @@
+@use "src/styles/utils.scss" as *;
+
+.ContactForm {
+  background-color: #fff;
+  padding: 40px 32px;
+  border-radius: 3px;
+  box-shadow: rgba(0, 0, 0, 0.046) 0px 1px 4px;
+  border: 1px solid rgba(0, 0, 0, 0.089);
+
+  &__header {
+    display: flex;
+    margin-bottom: 40px;
+    &--img {
+      > div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100px;
+        width: 100px;
+        border-radius: 3px;
+        background-color: #dfdfdf;
+        position: relative;
+        
+        > img {
+          width: 95%;
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          min-height: 100%;
+          min-width: 100%;
+          object-fit: cover;
+          border-radius: 3px;
+        }
+      }
+    }
+
+    &--info {
+      margin-left: 30px;
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+
+      > p {
+        display: flex;
+        align-content: center;
+        align-items: center;
+        margin-top: 10px;
+      }
+    }
+  }
+}

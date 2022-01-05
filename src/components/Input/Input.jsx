@@ -4,6 +4,8 @@ const Input = ({
   label,
   type,
   placeholder,
+  required,
+  name,
   onBlur,
   value,
   onChange,
@@ -18,6 +20,8 @@ const Input = ({
       <div className={`Input-input ${error && "Input-error"}`}>
         <input
           type={type}
+          name={name}
+          required={required}
           placeholder={placeholder}
           value={value}
           onChange={onChange}
