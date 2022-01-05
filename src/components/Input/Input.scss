@@ -7,7 +7,8 @@
     font-size: 14px;
     margin-bottom: 15px;
   }
-  > div {
+
+  &-input {
     padding-left: 8px;
     border-left: 2px solid $c-background-dark;
     > input {
@@ -25,4 +26,14 @@
       }
     }
   }
+
+  &-error {
+    border-left: 2px solid $c-red;
+  }
+  
+  &-errors {
+    padding-left: 10px;
+    color: $c-red;
+  }
+
 }

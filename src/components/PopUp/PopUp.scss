@@ -73,7 +73,16 @@
     }
 
     &--content::-webkit-scrollbar {
-      display: none;
+      //display: none;
+      width: 8px; /* width of the entire scrollbar */
+    }
+    
+    &--content::-webkit-scrollbar-track {
+      background: #fff; /* color of the tracking area */
+    }
+    
+    &--content::-webkit-scrollbar-thumb {
+      background-color: $c-dark-grey; /* color of the scroll thumb */
     }
 
     &--content {

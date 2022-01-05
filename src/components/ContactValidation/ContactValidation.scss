@@ -9,15 +9,47 @@
     margin: 15px 0px;
 
     > div {
-      margin-bottom: 20px
+      margin-bottom: 35px;
     }
   }
+
   &--results {
 
+    p {
+      text-align: center;
+      color: $c-red;
+    }
+
+    &--card {
+      display: flex;
+      justify-content: space-between;
+      margin: 40px 0px;
+      width: 100%;
+      
+      > div {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        width: calc(100% / 3);
+      }
+      &--buttItem {
+        display: flex;
+        justify-content: start;
+        align-items: flex-end;
+        
+        > button {
+          @include button-dark-sm;
+          width: 50%;
+        }
+      }
+    }
   }
 
   &--button {
-    @include button-dark;
-    margin-top: 40px;
+    margin: 40px !important;
+    &--button {
+      //@include button-dark;
+      @include button-disabled;
+    }
   }
 }

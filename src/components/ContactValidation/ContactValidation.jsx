@@ -35,36 +35,41 @@ const ContactValidation = ({ setOpenForm }) => {
           onBlur={(ev) =>
                 findBy(getContactsByFullName, ev.target.value, "fullName")
               }
-          />
-        <div>
-          <label htmlFor="contactMobileNumber">Teléfono</label>
-          <input
-            type="phone"
-            placeholder="Escriba aquí"
-            onBlur={(ev) => {
+          autocomplete="false"
+        />
+        <Input 
+          label="Teléfono"
+          placeholder="Escriba aquí"
+          type="phone"
+          onBlur={(ev) => {
               if (ev.target.value)
                 getContactsByMobileNumber(ev.target.value).then((res) =>
                   res.forEach((contact) => setContacts([...contacts, contact]))
                 );
             }}
-          />
-        </div>
-        <div>
-          <label htmlFor="email">Email</label>
-          <input type="email" placeholder="Escriba aquí" onBlur={(ev) => {}} />
-        </div>
+          autocomplete="false"
+        />
+        <Input 
+          label="Email"
+          placeholder="Escriba aquí"
+          type="email"
+          onBlur={(ev) => {}} 
+          autocomplete="false"
+        />
       </div>
 
       <div className="ContactValidation--results">
         {contacts.length !== 0 && <ContactList contacts={contacts} />}
       </div>
-
-      <Link
-        className="ContactValidation--button"
-        to={`/contactos/crear/${"popUp_name"}/${"popUp_email"}/${"popUp_phone"}`}
-      >
-        Crear
-      </Link>
+      
+      <div className="ContactValidation--button">
+        <Link
+        className="ContactValidation--button--button"
+          to={`/contactos/crear/${"popUp_name"}/${"popUp_email"}/${"popUp_phone"}`}
+        >
+          Crear
+        </Link>
+      </div>
     </div>
   );
 };

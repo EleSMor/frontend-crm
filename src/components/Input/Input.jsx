@@ -15,7 +15,7 @@ const Input = ({
     <div className="Input">
       <label>{label}</label>
 
-      <div className={`${error && "is-invalid"} `}>
+      <div className={`Input-input ${error && "Input-error"}`}>
         <input
           type={type}
           placeholder={placeholder}
@@ -27,8 +27,8 @@ const Input = ({
         />
       </div>
 
-      <p>
-        <small>{error}</small>
+      <p className="Input-errors">
+        <small><i>{error}</i></small>
       </p>
 
     </div>
