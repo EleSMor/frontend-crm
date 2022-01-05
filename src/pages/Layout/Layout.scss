@@ -5,10 +5,10 @@
     position: fixed;
     top: calc($navbar-height + $navBar-margin-top + $subHeader-height);
     width: 100%;
-    height: calc(77%);
+    height: calc(70vh - $navbar-height + $navBar-margin-top + $subHeader-height);
     overflow-y: auto;
     background-color: $c-background-light;
-    padding: $all-margins;
+    padding: 0 16px;
   }
 
   &__content::-webkit-scrollbar {
@@ -26,5 +26,7 @@
 }
 
 .plusFooter {
-  height: 68% !important;
+  height: calc(
+    100vh - $footer-height - $navbar-height - $navBar-margin-top - $subHeader-height
+    ) !important;
 }

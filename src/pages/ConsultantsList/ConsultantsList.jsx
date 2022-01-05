@@ -2,30 +2,65 @@ import React, { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import ConsultantCard from "../../components/ConsultantCard/ConsultantCard";
 import { getAllConsultants } from "../../api/consultants.api";
-import { Navbar, SubHeader } from "../../components";
 import { UserContext } from "../../components/Context/AuthUser";
+import Layout from "../Layout/Layout";
+import Spinner from "../../components/Spinner/Spinner";
+import Pagination from "../../components/Pagination/Pagination";
 
 const ConsultantsList = () => {
-  const [consultants, setConsultants] = useState();
+  const [consultants, setConsultants] = useState([]);
   const [consultantsFiltered, setConsultantsFiltered] = useState([]);
+  const [loader, setLoader] = useState(true);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [qPerPage] = useState(5);
+
   const { user } = useContext(UserContext);
   const history = useHistory();
 
   useEffect(
     () =>
       getAllConsultants().then((res) => {
-        setConsultants(res);
+        console.log(res);
         setConsultantsFiltered(res);
+        setConsultants(res);
+        setLoader(false);
       }),
     []
+  );
+
+  const indexOfLastContact = currentPage * qPerPage;
+  const indexOfFirstContact = indexOfLastContact - qPerPage;
+  let currentConsultants = consultantsFiltered?.slice(indexOfFirstContact, indexOfLastContact);
+  let consultantsLength = consultantsFiltered?.length;
+
+  const paginate = (n) => {
+    setCurrentPage(n);
+    window.scrollTo({ top: 0 });
+  };
+
+  const ConsultantsListFooter = () => (
+    <Pagination qPerPage={qPerPage} totalQ={consultantsLength} paginate={paginate} currentPage={currentPage} />
   );
 
   return (
     <div>
       {user.length === 0 && history.push("/")}
-      <Navbar />
-      <SubHeader title="Consultores" list={consultants} location="/consultores/crear" setter={setConsultantsFiltered} />
-      <ConsultantCard consultants={consultantsFiltered} />
+      <Layout
+        subTitle="Consultores"
+        subList={consultants}
+        subLocation="/consultores/crear"
+        subSetter={setConsultantsFiltered}
+        footContent={<ConsultantsListFooter />}
+      >
+        {loader ? (
+          <Spinner />
+        ) : currentConsultants ? (
+          currentConsultants.map((consultant) => <ConsultantCard consultant={consultant} />)
+        ) : (
+          ""
+        )}
+      </Layout>
     </div>
   );
 };

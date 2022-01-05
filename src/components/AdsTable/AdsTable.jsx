@@ -3,7 +3,7 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { ColumnGroup } from "primereact/columngroup";
 import { Row } from "primereact/row";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import * as moment from "moment";
 import "moment/locale/es";
 import "./AdsTable.scss";
@@ -17,7 +17,7 @@ const AdsTable = ({ ads }) => {
     if (ads.length !== 0) {
       formatData(ads);
     }
-  }, [ads]);
+  }, []);
 
   let headerGroup = (
     <ColumnGroup>
@@ -47,29 +47,31 @@ const AdsTable = ({ ads }) => {
   };
 
   const surfaceBodyTemplate = (rowData) => {
-    return (
-      <p>
-        {rowData.buildSurface.toLocaleString("es-ES")} m<sup>2</sup>
-      </p>
-    );
+    if (rowData.buildSurface !== 0) {
+      return (
+        <p>
+          {rowData.buildSurface.toLocaleString("es-ES")} m<sup>2</sup>
+        </p>
+      );
+    }
   };
 
   const referenceBodyTemplate = (rowData) => {
-    return <NavLink to={`/anuncios/${rowData._id}`}>{rowData.adReference}</NavLink>;
+    return <Link to={`/anuncios/${rowData._id}`}>{rowData.adReference}</Link>;
   };
 
   const saleBodyTemplate = (rowData) => {
-    return formatCurrency(rowData.price.sale.saleValue);
+    if (rowData.price.sale.saleValue !== 0) return formatCurrency(rowData.price.sale.saleValue);
+    else return "";
   };
 
   const rentBodyTemplate = (rowData) => {
-    return formatCurrency(rowData.price.rent.rentValue);
+    if (rowData.price.rent.rentValue !== 0) return formatCurrency(rowData.price.rent.rentValue);
+    else return "";
   };
 
   const formatData = (ads) => {
     const newAds = ads.map((ad) => {
-      console.log(ad.createdAt);
-      if (!loader) ad.createdAt = moment(ad.createdAt).locale("es-ES").format("L");
       if (typeof ad.adDirection === "object") {
         ad.adDirection.address = Object.values(ad.adDirection.address);
         ad.adDirection = `${ad.adDirection.address.join(" ")}  ${ad.adDirection.postalCode} ${ad.adDirection.city} ${
@@ -90,18 +92,18 @@ const AdsTable = ({ ads }) => {
           dataKey="id"
           headerColumnGroup={headerGroup}
           value={ads.length !== 0 ? adsFormated : []}
-          paginator
-          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-          rowsPerPageOptions={[100, 250, 500]}
-          rows={100}
           removableSort
           sortField="createdAt"
           sortOrder={-1}
           resizableColumns
           responsiveLayout="scroll"
-          currentPageReportTemplate="Mostrando de {first} a {last} registros de {totalRecords}"
         >
-          <Column field="createdAt"></Column>
+          <Column
+            field="createdAt"
+            body={(rowData) => {
+              return moment(rowData.createdAt).locale("es-ES").format("L");
+            }}
+          ></Column>
           <Column field="adReference" body={referenceBodyTemplate}></Column>
           <Column field="adDirection"></Column>
           <Column field="title"></Column>

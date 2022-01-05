@@ -8,31 +8,35 @@ const RequestsMatching = ({ ads }) => {
   };
 
   const buildSurfaceBodyTemplate = (rowData) => {
-    return (
-      rowData.buildSurface && (
+    if (rowData.buildSurface && rowData.buildSurface !== 0) {
+      return (
         <p>
           {rowData.buildSurface.toLocaleString("es-ES")} m<sup>2</sup>
         </p>
-      )
-    );
+      );
+    }
   };
 
   const plotSurfaceBodyTemplate = (rowData) => {
-    return (
-      rowData.plotSurface && (
+    if (rowData.plotSurface && rowData.plotSurface !== 0) {
+      return (
         <p>
           {rowData.plotSurface.toLocaleString("es-ES")} m<sup>2</sup>
         </p>
-      )
-    );
+      );
+    }
   };
 
   const saleBodyTemplate = (rowData) => {
-    return rowData.price.sale.saleValue ? formatCurrency(rowData.price.sale.saleValue) : rowData.price.sale.saleValue;
+    if (rowData.price.sale.saleValue && rowData.price.sale.saleValue !== 0)
+      return formatCurrency(rowData.price.sale.saleValue);
+    else return "";
   };
 
   const rentBodyTemplate = (rowData) => {
-    return rowData.price.rent.rentValue ? formatCurrency(rowData.price.rent.rentValue) : rowData.price.rent.rentValue;
+    if (rowData.price.rent.rentValue && rowData.price.rent.rentValue !== 0)
+      return formatCurrency(rowData.price.rent.rentValue);
+    else return "";
   };
 
   return (
@@ -52,7 +56,14 @@ const RequestsMatching = ({ ads }) => {
       <Column field="price.rent.rentValue" header="Alquiler" body={rentBodyTemplate} sortable></Column>
       <Column field="buildSurface" header="m2 construidos" body={buildSurfaceBodyTemplate} sortable></Column>
       <Column field="plotSurface" header="m2 parcela" body={plotSurfaceBodyTemplate} sortable></Column>
-      <Column field="adBuildingType" header="Inmueble" sortable></Column>
+      <Column
+        field="adBuildingType"
+        header="Inmueble"
+        body={(rowData) => {
+          return `${rowData.adBuildingType.join(" ")}`;
+        }}
+        sortable
+      ></Column>
     </DataTable>
   );
 };

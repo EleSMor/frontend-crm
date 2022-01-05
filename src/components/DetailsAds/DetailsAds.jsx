@@ -66,8 +66,8 @@ const DetailsAds = ({
           <input
             type="checkbox"
             name="showOnWeb"
-            value={formProps.values.showOnWeb}
-            onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.checked)}
+            checked={formProps.values.showOnWeb}
+            onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.showOnWeb)}
           />
         </div>
         <div>
@@ -75,9 +75,9 @@ const DetailsAds = ({
           <input
             type="checkbox"
             name="featuredOnMain"
-            value={formProps.values.featuredOnMain}
+            checked={formProps.values.featuredOnMain}
             onChange={(ev) => {
-              formProps.setFieldValue(ev.target.name, ev.target.checked);
+              formProps.setFieldValue(ev.target.name, !formProps.values.featuredOnMain);
             }}
           />
         </div>
@@ -415,6 +415,7 @@ const DetailsAds = ({
                   <input
                     type="number"
                     name="saleValue"
+                    lang="es-ES"
                     value={formProps.values.saleValue}
                     onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                   />
@@ -424,8 +425,8 @@ const DetailsAds = ({
                   <input
                     type="checkbox"
                     name="saleShowOnWeb"
-                    value={formProps.values.saleShowOnWeb}
-                    onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.checked)}
+                    checked={formProps.values.saleShowOnWeb}
+                    onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.saleShowOnWeb)}
                   />
                 </div>
               </div>
@@ -445,8 +446,8 @@ const DetailsAds = ({
                   <input
                     type="checkbox"
                     name="rentShowOnWeb"
-                    value={formProps.values.rentShowOnWeb}
-                    onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.checked)}
+                    checked={formProps.values.rentShowOnWeb}
+                    onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.rentShowOnWeb)}
                   />
                 </div>
               </div>
@@ -516,8 +517,8 @@ const DetailsAds = ({
                 <input
                   type="checkbox"
                   name="expensesShowOnWeb"
-                  value={formProps.values.expensesShowOnWeb}
-                  onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.checked)}
+                  checked={formProps.values.expensesShowOnWeb}
+                  onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.expensesShowOnWeb)}
                 />
               </div>
             </div>
@@ -536,8 +537,8 @@ const DetailsAds = ({
                 <input
                   type="checkbox"
                   name="ibiShowOnWeb"
-                  value={formProps.values.ibiShowOnWeb}
-                  onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.checked)}
+                  checked={formProps.values.ibiShowOnWeb}
+                  onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.ibiShowOnWeb)}
                 />
               </div>
             </div>

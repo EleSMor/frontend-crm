@@ -168,7 +168,7 @@ const ImagesAds = ({ id, adById }) => {
               uploadHandler={upload}
               customUpload={true}
               accept="image/*"
-              maxFileSize={6000000}
+              maxFileSize={5242880}
               onRemove={() => setMainPreview(adById ? adById.images.main : "")}
               onSelect={(e) => {
                 formProps.setFieldValue("main", e.files[0]);
@@ -227,7 +227,7 @@ const ImagesAds = ({ id, adById }) => {
                 handleChangeFiles(ev.files);
               }}
               accept="image/*"
-              maxFileSize={6000000}
+              maxFileSize={20971520}
               headerTemplate={headerTemplate}
             />
             {othersPreview.length !== 0 ? renderOthers(othersPreview) : emptyTemplate()}
@@ -239,7 +239,7 @@ const ImagesAds = ({ id, adById }) => {
               uploadHandler={upload}
               customUpload={true}
               accept="image/*"
-              maxFileSize={6000000}
+              maxFileSize={5242880}
               onRemove={() => setBlueprintPreview(adById ? adById.images.blueprint : "")}
               onSelect={(e) => {
                 formProps.setFieldValue("blueprint", e.files[0]);

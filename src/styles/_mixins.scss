@@ -7,6 +7,17 @@
   margin-right: 8px;
 }
 
+@mixin tag-medium {
+  padding: 10px 8px;
+  background: #DFDFDF;
+  border-radius: 2px;
+  font-size: 10px;
+  line-height: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 @mixin button-dark {
   padding: 8px 18px;
   color: #fff;
