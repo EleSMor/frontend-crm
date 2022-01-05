@@ -32,7 +32,7 @@ function App() {
               {/* Components */}
               <Route exact path="/anuncios/crear" component={AdForm} />
               <Route exact path="/peticiones/crear" component={RequestForm} />
-              <Route exact path="/contactos/crear" component={ContactForm} />
+              <Route exact path="/contactos/crear/:name/:email/:phone" component={ContactForm} />
               <Route exact path="/consultores/crear" component={ConsultantForm} />
 
               {/* Components */}

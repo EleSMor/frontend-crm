@@ -1,0 +1,23 @@
+@use "/src/styles/utils.scss" as *;
+
+.ContactValidation {
+  p {
+    text-align: left;
+  }
+
+  &--inputs {
+    margin: 15px 0px;
+
+    > div {
+      margin-bottom: 20px
+    }
+  }
+  &--results {
+
+  }
+
+  &--button {
+    @include button-dark;
+    margin-top: 40px;
+  }
+}

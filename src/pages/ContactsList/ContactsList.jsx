@@ -7,6 +7,7 @@ import PopUp from "../../components/PopUp/PopUp";
 import Layout from "../Layout/Layout";
 import Spinner from "../../components/Spinner/Spinner";
 import Pagination from "../../components/Pagination/Pagination";
+import ContactValidation from "../../components/ContactValidation/ContactValidation";
 
 const ContactsList = () => {
   const [contacts, setContacts] = useState([]);
@@ -52,20 +53,15 @@ const ContactsList = () => {
       <Layout
         subTitle="Contactos"
         subList={contacts}
-        subLocation="/contactos/crear"
+        subLocation={() => handlePopUp()}
         subSetter={setContactsFiltered}
         footContent={<ContactListFooter />}
         //subBreadcrumbs="Nuevo crear"
       >
-        {/* <button onClick={() => handlePopUp()}>Nuevo</button> */}
         
         {popUp && (
-          <PopUp handlePopUp={handlePopUp} height="40%" width="50%" fixedButtons={true} buttons="holka">
-            <p>
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-              industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
-              scrambled it to make a type specimen book. It has survived not only five centuries,
-            </p>
+          <PopUp handlePopUp={handlePopUp} height="60%" width="50%" title="Crear un nuevo contacto">
+            <ContactValidation />
           </PopUp>
         )}
         {loader ? <Spinner /> : currentContacts.map((contact) => <ContactCard contact={contact} />)}

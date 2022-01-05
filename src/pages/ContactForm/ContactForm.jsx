@@ -15,6 +15,7 @@ const ContactForm = () => {
   const [requests, setRequests] = useState([]);
   const [selTag, setSelTag] = useState([]);
   const [loader, setLoader] = useState(false);
+  let { name, phone, email } = useParams()
 
   const history = useHistory();
   const { id } = useParams();
@@ -51,15 +52,22 @@ const ContactForm = () => {
         {loader ? (
           <Spinner />
         ) : (
+          <>
+          {contactById && (
+            <>
+            {contactById.fullName}
+            {contactById.contactMobileNumber}
+            </>
+          )}
           <TabView>
             <TabPanel header="Detalles">
               <Formik
                 enableReinitialize={true}
                 initialValues={{
-                  fullName: contactById ? contactById.fullName : "",
+                  fullName: contactById ? contactById.fullName : name,
                   tag: contactById ? selTag : [],
-                  email: contactById ? contactById.email : "",
-                  contactMobileNumber: contactById ? contactById.contactMobileNumber : "",
+                  email: contactById ? contactById.email : email,
+                  contactMobileNumber: contactById ? contactById.contactMobileNumber : phone,
                   contactPhoneNumber: contactById ? contactById.contactPhoneNumber : "",
                   company: contactById ? contactById.company : "",
                   street: contactById ? contactById.contactDirection.address.street : "",
@@ -234,14 +242,17 @@ const ContactForm = () => {
                 )}
               </Formik>
             </TabPanel>
-            {id && (
+            {id ? (
               <TabPanel header="Peticiones">
                 {requests.map((request, index) => {
                   return <ContactRequestCard index={index} request={request} />;
                 })}
               </TabPanel>
+            ) : (
+              <TabPanel header="Peticiones" disabled></TabPanel>
             )}
           </TabView>
+          </>
         )}
       </Layout>
     </>
