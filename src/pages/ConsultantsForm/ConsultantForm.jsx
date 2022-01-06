@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Formik, Form } from "formik";
-import { useHistory, NavLink, useParams } from "react-router-dom";
+import { useHistory, Link, useParams } from "react-router-dom";
 import { TabView, TabPanel } from "primereact/tabview";
 import Layout from "../Layout/Layout";
 import Spinner from "../../components/Spinner/Spinner";
@@ -8,7 +8,19 @@ import GoBack from "../../components/GoBack/GoBack";
 import AdsTable from "../../components/AdsTable/AdsTable";
 import { UserContext } from "../../components/Context/AuthUser";
 import { getAllAds } from "../../api/ads.api";
-import { createConsultant, getConsultantById, updateConsultant } from "../../api/consultants.api";
+import {
+  createConsultant,
+  getConsultantById,
+  updateConsultant,
+} from "../../api/consultants.api";
+import Input from "../../components/Input/Input";
+import Textarea from "../../components/Textarea/Textarea";
+import { BsPersonPlusFill } from "react-icons/bs";
+import { HiOutlineMail } from "react-icons/hi";
+import { FaPhoneAlt } from "react-icons/fa";
+import { FiSave } from "react-icons/fi";
+import "./ConsultantForm.scss";
+import "../../styles/primeReact.scss";
 
 const ConsultantForm = () => {
   const history = useHistory();
@@ -19,7 +31,7 @@ const ConsultantForm = () => {
   const [consultantById, setConsultantById] = useState("");
 
   const [activeIndex, setActiveIndex] = useState(0);
-  const [loader, setLoader] = useState(true);
+  const [loader, setLoader] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -37,176 +49,293 @@ const ConsultantForm = () => {
   return (
     <>
       {user.length === 0 && history.push("/")}
-      <Layout subTitle="Consultores" subUndertitle={<GoBack />} subLocation="/consultores/crear">
+      <Layout
+        subTitle="Consultores"
+        subUndertitle={<GoBack />}
+        subLocation="/consultores/crear"
+        footContent={
+          <>
+            <button
+              className="buttonForm"
+              type="submit"
+              style={{ marginRight: 8 }}
+            >
+              <FiSave style={{ marginRight: 7 }} />
+              Guardar
+            </button>
+            <Link className="buttonFormCancel" to="/consultores">
+              Cancelar
+            </Link>
+          </>
+        }
+      >
         {loader ? (
           <Spinner />
         ) : (
-          <TabView activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)}>
-            <TabPanel header="Detalles">
-              <Formik
-                enableReinitialize={true}
-                initialValues={{
-                  consultantEmail: consultantById ? consultantById.consultantEmail : "",
-                  consultantPassword: consultantById ? consultantById.consultantPassword : "",
-                  fullName: consultantById ? consultantById.fullName : "",
-                  avatar: "",
-                  companyUnitLogo: "",
-                  consultantMobileNumber: consultantById ? consultantById.consultantMobileNumber : "",
-                  consultantPhoneNumber: consultantById ? consultantById.consultantPhoneNumber : "",
-                  position: consultantById ? consultantById.position : "",
-                  profession: consultantById ? consultantById.profession : "",
-                  office1: consultantById ? consultantById.office1 : "",
-                  office2: consultantById ? consultantById.office2 : "",
-                  consultantComments: consultantById ? consultantById.consultantComments : "",
-                }}
-                onSubmit={(values) => {
-                  let data = new FormData();
-
-                  for (var key in values) {
-                    data.append(key, values[key]);
-                    console.log("clave:", key, "valor", values[key]);
-                  }
-
-                  data.append("id", id);
-                  if (!id) {
-                    console.log(data);
-                    createConsultant(data).then(() => history.push("/consultores"));
-                  } else {
-                    data.id = id;
-                    updateConsultant(data).then((res) => {
-                      alert(`El consultor ${res.fullName} ha sido actualizado`);
-                      history.push("/consultores");
-                    });
-                  }
-                }}
-              >
-                {(formProps) => (
-                  <Form>
-                    <div>
-                      <label htmlFor="consultantEmail">Email</label>
-                      <input
-                        type="email"
-                        name="consultantEmail"
-                        value={formProps.values.consultantEmail}
-                        required
-                        onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="consultantPassword">Contraseña</label>
-                      <input
-                        type="password"
-                        name="consultantPassword"
-                        value={formProps.values.consultantPassword}
-                        required
-                        onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="fullName">Nombre completo</label>
-                      <input
-                        type="text"
-                        name="fullName"
-                        value={formProps.values.fullName}
-                        required
-                        onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                      />
-                    </div>
+          <div className="ConsultantForm">
+            <div className="ConsultantForm__header">
+              <div className="ConsultantForm__header--img">
+                {/* {img ? (
+                  <div>
+                    <img
+                      className=""
+                      src={`${img}`}
+                      alt={contactById?.fullName}
+                    />
                     <div>
                       <label htmlFor="avatar">Avatar</label>
                       <input
                         type="file"
                         name="avatar"
-                        onChange={(ev) => formProps.setFieldValue("avatar", ev.target.files[0])}
+                        onChange={(ev) =>
+                          formProps.setFieldValue(
+                            "avatar",
+                            ev.target.files[0]
+                          )
+                        }
                       />
                     </div>
-                    <div>
-                      <label htmlFor="companyUnitLogo">Logo unidad de negocio</label>
-                      <input
-                        type="file"
-                        name="companyUnitLogo"
-                        onChange={(ev) => formProps.setFieldValue("companyUnitLogo", ev.target.files[0])}
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="consultantMobileNumber">Teléfono móvil</label>
-                      <input
-                        type="text"
-                        name="consultantMobileNumber"
-                        value={formProps.values.consultantMobileNumber}
-                        required
-                        onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="consultantPhoneNumber">Teléfono fijo</label>
-                      <input
-                        type="text"
-                        name="consultantPhoneNumber"
-                        value={formProps.values.consultantPhoneNumber}
-                        onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="position">Posición</label>
-                      <input
-                        type="text"
-                        name="position"
-                        value={formProps.values.position}
-                        required
-                        onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="profession">Ocupación</label>
-                      <input
-                        type="text"
-                        name="profession"
-                        value={formProps.values.profession}
-                        onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="office1">Oficina 1</label>
-                      <input
-                        type="text"
-                        name="office1"
-                        value={formProps.values.office1}
-                        onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="office2">Oficina 2</label>
-                      <input
-                        type="text"
-                        name="office2"
-                        value={formProps.values.office2}
-                        onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="consultantComments">Comentarios</label>
-                      <input
-                        type="text"
-                        name="consultantComments"
-                        value={formProps.values.consultantComments}
-                        onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                      />
-                    </div>
-                    <button type="submit">Guardar</button>
-                    <NavLink to="/consultores">
-                      <button>Cancelar</button>
-                    </NavLink>
-                  </Form>
-                )}
-              </Formik>
-            </TabPanel>
-            {id && (
-              <TabPanel header="Anuncios">
-                <AdsTable ads={ads.length !== 0 ? ads : []} />
+                  </div>
+                ) : ( */}
+                <div>
+                  <BsPersonPlusFill fontSize="2em" color="#fff" />
+                </div>
+                {/* )} */}
+              </div>
+              <div className="ConsultantForm__header--info">
+                <h3>{consultantById?.fullName || ""}</h3>
+                <p>
+                  <HiOutlineMail
+                    fontSize="1.1em"
+                    color="#47535B"
+                    style={{ marginRight: 9 }}
+                  />
+                  {consultantById?.consultantEmail || "--------"}
+                </p>
+                <p>
+                  <FaPhoneAlt
+                    fontSize="0.85em"
+                    color="#47535B"
+                    style={{ marginRight: 9 }}
+                  />
+                  {consultantById?.consultantMobileNumber || "--------"}
+                </p>
+              </div>
+              {/* <div>
+                <label htmlFor="companyUnitLogo">Logo unidad de negocio</label>
+                <input
+                  type="file"
+                  name="companyUnitLogo"
+                  onChange={(ev) =>
+                    formProps.setFieldValue(
+                      "companyUnitLogo",
+                      ev.target.files[0]
+                    )
+                  }
+                />
+              </div> */}
+            </div>
+
+            <TabView
+              activeIndex={activeIndex}
+              onTabChange={(e) => setActiveIndex(e.index)}
+            >
+              <TabPanel header="Detalles">
+                <Formik
+                  enableReinitialize={true}
+                  initialValues={{
+                    consultantEmail: consultantById
+                      ? consultantById.consultantEmail
+                      : "",
+                    consultantPassword: consultantById
+                      ? consultantById.consultantPassword
+                      : "",
+                    fullName: consultantById ? consultantById.fullName : "",
+                    avatar: "",
+                    companyUnitLogo: "",
+                    consultantMobileNumber: consultantById
+                      ? consultantById.consultantMobileNumber
+                      : "",
+                    consultantPhoneNumber: consultantById
+                      ? consultantById.consultantPhoneNumber
+                      : "",
+                    position: consultantById ? consultantById.position : "",
+                    profession: consultantById ? consultantById.profession : "",
+                    office1: consultantById ? consultantById.office1 : "",
+                    office2: consultantById ? consultantById.office2 : "",
+                    consultantComments: consultantById
+                      ? consultantById.consultantComments
+                      : "",
+                  }}
+                  onSubmit={(values) => {
+                    let data = new FormData();
+
+                    for (var key in values) {
+                      data.append(key, values[key]);
+                      console.log("clave:", key, "valor", values[key]);
+                    }
+
+                    data.append("id", id);
+                    if (!id) {
+                      console.log(data);
+                      createConsultant(data).then(() =>
+                        history.push("/consultores")
+                      );
+                    } else {
+                      data.id = id;
+                      updateConsultant(data).then((res) => {
+                        alert(
+                          `El consultor ${res.fullName} ha sido actualizado`
+                        );
+                        history.push("/consultores");
+                      });
+                    }
+                  }}
+                >
+                  {(formProps) => (
+                    <Form>
+                      <div className="ContactForm__form">
+                        <div className="ContactForm__form--col">
+                          <Input
+                            label="Nombre completo"
+                            required="yes"
+                            name="fullName"
+                            value={formProps.values.fullName}
+                            onChange={(ev) =>
+                              formProps.setFieldValue(
+                                ev.target.name,
+                                ev.target.value
+                              )
+                            }
+                          />
+                          <Input
+                            label="Email"
+                            required="yes"
+                            type="email"
+                            name="email"
+                            value={formProps.values.consultantEmail}
+                            onChange={(ev) =>
+                              formProps.setFieldValue(
+                                ev.target.name,
+                                ev.target.value
+                              )
+                            }
+                          />
+
+                          <div className="ContactForm__form">
+                            <div className="ContactForm__form--col">
+                              <Input
+                                label="Teléfono móvil"
+                                name="consultantMobileNumber"
+                                type="text"
+                                value={formProps.values.consultantMobileNumber}
+                                onChange={(ev) =>
+                                  formProps.setFieldValue(
+                                    ev.target.name,
+                                    ev.target.value
+                                  )
+                                }
+                              />
+                            </div>
+                            <div className="ContactForm__form--col">
+                              <Input
+                                label="Teléfono fijo"
+                                name="consultantPhoneNumber"
+                                type="text"
+                                value={formProps.values.consultantPhoneNumber}
+                                onChange={(ev) =>
+                                  formProps.setFieldValue(
+                                    ev.target.name,
+                                    ev.target.value
+                                  )
+                                }
+                              />
+                            </div>
+                          </div>
+                          
+                          <Input
+                            label="Posición"
+                            type="text"
+                            name="position"
+                            value={formProps.values.position}
+                            onChange={(ev) =>
+                              formProps.setFieldValue(
+                                ev.target.name,
+                                ev.target.value
+                              )
+                            }
+                          />
+                          <Input
+                            label="Ocupación"
+                            type="text"
+                            name="profession"
+                            value={formProps.values.profession}
+                            onChange={(ev) =>
+                              formProps.setFieldValue(
+                                ev.target.name,
+                                ev.target.value
+                              )
+                            }
+                          />
+                        </div>
+
+                        <div className="ContactForm__form--col">
+                          <div className="ContactForm__form">
+                            <div className="ContactForm__form--col">
+                              <Input
+                                label="Oficina 1"
+                                name="office1"
+                                type="text"
+                                value={formProps.values.office1}
+                                onChange={(ev) =>
+                                  formProps.setFieldValue(
+                                    ev.target.name,
+                                    ev.target.value
+                                  )
+                                }
+                              />
+                            </div>
+                            <div className="ContactForm__form--col">
+                              <Input
+                                label="Oficina 2"
+                                name="office2"
+                                type="text"
+                                value={formProps.values.office2}
+                                onChange={(ev) =>
+                                  formProps.setFieldValue(
+                                    ev.target.name,
+                                    ev.target.value
+                                  )
+                                }
+                              />
+                            </div>
+                          </div>
+                          <Textarea
+                            label="Comentarios"
+                            name="consultantComments"
+                            value={formProps.values.consultantComments}
+                            onChange={(ev) =>
+                              formProps.setFieldValue(
+                                ev.target.name,
+                                ev.target.value
+                              )
+                            }
+                          />
+                        </div>
+                      </div>
+                    </Form>
+                  )}
+                </Formik>
               </TabPanel>
-            )}
-          </TabView>
+              {id ? (
+                <TabPanel header="Anuncios">
+                  <AdsTable ads={ads.length !== 0 ? ads : []} />
+                </TabPanel>
+              ) : (
+                <TabPanel header="Anuncios" disabled></TabPanel>
+              )}
+            </TabView>
+          </div>
         )}
       </Layout>
     </>

@@ -2,6 +2,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { InputText } from "primereact/inputtext";
 import { AiOutlineRight } from "react-icons/ai";
+import { Link } from "react-router-dom";
 import "./SubHeader.scss";
 
 const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter }) => {
@@ -128,6 +129,7 @@ const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter 
         <button onClick={location} className="subHeader__btn">
           Nuevo
         </button>
+
       </div>
     </div>
   );
