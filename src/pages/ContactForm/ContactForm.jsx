@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Formik, Form } from "formik";
 import Layout from "../Layout/Layout";
 import Spinner from "../../components/Spinner/Spinner";
-import { useHistory, NavLink, useParams } from "react-router-dom";
+import { useHistory, useParams, Link } from "react-router-dom";
 import { TabView, TabPanel } from "primereact/tabview";
 import ContactRequestCard from "../../components/ContactRequestCard/ContactRequestCard";
 import GoBack from "../../components/GoBack/GoBack";
@@ -16,12 +16,14 @@ import {
 import { HiOutlineMail } from "react-icons/hi";
 import { FaPhoneAlt } from "react-icons/fa";
 import { BsPersonPlusFill } from "react-icons/bs";
+import { FiSave, FiEdit3 } from "react-icons/fi";
 import "./ContactForm.scss";
 import Input from "../../components/Input/Input";
 import Checkboxes from "../../components/CheckBox/Checkboxes";
 import Checkbox from "../../components/CheckBox/Checkbox";
 import Textarea from "../../components/Textarea/Textarea";
 import InputsGroup from "../../components/InputsGroup/InputsGroup";
+import "../../styles/primeReact.scss"
 
 const ContactForm = () => {
   const [contactById, setContactById] = useState("");
@@ -67,6 +69,13 @@ const ContactForm = () => {
         subTitle="Contactos"
         subUndertitle={<GoBack />}
         subLocation="/contactos/crear"
+        footContent={
+          <>
+            <Link className="buttonFormCancel" to="/contactos" >Cancelar</Link>
+            {contactById && <Link className="buttonFormCancel" to="/contactos" ><FiEdit3 style={{marginRight: 7}}/>Editar</Link>}
+            <button className="buttonForm" type="submit"><FiSave style={{marginRight: 7}}/>Guardar</button>
+          </>
+        }
       >
         {loader ? (
           <Spinner />
@@ -314,7 +323,7 @@ const ContactForm = () => {
                             ]}
                           />
                         </div>
-                        {/* ------------------------------------------------------------------------- */}
+
                         <div className="ContactForm__form--col">
                           <Textarea
                             label="Comentarios"
@@ -341,11 +350,6 @@ const ContactForm = () => {
                           />
                         </div>
                       </div>
-                      {/* ------------------------------------------------------------------------- */}
-                      <button type="submit">Guardar</button>
-                      <NavLink to="/contactos">
-                        <button type="">Cancelar</button>
-                      </NavLink>
                     </Form>
                   )}
                 </Formik>

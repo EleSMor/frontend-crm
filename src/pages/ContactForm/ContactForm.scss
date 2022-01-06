@@ -1,5 +1,19 @@
 @use "src/styles/utils.scss" as *;
 
+.buttonForm {
+  @include button-dark;
+  font-size: 12px;
+  padding: 4px 40px;
+}
+
+.buttonFormCancel {
+  @include button-light-sm;
+  background-color: #B0B0B0;
+  color: $c-text-dark;
+  padding: 4px 40px;
+  margin-right: 20px;
+}
+
 .ContactForm {
   background-color: #fff;
   padding: 40px 32px;
