@@ -1,0 +1,38 @@
+@use "src/styles/utils.scss" as *;
+
+
+.Checkboxes {
+  text-align: left;
+
+  &__label {
+    font-size: 14px;
+  }
+  
+  &__checks {
+    margin-top: 15px;
+    padding-left: 8px;
+    border-left: 2px solid $c-background-dark;
+    display: flex;
+    align-items: flex-end;
+
+    > span {
+      font-weight: 400;
+    }
+  }
+}
+
+.CheckBox {
+  text-align: left;
+  border-left: 2px solid $c-background-dark;
+  display: flex;
+  align-content: center;
+
+  > label {
+    padding-left: 8px;
+    padding-right: 8px;
+    margin: 0;
+  }
+  > input {
+    margin: 0;
+  }
+}

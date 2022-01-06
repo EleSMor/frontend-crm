@@ -2,6 +2,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { InputText } from "primereact/inputtext";
 import { AiOutlineRight } from "react-icons/ai";
+import { Link } from "react-router-dom";
 import "./SubHeader.scss";
 
 const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter }) => {
@@ -120,11 +121,15 @@ const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter 
             </div>
           </>
         )}
-        {!window.location.pathname.includes(`${title.toLowerCase()}/`) && (
+        {/* {!window.location.pathname.includes(`${title.toLowerCase()}/`) && (
           <button tpye="button" className="subHeader__btn" onClick={() => history.push(location)}>
             Nuevo
           </button>
-        )}
+        )} */}
+        <button onClick={location} className="subHeader__btn">
+          Nuevo
+        </button>
+
       </div>
     </div>
   );

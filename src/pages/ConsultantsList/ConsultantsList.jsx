@@ -49,7 +49,7 @@ const ConsultantsList = () => {
       <Layout
         subTitle="Consultores"
         subList={consultants}
-        subLocation="/consultores/crear"
+        subLocation={() => history.push("/consultores/crear")}
         subSetter={setConsultantsFiltered}
         footContent={<ConsultantsListFooter />}
       >

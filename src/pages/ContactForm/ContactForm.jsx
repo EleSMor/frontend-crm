@@ -2,19 +2,35 @@ import React, { useState, useEffect, useContext } from "react";
 import { Formik, Form } from "formik";
 import Layout from "../Layout/Layout";
 import Spinner from "../../components/Spinner/Spinner";
-import { useHistory, NavLink, useParams } from "react-router-dom";
+import { useHistory, useParams, Link } from "react-router-dom";
 import { TabView, TabPanel } from "primereact/tabview";
 import ContactRequestCard from "../../components/ContactRequestCard/ContactRequestCard";
 import GoBack from "../../components/GoBack/GoBack";
 import { getRequestByContacts } from "../../api/requests.api";
 import { UserContext } from "../../components/Context/AuthUser";
-import { createContact, getContactById, updateContact } from "../../api/contacts.api";
+import {
+  createContact,
+  getContactById,
+  updateContact,
+} from "../../api/contacts.api";
+import { HiOutlineMail } from "react-icons/hi";
+import { FaPhoneAlt } from "react-icons/fa";
+import { BsPersonPlusFill } from "react-icons/bs";
+import { FiSave, FiEdit3 } from "react-icons/fi";
+import "./ContactForm.scss";
+import Input from "../../components/Input/Input";
+import Checkboxes from "../../components/CheckBox/Checkboxes";
+import Checkbox from "../../components/CheckBox/Checkbox";
+import Textarea from "../../components/Textarea/Textarea";
+import InputsGroup from "../../components/InputsGroup/InputsGroup";
+import "../../styles/primeReact.scss";
 
 const ContactForm = () => {
   const [contactById, setContactById] = useState("");
   const [requests, setRequests] = useState([]);
   const [selTag, setSelTag] = useState([]);
   const [loader, setLoader] = useState(false);
+  let { name, phone, email } = useParams();
 
   const history = useHistory();
   const { id } = useParams();
@@ -36,212 +52,330 @@ const ContactForm = () => {
 
   const newSelect = (selected, setSelected, ev) => {
     if (selected.includes(ev.target.value)) {
-      const newSelected = selected.filter((selected) => selected !== ev.target.value);
+      const newSelected = selected.filter(
+        (selected) => selected !== ev.target.value
+      );
       setSelected(newSelected);
     } else {
       console.log(ev.target.value);
       setSelected([...selected, ev.target.value]);
     }
   };
-
   return (
     <>
       {!user && history.push("/")}
-      <Layout subTitle="Contactos" subUndertitle={<GoBack />} subLocation="/contactos/crear">
+      <Layout
+        subTitle="Contactos"
+        subUndertitle={<GoBack />}
+        subLocation="/contactos/crear"
+        footContent={
+          <>
+            <Link className="buttonFormCancel" to="/contactos">
+              Cancelar
+            </Link>
+            {contactById && (
+              <Link className="buttonFormCancel" to="/contactos">
+                <FiEdit3 style={{ marginRight: 7 }} />
+                Editar
+              </Link>
+            )}
+            <button className="buttonForm" type="submit">
+              <FiSave style={{ marginRight: 7 }} />
+              Guardar
+            </button>
+          </>
+        }
+      >
         {loader ? (
           <Spinner />
         ) : (
-          <TabView>
-            <TabPanel header="Detalles">
-              <Formik
-                enableReinitialize={true}
-                initialValues={{
-                  fullName: contactById ? contactById.fullName : "",
-                  tag: contactById ? selTag : [],
-                  email: contactById ? contactById.email : "",
-                  contactMobileNumber: contactById ? contactById.contactMobileNumber : "",
-                  contactPhoneNumber: contactById ? contactById.contactPhoneNumber : "",
-                  company: contactById ? contactById.company : "",
-                  street: contactById ? contactById.contactDirection.address.street : "",
-                  directionNumber: contactById ? contactById.contactDirection.address.directionNumber : "",
-                  directionFloor: contactById ? contactById.contactDirection.address.directionFloor : "",
-                  postalCode: contactById ? contactById.contactDirection.postalCode : "",
-                  city: contactById ? contactById.contactDirection.city : "",
-                  country: contactById ? contactById.contactDirection.country : "",
-                  contactComments: contactById ? contactById.contactComments : "",
-                  notReceiveCommunications: contactById ? contactById.notReceiveCommunications : false,
-                }}
-                onSubmit={(data) => {
-                  if (id) data.id = id;
-                  data.tag = selTag;
+          <div className="ContactForm">
+            <div className="ContactForm__header">
+              <div className="ContactForm__header--img">
+                {/* {img ? (
+                  <div>
+                    <img
+                      className=""
+                      src={`${img}`}
+                      alt={contactById?.fullName}
+                    />
+                  </div>
+                ) : ( */}
+                <div>
+                  <BsPersonPlusFill fontSize="2em" color="#fff" />
+                </div>
+                {/* )} */}
+              </div>
 
-                  console.log(data);
-                  if (!id) {
-                    createContact(data).then((res) => {
-                      alert(`El contacto ${res.fullName} ha sido creado`);
-                      history.push("/contactos");
-                    });
-                  } else
-                    updateContact(data).then((res) => {
-                      alert(`El contacto ${res.fullName} ha sido actualizado`);
-                      history.push("/contactos");
-                    });
-                }}
-              >
-                {(formProps) => (
-                  <Form>
-                    <div>
-                      <div>
-                        <label htmlFor="fullName">Nombre completo</label>
-                        <div>
-                          <input
-                            name="fullName"
-                            required="yes"
-                            value={formProps.values.fullName}
-                            onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                          />
-                        </div>
-                      </div>
-                      <div>
-                        <label htmlFor="tag">
-                          Etiqueta
-                          <div>
-                            <input
-                              type="checkbox"
-                              value="Cliente"
-                              onChange={(ev) => newSelect(selTag, setSelTag, ev)}
-                              checked={selTag.includes("Cliente") ? true : ""}
-                            />
-                            <span>Cliente</span>
-                            <input
-                              type="checkbox"
-                              value="Propietario"
-                              onChange={(ev) => newSelect(selTag, setSelTag, ev)}
-                              checked={selTag.includes("Propietario") ? true : ""}
-                            />
-                            <span>Propietario</span>
+              <div className="ContactForm__header--info">
+                <h3>{contactById?.fullName || name}</h3>
+                <p>
+                  <HiOutlineMail
+                    fontSize="1.1em"
+                    color="#47535B"
+                    style={{ marginRight: 9 }}
+                  />
+                  {contactById?.email || email}
+                </p>
+                <p>
+                  <FaPhoneAlt
+                    fontSize="0.85em"
+                    color="#47535B"
+                    style={{ marginRight: 9 }}
+                  />
+                  {contactById?.contactMobileNumber || phone}
+                </p>
+              </div>
+            </div>
+
+            <TabView>
+              <TabPanel header="Detalles">
+                <Formik
+                  enableReinitialize={true}
+                  initialValues={{
+                    fullName: contactById ? contactById.fullName : name,
+                    tag: contactById ? selTag : [],
+                    email: contactById ? contactById.email : email,
+                    contactMobileNumber: contactById
+                      ? contactById.contactMobileNumber
+                      : phone,
+                    contactPhoneNumber: contactById
+                      ? contactById.contactPhoneNumber
+                      : "",
+                    company: contactById ? contactById.company : "",
+                    street: contactById
+                      ? contactById.contactDirection.address.street
+                      : "",
+                    directionNumber: contactById
+                      ? contactById.contactDirection.address.directionNumber
+                      : "",
+                    directionFloor: contactById
+                      ? contactById.contactDirection.address.directionFloor
+                      : "",
+                    postalCode: contactById
+                      ? contactById.contactDirection.postalCode
+                      : "",
+                    city: contactById ? contactById.contactDirection.city : "",
+                    country: contactById
+                      ? contactById.contactDirection.country
+                      : "",
+                    contactComments: contactById
+                      ? contactById.contactComments
+                      : "",
+                    notReceiveCommunications: contactById
+                      ? contactById.notReceiveCommunications
+                      : false,
+                  }}
+                  onSubmit={(data) => {
+                    if (id) data.id = id;
+                    data.tag = selTag;
+
+                    console.log(data);
+                    if (!id) {
+                      createContact(data).then((res) => {
+                        alert(`El contacto ${res.fullName} ha sido creado`);
+                        history.push("/contactos");
+                      });
+                    } else
+                      updateContact(data).then((res) => {
+                        alert(
+                          `El contacto ${res.fullName} ha sido actualizado`
+                        );
+                        history.push("/contactos");
+                      });
+                  }}
+                >
+                  {(formProps) => (
+                    <Form>
+                      <div className="ContactForm__form">
+                        <div className="ContactForm__form--col">
+                          <div className="ContactForm__form">
+                            <div className="ContactForm__form--col">
+                              <Input
+                                label="Nombre completo"
+                                required="yes"
+                                name="fullName"
+                                value={formProps.values.fullName}
+                                onChange={(ev) =>
+                                  formProps.setFieldValue(
+                                    ev.target.name,
+                                    ev.target.value
+                                  )
+                                }
+                              />
+                            </div>
+                            <div className="ContactForm__form--col">
+                              <Checkboxes
+                                label="Etiqueta"
+                                textA="Cliente"
+                                valueA="Cliente"
+                                onChangeA={(ev) =>
+                                  newSelect(selTag, setSelTag, ev)
+                                }
+                                checkedA={
+                                  selTag.includes("Cliente") ? true : ""
+                                }
+                                textB="Propietario"
+                                valueB="Propietario"
+                                onChangeB={(ev) =>
+                                  newSelect(selTag, setSelTag, ev)
+                                }
+                                checkedB={
+                                  selTag.includes("Propietario") ? true : ""
+                                }
+                              />
+                            </div>
                           </div>
-                        </label>
-                      </div>
-                      <div>
-                        <label htmlFor="email">Email</label>
-                        <div>
-                          <input
-                            name="email"
-                            type="email"
+                          <Input
+                            label="Email"
                             required="yes"
+                            type="email"
+                            name="email"
                             value={formProps.values.email}
-                            onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                            onChange={(ev) =>
+                              formProps.setFieldValue(
+                                ev.target.name,
+                                ev.target.value
+                              )
+                            }
                           />
-                        </div>
-                      </div>
-                      <div>
-                        <label htmlFor="contactMobileNumber">Teléfono móvil</label>
-                        <div>
-                          <input
-                            name="contactMobileNumber"
-                            type="text"
-                            value={formProps.values.contactMobileNumber}
-                            onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                          />
-                        </div>
-                      </div>
-                      <div>
-                        <label htmlFor="contactPhoneNumber">Teléfono fijo</label>
-                        <div>
-                          <input
-                            name="contactPhoneNumber"
-                            value={formProps.values.contactPhoneNumber}
-                            onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                          />
-                        </div>
-                      </div>
-                      <div>
-                        <label htmlFor="company">Empresa</label>
-                        <div>
-                          <input
+                          <div className="ContactForm__form">
+                            <div className="ContactForm__form--col">
+                              <Input
+                                label="Teléfono móvil"
+                                name="contactMobileNumber"
+                                type="text"
+                                value={formProps.values.contactMobileNumber}
+                                onChange={(ev) =>
+                                  formProps.setFieldValue(
+                                    ev.target.name,
+                                    ev.target.value
+                                  )
+                                }
+                              />
+                            </div>
+                            <div className="ContactForm__form--col">
+                              <Input
+                                label="Teléfono fijo"
+                                name="contactPhoneNumber"
+                                type="text"
+                                value={formProps.values.contactPhoneNumber}
+                                onChange={(ev) =>
+                                  formProps.setFieldValue(
+                                    ev.target.name,
+                                    ev.target.value
+                                  )
+                                }
+                              />
+                            </div>
+                          </div>
+
+                          <Input
+                            label="Empresa"
                             name="company"
                             value={formProps.values.company}
-                            onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                            onChange={(ev) =>
+                              formProps.setFieldValue(
+                                ev.target.name,
+                                ev.target.value
+                              )
+                            }
+                          />
+
+                          <InputsGroup
+                            label="Dirección"
+                            inputs={[
+                              {
+                                name: "street",
+                                label: "Calle",
+                                value: formProps.values.street,
+                                onChange: (ev) =>
+                                  formProps.setFieldValue(
+                                    ev.target.name,
+                                    ev.target.value
+                                  ),
+                                errors: "",
+                              },
+                              {
+                                name: "postalCode",
+                                label: "Código postal",
+                                value: formProps.values.postalCode,
+                                onChange: (ev) =>
+                                  formProps.setFieldValue(
+                                    ev.target.name,
+                                    ev.target.value
+                                  ),
+                                errors: "",
+                              },
+                              {
+                                name: "city",
+                                label: "Ciudad",
+                                value: formProps.values.city,
+                                onChange: (ev) =>
+                                  formProps.setFieldValue(
+                                    ev.target.name,
+                                    ev.target.value
+                                  ),
+                                errors: "",
+                              },
+                              {
+                                name: "country",
+                                label: "País",
+                                value: formProps.values.country,
+                                onChange: (ev) =>
+                                  formProps.setFieldValue(
+                                    ev.target.name,
+                                    ev.target.value
+                                  ),
+                                errors: "",
+                              },
+                            ]}
                           />
                         </div>
-                      </div>
-                      <div>
-                        <hr />
-                        <span>Dirección</span>
-                        <div>
-                          <label htmlFor="street">Calle</label>
-                          <div>
-                            <input
-                              name="street"
-                              value={formProps.values.street}
-                              onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                            />
-                          </div>
-                          <label htmlFor="postalCode">Código Postal</label>
-                          <div>
-                            <input
-                              name="postalCode"
-                              value={formProps.values.postalCode}
-                              onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                            />
-                          </div>
-                          <label htmlFor="city">Ciudad</label>
-                          <div>
-                            <input
-                              name="city"
-                              value={formProps.values.city}
-                              onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                            />
-                          </div>
-                          <label htmlFor="country">País</label>
-                          <div>
-                            <input
-                              name="country"
-                              value={formProps.values.country}
-                              onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div>
-                        <label htmlFor="contactComments">Comentarios</label>
-                        <div>
-                          <textarea
+
+                        <div className="ContactForm__form--col">
+                          <Textarea
+                            label="Comentarios"
                             name="contactComments"
                             value={formProps.values.contactComments}
-                            onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                            onChange={(ev) =>
+                              formProps.setFieldValue(
+                                ev.target.name,
+                                ev.target.value
+                              )
+                            }
+                          />
+
+                          <Checkbox
+                            label="No recibir emails automáticos"
+                            name="notReceiveCommunications"
+                            checked={formProps.values.notReceiveCommunications}
+                            onChange={(ev) =>
+                              formProps.setFieldValue(
+                                ev.target.name,
+                                !formProps.values.notReceiveCommunications
+                              )
+                            }
                           />
                         </div>
                       </div>
-                      <div>
-                        <label htmlFor="notReceiveCommunications">No recibir emails automáticos</label>
-                        <input
-                          type="checkbox"
-                          name="notReceiveCommunications"
-                          checked={formProps.values.notReceiveCommunications}
-                          onChange={(ev) =>
-                            formProps.setFieldValue(ev.target.name, !formProps.values.notReceiveCommunications)
-                          }
-                        />
-                      </div>
-                    </div>
-                    <button type="submit">Guardar</button>
-                    <NavLink to="/contactos">
-                      <button type="">Cancelar</button>
-                    </NavLink>
-                  </Form>
-                )}
-              </Formik>
-            </TabPanel>
-            {id && (
-              <TabPanel header="Peticiones">
-                {requests.map((request, index) => {
-                  return <ContactRequestCard index={index} request={request} />;
-                })}
+                    </Form>
+                  )}
+                </Formik>
               </TabPanel>
-            )}
-          </TabView>
+              {id ? (
+                <TabPanel header="Peticiones">
+                  {requests.map((request, index) => {
+                    return (
+                      <ContactRequestCard index={index} request={request} />
+                    );
+                  })}
+                </TabPanel>
+              ) : (
+                <TabPanel header="Peticiones" disabled></TabPanel>
+              )}
+            </TabView>
+          </div>
         )}
       </Layout>
     </>
