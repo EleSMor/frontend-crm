@@ -49,4 +49,18 @@
       }
     }
   }
+
+  &__form {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    &--col {
+      width: 46%;
+    }
+  }
+}
+
+.Input, .Checkboxes {
+  margin: 20px 0px;
 }

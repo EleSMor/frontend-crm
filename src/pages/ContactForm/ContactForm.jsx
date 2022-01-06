@@ -18,6 +18,7 @@ import { FaPhoneAlt } from "react-icons/fa";
 import { BsPersonPlusFill } from "react-icons/bs";
 import "./ContactForm.scss";
 import Input from "../../components/Input/Input";
+import Checkboxes from "../../components/CheckBox/Checkboxes";
 
 const ContactForm = () => {
   const [contactById, setContactById] = useState("");
@@ -165,105 +166,65 @@ const ContactForm = () => {
                 >
                   {(formProps) => (
                     <Form>
-                      <div>
-                        <Input
-                          label="Nombre completo"
-                          required="yes"
-                          name="fullName"
-                          value={formProps.values.fullName}
-                          onChange={(ev) =>
-                            formProps.setFieldValue(
-                              ev.target.name,
-                              ev.target.value
-                            )
-                          }
-                        />
-                        <div>
-                          <label htmlFor="tag">
-                            Etiqueta
-                            <div>
-                              <input
-                                type="checkbox"
-                                value="Cliente"
+                      <div className="ContactForm__form">
+                        <div className="ContactForm__form--col">
+                          <div className="ContactForm__form">
+                            <div className="ContactForm__form--col">
+                              <Input
+                                label="Nombre completo"
+                                required="yes"
+                                name="fullName"
+                                value={formProps.values.fullName}
                                 onChange={(ev) =>
-                                  newSelect(selTag, setSelTag, ev)
+                                  formProps.setFieldValue(
+                                    ev.target.name,
+                                    ev.target.value
+                                  )
                                 }
-                                checked={selTag.includes("Cliente") ? true : ""}
                               />
-                              <span>Cliente</span>
-                              <input
-                                type="checkbox"
-                                value="Propietario"
-                                onChange={(ev) =>
+                            </div>
+                            <div className="ContactForm__form--col">
+                              <Checkboxes
+                                label="Etiqueta"
+                                textA="Cliente"
+                                valueA="Cliente"
+                                onChangeA={(ev) =>
                                   newSelect(selTag, setSelTag, ev)
                                 }
-                                checked={
+                                checkedA={
+                                  selTag.includes("Cliente") ? true : ""
+                                }
+                                textB="Propietario"
+                                valueB="Propietario"
+                                onChangeB={(ev) =>
+                                  newSelect(selTag, setSelTag, ev)
+                                }
+                                checkedB={
                                   selTag.includes("Propietario") ? true : ""
                                 }
                               />
-                              <span>Propietario</span>
                             </div>
-                          </label>
-                        </div>
-                        <Input
-                          label="Email"
-                          required="yes"
-                          type="email"
-                          name="email"
-                          value={formProps.values.email}
-                          onChange={(ev) =>
-                            formProps.setFieldValue(
-                              ev.target.name,
-                              ev.target.value
-                            )
-                          }
-                        />
-                        <Input
-                          label="Teléfono móvil"
-                          name="contactMobileNumber"
-                          type="text"
-                          value={formProps.values.contactMobileNumber}
-                          onChange={(ev) =>
-                            formProps.setFieldValue(
-                              ev.target.name,
-                              ev.target.value
-                            )
-                          }
-                        />
-                        <Input
-                          label="Teléfono fijo"
-                          name="contactPhoneNumber"
-                          type="text"
-                          value={formProps.values.contactPhoneNumber}
-                          onChange={(ev) =>
-                            formProps.setFieldValue(
-                              ev.target.name,
-                              ev.target.value
-                            )
-                          }
-                        />
-                        <Input
-                          label="Empresa"
-                          name="company"
-                          value={formProps.values.company}
-                          onChange={(ev) =>
-                            formProps.setFieldValue(
-                              ev.target.name,
-                              ev.target.value
-                            )
-                          }
-                        />
-
-                        <div>
-
-                          <h4>Dirección</h4>
-
-                          <div>
-                            <label htmlFor="street">Calle</label>
-                            <div>
-                              <input
-                                name="street"
-                                value={formProps.values.street}
+                          </div>
+                          <Input
+                            label="Email"
+                            required="yes"
+                            type="email"
+                            name="email"
+                            value={formProps.values.email}
+                            onChange={(ev) =>
+                              formProps.setFieldValue(
+                                ev.target.name,
+                                ev.target.value
+                              )
+                            }
+                          />
+                          <div className="ContactForm__form">
+                            <div className="ContactForm__form--col">
+                              <Input
+                                label="Teléfono móvil"
+                                name="contactMobileNumber"
+                                type="text"
+                                value={formProps.values.contactMobileNumber}
                                 onChange={(ev) =>
                                   formProps.setFieldValue(
                                     ev.target.name,
@@ -272,37 +233,12 @@ const ContactForm = () => {
                                 }
                               />
                             </div>
-                            <label htmlFor="postalCode">Código Postal</label>
-                            <div>
-                              <input
-                                name="postalCode"
-                                value={formProps.values.postalCode}
-                                onChange={(ev) =>
-                                  formProps.setFieldValue(
-                                    ev.target.name,
-                                    ev.target.value
-                                  )
-                                }
-                              />
-                            </div>
-                            <label htmlFor="city">Ciudad</label>
-                            <div>
-                              <input
-                                name="city"
-                                value={formProps.values.city}
-                                onChange={(ev) =>
-                                  formProps.setFieldValue(
-                                    ev.target.name,
-                                    ev.target.value
-                                  )
-                                }
-                              />
-                            </div>
-                            <label htmlFor="country">País</label>
-                            <div>
-                              <input
-                                name="country"
-                                value={formProps.values.country}
+                            <div className="ContactForm__form--col">
+                              <Input
+                                label="Teléfono fijo"
+                                name="contactPhoneNumber"
+                                type="text"
+                                value={formProps.values.contactPhoneNumber}
                                 onChange={(ev) =>
                                   formProps.setFieldValue(
                                     ev.target.name,
@@ -312,41 +248,116 @@ const ContactForm = () => {
                               />
                             </div>
                           </div>
-                        </div>
-{/* ------------------------------------------------------------------------- */}
-                        <div>
-                          <label htmlFor="contactComments">Comentarios</label>
+
+                          <Input
+                            label="Empresa"
+                            name="company"
+                            value={formProps.values.company}
+                            onChange={(ev) =>
+                              formProps.setFieldValue(
+                                ev.target.name,
+                                ev.target.value
+                              )
+                            }
+                          />
+
                           <div>
-                            <textarea
-                              name="contactComments"
-                              value={formProps.values.contactComments}
+                            <h4>Dirección</h4>
+
+                            <div>
+                              <label htmlFor="street">Calle</label>
+                              <div>
+                                <input
+                                  name="street"
+                                  value={formProps.values.street}
+                                  onChange={(ev) =>
+                                    formProps.setFieldValue(
+                                      ev.target.name,
+                                      ev.target.value
+                                    )
+                                  }
+                                />
+                              </div>
+                              <label htmlFor="postalCode">Código Postal</label>
+                              <div>
+                                <input
+                                  name="postalCode"
+                                  value={formProps.values.postalCode}
+                                  onChange={(ev) =>
+                                    formProps.setFieldValue(
+                                      ev.target.name,
+                                      ev.target.value
+                                    )
+                                  }
+                                />
+                              </div>
+                              <label htmlFor="city">Ciudad</label>
+                              <div>
+                                <input
+                                  name="city"
+                                  value={formProps.values.city}
+                                  onChange={(ev) =>
+                                    formProps.setFieldValue(
+                                      ev.target.name,
+                                      ev.target.value
+                                    )
+                                  }
+                                />
+                              </div>
+                              <label htmlFor="country">País</label>
+                              <div>
+                                <input
+                                  name="country"
+                                  value={formProps.values.country}
+                                  onChange={(ev) =>
+                                    formProps.setFieldValue(
+                                      ev.target.name,
+                                      ev.target.value
+                                    )
+                                  }
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        {/* ------------------------------------------------------------------------- */}
+                        <div className="ContactForm__form--col">
+                          <div>
+                            <label htmlFor="contactComments">Comentarios</label>
+                            <div>
+                              <textarea
+                                name="contactComments"
+                                value={formProps.values.contactComments}
+                                onChange={(ev) =>
+                                  formProps.setFieldValue(
+                                    ev.target.name,
+                                    ev.target.value
+                                  )
+                                }
+                              />
+                            </div>
+                          </div>
+                          <div>
+                            <label htmlFor="notReceiveCommunications">
+                              No recibir emails automáticos
+                            </label>
+                            <input
+                              type="checkbox"
+                              name="notReceiveCommunications"
+                              checked={
+                                formProps.values.notReceiveCommunications
+                              }
                               onChange={(ev) =>
                                 formProps.setFieldValue(
                                   ev.target.name,
-                                  ev.target.value
+                                  !formProps.values.notReceiveCommunications
                                 )
                               }
                             />
                           </div>
                         </div>
-                        <div>
-                          <label htmlFor="notReceiveCommunications">
-                            No recibir emails automáticos
-                          </label>
-                          <input
-                            type="checkbox"
-                            name="notReceiveCommunications"
-                            checked={formProps.values.notReceiveCommunications}
-                            onChange={(ev) =>
-                              formProps.setFieldValue(
-                                ev.target.name,
-                                !formProps.values.notReceiveCommunications
-                              )
-                            }
-                          />
-                        </div>
-{/* ------------------------------------------------------------------------- */}
                       </div>
+                      {/* ------------------------------------------------------------------------- */}
                       <button type="submit">Guardar</button>
                       <NavLink to="/contactos">
                         <button type="">Cancelar</button>
