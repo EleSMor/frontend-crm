@@ -20,3 +20,19 @@
     }
   }
 }
+
+.CheckBox {
+  text-align: left;
+  border-left: 2px solid $c-background-dark;
+  display: flex;
+  align-content: center;
+
+  > label {
+    padding-left: 8px;
+    padding-right: 8px;
+    margin: 0;
+  }
+  > input {
+    margin: 0;
+  }
+}

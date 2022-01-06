@@ -61,6 +61,10 @@
   }
 }
 
-.Input, .Checkboxes {
+.Input, .Checkboxes, .CheckBox, .Textarea {
   margin: 20px 0px;
+}
+
+.Textarea {
+  margin-bottom: 40px;
 }
