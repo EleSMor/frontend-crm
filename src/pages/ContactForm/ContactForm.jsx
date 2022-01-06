@@ -23,7 +23,7 @@ import Checkboxes from "../../components/CheckBox/Checkboxes";
 import Checkbox from "../../components/CheckBox/Checkbox";
 import Textarea from "../../components/Textarea/Textarea";
 import InputsGroup from "../../components/InputsGroup/InputsGroup";
-import "../../styles/primeReact.scss"
+import "../../styles/primeReact.scss";
 
 const ContactForm = () => {
   const [contactById, setContactById] = useState("");
@@ -61,7 +61,6 @@ const ContactForm = () => {
       setSelected([...selected, ev.target.value]);
     }
   };
-
   return (
     <>
       {!user && history.push("/")}
@@ -71,9 +70,19 @@ const ContactForm = () => {
         subLocation="/contactos/crear"
         footContent={
           <>
-            <Link className="buttonFormCancel" to="/contactos" >Cancelar</Link>
-            {contactById && <Link className="buttonFormCancel" to="/contactos" ><FiEdit3 style={{marginRight: 7}}/>Editar</Link>}
-            <button className="buttonForm" type="submit"><FiSave style={{marginRight: 7}}/>Guardar</button>
+            <Link className="buttonFormCancel" to="/contactos">
+              Cancelar
+            </Link>
+            {contactById && (
+              <Link className="buttonFormCancel" to="/contactos">
+                <FiEdit3 style={{ marginRight: 7 }} />
+                Editar
+              </Link>
+            )}
+            <button className="buttonForm" type="submit">
+              <FiSave style={{ marginRight: 7 }} />
+              Guardar
+            </button>
           </>
         }
       >

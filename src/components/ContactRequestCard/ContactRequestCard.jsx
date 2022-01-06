@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { BsPersonCircle } from "react-icons/bs";
 import { GoPrimitiveDot } from "react-icons/go";
+import { GiPriceTag, GiPapers } from "react-icons/gi";
 import moment from "moment";
 import "moment/locale/es";
 import "./ContactRequestCard.scss";
@@ -58,14 +59,20 @@ const ContactRequestCard = ({ request }) => {
           </div>
           <div className="RequestCard__Card--content-body">
             <div className="RequestCard__Card--content-body--item">
-              <h4 className="RequestCard__Card--content-body--title">Precio</h4>
+              <h4 className="RequestCard__Card--content-body--title">
+                <GiPriceTag />
+                Precio
+              </h4>
               <div>
                 {maskValues(request.requestSalePrice.salePriceMax, "price")}
                 {maskValues(request.requestSalePrice.salePriceMin, "price")}
               </div>
             </div>
             <div className="RequestCard__Card--content-body--item">
-              <h4 className="RequestCard__Card--content-body--title">Superficie construida</h4>
+              <h4 className="RequestCard__Card--content-body--title">
+              <GiPapers />
+                Superficie construida
+              </h4>
               <div>
                 {maskValues(request.requestBuildSurface.buildSurfaceMax, "buildSurface")}
                 {maskValues(request.requestBuildSurface.buildSurfaceMin, "buildSurface")}

@@ -14,6 +14,10 @@
   }
 }
 
+.p-tabview-title:hover {
+  text-decoration: none;
+}
+
 .p-tabview-selected	 {
   color: $c-text-dark !important;
   text-decoration: none;

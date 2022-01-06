@@ -12,18 +12,19 @@
   justify-content: space-between;
   align-items: center;
   height: 182px;
+  text-align: left;
 
   &--content {
     display: flex;
     flex-direction: column;
-
+    
     &-header {
       display: flex;
       align-items: center;
       justify-content: flex-start;    
       font-size: 14px;  
     }
-
+    
     &-body {
       display: flex;
       justify-content: space-between;
@@ -31,10 +32,13 @@
       padding-top: 16px;
       &--title {
         padding-right: 8px;
+        font-size: 12px;
       }
       &--item {
+        border-left: 1px solid $c-background-dark;
         display: flex;
         padding: 16px 16px 0 0;
+        padding-left: 8px;;
       }
     }
   }
