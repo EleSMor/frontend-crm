@@ -1,3 +1,46 @@
+@use "src/styles/utils.scss" as *;
+
+.p-datatable-resizable .p-resizable-column {
+  background-color: rgba(133, 132, 132, 0.151) !important;
+  border: 1px solid rgba(182, 177, 177, 0.774) !important;
+  color: $c-dark-grey !important;
+}
+
+.pi-sort-amount-down:before,
+.pi-sort-amount-up-alt:before {
+  color: $c-dark-grey !important;
+}
+
+.p-datatable .p-sortable-column:focus.p-highlight:not(.p-sortable-disabled):focus,
+.p-datatable .p-sortable-column:focus {
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px !important;
+}
+
+.p-datatable-responsive-scroll > .p-datatable-wrapper::-webkit-scrollbar {
+  //display: none;
+  height: 10px !important; /* width of the entire scrollbar */
+}
+
+.p-datatable-responsive-scroll > .p-datatable-wrapper::-webkit-scrollbar-track {
+  background-color: $c-background-mid !important; /* color of the tracking area */
+}
+
+.p-datatable-responsive-scroll > .p-datatable-wrapper::-webkit-scrollbar-thumb {
+  background-color: $c-dark-grey !important; /* color of the scroll thumb */
+}
+
+.p-datatable .p-datatable-tbody > tr > td {
+  text-align: left;
+  border: 1px solid #dee2e6;
+  border-width: 0 0 1px 0;
+  padding: 1rem 1rem;
+  outline-color: #999999;
+  > a {
+    color: $c-dark-grey;
+    text-decoration: underline rgba(22, 22, 22, 0.247);
+  }
+}
+
 .tbl {
   display: flex;
   flex-direction: column;

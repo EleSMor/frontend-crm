@@ -4,10 +4,12 @@ import { Column } from "primereact/column";
 import { ColumnGroup } from "primereact/columngroup";
 import { Row } from "primereact/row";
 import { Link } from "react-router-dom";
+import { BsCloudArrowUp } from "react-icons/bs";
 import * as moment from "moment";
 import "moment/locale/es";
 import "./AdsTable.scss";
 import "./DataTableDemo.scss";
+import "./AdsTable.scss"
 
 const AdsTable = ({ ads }) => {
   const [adsFormated, setAdsFormated] = useState([]);
@@ -22,7 +24,12 @@ const AdsTable = ({ ads }) => {
   let headerGroup = (
     <ColumnGroup>
       <Row>
-        <Column header="Fecha de creación" rowSpan={2} sortable field="createdAt" />
+        <Column
+          header="Fecha de creación"
+          rowSpan={2}
+          sortable
+          field="createdAt"
+        />
         <Column header="Referencia" rowSpan={2} />
         <Column header="Dirección" rowSpan={2} />
         <Column header="Título" rowSpan={2} />
@@ -36,14 +43,26 @@ const AdsTable = ({ ads }) => {
         <Column header="Consultor" rowSpan={2} />
       </Row>
       <Row>
-        <Column header="Venta" colSpan={1} sortable field="price.sale.saleValue" />
-        <Column header="Alquiler" colSpan={1} sortable field="price.rent.rentValue" />
+        <Column
+          header="Venta"
+          colSpan={1}
+          sortable
+          field="price.sale.saleValue"
+        />
+        <Column
+          header="Alquiler"
+          colSpan={1}
+          sortable
+          field="price.rent.rentValue"
+        />
       </Row>
     </ColumnGroup>
   );
 
   const formatCurrency = (value) => {
-    return value ? value.toLocaleString("es-ES", { style: "currency", currency: "EUR" }) : value;
+    return value
+      ? value.toLocaleString("es-ES", { style: "currency", currency: "EUR" })
+      : value;
   };
 
   const surfaceBodyTemplate = (rowData) => {
@@ -61,12 +80,14 @@ const AdsTable = ({ ads }) => {
   };
 
   const saleBodyTemplate = (rowData) => {
-    if (rowData.price.sale.saleValue !== 0) return formatCurrency(rowData.price.sale.saleValue);
+    if (rowData.price.sale.saleValue !== 0)
+      return formatCurrency(rowData.price.sale.saleValue);
     else return "";
   };
 
   const rentBodyTemplate = (rowData) => {
-    if (rowData.price.rent.rentValue !== 0) return formatCurrency(rowData.price.rent.rentValue);
+    if (rowData.price.rent.rentValue !== 0)
+      return formatCurrency(rowData.price.rent.rentValue);
     else return "";
   };
 
@@ -74,9 +95,9 @@ const AdsTable = ({ ads }) => {
     const newAds = ads.map((ad) => {
       if (typeof ad.adDirection === "object") {
         ad.adDirection.address = Object.values(ad.adDirection.address);
-        ad.adDirection = `${ad.adDirection.address.join(" ")}  ${ad.adDirection.postalCode} ${ad.adDirection.city} ${
-          ad.adDirection.country
-        }`;
+        ad.adDirection = `${ad.adDirection.address.join(" ")}  ${
+          ad.adDirection.postalCode
+        } ${ad.adDirection.city} ${ad.adDirection.country}`;
         ad.adBuildingType = ad.adBuildingType.join(" ");
       }
       return ad;
@@ -118,7 +139,12 @@ const AdsTable = ({ ads }) => {
           <Column field="consultant.fullName"></Column>
         </DataTable>
       ) : (
-        <p>spinner</p>
+        <div style={{height: 200}}>
+          <p style={{ lineHeight: 4 }}>
+            No ha creado ningún anuncio{" "}
+          </p>
+          <BsCloudArrowUp fontSize="2.5em" />
+        </div>
       )}
     </>
   );
