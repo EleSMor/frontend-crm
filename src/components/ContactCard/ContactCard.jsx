@@ -68,7 +68,7 @@ const ContactCard = ({ contact }) => {
               color="#47535B"
               style={{ marginRight: 9 }}
             />
-            {contact.contactMobileNumber} | {contact.contactPhoneNumber}
+            {contact.contactMobileNumber} {contact.contactPhoneNumber && `| ${contact.contactPhoneNumber}}`}
           </p>
           <p>
             <HiOutlineMail

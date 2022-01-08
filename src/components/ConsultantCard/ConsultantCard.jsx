@@ -44,27 +44,26 @@ const ConsultantCard = ({ consultant }) => {
 
         <p>
           <HiOutlineMail
-            fontSize="1.2em"
+            fontSize="1.1em"
             color="#47535B"
-            style={{ marginRight: 9 }}
+            style={{ marginRight: 8 }}
           />
-          {consultant.email}
+          {consultant.email || "Sin email"}
         </p>
         <p>
           <FaPhoneAlt
             fontSize="0.85em"
             color="#47535B"
-            style={{ marginRight: 9 }}
+            style={{ marginRight: 11 }}
           />
-          {consultant.consultantMobileNumber} |{" "}
-          {consultant.consultantMobileNumber}
+          {consultant.consultantMobileNumber} { consultant.consultantMobileNumber && `| ${consultant.consultantMobileNumber}`}
         </p>
       </div>
 
       <div className="ConsultantCard--location">
         <div className="ConsultantCard--location--top">
           <HiOutlineLocationMarker fontSize="1.2em" color="#47535B" style={{ marginRight: 5 }} />
-          <p><b>Oficinas</b></p>
+          <p className="displayElements"><b>Oficinas</b></p>
         </div>
         <div className="ConsultantCard--location--box">
           <p>{consultant.office1}</p>
@@ -73,7 +72,7 @@ const ConsultantCard = ({ consultant }) => {
       </div>
 
       <div className="ConsultantCard--interact">
-        <span><small>Creado el {consultant.consultantCreationDate}</small></span>
+        <span className="displayElements"><small>Creado el {consultant.consultantCreationDate}</small></span>
         <Link className="ConsultantCard--interact--button" to={`/consultores/${consultant._id}`}>Abrir Ficha</Link>
       </div>
     </div>
