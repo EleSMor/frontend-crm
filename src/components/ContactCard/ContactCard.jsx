@@ -11,13 +11,20 @@ const ContactCard = ({ contact }) => {
   const [requests, setRequests] = useState(0);
 
   useEffect(() => {
-    getRequestByContacts(contact._id).then((data) => setRequests(data.length), [contact]);
+    getRequestByContacts(contact._id).then(
+      (data) => setRequests(data.length),
+      [contact]
+    );
   });
 
   const renderDirection = (contact) => {
     return (
       <p>
-        <HiOutlineLocationMarker fontSize="1.2em" color="#47535B" style={{ marginRight: 5 }} />{" "}
+        <HiOutlineLocationMarker
+          fontSize="1.2em"
+          color="#47535B"
+          style={{ marginRight: 5 }}
+        />{" "}
         {contact.contactDirection.address.directionNumber
           ? contact.contactDirection.address.directionFloor
             ? ` ${contact.contactDirection.address.street}, ${contact.contactDirection.address.directionNumber}, ${contact.contactDirection.address.directionFloor}`
@@ -40,10 +47,13 @@ const ContactCard = ({ contact }) => {
           </p>
           <p>{contact.company}</p>
 
-          <div className="ContactCard__Card--item__tags">
+          <div className="ContactCard__Card--item__tags displayElements">
             {contact.tag.map((tag, index) => {
               return (
-                <span key={`${index}-${tag}`} className="ContactCard__Card--item__tags__tag">
+                <span
+                  key={`${index}-${tag}`}
+                  className="ContactCard__Card--item__tags__tag"
+                >
                   {tag}{" "}
                 </span>
               );
@@ -53,34 +63,66 @@ const ContactCard = ({ contact }) => {
 
         <div className="ContactCard__Card--item ContactCard__Card--item-iconsInfo">
           <p>
-            <FaPhoneAlt fontSize="0.85em" color="#47535B" style={{ marginRight: 9 }} />
+            <FaPhoneAlt
+              fontSize="0.85em"
+              color="#47535B"
+              style={{ marginRight: 9 }}
+            />
             {contact.contactMobileNumber} | {contact.contactPhoneNumber}
           </p>
           <p>
-            <HiOutlineMail fontSize="1.1em" color="#47535B" style={{ marginRight: 9 }} />
+            <HiOutlineMail
+              fontSize="1.1em"
+              color="#47535B"
+              style={{ marginRight: 9 }}
+            />
             {contact.email}
           </p>
           <p>
-            <BsPersonCircle fontSize="1.1em" color="#47535B" style={{ marginRight: 9 }} />
+            <BsPersonCircle
+              fontSize="1.1em"
+              color="#47535B"
+              style={{ marginRight: 9 }}
+            />
             <span className="ContactCard__Card--item--border">Luis</span>
           </p>
           <p>
-            <BsPencilSquare fontSize="1.1em" color="#47535B" style={{ marginRight: 9 }} />
+            <BsPencilSquare
+              fontSize="1.1em"
+              color="#47535B"
+              style={{ marginRight: 9 }}
+            />
             {requests} Peticiones
           </p>
         </div>
 
-        <div className="ContactCard__Card--item ContactCard__Card--item-textArea">
+        <div className="ContactCard__Card--item ContactCard__Card--item-textArea displayElements">
           <p>Comentarios</p>
           <textarea defaultValue={contact.contactComments}></textarea>
         </div>
 
+        <div className="ContactCard__Card--item__tags notDisplayElements">
+          {contact.tag.map((tag, index) => {
+            return (
+              <span
+                key={`${index}-${tag}`}
+                className="ContactCard__Card--item__tags__tag"
+              >
+                {tag}{" "}
+              </span>
+            );
+          })}
+        </div>
         <div className="ContactCard__Card--item ContactCard__Card--item-cta">
-          <span>Creado el {moment(contact.createdAt).format("L")}</span>
-          <Link className="ContactCard__Card--item-cta--button" to={`/contactos/${contact._id}`}>
+          <span className="displayElements">Creado el {moment(contact.createdAt).format("L")}</span>
+          <Link
+            className="ContactCard__Card--item-cta--button"
+            to={`/contactos/${contact._id}`}
+          >
             Abrir Ficha
           </Link>
         </div>
+      <span className="notDisplayElements createdAt">Creado el {moment(contact.createdAt).format("L")}</span>
       </div>
     </div>
   );
