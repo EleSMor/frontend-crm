@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import useWindowSize from "../../hooks/useWindowSize";
 import "./PopUp.scss";
 
 const PopUp = ({
@@ -6,12 +7,14 @@ const PopUp = ({
   title,
   children,
   height,
+  mobileHeight,
   width,
   simpleStyle,
   fixedButtons,
   buttons,
 }) => {
   const modal = useRef(null);
+  const size = useWindowSize()
 
   window.onclick = (event) => {
     if (event.target === modal.current) {
@@ -22,7 +25,7 @@ const PopUp = ({
   return (
     <div ref={modal} className="PopUp__overlay">
       <div
-        style={{ height: height, width: width }}
+        style={size > 880 ? ({ height: height, width: width }) : ({ height: mobileHeight, width: width })}
         className="PopUp__overlay__container"
       >
         <div

@@ -60,7 +60,7 @@ const ContactsList = () => {
       >
         
         {popUp && (
-          <PopUp handlePopUp={handlePopUp} height="68%" width="50%" title="Crear un nuevo contacto">
+          <PopUp handlePopUp={handlePopUp} height="68%" mobileHeight="85%" width="50%" title="Crear contacto nuevo">
             <ContactValidation />
           </PopUp>
         )}

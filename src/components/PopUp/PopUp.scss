@@ -23,6 +23,7 @@
   display: flex;
   justify-content: center;
   padding-top: 5%;
+  z-index: 99999;
 
   &__container {
     position: relative;
@@ -129,8 +130,12 @@
   .PopUp__overlay {
     padding-top: 20%;
     &__container {
-      min-width: 85%;
+      min-width: 90%;
       min-height: 30%;
+
+      &--content {
+        padding: 10px 18px;
+      }
     }
   }
 }

@@ -7,7 +7,7 @@ import "./ConsultantCard.scss";
 const ConsultantCard = ({ consultant }) => {
   return (
     <div className="ConsultantCard" id={consultant._id}>
-      <div className="ConsultantCard--img">
+      <div className="ConsultantCard--img displayElements">
         {consultant.avatar ? (
           <div>
             <img
