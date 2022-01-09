@@ -49,6 +49,8 @@
   .subHeader {
     display: flex;
     justify-content: center;
+    top: calc($subHeader-height - 15px);
+    height: calc($navbar-height + $navBar-margin-top + 15px);
   }
   .noDisplay {
     display: none;
