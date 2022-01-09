@@ -93,7 +93,7 @@ const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter 
 
   return (
     <div className="subHeader">
-      <div className="subHeader__title">
+      <div className="subHeader__title noDisplay">
         <h2>{title}</h2>
         {titleBreadcrumb && (
           <p>
@@ -109,7 +109,7 @@ const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter 
           </div>
         ) : (
           <>
-            <div className="subHeader__subtitle-item">
+            <div className="subHeader__subtitle-item noDisplay">
               <span>
                 {list.length !== 0 ? (list.length > 50 ? list.length : list.length) : 0}
                 &nbsp;elementos · Ordenado por fecha de última modificación · Se actualizó hace unos segundos

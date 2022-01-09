@@ -13,7 +13,7 @@
 
   &__title {
     text-align: left;
-    margin-top:5px;
+    margin-top: 5px;
     margin-bottom: 8px;
     display: flex;
     align-items: flex-end;
@@ -29,7 +29,7 @@
       margin-left: 10px;
     }
   }
-  
+
   &__subtitle {
     text-align: left;
     display: flex;
@@ -37,10 +37,20 @@
     align-items: center;
     font-size: 12px;
   }
-  
+
   &__btn {
     @include button-dark-sm;
     padding: 8px 24px;
     margin-right: 12px;
+  }
+}
+
+@media (max-width: $break-point) {
+  .subHeader {
+    display: flex;
+    justify-content: center;
+  }
+  .noDisplay {
+    display: none;
   }
 }

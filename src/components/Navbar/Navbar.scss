@@ -1,9 +1,5 @@
 @use "src/styles/utils.scss" as *;
 
-.navigateXS {
-  background-color: green;
-}
-
 .navigate {
   position: fixed;
   top: $navBar-margin-top;

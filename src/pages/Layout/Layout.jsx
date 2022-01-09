@@ -15,7 +15,6 @@ const Layout = ({
 }) => {
   return (
     <div className="Layout">
-      <Navbar />
       <SubHeader
         title={subTitle}
         list={subList}
@@ -24,6 +23,8 @@ const Layout = ({
         titleBreadcrumb={subBreadcrumbs}
         underTitle={subUndertitle}
       />
+      <Navbar title={subTitle}/>
+      
       
       {footContent && <Footer>{footContent}</Footer>}
 
