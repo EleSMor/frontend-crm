@@ -194,8 +194,8 @@ const ConsultantForm = () => {
                 >
                   {(formProps) => (
                     <Form>
-                      <div className="ContactForm__form">
-                        <div className="ContactForm__form--col">
+                      <div className="ConsultantForm__form">
+                        <div className="ConsultantForm__form--col">
                           <Input
                             label="Nombre completo"
                             required="yes"
@@ -222,8 +222,8 @@ const ConsultantForm = () => {
                             }
                           />
 
-                          <div className="ContactForm__form">
-                            <div className="ContactForm__form--col">
+                          <div className="ConsultantForm__form">
+                            <div className="ConsultantForm__form--col">
                               <Input
                                 label="Teléfono móvil"
                                 name="consultantMobileNumber"
@@ -237,7 +237,7 @@ const ConsultantForm = () => {
                                 }
                               />
                             </div>
-                            <div className="ContactForm__form--col">
+                            <div className="ConsultantForm__form--col">
                               <Input
                                 label="Teléfono fijo"
                                 name="consultantPhoneNumber"
@@ -279,9 +279,9 @@ const ConsultantForm = () => {
                           />
                         </div>
 
-                        <div className="ContactForm__form--col">
-                          <div className="ContactForm__form">
-                            <div className="ContactForm__form--col">
+                        <div className="ConsultantForm__form--col">
+                          <div className="ConsultantForm__form">
+                            <div className="ConsultantForm__form--col">
                               <Input
                                 label="Oficina 1"
                                 name="office1"
@@ -295,7 +295,7 @@ const ConsultantForm = () => {
                                 }
                               />
                             </div>
-                            <div className="ContactForm__form--col">
+                            <div className="ConsultantForm__form--col">
                               <Input
                                 label="Oficina 2"
                                 name="office2"

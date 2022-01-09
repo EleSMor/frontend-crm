@@ -14,12 +14,29 @@
   margin-right: 20px;
 }
 
+
+.Input, .Checkboxes, .CheckBox, .Textarea {
+  margin: 20px 0px;
+}
+
+.Textarea {
+  margin-bottom: 40px;
+}
+
 .ContactForm {
   background-color: #fff;
-  padding: 40px 32px;
+  padding: 10px 10px;
   border-radius: 3px;
   box-shadow: rgba(0, 0, 0, 0.046) 0px 1px 4px;
   border: 1px solid rgba(0, 0, 0, 0.089);
+
+  &__header {
+    display: none;
+  }
+}
+@media (min-width: $break-point) {
+.ContactForm {
+  padding: 40px 32px;
 
   &__header {
     display: flex;
@@ -74,11 +91,4 @@
     }
   }
 }
-
-.Input, .Checkboxes, .CheckBox, .Textarea {
-  margin: 20px 0px;
-}
-
-.Textarea {
-  margin-bottom: 40px;
 }
