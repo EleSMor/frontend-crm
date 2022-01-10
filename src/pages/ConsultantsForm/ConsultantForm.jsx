@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Formik, Form } from "formik";
+import { Formik, Form, useFormikContext } from "formik";
 import { useHistory, Link, useParams } from "react-router-dom";
 import { TabView, TabPanel } from "primereact/tabview";
 import Layout from "../Layout/Layout";
@@ -8,11 +8,7 @@ import GoBack from "../../components/GoBack/GoBack";
 import AdsTable from "../../components/AdsTable/AdsTable";
 import { UserContext } from "../../components/Context/AuthUser";
 import { getAllAds } from "../../api/ads.api";
-import {
-  createConsultant,
-  getConsultantById,
-  updateConsultant,
-} from "../../api/consultants.api";
+import { createConsultant, getConsultantById, updateConsultant } from "../../api/consultants.api";
 import Input from "../../components/Input/Input";
 import Textarea from "../../components/Textarea/Textarea";
 import { BsPersonPlusFill } from "react-icons/bs";
@@ -26,10 +22,10 @@ const ConsultantForm = () => {
   const history = useHistory();
   const { id } = useParams();
   const { user } = useContext(UserContext);
+  // const { submitForm } = useFormikContext();
 
   const [ads, setAds] = useState([]);
   const [consultantById, setConsultantById] = useState("");
-
   const [activeIndex, setActiveIndex] = useState(0);
   const [loader, setLoader] = useState(false);
 
@@ -52,14 +48,9 @@ const ConsultantForm = () => {
       <Layout
         subTitle="Consultores"
         subUndertitle={<GoBack />}
-        subLocation="/consultores/crear"
         footContent={
           <>
-            <button
-              className="buttonForm"
-              type="submit"
-              style={{ marginRight: 8 }}
-            >
+            <button className="buttonForm" type="submit" form="ConsultantForm" style={{ marginRight: 8 }}>
               <FiSave style={{ marginRight: 7 }} />
               Guardar
             </button>
@@ -105,19 +96,11 @@ const ConsultantForm = () => {
               <div className="ConsultantForm__header--info">
                 <h3>{consultantById?.fullName || ""}</h3>
                 <p>
-                  <HiOutlineMail
-                    fontSize="1.1em"
-                    color="#47535B"
-                    style={{ marginRight: 9 }}
-                  />
+                  <HiOutlineMail fontSize="1.1em" color="#47535B" style={{ marginRight: 9 }} />
                   {consultantById?.consultantEmail || "--------"}
                 </p>
                 <p>
-                  <FaPhoneAlt
-                    fontSize="0.85em"
-                    color="#47535B"
-                    style={{ marginRight: 9 }}
-                  />
+                  <FaPhoneAlt fontSize="0.85em" color="#47535B" style={{ marginRight: 9 }} />
                   {consultantById?.consultantMobileNumber || "--------"}
                 </p>
               </div>
@@ -136,64 +119,46 @@ const ConsultantForm = () => {
               </div> */}
             </div>
 
-            <TabView
-              activeIndex={activeIndex}
-              onTabChange={(e) => setActiveIndex(e.index)}
-            >
+            <TabView activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)}>
               <TabPanel header="Detalles">
                 <Formik
                   enableReinitialize={true}
                   initialValues={{
-                    consultantEmail: consultantById
-                      ? consultantById.consultantEmail
-                      : "",
-                    consultantPassword: consultantById
-                      ? consultantById.consultantPassword
-                      : "",
+                    consultantEmail: consultantById ? consultantById.consultantEmail : "",
+                    consultantPassword: consultantById ? consultantById.consultantPassword : "",
                     fullName: consultantById ? consultantById.fullName : "",
                     avatar: "",
                     companyUnitLogo: "",
-                    consultantMobileNumber: consultantById
-                      ? consultantById.consultantMobileNumber
-                      : "",
-                    consultantPhoneNumber: consultantById
-                      ? consultantById.consultantPhoneNumber
-                      : "",
+                    consultantMobileNumber: consultantById ? consultantById.consultantMobileNumber : "",
+                    consultantPhoneNumber: consultantById ? consultantById.consultantPhoneNumber : "",
                     position: consultantById ? consultantById.position : "",
                     profession: consultantById ? consultantById.profession : "",
                     office1: consultantById ? consultantById.office1 : "",
                     office2: consultantById ? consultantById.office2 : "",
-                    consultantComments: consultantById
-                      ? consultantById.consultantComments
-                      : "",
+                    consultantComments: consultantById ? consultantById.consultantComments : "",
                   }}
                   onSubmit={(values) => {
                     let data = new FormData();
 
                     for (var key in values) {
                       data.append(key, values[key]);
-                      console.log("clave:", key, "valor", values[key]);
+                      // console.log("clave:", key, "valor", values[key]);
                     }
 
                     data.append("id", id);
                     if (!id) {
-                      console.log(data);
-                      createConsultant(data).then(() =>
-                        history.push("/consultores")
-                      );
+                      createConsultant(data).then(() => history.push("/consultores"));
                     } else {
                       data.id = id;
                       updateConsultant(data).then((res) => {
-                        alert(
-                          `El consultor ${res.fullName} ha sido actualizado`
-                        );
+                        alert(`El consultor ${res.fullName} ha sido actualizado`);
                         history.push("/consultores");
                       });
                     }
                   }}
                 >
                   {(formProps) => (
-                    <Form>
+                    <Form id="ConsultantForm">
                       <div className="ConsultantForm__form">
                         <div className="ConsultantForm__form--col">
                           <Input
@@ -201,25 +166,15 @@ const ConsultantForm = () => {
                             required="yes"
                             name="fullName"
                             value={formProps.values.fullName}
-                            onChange={(ev) =>
-                              formProps.setFieldValue(
-                                ev.target.name,
-                                ev.target.value
-                              )
-                            }
+                            onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                           />
                           <Input
                             label="Email"
                             required="yes"
                             type="email"
-                            name="email"
+                            name="consultantEmail"
                             value={formProps.values.consultantEmail}
-                            onChange={(ev) =>
-                              formProps.setFieldValue(
-                                ev.target.name,
-                                ev.target.value
-                              )
-                            }
+                            onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                           />
 
                           <div className="ConsultantForm__form">
@@ -229,12 +184,7 @@ const ConsultantForm = () => {
                                 name="consultantMobileNumber"
                                 type="text"
                                 value={formProps.values.consultantMobileNumber}
-                                onChange={(ev) =>
-                                  formProps.setFieldValue(
-                                    ev.target.name,
-                                    ev.target.value
-                                  )
-                                }
+                                onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                               />
                             </div>
                             <div className="ConsultantForm__form--col">
@@ -243,39 +193,24 @@ const ConsultantForm = () => {
                                 name="consultantPhoneNumber"
                                 type="text"
                                 value={formProps.values.consultantPhoneNumber}
-                                onChange={(ev) =>
-                                  formProps.setFieldValue(
-                                    ev.target.name,
-                                    ev.target.value
-                                  )
-                                }
+                                onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                               />
                             </div>
                           </div>
-                          
+
                           <Input
                             label="Posición"
                             type="text"
                             name="position"
                             value={formProps.values.position}
-                            onChange={(ev) =>
-                              formProps.setFieldValue(
-                                ev.target.name,
-                                ev.target.value
-                              )
-                            }
+                            onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                           />
                           <Input
                             label="Ocupación"
                             type="text"
                             name="profession"
                             value={formProps.values.profession}
-                            onChange={(ev) =>
-                              formProps.setFieldValue(
-                                ev.target.name,
-                                ev.target.value
-                              )
-                            }
+                            onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                           />
                         </div>
 
@@ -287,12 +222,7 @@ const ConsultantForm = () => {
                                 name="office1"
                                 type="text"
                                 value={formProps.values.office1}
-                                onChange={(ev) =>
-                                  formProps.setFieldValue(
-                                    ev.target.name,
-                                    ev.target.value
-                                  )
-                                }
+                                onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                               />
                             </div>
                             <div className="ConsultantForm__form--col">
@@ -301,12 +231,7 @@ const ConsultantForm = () => {
                                 name="office2"
                                 type="text"
                                 value={formProps.values.office2}
-                                onChange={(ev) =>
-                                  formProps.setFieldValue(
-                                    ev.target.name,
-                                    ev.target.value
-                                  )
-                                }
+                                onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                               />
                             </div>
                           </div>
@@ -314,12 +239,7 @@ const ConsultantForm = () => {
                             label="Comentarios"
                             name="consultantComments"
                             value={formProps.values.consultantComments}
-                            onChange={(ev) =>
-                              formProps.setFieldValue(
-                                ev.target.name,
-                                ev.target.value
-                              )
-                            }
+                            onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                           />
                         </div>
                       </div>

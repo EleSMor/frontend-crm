@@ -21,7 +21,6 @@ const ConsultantsList = () => {
   useEffect(
     () =>
       getAllConsultants().then((res) => {
-        console.log(res);
         setConsultantsFiltered(res);
         setConsultants(res);
         setLoader(false);

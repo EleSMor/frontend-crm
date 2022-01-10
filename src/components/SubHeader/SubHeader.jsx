@@ -121,14 +121,14 @@ const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter 
             </div>
           </>
         )}
-        {/* {!window.location.pathname.includes(`${title.toLowerCase()}/`) && (
-          <button tpye="button" className="subHeader__btn" onClick={() => history.push(location)}>
+        {!window.location.pathname.includes(`${title.toLowerCase()}/`) && (
+          <button tpye="button" className="subHeader__btn" onClick={location}>
             Nuevo
           </button>
-        )} */}
-        <button onClick={location} className="subHeader__btn">
+        )}
+        {/* <button onClick={location} className="subHeader__btn">
           Nuevo
-        </button>
+        </button> */}
 
       </div>
     </div>

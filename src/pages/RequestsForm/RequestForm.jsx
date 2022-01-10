@@ -97,7 +97,7 @@ const RequestForm = () => {
   return (
     <>
       {user.length === 0 && history.push("/")}
-      <Layout subTitle="Peticiones" subUndertitle={<GoBack />} subLocation="/peticiones/crear">
+      <Layout subTitle="Peticiones" subUndertitle={<GoBack />}>
         {residentialSelectedZones.length !== 0 && patrimonialSelectedZones.length !== 0 && loader ? (
           <Spinner />
         ) : (

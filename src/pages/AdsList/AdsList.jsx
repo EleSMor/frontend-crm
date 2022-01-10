@@ -49,7 +49,7 @@ const AdsList = () => {
       <Layout
         subTitle="Anuncios"
         subList={ads}
-        subLocation="/anuncios/crear"
+        subLocation={() => history.push("/anuncios/crear")}
         subSetter={setAdsFiltered}
         footContent={<AdsListFooter />}
       >

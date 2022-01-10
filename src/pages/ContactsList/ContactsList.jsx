@@ -53,7 +53,7 @@ const ContactsList = () => {
       <Layout
         subTitle="Contactos"
         subList={contacts}
-        subLocation={() => handlePopUp()}
+        subLocation={() => handlePopUp(contacts)}
         subSetter={setContactsFiltered}
         footContent={<ContactListFooter />}
         //subBreadcrumbs="Nuevo crear"
@@ -61,7 +61,7 @@ const ContactsList = () => {
         
         {popUp && (
           <PopUp handlePopUp={handlePopUp} height="68%" mobileHeight="85%" width="50%" title="Crear contacto nuevo">
-            <ContactValidation />
+            <ContactValidation list={contacts} />
           </PopUp>
         )}
         {loader ? <Spinner /> : currentContacts.map((contact) => <ContactCard contact={contact} />)}

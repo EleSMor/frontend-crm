@@ -25,7 +25,6 @@ const Layout = ({
       />
       <Navbar title={subTitle}/>
       
-      
       {footContent && <Footer>{footContent}</Footer>}
 
       <div className={footContent ? "Layout__content plusFooter" : "Layout__content"}>

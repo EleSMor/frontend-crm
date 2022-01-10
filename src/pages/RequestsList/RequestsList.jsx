@@ -49,7 +49,7 @@ const RequestsList = () => {
       <Layout
         subTitle="Peticiones"
         subList={requests}
-        subLocation="/peticiones/crear"
+        subLocation={() => history.push("/peticiones/crear")}
         subSetter={setRequestsFiltered}
         footContent={<RequestsListFooter />}
       >

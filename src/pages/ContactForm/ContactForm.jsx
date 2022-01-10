@@ -67,19 +67,18 @@ const ContactForm = () => {
       <Layout
         subTitle="Contactos"
         subUndertitle={<GoBack />}
-        subLocation="/contactos/crear"
         footContent={
           <>
             <Link className="buttonFormCancel" to="/contactos">
               Cancelar
             </Link>
             {contactById && (
-              <Link className="buttonFormCancel" to="/contactos">
+              <button className="buttonFormCancel" type="button">
                 <FiEdit3 style={{ marginRight: 7 }} />
                 Editar
-              </Link>
+              </button>
             )}
-            <button className="buttonForm" type="submit">
+            <button className="buttonForm" type="submit" form="ContactForm">
               <FiSave style={{ marginRight: 7 }} />
               Guardar
             </button>
@@ -186,7 +185,7 @@ const ContactForm = () => {
                   }}
                 >
                   {(formProps) => (
-                    <Form>
+                    <Form id="ContactForm">
                       <div className="ContactForm__form">
                         <div className="ContactForm__form--col">
                           <div className="ContactForm__form">
