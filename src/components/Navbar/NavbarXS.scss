@@ -72,7 +72,7 @@
 
 .ContentNavbarXS {
   animation: openMenu 0.5s;
-  height: 295px;
+  height: 325px;
   position: absolute;
   top: calc($subHeader-height - 20px);
   left: 0;
@@ -103,6 +103,5 @@
   
   &__item:last-child {
     border-bottom: 1px solid rgba(172, 172, 172, 0.842);
-
   }
 }

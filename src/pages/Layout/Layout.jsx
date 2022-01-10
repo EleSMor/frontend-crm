@@ -2,6 +2,7 @@ import React from "react";
 import "./Layout.scss"
 import { Navbar, SubHeader } from "../../components";
 import Footer from "../../components/Footer/Footer";
+import useViewport from "../../hooks/useViewport";
 
 const Layout = ({
   children,
@@ -13,6 +14,8 @@ const Layout = ({
   subUndertitle,
   footContent,
 }) => {
+  useViewport()
+  
   return (
     <div className="Layout">
       <SubHeader

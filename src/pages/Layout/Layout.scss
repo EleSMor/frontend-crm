@@ -5,7 +5,8 @@
     position: fixed;
     top: calc($navbar-height + $navBar-margin-top + $subHeader-height);
     width: 100%;
-    height: calc(70vh - $navbar-height + $navBar-margin-top + $subHeader-height);
+    height: 70vh; 
+    height: calc((var(--vh) * 100) - $navbar-height + $navBar-margin-top + $subHeader-height);
     overflow-y: auto;
     background-color: $c-background-light;
     padding: 0 16px;
@@ -26,7 +27,8 @@
 }
 
 .plusFooter {
+  height: 100vh; 
   height: calc(
-    100vh - $footer-height - $navbar-height - $navBar-margin-top - $subHeader-height
+    (var(--vh) * 100) - $footer-height - $navbar-height - $navBar-margin-top - $subHeader-height
     ) !important;
 }
