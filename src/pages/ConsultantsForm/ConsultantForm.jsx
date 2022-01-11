@@ -24,6 +24,10 @@ const ConsultantForm = () => {
   const { user } = useContext(UserContext);
   // const { submitForm } = useFormikContext();
 
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("--------");
+  const [mobile, setMobile] = useState("--------");
+
   const [ads, setAds] = useState([]);
   const [consultantById, setConsultantById] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
@@ -94,14 +98,14 @@ const ConsultantForm = () => {
                 {/* )} */}
               </div>
               <div className="ConsultantForm__header--info">
-                <h3>{consultantById?.fullName || ""}</h3>
+                <h3>{consultantById?.fullName || fullName}</h3>
                 <p>
                   <HiOutlineMail fontSize="1.1em" color="#47535B" style={{ marginRight: 9 }} />
-                  {consultantById?.consultantEmail || "--------"}
+                  {consultantById?.consultantEmail || email}
                 </p>
                 <p>
                   <FaPhoneAlt fontSize="0.85em" color="#47535B" style={{ marginRight: 9 }} />
-                  {consultantById?.consultantMobileNumber || "--------"}
+                  {consultantById?.consultantMobileNumber || mobile}
                 </p>
               </div>
               {/* <div>
@@ -144,10 +148,13 @@ const ConsultantForm = () => {
                       data.append(key, values[key]);
                       // console.log("clave:", key, "valor", values[key]);
                     }
-
                     data.append("id", id);
+
                     if (!id) {
-                      createConsultant(data).then(() => history.push("/consultores"));
+                      createConsultant(data).then((res) => {
+                        alert(`El consultor ${res.fullName} ha sido creado`);
+                        history.push("/consultores");
+                      });
                     } else {
                       data.id = id;
                       updateConsultant(data).then((res) => {
@@ -166,7 +173,21 @@ const ConsultantForm = () => {
                             required="yes"
                             name="fullName"
                             value={formProps.values.fullName}
-                            onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                            onChange={(ev) => {
+                              if (ev.target.value.trim() === "") setFullName("");
+                              else setFullName(ev.target.value);
+                              formProps.setFieldValue(ev.target.name, ev.target.value);
+                            }}
+                          />
+                          <Input
+                            label="Contraseña"
+                            required="yes"
+                            name="consultantPassword"
+                            type="password"
+                            value={formProps.values.consultantPassword}
+                            onChange={(ev) => {
+                              formProps.setFieldValue(ev.target.name, ev.target.value);
+                            }}
                           />
                           <Input
                             label="Email"
@@ -174,7 +195,11 @@ const ConsultantForm = () => {
                             type="email"
                             name="consultantEmail"
                             value={formProps.values.consultantEmail}
-                            onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                            onChange={(ev) => {
+                              if (ev.target.value.trim() === "") setEmail("--------");
+                              else setEmail(ev.target.value);
+                              formProps.setFieldValue(ev.target.name, ev.target.value);
+                            }}
                           />
 
                           <div className="ConsultantForm__form">
@@ -184,7 +209,11 @@ const ConsultantForm = () => {
                                 name="consultantMobileNumber"
                                 type="text"
                                 value={formProps.values.consultantMobileNumber}
-                                onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                                onChange={(ev) => {
+                                  if (ev.target.value.trim() === "") setMobile("--------");
+                                  else setMobile(ev.target.value);
+                                  formProps.setFieldValue(ev.target.name, ev.target.value);
+                                }}
                               />
                             </div>
                             <div className="ConsultantForm__form--col">
@@ -197,7 +226,6 @@ const ConsultantForm = () => {
                               />
                             </div>
                           </div>
-
                           <Input
                             label="Posición"
                             type="text"

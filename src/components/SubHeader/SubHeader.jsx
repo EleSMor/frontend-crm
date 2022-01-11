@@ -1,12 +1,43 @@
-import React from "react";
-import { useHistory } from "react-router-dom";
+import { useState } from "react";
 import { InputText } from "primereact/inputtext";
 import { AiOutlineRight } from "react-icons/ai";
-import { Link } from "react-router-dom";
 import "./SubHeader.scss";
 
-const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter }) => {
-  const history = useHistory();
+const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter, filteredList }) => {
+  const [searchList, setSearchList] = useState(filteredList);
+  const [filterClass, setFilterClass] = useState("todos");
+
+  const filterByDepartment = (department) => {
+    let searchText = document.getElementById("search").value;
+    
+    const filterByDeparment = list.filter((ad) => {
+      if (ad.department === department) return ad;
+    });
+
+    const adsFiltered = list.filter((ad) => {
+      if (department !== "todos" && ad.department === department && !searchText) return ad;
+      if (
+        department === "todos" &&
+        (checkIfIncludes(ad.adReference, searchText) ||
+          checkIfIncludes(ad.title, searchText) ||
+          checkIfIncludes(ad.owner.fullName, searchText) ||
+          checkIfIncludes(ad.adDirection, searchText))
+      )
+        return ad;
+      if (
+        (checkIfIncludes(ad.adReference, searchText) ||
+          checkIfIncludes(ad.title, searchText) ||
+          checkIfIncludes(ad.owner.fullName, searchText) ||
+          checkIfIncludes(ad.adDirection, searchText)) &&
+        ad.department === department
+      )
+        return ad;
+    });
+    
+    if (department === "todos") setSearchList(list);
+    else setSearchList(filterByDeparment);
+    setter(adsFiltered);
+  };
 
   const checkIfIncludes = (origin, text) => {
     return origin
@@ -25,8 +56,9 @@ const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter 
     /**
      * Filtro para anuncios
      * 1. Por la referencia del anuncio
-     * 2. Por el nombre completo del propietario
-     * 3. Por la dirección del anuncio
+     * 2. Por el título del anuncio
+     * 3. Por el nombre completo del propietario
+     * 4. Por la dirección del anuncio
      */
     if (title === "Anuncios") {
       const adsFiltered = list.filter((ad) => {
@@ -36,9 +68,15 @@ const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter 
           checkIfIncludes(ad.owner.fullName, text) ||
           checkIfIncludes(ad.adDirection, text)
         )
-          return ad;
+          if (filterClass !== "todos") {
+            if (ad.department.toLowerCase() === filterClass) return ad;
+          } else {
+            return ad;
+          }
       });
-      setter(adsFiltered);
+      if (text) {
+        setter(adsFiltered);
+      } else setter(searchList);
     }
 
     /**
@@ -115,9 +153,54 @@ const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter 
                 &nbsp;elementos · Ordenado por fecha de última modificación · Se actualizó hace unos segundos
               </span>
             </div>
+            {window.location.pathname.includes(`anuncios`) && !window.location.pathname.includes(`anuncios/`) && (
+              <div className="subHeader__filter-box">
+                <div
+                  className={
+                    filterClass === "patrimonio" ? "subHeader__filter-box--item__active" : "subHeader__filter-box--item"
+                  }
+                  onClick={() => {
+                    setFilterClass("patrimonio");
+                    filterByDepartment("Patrimonio");
+                  }}
+                >
+                  <p>Patrimonio</p>
+                </div>
+                <div
+                  className={
+                    filterClass === "residencial"
+                      ? "subHeader__filter-box--item subHeader__filter-box--item__border__active"
+                      : "subHeader__filter-box--item subHeader__filter-box--item__border"
+                  }
+                  onClick={() => {
+                    setFilterClass("residencial");
+                    filterByDepartment("Residencial");
+                  }}
+                >
+                  <p>Residencial</p>
+                </div>
+                <div
+                  className={
+                    filterClass === "todos" ? "subHeader__filter-box--item__active" : "subHeader__filter-box--item"
+                  }
+                  onClick={() => {
+                    setFilterClass("todos");
+                    filterByDepartment("todos");
+                  }}
+                >
+                  <p>Todos</p>
+                </div>
+              </div>
+            )}
             <div className="p-input-icon-left">
               <i className="pi pi-search" />
-              <InputText onChange={(ev) => customFilter(ev.target.value)} placeholder="Buscar en esta lista" />
+              <InputText
+                id="search"
+                onChange={(ev) => {
+                  customFilter(ev.target.value);
+                }}
+                placeholder="Buscar en esta lista"
+              />
             </div>
           </>
         )}
@@ -129,7 +212,6 @@ const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter 
         {/* <button onClick={location} className="subHeader__btn">
           Nuevo
         </button> */}
-
       </div>
     </div>
   );

@@ -156,7 +156,10 @@ const RequestForm = () => {
                   if (data.bathroomsMin === "") data.bathroomsMin = 0;
 
                   if (!id && selectedContact.length !== 0 && selectedConsultant.length !== 0) {
-                    createRequest(data).then(() => history.push("/peticiones"));
+                    createRequest(data).then((res) => {
+                      alert(`La Petición ${res.requestReference} ha sido creada`);
+                      history.push("/peticiones");
+                    });
                   } else if (id)
                     updateRequest(data).then(() => {
                       alert(`La Petición ${requestById.requestReference} ha sido actualizada`);

@@ -15,7 +15,7 @@ const ContactsList = () => {
   const [popUp, setPopUp] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [qPerPage] = useState(10);
+  const [qPerPage] = useState(100);
   const [loader, setLoader] = useState(true);
 
   const { user } = useContext(UserContext);

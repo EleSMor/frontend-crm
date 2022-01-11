@@ -8,11 +8,7 @@ import ContactRequestCard from "../../components/ContactRequestCard/ContactReque
 import GoBack from "../../components/GoBack/GoBack";
 import { getRequestByContacts } from "../../api/requests.api";
 import { UserContext } from "../../components/Context/AuthUser";
-import {
-  createContact,
-  getContactById,
-  updateContact,
-} from "../../api/contacts.api";
+import { createContact, getContactById, updateContact } from "../../api/contacts.api";
 import { HiOutlineMail } from "react-icons/hi";
 import { FaPhoneAlt } from "react-icons/fa";
 import { BsPersonPlusFill } from "react-icons/bs";
@@ -52,9 +48,7 @@ const ContactForm = () => {
 
   const newSelect = (selected, setSelected, ev) => {
     if (selected.includes(ev.target.value)) {
-      const newSelected = selected.filter(
-        (selected) => selected !== ev.target.value
-      );
+      const newSelected = selected.filter((selected) => selected !== ev.target.value);
       setSelected(newSelected);
     } else {
       console.log(ev.target.value);
@@ -109,19 +103,11 @@ const ContactForm = () => {
               <div className="ContactForm__header--info">
                 <h3>{contactById?.fullName || name}</h3>
                 <p>
-                  <HiOutlineMail
-                    fontSize="1.1em"
-                    color="#47535B"
-                    style={{ marginRight: 9 }}
-                  />
+                  <HiOutlineMail fontSize="1.1em" color="#47535B" style={{ marginRight: 9 }} />
                   {contactById?.email || email}
                 </p>
                 <p>
-                  <FaPhoneAlt
-                    fontSize="0.85em"
-                    color="#47535B"
-                    style={{ marginRight: 9 }}
-                  />
+                  <FaPhoneAlt fontSize="0.85em" color="#47535B" style={{ marginRight: 9 }} />
                   {contactById?.contactMobileNumber || phone}
                 </p>
               </div>
@@ -135,35 +121,17 @@ const ContactForm = () => {
                     fullName: contactById ? contactById.fullName : name,
                     tag: contactById ? selTag : [],
                     email: contactById ? contactById.email : email,
-                    contactMobileNumber: contactById
-                      ? contactById.contactMobileNumber
-                      : phone,
-                    contactPhoneNumber: contactById
-                      ? contactById.contactPhoneNumber
-                      : "",
+                    contactMobileNumber: contactById ? contactById.contactMobileNumber : phone,
+                    contactPhoneNumber: contactById ? contactById.contactPhoneNumber : "",
                     company: contactById ? contactById.company : "",
-                    street: contactById
-                      ? contactById.contactDirection.address.street
-                      : "",
-                    directionNumber: contactById
-                      ? contactById.contactDirection.address.directionNumber
-                      : "",
-                    directionFloor: contactById
-                      ? contactById.contactDirection.address.directionFloor
-                      : "",
-                    postalCode: contactById
-                      ? contactById.contactDirection.postalCode
-                      : "",
+                    street: contactById ? contactById.contactDirection.address.street : "",
+                    directionNumber: contactById ? contactById.contactDirection.address.directionNumber : "",
+                    directionFloor: contactById ? contactById.contactDirection.address.directionFloor : "",
+                    postalCode: contactById ? contactById.contactDirection.postalCode : "",
                     city: contactById ? contactById.contactDirection.city : "",
-                    country: contactById
-                      ? contactById.contactDirection.country
-                      : "",
-                    contactComments: contactById
-                      ? contactById.contactComments
-                      : "",
-                    notReceiveCommunications: contactById
-                      ? contactById.notReceiveCommunications
-                      : false,
+                    country: contactById ? contactById.contactDirection.country : "",
+                    contactComments: contactById ? contactById.contactComments : "",
+                    notReceiveCommunications: contactById ? contactById.notReceiveCommunications : false,
                   }}
                   onSubmit={(data) => {
                     if (id) data.id = id;
@@ -177,9 +145,7 @@ const ContactForm = () => {
                       });
                     } else
                       updateContact(data).then((res) => {
-                        alert(
-                          `El contacto ${res.fullName} ha sido actualizado`
-                        );
+                        alert(`El contacto ${res.fullName} ha sido actualizado`);
                         history.push("/contactos");
                       });
                   }}
@@ -195,12 +161,7 @@ const ContactForm = () => {
                                 required="yes"
                                 name="fullName"
                                 value={formProps.values.fullName}
-                                onChange={(ev) =>
-                                  formProps.setFieldValue(
-                                    ev.target.name,
-                                    ev.target.value
-                                  )
-                                }
+                                onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                               />
                             </div>
                             <div className="ContactForm__form--col">
@@ -208,20 +169,12 @@ const ContactForm = () => {
                                 label="Etiqueta"
                                 textA="Cliente"
                                 valueA="Cliente"
-                                onChangeA={(ev) =>
-                                  newSelect(selTag, setSelTag, ev)
-                                }
-                                checkedA={
-                                  selTag.includes("Cliente") ? true : ""
-                                }
+                                onChangeA={(ev) => newSelect(selTag, setSelTag, ev)}
+                                checkedA={selTag.includes("Cliente") ? true : ""}
                                 textB="Propietario"
                                 valueB="Propietario"
-                                onChangeB={(ev) =>
-                                  newSelect(selTag, setSelTag, ev)
-                                }
-                                checkedB={
-                                  selTag.includes("Propietario") ? true : ""
-                                }
+                                onChangeB={(ev) => newSelect(selTag, setSelTag, ev)}
+                                checkedB={selTag.includes("Propietario") ? true : ""}
                               />
                             </div>
                           </div>
@@ -231,12 +184,7 @@ const ContactForm = () => {
                             type="email"
                             name="email"
                             value={formProps.values.email}
-                            onChange={(ev) =>
-                              formProps.setFieldValue(
-                                ev.target.name,
-                                ev.target.value
-                              )
-                            }
+                            onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                           />
                           <div className="ContactForm__form">
                             <div className="ContactForm__form--col">
@@ -245,12 +193,7 @@ const ContactForm = () => {
                                 name="contactMobileNumber"
                                 type="text"
                                 value={formProps.values.contactMobileNumber}
-                                onChange={(ev) =>
-                                  formProps.setFieldValue(
-                                    ev.target.name,
-                                    ev.target.value
-                                  )
-                                }
+                                onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                               />
                             </div>
                             <div className="ContactForm__form--col">
@@ -259,12 +202,7 @@ const ContactForm = () => {
                                 name="contactPhoneNumber"
                                 type="text"
                                 value={formProps.values.contactPhoneNumber}
-                                onChange={(ev) =>
-                                  formProps.setFieldValue(
-                                    ev.target.name,
-                                    ev.target.value
-                                  )
-                                }
+                                onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                               />
                             </div>
                           </div>
@@ -273,12 +211,7 @@ const ContactForm = () => {
                             label="Empresa"
                             name="company"
                             value={formProps.values.company}
-                            onChange={(ev) =>
-                              formProps.setFieldValue(
-                                ev.target.name,
-                                ev.target.value
-                              )
-                            }
+                            onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                           />
 
                           <InputsGroup
@@ -288,44 +221,28 @@ const ContactForm = () => {
                                 name: "street",
                                 label: "Calle",
                                 value: formProps.values.street,
-                                onChange: (ev) =>
-                                  formProps.setFieldValue(
-                                    ev.target.name,
-                                    ev.target.value
-                                  ),
+                                onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                                 errors: "",
                               },
                               {
                                 name: "postalCode",
                                 label: "Código postal",
                                 value: formProps.values.postalCode,
-                                onChange: (ev) =>
-                                  formProps.setFieldValue(
-                                    ev.target.name,
-                                    ev.target.value
-                                  ),
+                                onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                                 errors: "",
                               },
                               {
                                 name: "city",
                                 label: "Ciudad",
                                 value: formProps.values.city,
-                                onChange: (ev) =>
-                                  formProps.setFieldValue(
-                                    ev.target.name,
-                                    ev.target.value
-                                  ),
+                                onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                                 errors: "",
                               },
                               {
                                 name: "country",
                                 label: "País",
                                 value: formProps.values.country,
-                                onChange: (ev) =>
-                                  formProps.setFieldValue(
-                                    ev.target.name,
-                                    ev.target.value
-                                  ),
+                                onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                                 errors: "",
                               },
                             ]}
@@ -337,12 +254,7 @@ const ContactForm = () => {
                             label="Comentarios"
                             name="contactComments"
                             value={formProps.values.contactComments}
-                            onChange={(ev) =>
-                              formProps.setFieldValue(
-                                ev.target.name,
-                                ev.target.value
-                              )
-                            }
+                            onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                           />
 
                           <Checkbox
@@ -350,10 +262,7 @@ const ContactForm = () => {
                             name="notReceiveCommunications"
                             checked={formProps.values.notReceiveCommunications}
                             onChange={(ev) =>
-                              formProps.setFieldValue(
-                                ev.target.name,
-                                !formProps.values.notReceiveCommunications
-                              )
+                              formProps.setFieldValue(ev.target.name, !formProps.values.notReceiveCommunications)
                             }
                           />
                         </div>
@@ -365,9 +274,7 @@ const ContactForm = () => {
               {id ? (
                 <TabPanel header="Peticiones">
                   {requests.map((request, index) => {
-                    return (
-                      <ContactRequestCard index={index} request={request} />
-                    );
+                    return <ContactRequestCard index={index} request={request} />;
                   })}
                 </TabPanel>
               ) : (

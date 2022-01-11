@@ -14,7 +14,7 @@ const AdsList = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [qPerPage] = useState(100);
-  
+
   const { user } = useContext(UserContext);
   const history = useHistory();
 
@@ -32,9 +32,9 @@ const AdsList = () => {
   let adsLength = adsFiltered?.length;
 
   const paginate = (n) => {
-    setCurrentPage(n)
-    window.scrollTo({top: 0})
-  }
+    setCurrentPage(n);
+    window.scrollTo({ top: 0 });
+  };
 
   const AdsListFooter = () => (
     <Pagination qPerPage={qPerPage} totalQ={adsLength} paginate={paginate} currentPage={currentPage} />
@@ -43,14 +43,12 @@ const AdsList = () => {
   return (
     <div>
       {user.length === 0 && history.push("/")}
-      {/* <Navbar />
-      <SubHeader title="Anuncios" list={ads} setter={setAdsFiltered} location="/anuncios/crear" />
-      <AdsTable ads={adsFiltered.length !== 0 ? adsFiltered : []} /> */}
       <Layout
         subTitle="Anuncios"
         subList={ads}
         subLocation={() => history.push("/anuncios/crear")}
         subSetter={setAdsFiltered}
+        subFilteredList={adsFiltered}
         footContent={<AdsListFooter />}
       >
         {loader ? <Spinner /> : <AdsTable ads={currentAds.length !== 0 ? currentAds : []} />}

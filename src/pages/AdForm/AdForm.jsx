@@ -160,7 +160,6 @@ const AdForm = () => {
                   distribution: adById ? adById.description.distribution : "",
                 }}
                 onSubmit={(data) => {
-
                   if (id) data.id = id;
                   data.owner = selectedOwner;
                   data.consultant = selectedConsultant;
@@ -172,9 +171,11 @@ const AdForm = () => {
                     data.zone = [];
 
                   if (!id) {
-                    createAd(data).then((res) => history.push(`/anuncios`));
-                  }
-                  else
+                    createAd(data).then((res) => {
+                      alert(`El anuncio ${res.adReference} ha sido creado`);
+                      history.push(`/anuncios`);
+                    });
+                  } else
                     updateAd(data).then((res) => {
                       alert(`El anuncio ${res.adReference} ha sido actualizado`);
                       history.push(`/anuncios`);
@@ -225,7 +226,12 @@ const AdForm = () => {
                     rowsPerPageOptions={[10, 25, 50]}
                     dataKey="id"
                   >
-                    <Column field="requestReference" header="Id Petición" body={(ev) => <Link to={`/peticiones/${ev._id}`}>{ev.requestReference}</Link>} sortable></Column>
+                    <Column
+                      field="requestReference"
+                      header="Id Petición"
+                      body={(ev) => <Link to={`/peticiones/${ev._id}`}>{ev.requestReference}</Link>}
+                      sortable
+                    ></Column>
                     <Column field="requestContact.fullName" header="Nombre Completo" sortable></Column>
                     <Column field="requestContact.company" header="Empresa" sortable></Column>
                     <Column field="requestContact.email" header="Email" sortable></Column>

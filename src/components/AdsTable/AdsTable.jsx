@@ -13,13 +13,13 @@ import "./AdsTable.scss"
 
 const AdsTable = ({ ads }) => {
   const [adsFormated, setAdsFormated] = useState([]);
-  const [loader, setLoader] = useState(false);
+  const [loader, setLoader] = useState(true);
 
   useEffect(() => {
     if (ads.length !== 0) {
       formatData(ads);
     }
-  }, []);
+  }, [ads]);
 
   let headerGroup = (
     <ColumnGroup>
@@ -103,12 +103,12 @@ const AdsTable = ({ ads }) => {
       return ad;
     });
     setAdsFormated(newAds);
-    setLoader(true);
+    setLoader(false);
   };
 
   return (
     <>
-      {loader ? (
+      {!loader ? (
         <DataTable
           dataKey="id"
           headerColumnGroup={headerGroup}

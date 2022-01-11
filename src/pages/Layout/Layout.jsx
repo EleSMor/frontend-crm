@@ -9,6 +9,7 @@ const Layout = ({
   subList,
   subLocation,
   subSetter,
+  subFilteredList,
   subBreadcrumbs,
   subUndertitle,
   footContent,
@@ -20,6 +21,7 @@ const Layout = ({
         list={subList}
         location={subLocation}
         setter={subSetter}
+        filteredList={subFilteredList}
         titleBreadcrumb={subBreadcrumbs}
         underTitle={subUndertitle}
       />

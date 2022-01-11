@@ -13,7 +13,7 @@ const ConsultantsList = () => {
   const [loader, setLoader] = useState(true);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [qPerPage] = useState(5);
+  const [qPerPage] = useState(100);
 
   const { user } = useContext(UserContext);
   const history = useHistory();
