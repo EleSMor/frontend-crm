@@ -12,6 +12,7 @@ import { createContact, getContactById, updateContact } from "../../api/contacts
 import { HiOutlineMail } from "react-icons/hi";
 import { FaPhoneAlt } from "react-icons/fa";
 import { BsPersonPlusFill } from "react-icons/bs";
+import { MdLocationSearching } from "react-icons/md";
 import { FiSave, FiEdit3 } from "react-icons/fi";
 import "./ContactForm.scss";
 import Input from "../../components/Input/Input";
@@ -20,6 +21,7 @@ import Checkbox from "../../components/CheckBox/Checkbox";
 import Textarea from "../../components/Textarea/Textarea";
 import InputsGroup from "../../components/InputsGroup/InputsGroup";
 import "../../styles/primeReact.scss";
+import NotFound from "../../components/NotFound/NotFound";
 
 const ContactForm = () => {
   const [contactById, setContactById] = useState("");
@@ -273,9 +275,21 @@ const ContactForm = () => {
               </TabPanel>
               {id ? (
                 <TabPanel header="Peticiones">
-                  {requests.map((request, index) => {
-                    return <ContactRequestCard index={index} request={request} />;
-                  })}
+                  {
+                    requests.length === 0  ? (
+                      <div>
+                        <p style={{marginTop: 100}}>Este contacto no tiene peticiones creadas</p>
+                        <MdLocationSearching fontSize="2.5em" style={{marginTop: 20, marginBottom: 100}}/>
+                      </div>
+                      )
+                      :
+                    (requests.map((request, index) => {
+                    return (
+                      <ContactRequestCard index={index} request={request} />
+                    );
+                  }))
+                  
+                  }
                 </TabPanel>
               ) : (
                 <TabPanel header="Peticiones" disabled></TabPanel>
