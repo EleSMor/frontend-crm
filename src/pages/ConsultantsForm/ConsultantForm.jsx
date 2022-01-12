@@ -152,8 +152,10 @@ const ConsultantForm = () => {
 
                     if (!id) {
                       createConsultant(data).then((res) => {
-                        alert(`El consultor ${res.fullName} ha sido creado`);
-                        history.push("/consultores");
+                        if (res !== undefined) {
+                          alert(`El consultor ${res.fullName} ha sido creado`);
+                          history.push("/consultores");
+                        }
                       });
                     } else {
                       data.id = id;

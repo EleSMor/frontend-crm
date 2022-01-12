@@ -68,12 +68,12 @@ const ContactForm = () => {
             <Link className="buttonFormCancel" to="/contactos">
               Cancelar
             </Link>
-            {contactById && (
+            {/* {contactById && (
               <button className="buttonFormCancel" type="button">
                 <FiEdit3 style={{ marginRight: 7 }} />
                 Editar
               </button>
-            )}
+            )} */}
             <button className="buttonForm" type="submit" form="ContactForm">
               <FiSave style={{ marginRight: 7 }} />
               Guardar

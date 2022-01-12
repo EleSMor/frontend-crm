@@ -8,6 +8,7 @@ import Layout from "../Layout/Layout";
 import Spinner from "../../components/Spinner/Spinner";
 import Pagination from "../../components/Pagination/Pagination";
 import ContactValidation from "../../components/ContactValidation/ContactValidation";
+import { BsCloudArrowUp } from "react-icons/bs";
 
 const ContactsList = () => {
   const [contacts, setContacts] = useState([]);
@@ -58,13 +59,21 @@ const ContactsList = () => {
         footContent={<ContactListFooter />}
         //subBreadcrumbs="Nuevo crear"
       >
-        
         {popUp && (
           <PopUp handlePopUp={handlePopUp} height="68%" mobileHeight="85%" width="50%" title="Crear contacto nuevo">
             <ContactValidation list={contacts} />
           </PopUp>
         )}
-        {loader ? <Spinner /> : currentContacts.map((contact) => <ContactCard contact={contact} />)}
+        {currentContacts.length === 0 ? (
+          <div style={{ height: 200 }}>
+            <p style={{ lineHeight: 4 }}>No ha creado ningún contacto </p>
+            <BsCloudArrowUp fontSize="2.5em" />
+          </div>
+        ) : loader ? (
+          <Spinner />
+        ) : (
+          currentContacts.map((contact) => <ContactCard contact={contact} />)
+        )}
       </Layout>
     </>
   );

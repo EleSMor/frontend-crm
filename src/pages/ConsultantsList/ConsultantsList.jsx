@@ -6,6 +6,7 @@ import { UserContext } from "../../components/Context/AuthUser";
 import Layout from "../Layout/Layout";
 import Spinner from "../../components/Spinner/Spinner";
 import Pagination from "../../components/Pagination/Pagination";
+import { BsCloudArrowUp } from "react-icons/bs";
 
 const ConsultantsList = () => {
   const [consultants, setConsultants] = useState([]);
@@ -52,7 +53,12 @@ const ConsultantsList = () => {
         subSetter={setConsultantsFiltered}
         footContent={<ConsultantsListFooter />}
       >
-        {loader ? (
+        {currentConsultants.length === 0 ? (
+          <div style={{ height: 200 }}>
+            <p style={{ lineHeight: 4 }}>No ha creado ningún consultor </p>
+            <BsCloudArrowUp fontSize="2.5em" />
+          </div>
+        ) : loader ? (
           <Spinner />
         ) : currentConsultants ? (
           currentConsultants.map((consultant) => <ConsultantCard consultant={consultant} />)

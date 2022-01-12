@@ -48,7 +48,7 @@ const ConsultantCard = ({ consultant }) => {
             color="#47535B"
             style={{ marginRight: 8 }}
           />
-          {consultant.email || "Sin email"}
+          {consultant.consultantEmail || "Sin email"}
         </p>
         <p>
           <FaPhoneAlt

@@ -4,6 +4,7 @@ import { Column } from "primereact/column";
 import { ColumnGroup } from "primereact/columngroup";
 import { Row } from "primereact/row";
 import { NavLink } from "react-router-dom";
+import { BsCloudArrowUp } from "react-icons/bs";
 import * as moment from "moment";
 import "moment/locale/es";
 import "./RequestTable.scss";
@@ -110,35 +111,44 @@ const RequestsTable = ({ requests }) => {
   };
 
   return (
-    <DataTable
-      dataKey="id"
-      value={requests.length !== 0 ? requestsFormated : []}
-      headerColumnGroup={headerGroup}
-      removableSort
-      sortField="createdAt"
-      sortOrder={-1}
-      resizableColumns
-      responsiveLayout="scroll"
-    >
-      <Column
-        field="createdAt"
-        body={(rowData) => {
-          return moment(rowData.createdAt).locale("es").format("L");
-        }}
-      ></Column>
-      <Column field="requestReference" body={referenceBodyTemplate}></Column>
-      <Column field="requestContact.fullName"></Column>
-      <Column field="requestContact.company"></Column>
-      <Column field="requestBuildingType"></Column>
-      <Column field="requestAdType"></Column>
-      <Column field="requestSalePrice.salePriceMin" body={priceMaxBodyTemplate}></Column>
-      <Column field="requestSalePrice.salePriceMin" body={priceMinBodyTemplate}></Column>
-      <Column field="requestBuildSurface.buildSurfaceMax" body={buildSurfaceMaxBodyTemplate}></Column>
-      <Column field="requestBuildSurface.buildSurfaceMin" body={buildSurfaceMinBodyTemplate}></Column>
-      <Column field="requestPlotSurface.plotSurfaceMax" body={plotSurfaceMaxBodyTemplate}></Column>
-      <Column field="requestPlotSurface.plotSurfaceMin" body={plotSurfaceMinBodyTemplate}></Column>
-      <Column field="requestConsultant.fullName"></Column>
-    </DataTable>
+    <>
+      {!loader ? (
+        <DataTable
+          dataKey="id"
+          value={requests.length !== 0 ? requestsFormated : []}
+          headerColumnGroup={headerGroup}
+          removableSort
+          sortField="createdAt"
+          sortOrder={-1}
+          resizableColumns
+          responsiveLayout="scroll"
+        >
+          <Column
+            field="createdAt"
+            body={(rowData) => {
+              return moment(rowData.createdAt).locale("es").format("L");
+            }}
+          ></Column>
+          <Column field="requestReference" body={referenceBodyTemplate}></Column>
+          <Column field="requestContact.fullName"></Column>
+          <Column field="requestContact.company"></Column>
+          <Column field="requestBuildingType"></Column>
+          <Column field="requestAdType"></Column>
+          <Column field="requestSalePrice.salePriceMin" body={priceMaxBodyTemplate}></Column>
+          <Column field="requestSalePrice.salePriceMin" body={priceMinBodyTemplate}></Column>
+          <Column field="requestBuildSurface.buildSurfaceMax" body={buildSurfaceMaxBodyTemplate}></Column>
+          <Column field="requestBuildSurface.buildSurfaceMin" body={buildSurfaceMinBodyTemplate}></Column>
+          <Column field="requestPlotSurface.plotSurfaceMax" body={plotSurfaceMaxBodyTemplate}></Column>
+          <Column field="requestPlotSurface.plotSurfaceMin" body={plotSurfaceMinBodyTemplate}></Column>
+          <Column field="requestConsultant.fullName"></Column>
+        </DataTable>
+      ) : (
+        <div style={{ height: 200 }}>
+          <p style={{ lineHeight: 4 }}>No ha creado ninguna petición </p>
+          <BsCloudArrowUp fontSize="2.5em" />
+        </div>
+      )}
+    </>
   );
 };
 

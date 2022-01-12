@@ -10,6 +10,7 @@ import { createAd, updateAd, getAllAds, getAdById, getMatchedRequests } from "..
 import Layout from "../Layout/Layout";
 import Spinner from "../../components/Spinner/Spinner";
 import GoBack from "../../components/GoBack/GoBack";
+import { FiSave } from "react-icons/fi";
 import { getAllResidentialZones, getAllPatrimonialZones } from "../../api/zones.api";
 import "./AdForm.scss";
 
@@ -68,7 +69,22 @@ const AdForm = () => {
   return (
     <div>
       {user.length === 0 && history.push("/")}
-      <Layout subTitle="Anuncios" subUndertitle={<GoBack />} subLocation="/anuncios/crear">
+      <Layout
+        subTitle="Anuncios"
+        subUndertitle={<GoBack />}
+        subLocation="/anuncios/crear"
+        footContent={
+          <>
+            <button className="buttonForm" type="submit" form="AdForm" style={{ marginRight: 8 }}>
+              <FiSave style={{ marginRight: 7 }} />
+              Guardar
+            </button>
+            <Link className="buttonFormCancel" to="/anuncios">
+              Cancelar
+            </Link>
+          </>
+        }
+      >
         {residentialSelectedZones.length !== 0 && patrimonialSelectedZones.length !== 0 && loader ? (
           <Spinner />
         ) : (
@@ -183,7 +199,7 @@ const AdForm = () => {
                 }}
               >
                 {(formProps) => (
-                  <Form>
+                  <Form id="AdForm">
                     <DetailsAds
                       formProps={formProps}
                       id={id ? id : ""}
@@ -200,10 +216,6 @@ const AdForm = () => {
                       setResidentialZones={setResidentialSelectedZones}
                       setPatrimonialZones={setPatrimonialSelectedZones}
                     />
-                    <button type="submit">Guardar</button>
-                    <button type="button" onClick={() => history.push("/anuncios")}>
-                      Cancelar
-                    </button>
                   </Form>
                 )}
               </Formik>

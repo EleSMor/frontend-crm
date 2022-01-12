@@ -11,6 +11,8 @@ const ContactValidation = ({ list }) => {
   const [email, setEmail] = useState("");
   const [isValidEmail, setIsValidEmail] = useState(false);
 
+  console.log("listado:", list);
+
   const checkIfIncludes = (origin, text) => {
     return origin
       .normalize("NFD")
@@ -108,7 +110,8 @@ const ContactValidation = ({ list }) => {
       </div>
 
       <div className="ContactValidation--button">
-        {(contacts.length === 0 && email && fullName && contactMobileNumber && isValidEmail) ? (
+        {(list.length === 0 && email && fullName && contactMobileNumber) ||
+        (contacts.length === 0 && email && fullName && contactMobileNumber && isValidEmail) ? (
           <Link
             className="ContactValidation--button--button__active"
             to={`/contactos/crear/${fullName}/${email}/${contactMobileNumber}`}

@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useHistory, NavLink, useParams } from "react-router-dom";
+import { useHistory, Link, useParams } from "react-router-dom";
 import { Formik, Form } from "formik";
 import { TabView, TabPanel } from "primereact/tabview";
 import { Select, MultiSelect, RequestsMatching } from "../../components";
 import Layout from "../Layout/Layout";
 import Spinner from "../../components/Spinner/Spinner";
 import GoBack from "../../components/GoBack/GoBack";
+import { FiSave } from "react-icons/fi";
 import { getAllConsultants } from "../../api/consultants.api";
 import { getAllResidentialZones, getAllPatrimonialZones } from "../../api/zones.api";
 import { getAllContacts } from "../../api/contacts.api";
@@ -97,7 +98,21 @@ const RequestForm = () => {
   return (
     <>
       {user.length === 0 && history.push("/")}
-      <Layout subTitle="Peticiones" subUndertitle={<GoBack />}>
+      <Layout
+        subTitle="Peticiones"
+        subUndertitle={<GoBack />}
+        footContent={
+          <>
+            <button className="buttonForm" type="submit" form="RequestForm" style={{ marginRight: 8 }}>
+              <FiSave style={{ marginRight: 7 }} />
+              Guardar
+            </button>
+            <Link className="buttonFormCancel" to="/anuncios">
+              Cancelar
+            </Link>
+          </>
+        }
+      >
         {residentialSelectedZones.length !== 0 && patrimonialSelectedZones.length !== 0 && loader ? (
           <Spinner />
         ) : (
@@ -168,7 +183,7 @@ const RequestForm = () => {
                 }}
               >
                 {(formProps) => (
-                  <Form>
+                  <Form id="RequestForm">
                     <div>
                       <label required htmlFor="requestContact">
                         Contacto
@@ -463,11 +478,6 @@ const RequestForm = () => {
                         />
                       </div>
                     </div>
-                    <button type="submit">Guardar</button>
-
-                    <NavLink to="/peticiones">
-                      <button>Cancelar</button>
-                    </NavLink>
                   </Form>
                 )}
               </Formik>
