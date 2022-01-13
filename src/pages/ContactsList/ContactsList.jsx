@@ -64,13 +64,13 @@ const ContactsList = () => {
             <ContactValidation list={contacts} />
           </PopUp>
         )}
-        {currentContacts.length === 0 ? (
+        {loader ? (
+          <Spinner />
+        ) : currentContacts.length === 0 ? (
           <div style={{ height: 200 }}>
             <p style={{ lineHeight: 4 }}>No ha creado ningún contacto </p>
             <BsCloudArrowUp fontSize="2.5em" />
           </div>
-        ) : loader ? (
-          <Spinner />
         ) : (
           currentContacts.map((contact) => <ContactCard contact={contact} />)
         )}

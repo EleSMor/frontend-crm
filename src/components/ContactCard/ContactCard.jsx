@@ -62,7 +62,9 @@ const ContactCard = ({ contact }) => {
           </p>
           <p>
             <BsPersonCircle fontSize="1.1em" color="#47535B" style={{ marginRight: 9 }} />
-            <span className="ContactCard__Card--item--border">Luis</span>
+            <span className="ContactCard__Card--item--border">
+              {contact.consultant?.fullName ? contact.consultant?.fullName : "Sin consultor definido"}
+            </span>
           </p>
           <p>
             <BsPencilSquare fontSize="1.1em" color="#47535B" style={{ marginRight: 9 }} />

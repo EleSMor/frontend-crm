@@ -53,17 +53,15 @@ const ConsultantsList = () => {
         subSetter={setConsultantsFiltered}
         footContent={<ConsultantsListFooter />}
       >
-        {currentConsultants.length === 0 ? (
+        {loader ? (
+          <Spinner />
+        ) : currentConsultants.length === 0 ? (
           <div style={{ height: 200 }}>
             <p style={{ lineHeight: 4 }}>No ha creado ningún consultor </p>
             <BsCloudArrowUp fontSize="2.5em" />
           </div>
-        ) : loader ? (
-          <Spinner />
-        ) : currentConsultants ? (
-          currentConsultants.map((consultant) => <ConsultantCard consultant={consultant} />)
         ) : (
-          ""
+          currentConsultants.map((consultant) => <ConsultantCard consultant={consultant} />)
         )}
       </Layout>
     </div>

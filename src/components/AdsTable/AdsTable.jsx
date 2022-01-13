@@ -108,7 +108,7 @@ const AdsTable = ({ ads }) => {
 
   return (
     <>
-      {!loader ? (
+      {!loader && ads.length !== 0 ? (
         <DataTable
           dataKey="id"
           headerColumnGroup={headerGroup}

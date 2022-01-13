@@ -86,22 +86,6 @@ const ContactForm = () => {
         ) : (
           <div className="ContactForm">
             <div className="ContactForm__header">
-              <div className="ContactForm__header--img">
-                {/* {img ? (
-                  <div>
-                    <img
-                      className=""
-                      src={`${img}`}
-                      alt={contactById?.fullName}
-                    />
-                  </div>
-                ) : ( */}
-                <div>
-                  <BsPersonPlusFill fontSize="2em" color="#fff" />
-                </div>
-                {/* )} */}
-              </div>
-
               <div className="ContactForm__header--info">
                 <h3>{contactById?.fullName || name}</h3>
                 <p>
@@ -134,6 +118,7 @@ const ContactForm = () => {
                     country: contactById ? contactById.contactDirection.country : "",
                     contactComments: contactById ? contactById.contactComments : "",
                     notReceiveCommunications: contactById ? contactById.notReceiveCommunications : false,
+                    consultant: user._id,
                   }}
                   onSubmit={(data) => {
                     if (id) data.id = id;
@@ -275,21 +260,16 @@ const ContactForm = () => {
               </TabPanel>
               {id ? (
                 <TabPanel header="Peticiones">
-                  {
-                    requests.length === 0  ? (
-                      <div>
-                        <p style={{marginTop: 100}}>Este contacto no tiene peticiones creadas</p>
-                        <MdLocationSearching fontSize="2.5em" style={{marginTop: 20, marginBottom: 100}}/>
-                      </div>
-                      )
-                      :
-                    (requests.map((request, index) => {
-                    return (
-                      <ContactRequestCard index={index} request={request} />
-                    );
-                  }))
-                  
-                  }
+                  {requests.length === 0 ? (
+                    <div>
+                      <p style={{ marginTop: 100 }}>Este contacto no tiene peticiones creadas</p>
+                      <MdLocationSearching fontSize="2.5em" style={{ marginTop: 20, marginBottom: 100 }} />
+                    </div>
+                  ) : (
+                    requests.map((request, index) => {
+                      return <ContactRequestCard index={index} request={request} />;
+                    })
+                  )}
                 </TabPanel>
               ) : (
                 <TabPanel header="Peticiones" disabled></TabPanel>

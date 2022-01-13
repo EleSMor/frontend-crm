@@ -43,26 +43,15 @@ const ContactRequestCard = ({ request }) => {
   };
 
   return (
-    <div
-      key={`${request._id}-${request.requestReference}`}
-      className="RequestCard"
-    >
+    <div key={`${request._id}-${request.requestReference}`} className="RequestCard">
       {size < 880 ? (
         <div className="RequestCard__CardMobile">
           <div className="RequestCard__CardMobile--header">
             <div className="RequestCard__CardMobile--header-title">
               <h4>Petición {`#${request.requestReference}`}</h4>
               <p>
-                <BsPersonCircle
-                  fontSize="1.4em"
-                  color="#47535B"
-                  style={{ margin: "0 8 0 0" }}
-                />
-                <span>
-                  {request.requestConsultant.fullName
-                    ? request.requestConsultant.fullName
-                    : "Sin consultor"}
-                </span>
+                <BsPersonCircle fontSize="1.4em" color="#47535B" style={{ margin: "0 8 0 0" }} />
+                <span>{request.requestConsultant.fullName ? request.requestConsultant.fullName : "Sin consultor"}</span>
               </p>
             </div>
             <span>Creado el {moment(request.createdAt).format("L")}</span>
@@ -71,11 +60,7 @@ const ContactRequestCard = ({ request }) => {
                 {request.requestBuildingType.map((buildingType, index) => {
                   return (
                     <p key={`${index}-${request.buildingType}`} className="">
-                      <GoPrimitiveDot
-                        fontSize="1.1em"
-                        color="#47535B"
-                        style={{ marginRight: 4, fontWeight: 2000 }}
-                      />
+                      <GoPrimitiveDot fontSize="1.1em" color="#47535B" style={{ marginRight: 4, fontWeight: 2000 }} />
                       {buildingType}
                     </p>
                   );
@@ -92,17 +77,11 @@ const ContactRequestCard = ({ request }) => {
               </h4>
               <div className="RequestCard__CardMobile--body--item--content">
                 <div>
-                  <BsChevronDoubleUp
-                    fontSize="0.9em"
-                    style={{ marginRight: 9 }}
-                  />
+                  <BsChevronDoubleUp fontSize="0.9em" style={{ marginRight: 9 }} />
                   {maskValues(request.requestSalePrice.salePriceMax, "price")}
                 </div>
                 <div>
-                  <BsChevronDoubleDown
-                    fontSize="0.9em"
-                    style={{ marginRight: 9, marginLeft: 18 }}
-                  />
+                  <BsChevronDoubleDown fontSize="0.9em" style={{ marginRight: 9, marginLeft: 18 }} />
                   {maskValues(request.requestSalePrice.salePriceMin, "price")}
                 </div>
               </div>
@@ -114,24 +93,12 @@ const ContactRequestCard = ({ request }) => {
               </h4>
               <div className="RequestCard__CardMobile--body--item--content">
                 <div>
-                  <BsChevronDoubleUp
-                    fontSize="0.9em"
-                    style={{ marginRight: 9 }}
-                  />
-                  {maskValues(
-                    request.requestBuildSurface.buildSurfaceMax,
-                    "buildSurface"
-                  )}
+                  <BsChevronDoubleUp fontSize="0.9em" style={{ marginRight: 9 }} />
+                  {maskValues(request.requestBuildSurface.buildSurfaceMax, "buildSurface")}
                 </div>
                 <div>
-                  <BsChevronDoubleDown
-                    fontSize="0.9em"
-                    style={{ marginRight: 9, marginLeft: 18 }}
-                  />
-                  {maskValues(
-                    request.requestBuildSurface.buildSurfaceMin,
-                    "buildSurface"
-                  )}
+                  <BsChevronDoubleDown fontSize="0.9em" style={{ marginRight: 9, marginLeft: 18 }} />
+                  {maskValues(request.requestBuildSurface.buildSurfaceMin, "buildSurface")}
                 </div>
               </div>
             </div>
@@ -142,33 +109,18 @@ const ContactRequestCard = ({ request }) => {
               </h4>
               <div className="RequestCard__CardMobile--body--item--content">
                 <div>
-                  <BsChevronDoubleUp
-                    fontSize="0.9em"
-                    style={{ marginRight: 9 }}
-                  />
-                  {maskValues(
-                    request.requestPlotSurface.plotSurfaceMax,
-                    "plotSurface"
-                  )}
+                  <BsChevronDoubleUp fontSize="0.9em" style={{ marginRight: 9 }} />
+                  {maskValues(request.requestPlotSurface.plotSurfaceMax, "plotSurface")}
                 </div>
                 <div>
-                  <BsChevronDoubleDown
-                    fontSize="0.8em"
-                    style={{ marginRight: 9, marginLeft: 18 }}
-                  />
-                  {maskValues(
-                    request.requestPlotSurface.plotSurfaceMin,
-                    "plotSurface"
-                  )}
+                  <BsChevronDoubleDown fontSize="0.8em" style={{ marginRight: 9, marginLeft: 18 }} />
+                  {maskValues(request.requestPlotSurface.plotSurfaceMin, "plotSurface")}
                 </div>
               </div>
             </div>
           </div>
           <div className="RequestCard__CardMobile--body--item--cta">
-            <Link
-              className="RequestCard__CardMobile--body--item--cta--button"
-              to={`/peticiones/${request._id}`}
-            >
+            <Link className="RequestCard__CardMobile--body--item--cta--button" to={`/peticiones/${request._id}`}>
               Consultar
             </Link>
           </div>
@@ -179,16 +131,8 @@ const ContactRequestCard = ({ request }) => {
             <div className="RequestCard__Card--content-header">
               <h4>Petición {`#${request.requestReference}`}</h4>
               <p>
-                <BsPersonCircle
-                  fontSize="1.4em"
-                  color="#47535B"
-                  style={{ margin: "0 8 0 48" }}
-                />
-                <span>
-                  {request.requestConsultant.fullName
-                    ? request.requestConsultant.fullName
-                    : "Sin consultor"}
-                </span>
+                <BsPersonCircle fontSize="1.4em" color="#47535B" style={{ margin: "0 8 0 48" }} />
+                <span>{request.requestConsultant.fullName ? request.requestConsultant.fullName : "Sin consultor"}</span>
               </p>
 
               {request.requestBuildingType.map((buildingType, index) => {
@@ -198,11 +142,7 @@ const ContactRequestCard = ({ request }) => {
                     className="RequestCard__Card--content-header"
                     style={{ marginLeft: 24 }}
                   >
-                    <GoPrimitiveDot
-                      fontSize="1.1em"
-                      color="#47535B"
-                      style={{ marginRight: 4, fontWeight: 2000 }}
-                    />
+                    <GoPrimitiveDot fontSize="1.1em" color="#47535B" style={{ marginRight: 4, fontWeight: 2000 }} />
                     {buildingType}
                   </p>
                 );
@@ -217,17 +157,11 @@ const ContactRequestCard = ({ request }) => {
                 </h4>
                 <div className="RequestCard__Card--content-body--content">
                   <div>
-                    <BsChevronDoubleUp
-                      fontSize="0.8em"
-                      style={{ marginRight: 7 }}
-                    />
+                    <BsChevronDoubleUp fontSize="0.8em" style={{ marginRight: 7 }} />
                     {maskValues(request.requestSalePrice.salePriceMax, "price")}
                   </div>
                   <div>
-                    <BsChevronDoubleDown
-                      fontSize="0.8em"
-                      style={{ marginRight: 7 }}
-                    />
+                    <BsChevronDoubleDown fontSize="0.8em" style={{ marginRight: 7 }} />
                     {maskValues(request.requestSalePrice.salePriceMin, "price")}
                   </div>
                 </div>
@@ -239,18 +173,12 @@ const ContactRequestCard = ({ request }) => {
                 </h4>
                 <div className="RequestCard__Card--content-body--content">
                   <div>
-                    <BsChevronDoubleUp
-                      fontSize="0.8em"
-                      style={{ marginRight: 7 }}
-                    />
-                    {maskValues(request.requestBuildSurface.buildSurfaceMax, "price")}
+                    <BsChevronDoubleUp fontSize="0.8em" style={{ marginRight: 7 }} />
+                    {maskValues(request.requestBuildSurface.buildSurfaceMax, "buildSurface")}
                   </div>
                   <div>
-                    <BsChevronDoubleDown
-                      fontSize="0.8em"
-                      style={{ marginRight: 7 }}
-                    />
-                    {maskValues(request.requestBuildSurface.buildSurfaceMin, "price")}
+                    <BsChevronDoubleDown fontSize="0.8em" style={{ marginRight: 7 }} />
+                    {maskValues(request.requestBuildSurface.buildSurfaceMin, "buildSurface")}
                   </div>
                 </div>
               </div>
@@ -261,24 +189,12 @@ const ContactRequestCard = ({ request }) => {
                 </h4>
                 <div className="RequestCard__Card--content-body--content">
                   <div>
-                    <BsChevronDoubleUp
-                      fontSize="0.8em"
-                      style={{ marginRight: 7 }}
-                    />
-                    {maskValues(
-                      request.requestPlotSurface.plotSurfaceMax,
-                      "plotSurface"
-                    )}
+                    <BsChevronDoubleUp fontSize="0.8em" style={{ marginRight: 7 }} />
+                    {maskValues(request.requestPlotSurface.plotSurfaceMax, "plotSurface")}
                   </div>
                   <div>
-                    <BsChevronDoubleDown
-                      fontSize="0.8em"
-                      style={{ marginRight: 7 }}
-                    />
-                    {maskValues(
-                      request.requestPlotSurface.plotSurfaceMin,
-                      "plotSurface"
-                    )}
+                    <BsChevronDoubleDown fontSize="0.8em" style={{ marginRight: 7 }} />
+                    {maskValues(request.requestPlotSurface.plotSurfaceMin, "plotSurface")}
                   </div>
                 </div>
               </div>
@@ -286,10 +202,7 @@ const ContactRequestCard = ({ request }) => {
           </div>
           <div className="RequestCard__Card--item RequestCard__Card--item-cta">
             <span>Creado el {moment(request.createdAt).format("L")}</span>
-            <Link
-              className="RequestCard__Card--item-cta--button"
-              to={`/peticiones/${request._id}`}
-            >
+            <Link className="RequestCard__Card--item-cta--button" to={`/peticiones/${request._id}`}>
               Consultar
             </Link>
           </div>
