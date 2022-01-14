@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { FilterService } from "primereact/api";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { ColumnGroup } from "primereact/columngroup";
 import { Row } from "primereact/row";
+import { MultiSelect } from "primereact/multiselect";
 import { NavLink } from "react-router-dom";
 import { BsCloudArrowUp } from "react-icons/bs";
 import * as moment from "moment";
@@ -12,18 +14,92 @@ import "./RequestTable.scss";
 const RequestsTable = ({ requests }) => {
   const [requestsFormated, setRequestsFormated] = useState([]);
   const [loader, setLoader] = useState(true);
+  const [filters, setFilters] = useState({
+    requestAdType: { value: null, matchMode: "INCLUDES" },
+    requestBuildingType: { value: null, matchMode: "INCLUDES" },
+  });
+
+  const adTypeOptions = [{ name: "Alquiler" }, { name: "Venta" }];
+  const buildingTypeOptions = [
+    { name: "Casa" },
+    { name: "Piso" },
+    { name: "Parcela" },
+    { name: "Ático" },
+    { name: "Oficina" },
+    { name: "Edificio" },
+    { name: "Local" },
+    { name: "Campo Rústico" },
+    { name: "Activos Singulares" },
+    { name: "Costa" },
+  ];
+  
+  FilterService.register("INCLUDES", (value, filter) => {
+    if (filter === undefined || filter === null) {
+      return true;
+    }
+
+    if (value === undefined || value === null) {
+      return false;
+    }
+
+    let newFilter = filter.map((e) => e.name).sort().join(" ");
+    if (newFilter === "") return true
+
+    return value.includes(newFilter);
+  });
+
 
   useEffect(() => {
     if (requests.length !== 0) {
       const newRequests = requests.map((request) => {
-        if (request.requestBuildingType && loader) request.requestBuildingType = request.requestBuildingType.join(" ");
-        if (request.requestAdType && loader) request.requestAdType = request.requestAdType.join(" ");
+        if (request.requestBuildingType && loader) request.requestBuildingType = request.requestBuildingType.sort().join(" ");
+        if (request.requestAdType && loader) request.requestAdType = request.requestAdType.sort().join(" ");
         return request;
       });
       setRequestsFormated(newRequests);
       setLoader(false);
     }
   }, [requests]);
+
+  const adTypeFilterTemplate = (options) => {
+    return (
+      <React.Fragment>
+        <MultiSelect
+          value={options.value}
+          options={adTypeOptions}
+          itemTemplate={itemsTemplate}
+          onChange={(e) => options.filterApplyCallback(e.value)}
+          optionLabel="name"
+          placeholder="Todos"
+          className="p-column-filter"
+        />
+      </React.Fragment>
+    );
+  };
+
+  const buildingTypeFilterTemplate = (options) => {
+    return (
+      <React.Fragment>
+        <MultiSelect
+          value={options.value}
+          options={buildingTypeOptions}
+          itemTemplate={itemsTemplate}
+          onChange={(e) => options.filterApplyCallback(e.value)}
+          optionLabel="name"
+          placeholder="Todos"
+          className="p-column-filter"
+        />
+      </React.Fragment>
+    );
+  };
+
+  const itemsTemplate = (option) => {
+    return (
+      <div className="p-multiselect-representative-option">
+        <span className="image-text">{option.name}</span>
+      </div>
+    );
+  };
 
   let headerGroup = (
     <ColumnGroup>
@@ -32,20 +108,39 @@ const RequestsTable = ({ requests }) => {
         <Column header="Referencia" rowSpan={2} />
         <Column header="Contacto" rowSpan={2} />
         <Column header="Empresa" rowSpan={2} />
-        <Column header="Tipo de inmueble" rowSpan={2} />
-        <Column header="Tipo de anuncio" rowSpan={2} />
+        <Column
+          header="Tipo de inmueble"
+          rowSpan={2}
+          filter
+          filterField="requestBuildingType"
+          filterElement={buildingTypeFilterTemplate}
+          showFilterMatchModes={false}
+          showApplyButton={false}
+          showClearButton={false}
+        />
+        <Column
+          header="Tipo de anuncio"
+          rowSpan={2}
+          filter
+          filterElement={adTypeFilterTemplate}
+          filterField="requestAdType"
+          showFilterMatchModes={false}
+          filterMatchMode="custom"
+          showApplyButton={false}
+          showClearButton={false}
+        />
         <Column header="Precio" colSpan={2} />
         <Column header="Superficie construida" colSpan={2} />
         <Column header="Superficie parcela" colSpan={2} />
         <Column header="Consultor" rowSpan={2} />
       </Row>
       <Row>
-        <Column header="Máximo" colSpan={1} sortable field="price.sale.saleValue" />
-        <Column header="Mínimo" colSpan={1} sortable field="price.rent.rentValue" />
-        <Column header="Máxima" colSpan={1} sortable field="price.sale.saleValue" />
-        <Column header="Mínima" colSpan={1} sortable field="price.rent.rentValue" />
-        <Column header="Máxima" colSpan={1} sortable field="price.sale.saleValue" />
-        <Column header="Mínima" colSpan={1} sortable field="price.rent.rentValue" />
+        <Column header="Máximo" colSpan={1} sortable field="requestSalePrice.salePriceMax" />
+        <Column header="Mínimo" colSpan={1} sortable field="requestSalePrice.salePriceMin" />
+        <Column header="Máxima" colSpan={1} sortable field="requestBuildSurface.buildSurfaceMax" />
+        <Column header="Mínima" colSpan={1} sortable field="requestBuildSurface.buildSurfaceMin" />
+        <Column header="Máxima" colSpan={1} sortable field="requestPlotSurface.plotSurfaceMax" />
+        <Column header="Mínima" colSpan={1} sortable field="requestPlotSurface.plotSurfaceMin" />
       </Row>
     </ColumnGroup>
   );
@@ -120,8 +215,12 @@ const RequestsTable = ({ requests }) => {
           removableSort
           sortField="createdAt"
           sortOrder={-1}
+          filterDisplay="menu"
+          showGridlines
+          filters={filters}
           resizableColumns
           responsiveLayout="scroll"
+          globalFilterFields={["requestAdType", "requestBuildingType"]}
         >
           <Column
             field="createdAt"
@@ -134,7 +233,7 @@ const RequestsTable = ({ requests }) => {
           <Column field="requestContact.company"></Column>
           <Column field="requestBuildingType"></Column>
           <Column field="requestAdType"></Column>
-          <Column field="requestSalePrice.salePriceMin" body={priceMaxBodyTemplate}></Column>
+          <Column field="requestSalePrice.salePriceMax" body={priceMaxBodyTemplate}></Column>
           <Column field="requestSalePrice.salePriceMin" body={priceMinBodyTemplate}></Column>
           <Column field="requestBuildSurface.buildSurfaceMax" body={buildSurfaceMaxBodyTemplate}></Column>
           <Column field="requestBuildSurface.buildSurfaceMin" body={buildSurfaceMinBodyTemplate}></Column>

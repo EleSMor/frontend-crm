@@ -54,7 +54,7 @@ const ContactCard = ({ contact }) => {
         <div className="ContactCard__Card--item ContactCard__Card--item-iconsInfo">
           <p>
             <FaPhoneAlt fontSize="0.85em" color="#47535B" style={{ marginRight: 9 }} />
-            {contact.contactMobileNumber} {contact.contactPhoneNumber && `| ${contact.contactPhoneNumber}}`}
+            {contact.contactMobileNumber} {contact.contactPhoneNumber && `| ${contact.contactPhoneNumber}`}
           </p>
           <p>
             <HiOutlineMail fontSize="1.1em" color="#47535B" style={{ marginRight: 9 }} />

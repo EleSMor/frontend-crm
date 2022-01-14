@@ -85,7 +85,7 @@ const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter,
      * 2. Por la empresa del mismo contacto
      * 3. Por el email del contacto
      */
-    if (title === "Peticiones") {
+    else if (title === "Peticiones") {
       const requestsFiltered = list.filter((request) => {
         if (
           checkIfIncludes(request.requestContact.fullName, text) ||
@@ -102,7 +102,7 @@ const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter,
      * 1. Por nombre completo del consultor
      * 2. Por el email del consultor
      */
-    if (title === "Consultores") {
+    else if (title === "Consultores") {
       const consultantsFiltered = list.filter((consultant) => {
         if (checkIfIncludes(consultant.fullName, text) || checkIfIncludes(consultant.consultantEmail, text))
           return consultant;
@@ -115,7 +115,7 @@ const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter,
      * 1. Por nombre completo del contacto
      * 2. Por el email del contacto
      */
-    if (title === "Contactos") {
+    else if (title === "Contactos") {
       const contactFiltered = list.filter((contact) => {
         if (
           checkIfIncludes(contact.fullName, text) ||

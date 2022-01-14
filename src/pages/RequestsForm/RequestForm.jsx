@@ -170,16 +170,19 @@ const RequestForm = () => {
                   if (data.bathroomsMax === "") data.bathroomsMax = 99;
                   if (data.bathroomsMin === "") data.bathroomsMin = 0;
 
-                  if (!id && selectedContact.length !== 0 && selectedConsultant.length !== 0) {
-                    createRequest(data).then((res) => {
-                      alert(`La Petición ${res.requestReference} ha sido creada`);
-                      history.push("/peticiones");
-                    });
-                  } else if (id)
-                    updateRequest(data).then(() => {
-                      alert(`La Petición ${requestById.requestReference} ha sido actualizada`);
-                      history.push("/peticiones");
-                    });
+                  if (data.requestZone.length !== 0) {
+                    if (!id && selectedContact.length !== 0 && selectedConsultant.length !== 0) {
+                      createRequest(data).then((res) => {
+                        alert(`La Petición ${res.requestReference} ha sido creada`);
+                        history.push("/peticiones");
+                      });
+                    } else if (id)
+                      updateRequest(data).then(() => {
+                        alert(`La Petición ${requestById.requestReference} ha sido actualizada`);
+                        history.push("/peticiones");
+                      });
+                  } else alert(`Debe seleccionar al menos una zona`);
+
                 }}
               >
                 {(formProps) => (

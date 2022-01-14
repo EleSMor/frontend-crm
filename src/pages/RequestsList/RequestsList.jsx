@@ -19,15 +19,13 @@ const RequestsList = () => {
   const { user } = useContext(UserContext);
   const history = useHistory();
 
-  useEffect(
-    () =>
-      getAllRequests().then((res) => {
-        setRequests(res);
-        setRequestsFiltered(res);
-        setLoader(false);
-      }),
-    []
-  );
+  useEffect(() => {
+    getAllRequests().then((res) => {
+      setRequests(res);
+      setRequestsFiltered(res);
+      setLoader(false);
+    });
+  }, []);
 
   const indexOfLastRequest = currentPage * qPerPage;
   const indexOfFirstRequest = indexOfLastRequest - qPerPage;
