@@ -90,7 +90,8 @@ const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter,
         if (
           checkIfIncludes(request.requestContact.fullName, text) ||
           checkIfIncludes(request.requestContact.company, text) ||
-          checkIfIncludes(request.requestContact.email, text)
+          checkIfIncludes(request.requestContact.email, text) ||
+          checkIfIncludes(request.requestConsultant.fullName, text)
         )
           return request;
       });

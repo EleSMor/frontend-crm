@@ -32,7 +32,7 @@ const RequestsTable = ({ requests }) => {
     { name: "Activos Singulares" },
     { name: "Costa" },
   ];
-  
+
   FilterService.register("INCLUDES", (value, filter) => {
     if (filter === undefined || filter === null) {
       return true;
@@ -41,18 +41,20 @@ const RequestsTable = ({ requests }) => {
     if (value === undefined || value === null) {
       return false;
     }
-
-    let newFilter = filter.map((e) => e.name).sort().join(" ");
-    if (newFilter === "") return true
-
-    return value.includes(newFilter);
+    let newFilter = filter.map((e) => e.name);
+    if (newFilter.length === 0) return true;
+    else {
+      for (let elem of newFilter) {
+        if (value.includes(elem)) return true;
+      }
+    }
   });
-
 
   useEffect(() => {
     if (requests.length !== 0) {
       const newRequests = requests.map((request) => {
-        if (request.requestBuildingType && loader) request.requestBuildingType = request.requestBuildingType.sort().join(" ");
+        if (request.requestBuildingType && loader)
+          request.requestBuildingType = request.requestBuildingType.sort().join(" ");
         if (request.requestAdType && loader) request.requestAdType = request.requestAdType.sort().join(" ");
         return request;
       });

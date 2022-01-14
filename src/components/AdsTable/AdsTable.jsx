@@ -49,16 +49,14 @@ const AdsTable = ({ ads }) => {
       return false;
     }
 
-    let newFilter = filter
-      .map((e) => e.name)
-      .sort()
-      .join(" ");
-    console.log(newFilter);
-
-    if (newFilter === "") return true
-    if (newFilter === "Ninguno") return true;
-
-    return value.includes(newFilter);
+    let newFilter = filter.map((e) => e.name);
+    if (newFilter.length === 0) return true;
+    if (newFilter.includes("Ninguno")) return true;
+    else {
+      for (let elem of newFilter) {
+        if (value.includes(elem)) return true;
+      }
+    }
   });
 
   useEffect(() => {
