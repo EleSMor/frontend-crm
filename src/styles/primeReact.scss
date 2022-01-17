@@ -1,5 +1,7 @@
 @use "src/styles/utils.scss" as *;
 
+
+// TABS 
 .p-tabview .p-tabview-nav .p-tabview-ink-bar {
   background-color: $c-background-dark;
 }
@@ -50,4 +52,31 @@ a {
 
 .p-tabview .p-tabview-nav li .p-tabview-nav-link {
   transition: none;
+}
+
+// ACCORDION
+.p-accordion .p-accordion-header .p-accordion-header-link {
+  background-color: #C4C4C4;
+  border-radius: 2px;
+  border: none;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.719);
+  text-decoration: none;
+}
+
+.p-accordion .p-accordion-header:not(.p-highlight):not(.p-disabled):hover .p-accordion-header-link {
+  border: none;
+  text-decoration: none;
+}
+
+.p-accordion .p-accordion-header:not(.p-disabled) .p-accordion-header-link:focus {
+  border: none !important;
+  box-shadow: none;
+  color: none;
+}
+
+.p-accordion .p-accordion-content {
+  border: none;
+  padding-top: 20px;
+  padding-bottom: 50px;
 }

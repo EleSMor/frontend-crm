@@ -14,9 +14,22 @@
     border-left: 2px solid $c-background-dark;
     display: flex;
     align-items: flex-end;
-
-    > span {
+    flex-wrap: wrap;
+    
+    span {
       font-weight: 400;
+      margin-left: 5px;
+    }
+    
+    span:not(:first-child) {
+      margin-right: 20px;
+    }
+    
+    &--group {
+      margin-bottom: 10px;
+      margin-top: 10px;
+      display: flex;
+      align-items: flex-end;
     }
   }
 }

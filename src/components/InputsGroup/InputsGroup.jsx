@@ -14,6 +14,8 @@ const InputsGroup = ({ label, inputs}) => {
                 name={input.name}
                 value={input.value}
                 onChange={input.onChange}
+                type={input?.type}
+                placeholder={input?.placeholder}
               />
               <p>{input.error}</p>
             </div>

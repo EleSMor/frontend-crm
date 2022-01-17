@@ -23,7 +23,6 @@ const Checkboxes = ({ label,
           <span style={{marginLeft: 5}}>{textA}</span>
 
           <input
-            style={{marginLeft: 20}}
             type="checkbox"
             value={valueB}
             onChange={onChangeB}
