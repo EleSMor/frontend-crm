@@ -38,6 +38,7 @@ const ConsultantForm = () => {
   useEffect(() => {
     if (id) {
       getConsultantById(id).then((res) => {
+        setAvatar(res.Avatar);
         setCompanyUnitLogo(res.companyUnitLogo);
         setConsultantById(res);
       });
