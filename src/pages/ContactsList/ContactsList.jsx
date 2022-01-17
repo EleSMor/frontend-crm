@@ -72,7 +72,7 @@ const ContactsList = () => {
             <BsCloudArrowUp fontSize="2.5em" />
           </div>
         ) : (
-          currentContacts.map((contact) => <ContactCard contact={contact} />)
+          currentContacts.map((contact, index) => <ContactCard key={`${contact._id}-${index}`} contact={contact} />)
         )}
       </Layout>
     </>

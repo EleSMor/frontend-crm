@@ -61,7 +61,9 @@ const ConsultantsList = () => {
             <BsCloudArrowUp fontSize="2.5em" />
           </div>
         ) : (
-          currentConsultants.map((consultant) => <ConsultantCard consultant={consultant} />)
+          currentConsultants.map((consultant, index) => (
+            <ConsultantCard key={`${consultant._id}-${index}`} consultant={consultant} index={index} />
+          ))
         )}
       </Layout>
     </div>

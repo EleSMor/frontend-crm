@@ -115,12 +115,12 @@ const deleteImage = async (id, form, from) => {
         }
     });
 
-    const uploadedMain = await request.json();
+    const deletedImage = await request.json();
 
     if (!request.ok) {
-        throw new Error('Error creating new Contact', uploadedMain.message);
+        throw new Error('Error creating new Contact', deletedImage.message);
     };
-    return uploadedMain;
+    return deletedImage;
 };
 
 export {

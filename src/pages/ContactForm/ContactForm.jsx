@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Formik, Form } from "formik";
 import Layout from "../Layout/Layout";
 import Spinner from "../../components/Spinner/Spinner";
@@ -11,9 +11,8 @@ import { UserContext } from "../../components/Context/AuthUser";
 import { createContact, getContactById, updateContact } from "../../api/contacts.api";
 import { HiOutlineMail } from "react-icons/hi";
 import { FaPhoneAlt } from "react-icons/fa";
-import { BsPersonPlusFill } from "react-icons/bs";
 import { MdLocationSearching } from "react-icons/md";
-import { FiSave, FiEdit3 } from "react-icons/fi";
+import { FiSave } from "react-icons/fi";
 import "./ContactForm.scss";
 import Input from "../../components/Input/Input";
 import Checkboxes from "../../components/CheckBox/Checkboxes";
@@ -21,7 +20,6 @@ import Checkbox from "../../components/CheckBox/Checkbox";
 import Textarea from "../../components/Textarea/Textarea";
 import InputsGroup from "../../components/InputsGroup/InputsGroup";
 import "../../styles/primeReact.scss";
-import NotFound from "../../components/NotFound/NotFound";
 
 const ContactForm = () => {
   const [contactById, setContactById] = useState("");
@@ -68,12 +66,6 @@ const ContactForm = () => {
             <Link className="buttonFormCancel" to="/contactos">
               Cancelar
             </Link>
-            {/* {contactById && (
-              <button className="buttonFormCancel" type="button">
-                <FiEdit3 style={{ marginRight: 7 }} />
-                Editar
-              </button>
-            )} */}
             <button className="buttonForm" type="submit" form="ContactForm">
               <FiSave style={{ marginRight: 7 }} />
               Guardar

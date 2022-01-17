@@ -10,9 +10,7 @@ const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter,
   const filterByDepartment = (department) => {
     let searchText = document.getElementById("search").value;
     
-    const filterByDeparment = list.filter((ad) => {
-      if (ad.department === department) return ad;
-    });
+    const filterByDeparment = list.filter((ad) => ad.department === department);
 
     const adsFiltered = list.filter((ad) => {
       if (department !== "todos" && ad.department === department && !searchText) return ad;
@@ -21,14 +19,15 @@ const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter,
         (checkIfIncludes(ad.adReference, searchText) ||
           checkIfIncludes(ad.title, searchText) ||
           checkIfIncludes(ad.owner.fullName, searchText) ||
-          checkIfIncludes(ad.adDirection, searchText))
-      )
+          checkIfIncludes(ad.adDirection, searchText) ||
+          checkIfIncludes(ad.consultant.fullName, searchText))) 
         return ad;
       if (
         (checkIfIncludes(ad.adReference, searchText) ||
           checkIfIncludes(ad.title, searchText) ||
           checkIfIncludes(ad.owner.fullName, searchText) ||
-          checkIfIncludes(ad.adDirection, searchText)) &&
+          checkIfIncludes(ad.adDirection, searchText) || 
+          checkIfIncludes(ad.consultant.fullName, searchText)) &&
         ad.department === department
       )
         return ad;
@@ -66,7 +65,8 @@ const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter,
           checkIfIncludes(ad.adReference, text) ||
           checkIfIncludes(ad.title, text) ||
           checkIfIncludes(ad.owner.fullName, text) ||
-          checkIfIncludes(ad.adDirection, text)
+          checkIfIncludes(ad.consultant.fullName, text) ||
+          checkIfIncludes(ad.adDirection, text) 
         )
           if (filterClass !== "todos") {
             if (ad.department.toLowerCase() === filterClass) return ad;
@@ -210,9 +210,6 @@ const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter,
             Nuevo
           </button>
         )}
-        {/* <button onClick={location} className="subHeader__btn">
-          Nuevo
-        </button> */}
       </div>
     </div>
   );
