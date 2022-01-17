@@ -6,6 +6,7 @@ import { Select, MultiSelect, RequestsMatching } from "../../components";
 import Layout from "../Layout/Layout";
 import Spinner from "../../components/Spinner/Spinner";
 import GoBack from "../../components/GoBack/GoBack";
+import { Accordion, AccordionTab } from 'primereact/accordion';
 import { FiSave } from "react-icons/fi";
 import { getAllConsultants } from "../../api/consultants.api";
 import { getAllResidentialZones, getAllPatrimonialZones } from "../../api/zones.api";
@@ -19,6 +20,7 @@ import {
   updateRequest,
 } from "../../api/requests.api";
 import { UserContext } from "../../components/Context/AuthUser";
+import Checkboxes from "../../components/CheckBox/Checkboxes";
 
 const RequestForm = () => {
   const history = useHistory();
@@ -216,30 +218,18 @@ const RequestForm = () => {
                       )}
                     </div>
                     <div>
-                      <label htmlFor="adType">
-                        Tipo de anuncio
-                        <div>
-                          <input
-                            type="checkbox"
-                            required={selectedAdType.length === 0 ? true : false}
-                            checked={selectedAdType.includes("Alquiler") ? true : ""}
-                            onChange={(ev) => newSelect(selectedAdType, setSelectedAdType, ev)}
-                            name="requestAdType"
-                            value="Alquiler"
-                          />
-                          <span>Alquiler</span>
-
-                          <input
-                            type="checkbox"
-                            name="requestAdType"
-                            required={selectedAdType.length === 0 ? true : false}
-                            checked={selectedAdType.includes("Venta") ? true : ""}
-                            onChange={(ev) => newSelect(selectedAdType, setSelectedAdType, ev)}
-                            value="Venta"
-                          />
-                          <span>Venta</span>
-                        </div>
-                      </label>
+                    <Checkboxes 
+                      label="Tipo de anuncio"
+                      textA="Alquiler"
+                      valueA="Alquiler"
+                      onChangeA={(ev) => newSelect(selectedAdType, setSelectedAdType, ev)}
+                      checkedA={selectedAdType.includes("Alquiler") ? true : ""}
+                      textB="Venta"
+                      valueB="Venta"
+                      onChangeB={(ev) => newSelect(selectedAdType, setSelectedAdType, ev)}
+                      checkedB={selectedAdType.includes("Venta") ? true : ""}
+                      required={selectedAdType.length === 0 ? true : false}
+                    />
                     </div>
                     <div>
                       <label htmlFor="requestBuildingType" name="requestBuildingType">
@@ -341,146 +331,150 @@ const RequestForm = () => {
                         }}
                       />
                     </div>
-                    <div>
-                      <label htmlFor="residentialZone">Zonas residencial</label>
-                      <MultiSelect
-                        list={residentials}
-                        fields={{ groupBy: "zone", text: "name", value: "_id" }}
-                        fn={setResidentialSelectedZones}
-                        defaultValues={validateZone(residentials) ? requestById.requestZone : ""}
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="patrimonialZone">Zonas patrimonial</label>
-                      <MultiSelect
-                        list={patrimonials}
-                        fields={{ groupBy: "zone", text: "name", value: "_id" }}
-                        fn={setPatrimonialSelectedZones}
-                        defaultValues={validateZone(patrimonials) ? requestById.requestZone : ""}
-                      />
-                    </div>
-                    <div>
-                      <div className="">
-                        <h4>Precio de venta</h4>
-                        <label htmlFor="salePriceMax">Máximo</label>
-                        <input
-                          type="number"
-                          name="salePriceMax"
-                          value={formProps.values.salePriceMax}
-                          onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                        />
-                        €<label htmlFor="salePriceMin">Mínimo</label>
-                        <input
-                          type="number"
-                          name="salePriceMin"
-                          value={formProps.values.salePriceMin}
-                          onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                        />
-                        €
-                      </div>
-                    </div>
-                    <div>
-                      <div className="">
-                        <h4>Precio de alquiler</h4>
-                        <label htmlFor="rentPriceMax">Máximo</label>
-                        <input
-                          type="number"
-                          name="rentPriceMax"
-                          value={formProps.values.rentPriceMax}
-                          onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                        />
-                        €<label htmlFor="rentPriceMin">Mínimo</label>
-                        <input
-                          type="number"
-                          name="rentPriceMin"
-                          value={formProps.values.rentPriceMin}
-                          onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                        />
-                        €
-                      </div>
-                    </div>
-                    <div>
-                      <div className="">
-                        <h4>Superficie construida</h4>
-                        <label htmlFor="buildSurfaceMax">Máximo</label>
-                        <input
-                          type="number"
-                          name="buildSurfaceMax"
-                          value={formProps.values.buildSurfaceMax}
-                          onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                        />
-                        m2
-                        <label htmlFor="buildSurfaceMin">Mínimo</label>
-                        <input
-                          type="number"
-                          name="buildSurfaceMin"
-                          value={formProps.values.buildSurfaceMin}
-                          onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                        />
-                        m2
-                      </div>
-                    </div>
-                    <div>
-                      <div className="">
-                        <h4>Superficie de parcela</h4>
-                        <label htmlFor="plotSurfaceMax">Máximo</label>
-                        <input
-                          type="number"
-                          name="plotSurfaceMax"
-                          value={formProps.values.plotSurfaceMax}
-                          onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                        />
-                        m2
-                        <label htmlFor="plotSurfaceMin">Mínimo</label>
-                        <input
-                          type="number"
-                          name="plotSurfaceMin"
-                          value={formProps.values.plotSurfaceMin}
-                          onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                        />
-                        m2
-                      </div>
-                    </div>
-                    <div>
-                      <div className="">
-                        <h4>Número de dormitorios</h4>
-                        <label htmlFor="bedroomsMax">Máximo</label>
-                        <input
-                          type="number"
-                          name="bedroomsMax"
-                          value={formProps.values.bedroomsMax}
-                          onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                        />
-                        m2
-                        <label htmlFor="bedroomsMin">Mínimo</label>
-                        <input
-                          type="number"
-                          name="bedroomsMin"
-                          value={formProps.values.bedroomsMin}
-                          onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                        />
-                        m2
-                      </div>
-                    </div>
-                    <div>
-                      <div className="">
-                        <h4>Número de baños</h4>
-                        <label htmlFor="bathroomsMax">Máximo</label>
-                        <input
-                          type="number"
-                          name="bathroomsMax"
-                          value={formProps.values.bathroomsMax}
-                          onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                        />
-                        <label htmlFor="bathroomsMin">Mínimo</label>
-                        <input
-                          type="number"
-                          name="bathroomsMin"
-                          value={formProps.values.bathroomsMin}
-                          onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                        />
-                      </div>
-                    </div>
+{/* - ZONAS ----------------------------------------------------------------------- */}
+                    <Accordion multiple>
+                      <AccordionTab header="Zonas">
+                        <label htmlFor="residentialZone">Zonas residencial</label>
+                          <MultiSelect
+                            list={residentials}
+                            fields={{ groupBy: "zone", text: "name", value: "_id" }}
+                            fn={setResidentialSelectedZones}
+                            defaultValues={validateZone(residentials) ? requestById.requestZone : ""}
+                          />
+                          <label htmlFor="patrimonialZone">Zonas patrimonial</label>
+                          <MultiSelect
+                            list={patrimonials}
+                            fields={{ groupBy: "zone", text: "name", value: "_id" }}
+                            fn={setPatrimonialSelectedZones}
+                            defaultValues={validateZone(patrimonials) ? requestById.requestZone : ""}
+                          />
+                      </AccordionTab>
+{/* - DETALLES ----------------------------------------------------------------------- */}                   
+                      <AccordionTab header="Detalles">
+                        <div>
+                          <div className="">
+                            <h4>Precio de venta</h4>
+                            <label htmlFor="salePriceMax">Máximo</label>
+                            <input
+                              type="number"
+                              name="salePriceMax"
+                              value={formProps.values.salePriceMax}
+                              onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                            />
+                            €<label htmlFor="salePriceMin">Mínimo</label>
+                            <input
+                              type="number"
+                              name="salePriceMin"
+                              value={formProps.values.salePriceMin}
+                              onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                            />
+                            €
+                          </div>
+                        </div>
+                        <div>
+                          <div className="">
+                            <h4>Precio de alquiler</h4>
+                            <label htmlFor="rentPriceMax">Máximo</label>
+                            <input
+                              type="number"
+                              name="rentPriceMax"
+                              value={formProps.values.rentPriceMax}
+                              onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                            />
+                            €<label htmlFor="rentPriceMin">Mínimo</label>
+                            <input
+                              type="number"
+                              name="rentPriceMin"
+                              value={formProps.values.rentPriceMin}
+                              onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                            />
+                            €
+                          </div>
+                        </div>
+                        <div>
+                          <div className="">
+                            <h4>Superficie construida</h4>
+                            <label htmlFor="buildSurfaceMax">Máximo</label>
+                            <input
+                              type="number"
+                              name="buildSurfaceMax"
+                              value={formProps.values.buildSurfaceMax}
+                              onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                            />
+                            m2
+                            <label htmlFor="buildSurfaceMin">Mínimo</label>
+                            <input
+                              type="number"
+                              name="buildSurfaceMin"
+                              value={formProps.values.buildSurfaceMin}
+                              onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                            />
+                            m2
+                          </div>
+                        </div>
+                        <div>
+                          <div className="">
+                            <h4>Superficie de parcela</h4>
+                            <label htmlFor="plotSurfaceMax">Máximo</label>
+                            <input
+                              type="number"
+                              name="plotSurfaceMax"
+                              value={formProps.values.plotSurfaceMax}
+                              onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                            />
+                            m2
+                            <label htmlFor="plotSurfaceMin">Mínimo</label>
+                            <input
+                              type="number"
+                              name="plotSurfaceMin"
+                              value={formProps.values.plotSurfaceMin}
+                              onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                            />
+                            m2
+                          </div>
+                        </div>
+                        <div>
+                          <div className="">
+                            <h4>Número de dormitorios</h4>
+                            <label htmlFor="bedroomsMax">Máximo</label>
+                            <input
+                              type="number"
+                              name="bedroomsMax"
+                              value={formProps.values.bedroomsMax}
+                              onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                            />
+                            m2
+                            <label htmlFor="bedroomsMin">Mínimo</label>
+                            <input
+                              type="number"
+                              name="bedroomsMin"
+                              value={formProps.values.bedroomsMin}
+                              onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                            />
+                            m2
+                          </div>
+                        </div>
+                        <div>
+                          <div className="">
+                            <h4>Número de baños</h4>
+                            <label htmlFor="bathroomsMax">Máximo</label>
+                            <input
+                              type="number"
+                              name="bathroomsMax"
+                              value={formProps.values.bathroomsMax}
+                              onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                            />
+                            <label htmlFor="bathroomsMin">Mínimo</label>
+                            <input
+                              type="number"
+                              name="bathroomsMin"
+                              value={formProps.values.bathroomsMin}
+                              onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                            />
+                          </div>
+                        </div> 
+                      </AccordionTab>
+                    </Accordion>
                   </Form>
                 )}
               </Formik>

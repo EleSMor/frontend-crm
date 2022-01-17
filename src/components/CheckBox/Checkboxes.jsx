@@ -1,7 +1,7 @@
 import "./Checkbox.scss";
 
 const Checkboxes = ({ label, 
-  textA, valueA, onChangeA, checkedA,
+  textA, valueA, onChangeA, checkedA, required,
   textB, valueB, onChangeB, checkedB
 }) => {
   return (
@@ -18,6 +18,7 @@ const Checkboxes = ({ label,
             value={valueA}
             onChange={onChangeA}
             checked={checkedA}
+            required={required}
           />
           <span style={{marginLeft: 5}}>{textA}</span>
 
@@ -27,6 +28,7 @@ const Checkboxes = ({ label,
             value={valueB}
             onChange={onChangeB}
             checked={checkedB}
+            required={required}
           />
           <span style={{marginLeft: 5}}>{textB}</span>
         </div>
