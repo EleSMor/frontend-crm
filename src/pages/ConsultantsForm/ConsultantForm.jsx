@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Formik, Form, useFormikContext } from "formik";
+import { Formik, Form } from "formik";
 import { useHistory, Link, useParams } from "react-router-dom";
 import { TabView, TabPanel } from "primereact/tabview";
 import Layout from "../Layout/Layout";
@@ -7,14 +7,15 @@ import Spinner from "../../components/Spinner/Spinner";
 import GoBack from "../../components/GoBack/GoBack";
 import AdsTable from "../../components/AdsTable/AdsTable";
 import { UserContext } from "../../components/Context/AuthUser";
-import { getAllAds } from "../../api/ads.api";
-import { createConsultant, getConsultantById, updateConsultant } from "../../api/consultants.api";
 import Input from "../../components/Input/Input";
 import Textarea from "../../components/Textarea/Textarea";
+import { AiOutlinePlus } from "react-icons/ai";
 import { BsPersonPlusFill } from "react-icons/bs";
 import { HiOutlineMail } from "react-icons/hi";
 import { FaPhoneAlt } from "react-icons/fa";
 import { FiSave } from "react-icons/fi";
+import { getAllAds } from "../../api/ads.api";
+import { createConsultant, getConsultantById, updateConsultant } from "../../api/consultants.api";
 import "./ConsultantForm.scss";
 import "../../styles/primeReact.scss";
 
@@ -22,11 +23,12 @@ const ConsultantForm = () => {
   const history = useHistory();
   const { id } = useParams();
   const { user } = useContext(UserContext);
-  // const { submitForm } = useFormikContext();
 
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("--------");
   const [mobile, setMobile] = useState("--------");
+  const [avatar, setAvatar] = useState("");
+  const [companyUnitLogo, setCompanyUnitLogo] = useState("");
 
   const [ads, setAds] = useState([]);
   const [consultantById, setConsultantById] = useState("");
@@ -35,7 +37,10 @@ const ConsultantForm = () => {
 
   useEffect(() => {
     if (id) {
-      getConsultantById(id).then((res) => setConsultantById(res));
+      getConsultantById(id).then((res) => {
+        setCompanyUnitLogo(res.companyUnitLogo);
+        setConsultantById(res);
+      });
       getAllAds().then((res) => {
         res = res.filter((ad) => {
           return ad.consultant._id === id;
@@ -45,6 +50,16 @@ const ConsultantForm = () => {
       });
     }
   }, [activeIndex]);
+
+  const handleChangeFile = (e, setter) => {
+    let reader = new FileReader();
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setter(reader.result);
+      }
+    };
+    reader.readAsDataURL(e);
+  };
 
   return (
     <>
@@ -69,58 +84,42 @@ const ConsultantForm = () => {
         ) : (
           <div className="ConsultantForm">
             <div className="ConsultantForm__header">
-              <div className="ConsultantForm__header--img">
-                {/* {img ? (
-                  <div>
-                    <img
-                      className=""
-                      src={`${img}`}
-                      alt={contactById?.fullName}
-                    />
+              <div className="ConsultantForm__header--left">
+                <div className="ConsultantForm__header--img">
+                  {avatar ? (
                     <div>
-                      <label htmlFor="avatar">Avatar</label>
-                      <input
-                        type="file"
-                        name="avatar"
-                        onChange={(ev) =>
-                          formProps.setFieldValue(
-                            "avatar",
-                            ev.target.files[0]
-                          )
-                        }
-                      />
+                      <img src={avatar} alt="avatar" />
                     </div>
-                  </div>
-                ) : ( */}
-                <div>
-                  <BsPersonPlusFill fontSize="2em" color="#fff" />
+                  ) : (
+                    <div className="ConsultantForm__header--img">
+                      <BsPersonPlusFill fontSize="2em" color="#fff" />
+                    </div>
+                  )}
                 </div>
-                {/* )} */}
+                <div className="ConsultantForm__header--info">
+                  <h3>{consultantById?.fullName || fullName}</h3>
+                  <p>
+                    <HiOutlineMail fontSize="1.1em" color="#47535B" style={{ marginRight: 9 }} />
+                    {consultantById?.consultantEmail || email}
+                  </p>
+                  <p>
+                    <FaPhoneAlt fontSize="0.85em" color="#47535B" style={{ marginRight: 9 }} />
+                    {consultantById?.consultantMobileNumber || mobile}
+                  </p>
+                </div>
               </div>
-              <div className="ConsultantForm__header--info">
-                <h3>{consultantById?.fullName || fullName}</h3>
-                <p>
-                  <HiOutlineMail fontSize="1.1em" color="#47535B" style={{ marginRight: 9 }} />
-                  {consultantById?.consultantEmail || email}
-                </p>
-                <p>
-                  <FaPhoneAlt fontSize="0.85em" color="#47535B" style={{ marginRight: 9 }} />
-                  {consultantById?.consultantMobileNumber || mobile}
-                </p>
+              <div className="ConsultantForm__header--company">
+                {companyUnitLogo ? (
+                  <div className="ConsultantForm__header--img">
+                    <img src={companyUnitLogo} alt="companyUnitLogo" />
+                  </div>
+                ) : (
+                  <div className="ConsultantForm__header--company">
+                    <AiOutlinePlus fontSize="2em" color="#B0B0B0" />
+                    <p> Logo departamento</p>
+                  </div>
+                )}
               </div>
-              {/* <div>
-                <label htmlFor="companyUnitLogo">Logo unidad de negocio</label>
-                <input
-                  type="file"
-                  name="companyUnitLogo"
-                  onChange={(ev) =>
-                    formProps.setFieldValue(
-                      "companyUnitLogo",
-                      ev.target.files[0]
-                    )
-                  }
-                />
-              </div> */}
             </div>
 
             <TabView activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)}>
@@ -271,6 +270,44 @@ const ConsultantForm = () => {
                             value={formProps.values.consultantComments}
                             onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                           />
+                          <div className="ConsultantForm__form">
+                            <div className="ConsultantForm__form--col">
+                              <label htmlFor="avatar">Avatar</label>
+                              <input
+                                type="file"
+                                name="avatar"
+                                id="avatar"
+                                onChange={(ev) => {
+                                  if (ev.target.files[0].size > 5242880) {
+                                    alert("La imagen supera los 5 Mb, por favor escoja una de menor tamaño");
+                                    ev.target.value = "";
+                                  } else {
+                                    handleChangeFile(ev.target.files[0], setAvatar);
+                                    formProps.setFieldValue(ev.target.name, ev.target.files[0]);
+                                  }
+                                }}
+                              />
+                            </div>
+                            <div className="ConsultantForm__form--col">
+                              <label htmlFor="companyUnitLogo" style={{ alignSelf: "start" }}>
+                                Logo Unidad de Negocio
+                              </label>
+                              <input
+                                type="file"
+                                name="companyUnitLogo"
+                                id="companyUnitLogo"
+                                onChange={(ev) => {
+                                  if (ev.target.files[0].size > 5242880) {
+                                    alert("La imagen supera los 5 Mb, por favor escoja una de menor tamaño");
+                                    ev.target.value = "";
+                                  } else {
+                                    handleChangeFile(ev.target.files[0], setCompanyUnitLogo);
+                                    formProps.setFieldValue(ev.target.name, ev.target.files[0]);
+                                  }
+                                }}
+                              />
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </Form>

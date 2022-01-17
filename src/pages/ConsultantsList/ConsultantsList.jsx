@@ -62,7 +62,7 @@ const ConsultantsList = () => {
           </div>
         ) : (
           currentConsultants.map((consultant, index) => (
-            <ConsultantCard key={`${consultant._id}-${index}`} consultant={consultant} index={index} />
+            <ConsultantCard key={`${consultant._id}-${index}`} consultant={consultant} />
           ))
         )}
       </Layout>
