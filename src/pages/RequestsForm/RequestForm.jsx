@@ -347,6 +347,7 @@ const RequestForm = () => {
                                 inputs={[
                                   {
                                     name: "salePriceMax",
+                                    placeholder: "€",
                                     label: "Máximo",
                                     type: "number",
                                     value: formProps.values.salePriceMax,

@@ -2,12 +2,13 @@
 
 .RequestForm__container {
   width: 100%;
+
   &__col {
     width: 100%;
     &--item:not(:first-child) {
       margin: 30px 0;
-
     }
+
     &--item {
       &-center {
         display: flex;
@@ -19,6 +20,7 @@
     }
   }
 }
+
 @media (min-width: $break-point) {
   .RequestForm__container {
     display: flex;
@@ -30,5 +32,4 @@
       width: 46%;
     }
   }
-  
 }
