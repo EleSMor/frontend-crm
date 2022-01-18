@@ -216,7 +216,7 @@ const RequestForm = () => {
                         </div>
                         <div>
                           <Select
-                          label="Consultor"
+                            label="Consultor"
                             list={consultants}
                             fields={{ groupBy: "", text: "fullName", value: "_id" }}
                             fn={setSelectedConsultant}
@@ -318,6 +318,7 @@ const RequestForm = () => {
                                 inputs={[
                                   {
                                     name: "salePriceMax",
+                                    placeholder: "€",
                                     label: "Máximo",
                                     type: "number",
                                     value: formProps.values.salePriceMax,
