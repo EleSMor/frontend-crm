@@ -16,7 +16,6 @@ import "./AdsTable.scss";
 const AdsTable = ({ ads }) => {
   const [adsFormated, setAdsFormated] = useState([]);
   const [loader, setLoader] = useState(true);
-  const [consultants, setConsultants] = useState([]);
   const [filters, setFilters] = useState({
     adType: { value: null, matchMode: "INCLUDES" },
     adBuildingType: { value: null, matchMode: "INCLUDES" },

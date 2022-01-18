@@ -11,7 +11,8 @@ const Input = ({
   onChange,
   onFocus,
   autoComplete,
-  error
+  error,
+  readOnly,
 }) => {
   return (
     <div className="Input">
@@ -28,6 +29,7 @@ const Input = ({
           onBlur={onBlur}
           onFocus={onFocus}
           autoComplete={autoComplete}
+          readOnly={readOnly}
         />
       </div>
 

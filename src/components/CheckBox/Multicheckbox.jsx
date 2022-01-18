@@ -8,7 +8,7 @@ const Multicheckbox = ({ label, required, inputs, onChange }) => {
 
         <div className="Checkboxes__checks">
           {inputs.map((input) => (
-            <div key={input.name} className="Checkboxes__checks--group">
+            <div key={input.value} className="Checkboxes__checks--group">
               <input
                 type="checkbox"
                 value={input.value}

@@ -6,7 +6,7 @@ import { Select, MultiSelect, RequestsMatching } from "../../components";
 import Layout from "../Layout/Layout";
 import Spinner from "../../components/Spinner/Spinner";
 import GoBack from "../../components/GoBack/GoBack";
-import { Accordion, AccordionTab } from 'primereact/accordion';
+import { Accordion, AccordionTab } from "primereact/accordion";
 import { FiSave } from "react-icons/fi";
 import { getAllConsultants } from "../../api/consultants.api";
 import { getAllResidentialZones, getAllPatrimonialZones } from "../../api/zones.api";
@@ -25,13 +25,13 @@ import Input from "../../components/Input/Input";
 import Textarea from "../../components/Textarea/Textarea";
 import InputsGroup from "../../components/InputsGroup/InputsGroup";
 import Multicheckbox from "../../components/CheckBox/Multicheckbox";
-import { RiMoneyEuroBoxLine } from "react-icons/ri"
-import { BiBed } from "react-icons/bi"
-import { GrRestroom } from "react-icons/gr"
-import { BsCalendarX } from "react-icons/bs"
-import { MdHeight } from "react-icons/md"
-import { GiPapers } from "react-icons/gi"
-import "./RequestForm.scss"
+import { RiMoneyEuroBoxLine } from "react-icons/ri";
+import { BiBed } from "react-icons/bi";
+import { GrRestroom } from "react-icons/gr";
+import { BsCalendarX } from "react-icons/bs";
+import { MdHeight } from "react-icons/md";
+import { GiPapers } from "react-icons/gi";
+import "./RequestForm.scss";
 
 const RequestForm = () => {
   const history = useHistory();
@@ -39,7 +39,6 @@ const RequestForm = () => {
   const { id } = useParams();
 
   const [reference, setReference] = useState(0);
-  const [requests, setRequests] = useState([]);
   const [ads, setAds] = useState([]);
   const [requestById, setRequestById] = useState([]);
   const [contacts, setContacts] = useState([]);
@@ -56,14 +55,13 @@ const RequestForm = () => {
   const [validateForm, setValidateForm] = useState(false);
 
   const validateZone = (zones) => {
-    if (id && requestById.length !== 0) return zones.some((zone) => requestById.requestZone.includes(zone._id));
-    else return "";
+    if (id && requestById.length !== 0) {
+      return zones.some((zone) => requestById.requestZone.includes(zone._id));
+    } else return "";
   };
 
-  const getFetchs = async () => {
-    getAllRequests().then((res) => setRequests(res));
+  const getFetchs = () => {
     getAllConsultants().then((res) => setConsultants(res));
-    getLastReference().then((res) => setReference(res));
     getAllContacts()
       .then((res) => setContacts(res))
       .then(() => {
@@ -76,7 +74,7 @@ const RequestForm = () => {
             setSelectedAdType(res.requestAdType);
           });
           getAdsMatched(id).then((res) => setAds(res));
-        }
+        } else getLastReference().then((res) => setReference(res));
       })
       .then(
         getAllResidentialZones()
@@ -90,14 +88,29 @@ const RequestForm = () => {
           )
       )
       .then(() => {
-        if (id && requestById.length !== 0 && residentials.length !== 0 && patrimonials.length !== 0) setLoader(false);
-        else if (!id) setLoader(false);
+        if (id && requestById.length !== 0 && residentials.length !== 0 && patrimonials.length !== 0) {
+          setLoader(false);
+        } else if (!id) setLoader(false);
       });
   };
 
   useEffect(() => {
     getFetchs();
   }, [id]);
+
+  if (id && requestById.length !== 0 && residentials.length !== 0 && patrimonials.length !== 0 && !validateForm) {
+    for (let zone of residentials) {
+      if (requestById.requestZone.includes(zone._id) && !residentialSelectedZones.includes(zone._id)) {
+        setResidentialSelectedZones([...residentialSelectedZones, zone._id]);
+      }
+    }
+
+    for (let zone of patrimonials) {
+      if (requestById.requestZone.includes(zone._id) && !residentialSelectedZones.includes(zone._id)) {
+        setResidentialSelectedZones([...residentialSelectedZones, zone._id]);
+      }
+    }
+  }
 
   const newSelect = (selected, setSelected, ev) => {
     if (selected.includes(ev.target.value)) {
@@ -120,7 +133,7 @@ const RequestForm = () => {
               <FiSave style={{ marginRight: 7 }} />
               Guardar
             </button>
-            <Link className="buttonFormCancel" to="/anuncios">
+            <Link className="buttonFormCancel" to="/peticiones">
               Cancelar
             </Link>
           </>
@@ -162,12 +175,18 @@ const RequestForm = () => {
                   data.requestConsultant = selectedConsultant[0];
                   data.requestAdType = selectedAdType;
                   data.requestBuildingType = selectedBuildingType;
-                  if (residentialSelectedZones.length !== 0) {
-                    data.requestZone = residentialSelectedZones;
-                  } else if (patrimonialSelectedZones.length !== 0) {
-                    data.requestZone = patrimonialSelectedZones;
-                  } else if (patrimonialSelectedZones.length === 0 && residentialSelectedZones.length === 0) {
-                    data.requestZone = [];
+
+                  if (
+                    residentialSelectedZones !== requestById.requestZone ||
+                    patrimonialSelectedZones !== requestById.requestZone
+                  ) {
+                    if (residentialSelectedZones.length !== 0) {
+                      data.requestZone = residentialSelectedZones;
+                    } else if (patrimonialSelectedZones.length !== 0) {
+                      data.requestZone = patrimonialSelectedZones;
+                    } else if (patrimonialSelectedZones.length === 0 && residentialSelectedZones.length === 0) {
+                      data.requestZone = [];
+                    }
                   }
 
                   if (data.salePriceMax === "") data.salePriceMax = 99999999;
@@ -195,7 +214,6 @@ const RequestForm = () => {
                         history.push("/peticiones");
                       });
                   } else alert(`Debe seleccionar al menos una zona`);
-
                 }}
               >
                 {(formProps) => (
@@ -216,7 +234,7 @@ const RequestForm = () => {
                         </div>
                         <div>
                           <Select
-                          label="Consultor"
+                            label="Consultor"
                             list={consultants}
                             fields={{ groupBy: "", text: "fullName", value: "_id" }}
                             fn={setSelectedConsultant}
@@ -232,16 +250,22 @@ const RequestForm = () => {
                             required={selectedBuildingType.length === 0 ? true : false}
                             onChange={(ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev)}
                             inputs={[
-                              {value: "Casa", checked: selectedBuildingType.includes("Casa") ? true : ""},
-                              {value: "Piso", checked: selectedBuildingType.includes("Piso") ? true : ""},
-                              {value: "Parcela", checked: selectedBuildingType.includes("Parcela") ? true : ""},
-                              {value: "Ático", checked: selectedBuildingType.includes("Ático") ? true : ""},
-                              {value: "Oficina", checked: selectedBuildingType.includes("Oficina") ? true : ""},
-                              {value: "Edificio", checked: selectedBuildingType.includes("Edificio") ? true : ""},
-                              {value: "Local", checked: selectedBuildingType.includes("Local") ? true : ""},
-                              {value: "Campo Rústico", checked: selectedBuildingType.includes("Campo Rústico") ? true : ""},
-                              {value: "Activos singulares", checked: selectedBuildingType.includes("Activos singulares") ? true : ""},
-                              {value: "Costa", checked: selectedBuildingType.includes("Costa") ? true : ""},
+                              { value: "Casa", checked: selectedBuildingType.includes("Casa") ? true : "" },
+                              { value: "Piso", checked: selectedBuildingType.includes("Piso") ? true : "" },
+                              { value: "Parcela", checked: selectedBuildingType.includes("Parcela") ? true : "" },
+                              { value: "Ático", checked: selectedBuildingType.includes("Ático") ? true : "" },
+                              { value: "Oficina", checked: selectedBuildingType.includes("Oficina") ? true : "" },
+                              { value: "Edificio", checked: selectedBuildingType.includes("Edificio") ? true : "" },
+                              { value: "Local", checked: selectedBuildingType.includes("Local") ? true : "" },
+                              {
+                                value: "Campo Rústico",
+                                checked: selectedBuildingType.includes("Campo Rústico") ? true : "",
+                              },
+                              {
+                                value: "Activos singulares",
+                                checked: selectedBuildingType.includes("Activos singulares") ? true : "",
+                              },
+                              { value: "Costa", checked: selectedBuildingType.includes("Costa") ? true : "" },
                             ]}
                           />
                         </div>
@@ -249,7 +273,7 @@ const RequestForm = () => {
 
                       <div className="RequestForm__container__col">
                         <div>
-                          <Checkboxes 
+                          <Checkboxes
                             label="Tipo de anuncio"
                             textA="Alquiler"
                             valueA="Alquiler"
@@ -263,16 +287,17 @@ const RequestForm = () => {
                           />
                         </div>
                         <div>
-                          <Input 
+                          <Input
                             value={formProps.values.requestReference}
                             label="Id Petición"
                             name="requestReference"
                             placeholder="Escriba aquí"
+                            readOnly={true}
                           />
                         </div>
                         <div>
                           {/* ELE -> textarea no tenía value. */}
-                          <Textarea 
+                          <Textarea
                             label="Comentarios"
                             name="requestComment"
                             placeholder="Escriba aquí"
@@ -283,7 +308,7 @@ const RequestForm = () => {
                         </div>
                       </div>
                     </div>
-{/* - ZONAS ----------------------------------------------------------------------- */}
+                    {/* - ZONAS ----------------------------------------------------------------------- */}
                     <Accordion multiple>
                       <AccordionTab header="Zonas">
                         <div className="RequestForm__container">
@@ -307,14 +332,18 @@ const RequestForm = () => {
                           </div>
                         </div>
                       </AccordionTab>
-{/* - DETALLES ----------------------------------------------------------------------- */}                   
+                      {/* - DETALLES ----------------------------------------------------------------------- */}
                       <AccordionTab header="Detalles">
                         <div className="RequestForm__container">
                           <div className="RequestForm__container__col">
                             <div className="RequestForm__container__col--item">
-                              <InputsGroup 
-                                label={<span className="RequestForm__container__col--item-center">
-                                <RiMoneyEuroBoxLine /><span>Precio de venta</span></span>}
+                              <InputsGroup
+                                label={
+                                  <span className="RequestForm__container__col--item-center">
+                                    <RiMoneyEuroBoxLine />
+                                    <span>Precio de venta</span>
+                                  </span>
+                                }
                                 inputs={[
                                   {
                                     name: "salePriceMax",
@@ -323,7 +352,8 @@ const RequestForm = () => {
                                     value: formProps.values.salePriceMax,
                                     onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                                     errors: "",
-                                  }, {
+                                  },
+                                  {
                                     name: "salePriceMin",
                                     label: "Mínimo",
                                     type: "number",
@@ -335,9 +365,13 @@ const RequestForm = () => {
                               />
                             </div>
                             <div className="RequestForm__container__col--item">
-                              <InputsGroup 
-                                label={<span className="RequestForm__container__col--item-center">
-                                <GiPapers /><span>Superficie construida</span></span>}
+                              <InputsGroup
+                                label={
+                                  <span className="RequestForm__container__col--item-center">
+                                    <GiPapers />
+                                    <span>Superficie construida</span>
+                                  </span>
+                                }
                                 inputs={[
                                   {
                                     name: "buildSurfaceMax",
@@ -346,7 +380,8 @@ const RequestForm = () => {
                                     value: formProps.values.buildSurfaceMax,
                                     onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                                     errors: "",
-                                  }, {
+                                  },
+                                  {
                                     name: "buildSurfaceMin",
                                     label: "Mínimo",
                                     type: "number",
@@ -358,9 +393,13 @@ const RequestForm = () => {
                               />
                             </div>
                             <div className="RequestForm__container__col--item">
-                              <InputsGroup 
-                                label={<span className="RequestForm__container__col--item-center">
-                                <BiBed /><span>Número de dormitorios</span></span>}
+                              <InputsGroup
+                                label={
+                                  <span className="RequestForm__container__col--item-center">
+                                    <BiBed />
+                                    <span>Número de dormitorios</span>
+                                  </span>
+                                }
                                 inputs={[
                                   {
                                     name: "bedroomsMax",
@@ -370,7 +409,8 @@ const RequestForm = () => {
                                     value: formProps.values.bedroomsMax,
                                     onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                                     errors: "",
-                                  }, {
+                                  },
+                                  {
                                     name: "bedroomsMin",
                                     label: "Mínimo",
                                     type: "number",
@@ -385,9 +425,13 @@ const RequestForm = () => {
                           </div>
                           <div className="RequestForm__container__col">
                             <div className="RequestForm__container__col--item">
-                              <InputsGroup 
-                                label={<span className="RequestForm__container__col--item-center">
-                                <BsCalendarX /><span>Precio del alquiler</span></span>}
+                              <InputsGroup
+                                label={
+                                  <span className="RequestForm__container__col--item-center">
+                                    <BsCalendarX />
+                                    <span>Precio del alquiler</span>
+                                  </span>
+                                }
                                 inputs={[
                                   {
                                     name: "rentPriceMax",
@@ -396,7 +440,8 @@ const RequestForm = () => {
                                     value: formProps.values.rentPriceMax,
                                     onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                                     errors: "",
-                                  }, {
+                                  },
+                                  {
                                     name: "rentPriceMin",
                                     label: "Mínimo",
                                     type: "number",
@@ -408,9 +453,13 @@ const RequestForm = () => {
                               />
                             </div>
                             <div className="RequestForm__container__col--item">
-                              <InputsGroup 
-                                label={<span className="RequestForm__container__col--item-center">
-                                <MdHeight /><span>Superficie de parcela</span></span>}
+                              <InputsGroup
+                                label={
+                                  <span className="RequestForm__container__col--item-center">
+                                    <MdHeight />
+                                    <span>Superficie de parcela</span>
+                                  </span>
+                                }
                                 inputs={[
                                   {
                                     name: "plotSurfaceMax",
@@ -419,7 +468,8 @@ const RequestForm = () => {
                                     value: formProps.values.plotSurfaceMax,
                                     onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                                     errors: "",
-                                  }, {
+                                  },
+                                  {
                                     name: "plotSurfaceMin",
                                     label: "Mínimo",
                                     type: "number",
@@ -431,9 +481,13 @@ const RequestForm = () => {
                               />
                             </div>
                             <div className="RequestForm__container__col--item">
-                              <InputsGroup 
-                                label={<span className="RequestForm__container__col--item-center">
-                                <GrRestroom /><span>Número de cuartos de baño</span></span>}
+                              <InputsGroup
+                                label={
+                                  <span className="RequestForm__container__col--item-center">
+                                    <GrRestroom />
+                                    <span>Número de cuartos de baño</span>
+                                  </span>
+                                }
                                 inputs={[
                                   {
                                     name: "bathroomsMax",
@@ -443,7 +497,8 @@ const RequestForm = () => {
                                     placeholder: "Escriba aquí",
                                     onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                                     errors: "",
-                                  }, {
+                                  },
+                                  {
                                     name: "bathroomsMin",
                                     label: "Mínimo",
                                     type: "number",
