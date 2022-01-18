@@ -5,6 +5,9 @@ import { useHistory } from "react-router-dom";
 import "./Login.scss";
 import { GvreLogo, AttomoLogo } from "../../icons";
 import storage from "../../services/storage";
+import { ImMobile } from "react-icons/im";
+import { MdOutlineAlternateEmail } from "react-icons/md";
+import { BiKey } from "react-icons/bi";
 
 const Login = () => {
   const { storeUser } = useContext(UserContext);
@@ -39,13 +42,13 @@ const Login = () => {
           <div className="login__box-form">
             <div className="login__box-field">
               <label className="login__box-title" htmlFor="identity">
-                Email o teléfono
+                <ImMobile />  <MdOutlineAlternateEmail />
               </label>
               <input className="login__box-text" type="text" name="identity" />
             </div>
             <div className="login__box-field">
               <label className="login__box-title" htmlFor="password">
-                Contraseña
+                <BiKey />
               </label>
               <input className="login__box-text" type="password" name="password" />
             </div>

@@ -52,6 +52,7 @@ const RequestForm = () => {
   const [residentialSelectedZones, setResidentialSelectedZones] = useState([]);
   const [patrimonialSelectedZones, setPatrimonialSelectedZones] = useState([]);
   const [loader, setLoader] = useState(true);
+  const [firstLoad, setFirstLoad] = useState(true);
   const [validateForm, setValidateForm] = useState(false);
 
   const validateZone = (zones) => {
@@ -98,18 +99,26 @@ const RequestForm = () => {
     getFetchs();
   }, [id]);
 
-  if (id && requestById.length !== 0 && residentials.length !== 0 && patrimonials.length !== 0 && !validateForm) {
+  if (
+    firstLoad === true &&
+    id &&
+    requestById.length !== 0 &&
+    residentials.length !== 0 &&
+    patrimonials.length !== 0 &&
+    validateForm === false
+  ) {
+    console.log("Entra a la selección");
     for (let zone of residentials) {
       if (requestById.requestZone.includes(zone._id) && !residentialSelectedZones.includes(zone._id)) {
-        setResidentialSelectedZones([...residentialSelectedZones, zone._id]);
+        residentialSelectedZones.push(zone._id);
       }
     }
-
     for (let zone of patrimonials) {
-      if (requestById.requestZone.includes(zone._id) && !residentialSelectedZones.includes(zone._id)) {
-        setResidentialSelectedZones([...residentialSelectedZones, zone._id]);
+      if (requestById.requestZone.includes(zone._id) && !patrimonialSelectedZones.includes(zone._id)) {
+        patrimonialSelectedZones.push(zone._id);
       }
     }
+    setFirstLoad(false);
   }
 
   const newSelect = (selected, setSelected, ev) => {
@@ -176,17 +185,14 @@ const RequestForm = () => {
                   data.requestAdType = selectedAdType;
                   data.requestBuildingType = selectedBuildingType;
 
-                  if (
-                    residentialSelectedZones !== requestById.requestZone ||
-                    patrimonialSelectedZones !== requestById.requestZone
-                  ) {
-                    if (residentialSelectedZones.length !== 0) {
-                      data.requestZone = residentialSelectedZones;
-                    } else if (patrimonialSelectedZones.length !== 0) {
-                      data.requestZone = patrimonialSelectedZones;
-                    } else if (patrimonialSelectedZones.length === 0 && residentialSelectedZones.length === 0) {
-                      data.requestZone = [];
-                    }
+                  if (residentialSelectedZones.length !== 0) {
+                    data.requestZone = residentialSelectedZones;
+                  } else if (patrimonialSelectedZones.length !== 0) {
+                    data.requestZone = patrimonialSelectedZones;
+                  }
+
+                  if (patrimonialSelectedZones.length === 0 && residentialSelectedZones.length === 0) {
+                    data.requestZone = [];
                   }
 
                   if (data.salePriceMax === "") data.salePriceMax = 99999999;
@@ -296,11 +302,11 @@ const RequestForm = () => {
                           />
                         </div>
                         <div>
-                          {/* ELE -> textarea no tenía value. */}
                           <Textarea
                             label="Comentarios"
                             name="requestComment"
                             placeholder="Escriba aquí"
+                            vale={formProps.values.requestComment}
                             onChange={(ev) => {
                               formProps.setFieldValue(ev.target.name, ev.target.value);
                             }}
@@ -320,6 +326,11 @@ const RequestForm = () => {
                               fn={setResidentialSelectedZones}
                               defaultValues={validateZone(residentials) ? requestById.requestZone : ""}
                             />
+                            {validateForm &&
+                              residentialSelectedZones.length === 0 &&
+                              patrimonialSelectedZones.length === 0 && (
+                                <p style={{ color: "red", textAlign: "start" }}>* Seleccione una zona</p>
+                              )}
                           </div>
                           <div className="RequestForm__container__col">
                             <MultiSelect
@@ -329,6 +340,11 @@ const RequestForm = () => {
                               fn={setPatrimonialSelectedZones}
                               defaultValues={validateZone(patrimonials) ? requestById.requestZone : ""}
                             />
+                            {validateForm &&
+                              residentialSelectedZones.length === 0 &&
+                              patrimonialSelectedZones.length === 0 && (
+                                <p style={{ color: "red", textAlign: "start" }}>* Seleccione una zona</p>
+                              )}
                           </div>
                         </div>
                       </AccordionTab>

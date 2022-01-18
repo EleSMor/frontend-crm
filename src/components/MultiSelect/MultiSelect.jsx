@@ -17,43 +17,43 @@ const CheckBoxGrouping = ({ label, list, fields, fn, disabled, defaultValues }) 
   return (
     <div className="Select">
       <label>{label}</label>
-    <div id="checkboxgroup" className="control-panel">
-      <div className="control-section">
-        <div id="multigroup" className="control-styles Select__input">
-          <MultiSelectComponent
-            id="checkbox"
-            dataSource={data}
-            ignoreAccent={true}
-            ignoreCase={true}
-            allowFiltering={true}
-            filtering={(e) => {
-              const searchData = data.filter((zone) =>
-                zone.name
-                  .normalize("NFD")
-                  .replace(/[\u0300-\u036f]/g, "")
-                  .toLowerCase()
-                  .includes(e.text.toLowerCase())
-              );
-              e.updateData(searchData);
-            }}
-            filterBarPlaceholder={filterBarPlaceholder}
-            fields={checkFields}
-            placeholder={checkWaterMark}
-            mode={mode}
-            value={defaultValues}
-            enableGroupCheckBox={enableGroupCheckBox}
-            showDropDownIcon={true}
-            enableSelectionOrder={false}
-            disabled={disabled}
-            onChange={(e) => {
-              fn(e.value);
-            }}
-          >
-            <Inject services={[CheckBoxSelection]} />
-          </MultiSelectComponent>
+      <div id="checkboxgroup" className="control-panel">
+        <div className="control-section">
+          <div id="multigroup" className="control-styles Select__input">
+            <MultiSelectComponent
+              id="checkbox"
+              dataSource={data}
+              ignoreAccent={true}
+              ignoreCase={true}
+              allowFiltering={true}
+              filtering={(e) => {
+                const searchData = data.filter((zone) =>
+                  zone.name
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "")
+                    .toLowerCase()
+                    .includes(e.text.toLowerCase())
+                );
+                e.updateData(searchData);
+              }}
+              filterBarPlaceholder={filterBarPlaceholder}
+              fields={checkFields}
+              placeholder={checkWaterMark}
+              mode={mode}
+              value={defaultValues}
+              enableGroupCheckBox={enableGroupCheckBox}
+              showDropDownIcon={true}
+              enableSelectionOrder={false}
+              disabled={disabled}
+              onChange={(e) => {
+                fn(e.value);
+              }}
+            >
+              <Inject services={[CheckBoxSelection]} />
+            </MultiSelectComponent>
+          </div>
         </div>
       </div>
-    </div>
     </div>
   );
 };
