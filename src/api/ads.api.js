@@ -12,7 +12,6 @@ const getAllAds = async () => {
         },
     });
     const allAds = await request.json();
-    console.log(allAds);
     if (!request.ok) {
         throw new Error('Error on fetch', allAds.message);
     };
@@ -82,7 +81,6 @@ const updateAd = async (form) => {
     });
 
     const updatedAd = await request.json();
-    console.log(updatedAd)
 
     if (!request.ok) {
         throw new Error('Error creating new Contact', updatedAd.message);
@@ -123,6 +121,23 @@ const deleteImage = async (id, form, from) => {
     return deletedImage;
 };
 
+const deleteAd = async (id) => {
+    const request = await fetch(`${adsURL}/delete/${id}`, {
+        method: 'DELETE',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    const deletedAd = await request.json();
+
+    if (!request.ok) {
+        throw new Error('Error creating new Contact', deletedAd.message);
+    };
+    return deletedAd;
+};
+
 export {
     getAllAds,
     getAdById,
@@ -130,5 +145,6 @@ export {
     updateAd,
     uploadImage,
     deleteImage,
-    getMatchedRequests
+    getMatchedRequests,
+    deleteAd
 }

@@ -39,7 +39,7 @@
       }
       &--buttItem {
         display: flex;
-        justify-content: start;
+        justify-content: flex-start;
         align-items: flex-end;
         & a {
           text-decoration: none;
@@ -100,7 +100,7 @@
         }
         &--buttItem {
           display: flex;
-          justify-content: start;
+          justify-content: flex-start;
           align-items: flex-end;
           
           > button {

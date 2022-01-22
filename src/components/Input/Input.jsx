@@ -1,4 +1,4 @@
-import "./Input.scss"
+import "./Input.scss";
 
 const Input = ({
   label,
@@ -30,13 +30,15 @@ const Input = ({
           onFocus={onFocus}
           autoComplete={autoComplete}
           readOnly={readOnly}
+          min="0"
         />
       </div>
 
       <p className="Input-errors">
-        <small><i>{error}</i></small>
+        <small>
+          <i>{error}</i>
+        </small>
       </p>
-
     </div>
   );
 };

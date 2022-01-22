@@ -14,6 +14,15 @@
   margin-right: 20px;
 }
 
+.buttonFormDelete {
+  @include button-light-sm;
+  background-color: #aa2c2c;
+  color: $c-text;
+  font-size: 12px;
+  padding: 4px 40px;
+  margin: 0px;
+}
+
 .ConsultantForm {
   background-color: #fff;
   padding: 10px 10px;

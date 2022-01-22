@@ -1,9 +1,8 @@
 @use "src/styles/utils.scss" as *;
 
-
 .Checkboxes {
   text-align: left;
-
+  
   &__label {
     font-size: 14px;
   }
@@ -13,14 +12,18 @@
     padding-left: 8px;
     border-left: 2px solid $c-background-dark;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     flex-wrap: wrap;
+    width: 100%;
+    
+    &-column {
+      flex-direction: column;
+    }
     
     span {
       font-weight: 400;
       margin-left: 5px;
     }
-    
     span:not(:first-child) {
       margin-right: 20px;
     }
@@ -36,16 +39,15 @@
 
 .CheckBox {
   text-align: left;
-  border-left: 2px solid $c-background-dark;
   display: flex;
   align-content: center;
-
+  
   > label {
-    padding-left: 8px;
     padding-right: 8px;
+    padding-left: 8px;
     margin: 0;
   }
-  > input {
+  > input[type="checkbox"] {
     margin: 0;
   }
 }

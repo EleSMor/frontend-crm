@@ -2,7 +2,7 @@ import * as React from "react";
 import { MultiSelectComponent, CheckBoxSelection, Inject } from "@syncfusion/ej2-react-dropdowns";
 import "./MultiSelect.scss";
 
-const CheckBoxGrouping = ({ label, list, fields, fn, disabled, defaultValues }) => {
+const CheckBoxGrouping = ({ label, list, fields, disabled, defaultValues, onChange }) => {
   const data = list;
   const checkFields = fields;
   // set the placeholder to the MultiSelect input
@@ -13,6 +13,8 @@ const CheckBoxGrouping = ({ label, list, fields, fn, disabled, defaultValues }) 
   const mode = "CheckBox";
   // set the placeholder to the filter bar
   const filterBarPlaceholder = "Buscar";
+
+  React.useEffect(() => {}, [disabled]);
 
   return (
     <div className="Select">
@@ -45,9 +47,7 @@ const CheckBoxGrouping = ({ label, list, fields, fn, disabled, defaultValues }) 
               showDropDownIcon={true}
               enableSelectionOrder={false}
               disabled={disabled}
-              onChange={(e) => {
-                fn(e.value);
-              }}
+              onChange={onChange}
             >
               <Inject services={[CheckBoxSelection]} />
             </MultiSelectComponent>

@@ -149,6 +149,20 @@ const updateContact = async (form) => {
     return updatedContact;
 };
 
+const deleteContact = async (id) => {
+    const request = await fetch(`${contactsURL}/delete/${id}`, {
+        method: 'DELETE',
+        credentials: 'include',
+    });
+
+    const deletedContact = await request.json();
+
+    if (!request.ok) {
+        throw new Error('Error creating new Contact', deletedContact.message);
+    };
+    return deletedContact;
+};
+
 export {
     getAllContacts,
     getContactsByFullName,
@@ -158,4 +172,5 @@ export {
     getAllOwners,
     createContact,
     updateContact,
+    deleteContact,
 }

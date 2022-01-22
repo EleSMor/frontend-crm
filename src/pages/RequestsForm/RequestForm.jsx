@@ -7,30 +7,31 @@ import Layout from "../Layout/Layout";
 import Spinner from "../../components/Spinner/Spinner";
 import GoBack from "../../components/GoBack/GoBack";
 import { Accordion, AccordionTab } from "primereact/accordion";
-import { FiSave } from "react-icons/fi";
-import { getAllConsultants } from "../../api/consultants.api";
-import { getAllResidentialZones, getAllPatrimonialZones } from "../../api/zones.api";
-import { getAllContacts } from "../../api/contacts.api";
-import {
-  createRequest,
-  getLastReference,
-  getAllRequests,
-  getAdsMatched,
-  getRequestById,
-  updateRequest,
-} from "../../api/requests.api";
 import { UserContext } from "../../components/Context/AuthUser";
 import Checkboxes from "../../components/CheckBox/Checkboxes";
 import Input from "../../components/Input/Input";
 import Textarea from "../../components/Textarea/Textarea";
 import InputsGroup from "../../components/InputsGroup/InputsGroup";
 import Multicheckbox from "../../components/CheckBox/Multicheckbox";
+import { FiSave } from "react-icons/fi";
+import { FaTrash } from "react-icons/fa";
 import { RiMoneyEuroBoxLine } from "react-icons/ri";
 import { BiBed } from "react-icons/bi";
 import { GrRestroom } from "react-icons/gr";
 import { BsCalendarX } from "react-icons/bs";
 import { MdHeight } from "react-icons/md";
 import { GiPapers } from "react-icons/gi";
+import { getAllConsultants } from "../../api/consultants.api";
+import { getAllResidentialZones, getAllPatrimonialZones } from "../../api/zones.api";
+import { getAllContacts } from "../../api/contacts.api";
+import {
+  createRequest,
+  getLastReference,
+  getAdsMatched,
+  getRequestById,
+  updateRequest,
+  deleteRequest,
+} from "../../api/requests.api";
 import "./RequestForm.scss";
 
 const RequestForm = () => {
@@ -107,7 +108,6 @@ const RequestForm = () => {
     patrimonials.length !== 0 &&
     validateForm === false
   ) {
-    console.log("Entra a la selección");
     for (let zone of residentials) {
       if (requestById.requestZone.includes(zone._id) && !residentialSelectedZones.includes(zone._id)) {
         residentialSelectedZones.push(zone._id);
@@ -145,6 +145,12 @@ const RequestForm = () => {
             <Link className="buttonFormCancel" to="/peticiones">
               Cancelar
             </Link>
+            {id && user.role !== "Consultor" && (
+              <button className="buttonFormDelete" onClick={() => deleteRequest(id).then(() => history.push("/peticiones"))}>
+                <FaTrash style={{ marginRight: 7 }} />
+                Borrar
+              </button>
+            )}
           </>
         }
       >
@@ -254,24 +260,57 @@ const RequestForm = () => {
                           <Multicheckbox
                             label="Tipo de inmueble"
                             required={selectedBuildingType.length === 0 ? true : false}
-                            onChange={(ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev)}
                             inputs={[
-                              { value: "Casa", checked: selectedBuildingType.includes("Casa") ? true : "" },
-                              { value: "Piso", checked: selectedBuildingType.includes("Piso") ? true : "" },
-                              { value: "Parcela", checked: selectedBuildingType.includes("Parcela") ? true : "" },
-                              { value: "Ático", checked: selectedBuildingType.includes("Ático") ? true : "" },
-                              { value: "Oficina", checked: selectedBuildingType.includes("Oficina") ? true : "" },
-                              { value: "Edificio", checked: selectedBuildingType.includes("Edificio") ? true : "" },
-                              { value: "Local", checked: selectedBuildingType.includes("Local") ? true : "" },
+                              {
+                                value: "Casa",
+                                checked: selectedBuildingType.includes("Casa") ? true : "",
+                                onChange: (ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev),
+                              },
+                              {
+                                value: "Piso",
+                                checked: selectedBuildingType.includes("Piso") ? true : "",
+                                onChange: (ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev),
+                              },
+                              {
+                                value: "Parcela",
+                                checked: selectedBuildingType.includes("Parcela") ? true : "",
+                                onChange: (ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev),
+                              },
+                              {
+                                value: "Ático",
+                                checked: selectedBuildingType.includes("Ático") ? true : "",
+                                onChange: (ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev),
+                              },
+                              {
+                                value: "Oficina",
+                                checked: selectedBuildingType.includes("Oficina") ? true : "",
+                                onChange: (ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev),
+                              },
+                              {
+                                value: "Edificio",
+                                checked: selectedBuildingType.includes("Edificio") ? true : "",
+                                onChange: (ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev),
+                              },
+                              {
+                                value: "Local",
+                                checked: selectedBuildingType.includes("Local") ? true : "",
+                                onChange: (ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev),
+                              },
                               {
                                 value: "Campo Rústico",
                                 checked: selectedBuildingType.includes("Campo Rústico") ? true : "",
+                                onChange: (ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev),
                               },
                               {
                                 value: "Activos singulares",
                                 checked: selectedBuildingType.includes("Activos singulares") ? true : "",
+                                onChange: (ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev),
                               },
-                              { value: "Costa", checked: selectedBuildingType.includes("Costa") ? true : "" },
+                              {
+                                value: "Costa",
+                                checked: selectedBuildingType.includes("Costa") ? true : "",
+                                onChange: (ev) => newSelect(selectedBuildingType, setSelectedBuildingType, ev),
+                              },
                             ]}
                           />
                         </div>
@@ -323,9 +362,12 @@ const RequestForm = () => {
                               label="Residencial"
                               list={residentials}
                               fields={{ groupBy: "zone", text: "name", value: "_id" }}
-                              fn={setResidentialSelectedZones}
+                              onChange={(ev) => {
+                                setResidentialSelectedZones(ev.value);
+                              }}
                               defaultValues={validateZone(residentials) ? requestById.requestZone : ""}
                             />
+
                             {validateForm &&
                               residentialSelectedZones.length === 0 &&
                               patrimonialSelectedZones.length === 0 && (
@@ -337,9 +379,12 @@ const RequestForm = () => {
                               label="Patrimonial"
                               list={patrimonials}
                               fields={{ groupBy: "zone", text: "name", value: "_id" }}
-                              fn={setPatrimonialSelectedZones}
+                              onChange={(ev) => {
+                                setPatrimonialSelectedZones(ev.value);
+                              }}
                               defaultValues={validateZone(patrimonials) ? requestById.requestZone : ""}
                             />
+
                             {validateForm &&
                               residentialSelectedZones.length === 0 &&
                               patrimonialSelectedZones.length === 0 && (
@@ -368,6 +413,7 @@ const RequestForm = () => {
                                     type: "number",
                                     value: formProps.values.salePriceMax,
                                     onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
+                                    span: <span style={{ position: "absolute", right: "1%", top: "52%" }}>€</span>,
                                     errors: "",
                                   },
                                   {
@@ -376,6 +422,7 @@ const RequestForm = () => {
                                     type: "number",
                                     value: formProps.values.salePriceMin,
                                     onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
+                                    span: <span style={{ position: "absolute", right: "1%", top: "52%" }}>€</span>,
                                     errors: "",
                                   },
                                 ]}
@@ -396,6 +443,11 @@ const RequestForm = () => {
                                     type: "number",
                                     value: formProps.values.buildSurfaceMax,
                                     onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
+                                    span: (
+                                      <span style={{ position: "absolute", right: "1%", top: "52%" }}>
+                                        m<sup>2</sup>
+                                      </span>
+                                    ),
                                     errors: "",
                                   },
                                   {
@@ -404,6 +456,11 @@ const RequestForm = () => {
                                     type: "number",
                                     value: formProps.values.buildSurfaceMin,
                                     onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
+                                    span: (
+                                      <span style={{ position: "absolute", right: "1%", top: "52%" }}>
+                                        m<sup>2</sup>
+                                      </span>
+                                    ),
                                     errors: "",
                                   },
                                 ]}
@@ -456,6 +513,7 @@ const RequestForm = () => {
                                     type: "number",
                                     value: formProps.values.rentPriceMax,
                                     onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
+                                    span: <span style={{ position: "absolute", right: "1%", top: "52%" }}>€/mes</span>,
                                     errors: "",
                                   },
                                   {
@@ -464,6 +522,7 @@ const RequestForm = () => {
                                     type: "number",
                                     value: formProps.values.rentPriceMin,
                                     onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
+                                    span: <span style={{ position: "absolute", right: "1%", top: "52%" }}>€/mes</span>,
                                     errors: "",
                                   },
                                 ]}
@@ -484,6 +543,11 @@ const RequestForm = () => {
                                     type: "number",
                                     value: formProps.values.plotSurfaceMax,
                                     onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
+                                    span: (
+                                      <span style={{ position: "absolute", right: "1%", top: "52%" }}>
+                                        m<sup>2</sup>
+                                      </span>
+                                    ),
                                     errors: "",
                                   },
                                   {
@@ -492,6 +556,11 @@ const RequestForm = () => {
                                     type: "number",
                                     value: formProps.values.plotSurfaceMin,
                                     onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
+                                    span: (
+                                      <span style={{ position: "absolute", right: "1%", top: "52%" }}>
+                                        m<sup>2</sup>
+                                      </span>
+                                    ),
                                     errors: "",
                                   },
                                 ]}

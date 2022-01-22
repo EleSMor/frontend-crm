@@ -12,10 +12,10 @@ import Textarea from "../../components/Textarea/Textarea";
 import { AiOutlinePlus } from "react-icons/ai";
 import { BsPersonPlusFill } from "react-icons/bs";
 import { HiOutlineMail } from "react-icons/hi";
-import { FaPhoneAlt } from "react-icons/fa";
+import { FaPhoneAlt, FaTrash } from "react-icons/fa";
 import { FiSave } from "react-icons/fi";
 import { getAllAds } from "../../api/ads.api";
-import { createConsultant, getConsultantById, updateConsultant } from "../../api/consultants.api";
+import { createConsultant, getConsultantById, updateConsultant, deleteConsultant } from "../../api/consultants.api";
 import "./ConsultantForm.scss";
 import "../../styles/primeReact.scss";
 
@@ -25,6 +25,7 @@ const ConsultantForm = () => {
   const { user } = useContext(UserContext);
 
   const [fullName, setFullName] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const [email, setEmail] = useState("--------");
   const [mobile, setMobile] = useState("--------");
   const [avatar, setAvatar] = useState("");
@@ -77,6 +78,12 @@ const ConsultantForm = () => {
             <Link className="buttonFormCancel" to="/consultores">
               Cancelar
             </Link>
+            {id && user.role !== "Consultor" && (
+              <button className="buttonFormDelete" onClick={() => deleteConsultant(id).then(() => history.push("/consultores"))}>
+                <FaTrash style={{ marginRight: 7 }} />
+                Borrar
+              </button>
+            )}
           </>
         }
       >
@@ -146,7 +153,7 @@ const ConsultantForm = () => {
 
                     for (var key in values) {
                       data.append(key, values[key]);
-                      // console.log("clave:", key, "valor", values[key]);
+                      console.log("clave:", key, "valor", values[key]);
                     }
                     data.append("id", id);
 
@@ -172,7 +179,7 @@ const ConsultantForm = () => {
                         <div className="ConsultantForm__form--col">
                           <Input
                             label="Nombre completo"
-                            required="yes"
+                            required={true}
                             name="fullName"
                             value={formProps.values.fullName}
                             onChange={(ev) => {
@@ -183,17 +190,28 @@ const ConsultantForm = () => {
                           />
                           <Input
                             label="Contraseña"
-                            required="yes"
+                            required={true}
                             name="consultantPassword"
                             type="password"
                             value={formProps.values.consultantPassword}
                             onChange={(ev) => {
+                              if (
+                                !ev.target.value.match(
+                                  /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-.]).{8,16}$/
+                                )
+                              ) {
+                                setPasswordError(
+                                  "La contraseña debe tener entre 8 y 16 carácteres, mínimo 1 mayúscula, 1 minúscula, 1 número y un carácter especial"
+                                );
+                              } else setPasswordError("");
                               formProps.setFieldValue(ev.target.name, ev.target.value);
                             }}
+                            onError={(ev) => console.log(ev)}
+                            error={passwordError}
                           />
                           <Input
                             label="Email"
-                            required="yes"
+                            required={true}
                             type="email"
                             name="consultantEmail"
                             value={formProps.values.consultantEmail}
@@ -208,6 +226,7 @@ const ConsultantForm = () => {
                             <div className="ConsultantForm__form--col">
                               <Input
                                 label="Teléfono móvil"
+                                required={true}
                                 name="consultantMobileNumber"
                                 type="text"
                                 value={formProps.values.consultantMobileNumber}

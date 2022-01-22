@@ -8,9 +8,8 @@ import ContactRequestCard from "../../components/ContactRequestCard/ContactReque
 import GoBack from "../../components/GoBack/GoBack";
 import { getRequestByContacts } from "../../api/requests.api";
 import { UserContext } from "../../components/Context/AuthUser";
-import { createContact, getContactById, updateContact } from "../../api/contacts.api";
 import { HiOutlineMail } from "react-icons/hi";
-import { FaPhoneAlt } from "react-icons/fa";
+import { FaPhoneAlt, FaTrash } from "react-icons/fa";
 import { MdLocationSearching } from "react-icons/md";
 import { FiSave } from "react-icons/fi";
 import "./ContactForm.scss";
@@ -19,6 +18,7 @@ import Checkboxes from "../../components/CheckBox/Checkboxes";
 import Checkbox from "../../components/CheckBox/Checkbox";
 import Textarea from "../../components/Textarea/Textarea";
 import InputsGroup from "../../components/InputsGroup/InputsGroup";
+import { createContact, getContactById, updateContact, deleteContact } from "../../api/contacts.api";
 import "../../styles/primeReact.scss";
 
 const ContactForm = () => {
@@ -70,6 +70,12 @@ const ContactForm = () => {
               <FiSave style={{ marginRight: 7 }} />
               Guardar
             </button>
+            {id && user.role !== "Consultor" && (
+              <button className="buttonFormDelete" onClick={() => deleteContact(id).then(() => history.push("/contactos"))}>
+                <FaTrash style={{ marginRight: 7 }} />
+                Borrar
+              </button>
+            )}
           </>
         }
       >
