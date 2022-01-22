@@ -1,6 +1,10 @@
 @use "src/styles/utils.scss" as *;
 
-
 .GoBack {
-  @include button-light-sm
+  @include button-light-sm;
+  background-color: #dfdfdf;
+  color: #5c5c5c;
+  &:hover {
+    transform: scale(102%);
+  }
 }

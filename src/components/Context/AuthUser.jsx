@@ -13,7 +13,12 @@ const AuthUser = (props) => {
     storage.set("user", user);
   };
 
-  return <UserContext.Provider value={{ user: user, storeUser }}>{props.children}</UserContext.Provider>;
+  const clearUser = () => {
+    setUser("");
+    storage.clear("user");
+  }
+
+  return <UserContext.Provider value={{ user: user, storeUser, clearUser }}>{props.children}</UserContext.Provider>;
 };
 
 export default AuthUser;

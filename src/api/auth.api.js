@@ -46,7 +46,7 @@ export const loginApi = async (form) => {
 
 };
 
-export const logout = async () => {
+export const logoutApi = async () => {
   const request = await fetch(logoutUrl, {
     method: 'POST',
     headers: {

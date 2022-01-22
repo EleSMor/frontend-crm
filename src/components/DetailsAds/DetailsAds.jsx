@@ -7,6 +7,7 @@ import Input from "../../components/Input/Input";
 import Textarea from "../../components/Textarea/Textarea";
 import InputsGroup from "../../components/InputsGroup/InputsGroup";
 import Multicheckbox from "../../components/CheckBox/Multicheckbox";
+import useWindowSize from "../../hooks/useWindowSize";
 import { Select, MultiSelect } from "./../index";
 import { TiArrowUnsorted } from "react-icons/ti";
 import { RiInboxArchiveLine, Ri24HoursLine } from "react-icons/ri";
@@ -48,6 +49,8 @@ const DetailsAds = ({
   setAdType,
   setDepartment,
 }) => {
+  const size = useWindowSize();
+
   useEffect(() => {}, [id]);
 
   const newSelect = (selected, setSelected, ev) => {
@@ -683,324 +686,648 @@ const DetailsAds = ({
             <div className="DetailsAds__container__col">
               <label>Otros</label>
               <div className="DetailsAds__container__col--item">
-                <div className="DetailsAds__container__col--qualities">
-                  <div>
-                    <div>
-                      <MdOutlineElevator style={{ marginRight: "24", transform: "scale(150%)" }} />
-                      <label style={{ marginRight: 64 }} htmlFor="lift">
-                        Ascensor
-                      </label>
+                {size > 478 ? (
+                  <>
+                    <div className="DetailsAds__container__col--qualities">
+                      <div>
+                        <div>
+                          <MdOutlineElevator style={{ marginRight: "20", transform: "scale(150%)" }} />
+                          <label style={{ marginRight: 64 }} htmlFor="lift">
+                            Ascensor
+                          </label>
+                        </div>
+                        <input
+                          type="checkbox"
+                          name="lift"
+                          checked={formProps.values.lift}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.lift)}
+                        />
+                      </div>
+                      <div>
+                        <div>
+                          <TiArrowUnsorted style={{ marginRight: "20", transform: "scale(150%)" }} />
+                          <label htmlFor="dumbwaiter">Montaplatos</label>
+                        </div>
+                        <input
+                          type="checkbox"
+                          name="dumbwaiter"
+                          checked={formProps.values.dumbwaiter}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.dumbwaiter)}
+                        />
+                      </div>
+                      <div>
+                        <div>
+                          <RiInboxArchiveLine style={{ marginRight: "20", transform: "scale(150%)" }} />
+                          <label htmlFor="liftTruck">Montacargas</label>
+                        </div>
+                        <input
+                          type="checkbox"
+                          name="liftTruck"
+                          checked={formProps.values.liftTruck}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.liftTruck)}
+                        />
+                      </div>
+                      <div>
+                        <div>
+                          <BsSnow3 style={{ marginRight: "20", transform: "scale(150%)" }} />
+                          <label htmlFor="airConditioning">Aire Acondicionado</label>
+                        </div>
+                        <input
+                          type="checkbox"
+                          name="airConditioning"
+                          checked={formProps.values.airConditioning}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.airConditioning)}
+                        />
+                      </div>
+                      <div>
+                        <div>
+                          <BsThermometerSun style={{ marginRight: "20", transform: "scale(150%)" }} />
+                          <label htmlFor="centralHeating">Calefacción Central</label>
+                        </div>
+                        <input
+                          type="checkbox"
+                          name="centralHeating"
+                          checked={formProps.values.centralHeating}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.centralHeating)}
+                        />
+                      </div>
+                      <div>
+                        <div>
+                          <GiHotSurface style={{ marginRight: "20", transform: "scale(150%)" }} />
+                          <label htmlFor="floorHeating">Suelo radiante</label>
+                        </div>
+                        <input
+                          type="checkbox"
+                          name="floorHeating"
+                          checked={formProps.values.floorHeating}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.floorHeating)}
+                        />
+                      </div>
+                      <div>
+                        <div>
+                          <GiLockedDoor style={{ marginRight: "20", transform: "scale(150%)" }} />
+                          <label htmlFor="indoorAlarm">Alarma interior</label>
+                        </div>
+                        <input
+                          type="checkbox"
+                          name="indoorAlarm"
+                          checked={formProps.values.indoorAlarm}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.indoorAlarm)}
+                        />
+                      </div>
+                      <div>
+                        <div>
+                          <MdOutlineSecurity style={{ marginRight: "20", transform: "scale(150%)" }} />
+                          <label htmlFor="outdoorAlarm">Alarma perimetral</label>
+                        </div>
+                        <input
+                          type="checkbox"
+                          name="outdoorAlarm"
+                          checked={formProps.values.outdoorAlarm}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.outdoorAlarm)}
+                        />
+                      </div>
+                      <div>
+                        <div>
+                          <Ri24HoursLine style={{ marginRight: "20", transform: "scale(150%)" }} />
+                          <label htmlFor="fullHoursSecurity">Seguridad 24 h</label>
+                        </div>
+                        <input
+                          type="checkbox"
+                          name="fullHoursSecurity"
+                          checked={formProps.values.fullHoursSecurity}
+                          onChange={(ev) =>
+                            formProps.setFieldValue(ev.target.name, !formProps.values.fullHoursSecurity)
+                          }
+                        />
+                      </div>
+                      <div>
+                        <div>
+                          <GiPistolGun style={{ marginRight: "20", transform: "scale(150%)" }} />
+                          <label htmlFor="gunRack">Armero</label>
+                        </div>
+                        <input
+                          type="checkbox"
+                          name="gunRack"
+                          checked={formProps.values.gunRack}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.gunRack)}
+                        />
+                      </div>
+                      <div>
+                        <div>
+                          <GiStrongbox style={{ marginRight: "20", transform: "scale(150%)" }} />
+                          <label htmlFor="strongBox">Caja fuerte</label>
+                        </div>
+                        <input
+                          type="checkbox"
+                          name="strongBox"
+                          checked={formProps.values.strongBox}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.strongBox)}
+                        />
+                      </div>
+                      <div>
+                        <div>
+                          <GiWell style={{ marginRight: "20", transform: "scale(150%)" }} />
+                          <label htmlFor="well">Pozo</label>
+                        </div>
+                        <input
+                          type="checkbox"
+                          name="well"
+                          checked={formProps.values.well}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.well)}
+                        />
+                      </div>
+                      <div>
+                        <div>
+                          <GoCircuitBoard style={{ marginRight: "20", transform: "scale(150%)" }} />
+                          <label htmlFor="homeAutomation">Domótica</label>
+                        </div>
+                        <input
+                          type="checkbox"
+                          name="homeAutomation"
+                          checked={formProps.values.homeAutomation}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.homeAutomation)}
+                        />
+                      </div>
                     </div>
-                    <input
-                      type="checkbox"
-                      name="lift"
-                      checked={formProps.values.lift}
-                      onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.lift)}
-                    />
-                  </div>
-                  <div>
-                    <div>
-                      <TiArrowUnsorted style={{ marginRight: "24", transform: "scale(150%)" }} />
-                      <label htmlFor="dumbwaiter">Montaplatos</label>
+                    <div className="DetailsAds__container__col--qualities">
+                      <div>
+                        <div>
+                          <GiVacuumCleaner style={{ marginRight: "20", transform: "scale(150%)" }} />
+                          <label htmlFor="centralVacuum">Aspiración centralizada</label>
+                        </div>
+                        <input
+                          type="checkbox"
+                          name="centralVacuum"
+                          checked={formProps.values.centralVacuum}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.centralVacuum)}
+                        />
+                      </div>
+                      <div>
+                        <div>
+                          <GiPingPongBat style={{ marginRight: "20", transform: "scale(150%)" }} />
+                          <label htmlFor="padelCourt">Pista de pádel</label>
+                        </div>
+                        <input
+                          type="checkbox"
+                          name="padelCourt"
+                          checked={formProps.values.padelCourt}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.padelCourt)}
+                        />
+                      </div>
+                      <div>
+                        <div>
+                          <GiTennisCourt style={{ marginRight: "20", transform: "scale(150%)" }} />
+                          <label htmlFor="tennisCourt">Pista de tenis</label>
+                        </div>
+                        <input
+                          type="checkbox"
+                          name="tennisCourt"
+                          checked={formProps.values.tennisCourt}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.tennisCourt)}
+                        />
+                      </div>
+                      <div>
+                        <div>
+                          <MdOutlineYard style={{ marginRight: "20", transform: "scale(150%)" }} />
+                          <label htmlFor="terrace">Terraza</label>
+                        </div>
+                        <input
+                          type="checkbox"
+                          name="terrace"
+                          checked={formProps.values.terrace}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.terrace)}
+                        />
+                      </div>
+                      <div>
+                        <div>
+                          <BsBoxSeam style={{ marginRight: "20", transform: "scale(150%)" }} />
+                          <label htmlFor="storage">Trastero</label>
+                        </div>
+                        <input
+                          type="checkbox"
+                          name="storage"
+                          checked={formProps.values.storage}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.storage)}
+                        />
+                      </div>
+                      <div>
+                        <div>
+                          <FaSwimmingPool style={{ marginRight: "20", transform: "scale(150%)" }} />
+                          <label htmlFor="swimmingPool">Piscina</label>
+                        </div>
+                        <input
+                          type="checkbox"
+                          name="swimmingPool"
+                          checked={formProps.values.swimmingPool}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.swimmingPool)}
+                        />
+                      </div>
+                      <div>
+                        <div>
+                          <GiHomeGarage style={{ marginRight: "20", transform: "scale(150%)" }} />
+                          <label htmlFor="garage">Garaje</label>
+                        </div>
+                        <input
+                          type="checkbox"
+                          name="garage"
+                          checked={formProps.values.garage}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.garage)}
+                        />
+                      </div>
+                      <div>
+                        <div>
+                          <MdRoofing style={{ marginRight: "20", transform: "scale(150%)" }} />
+                          <label htmlFor="falseCeiling">Falso techo</label>
+                        </div>
+                        <input
+                          type="checkbox"
+                          name="falseCeiling"
+                          checked={formProps.values.falseCeiling}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.falseCeiling)}
+                        />
+                      </div>
+                      <div>
+                        <div>
+                          <FaGripLines style={{ marginRight: "20", transform: "scale(150%)" }} />
+                          <label htmlFor="raisedFloor">Suelo técnico</label>
+                        </div>
+                        <input
+                          type="checkbox"
+                          name="raisedFloor"
+                          checked={formProps.values.raisedFloor}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.raisedFloor)}
+                        />
+                      </div>
+                      <div>
+                        <div>
+                          <FaSink style={{ marginRight: "20", transform: "scale(150%)" }} />
+                          <label htmlFor="bathrooms">Baños</label>
+                        </div>
+                        <input
+                          type="checkbox"
+                          name="bathrooms"
+                          checked={formProps.values.qualityBathrooms}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.bathrooms)}
+                        />
+                      </div>
+                      <div>
+                        <div>
+                          <AiOutlineVerticalAlignTop style={{ marginRight: "20", transform: "scale(150%)" }} />
+                          <label htmlFor="freeHeight">Altura libre &gt; 2,5 m</label>
+                        </div>
+                        <input
+                          type="checkbox"
+                          name="freeHeight"
+                          checked={formProps.values.freeHeight}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.freeHeight)}
+                        />
+                      </div>
+                      <div>
+                        <div>
+                          <FaSmog style={{ marginRight: "20", transform: "scale(150%)" }} />
+                          <label htmlFor="smokeOutlet">Salida de humos</label>
+                        </div>
+                        <input
+                          type="checkbox"
+                          name="smokeOutlet"
+                          checked={formProps.values.smokeOutlet}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.smokeOutlet)}
+                        />
+                      </div>
+                      <div>
+                        <div>
+                          <GiSecurityGate style={{ marginRight: "20", transform: "scale(150%)" }} />
+                          <label htmlFor="accessControl">Control de accesos</label>
+                        </div>
+                        <input
+                          type="checkbox"
+                          name="accessControl"
+                          checked={formProps.values.accessControl}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.accessControl)}
+                        />
+                      </div>
                     </div>
-                    <input
-                      type="checkbox"
-                      name="dumbwaiter"
-                      checked={formProps.values.dumbwaiter}
-                      onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.dumbwaiter)}
-                    />
-                  </div>
-                  <div>
+                  </>
+                ) : (
+                  <div className="DetailsAds__container__col--qualities">
                     <div>
-                      <RiInboxArchiveLine style={{ marginRight: "24", transform: "scale(150%)" }} />
-                      <label htmlFor="liftTruck">Montacargas</label>
+                      <div>
+                        <MdOutlineElevator style={{ marginRight: "20", transform: "scale(150%)" }} />
+                        <label style={{ marginRight: 64 }} htmlFor="lift">
+                          Ascensor
+                        </label>
+                      </div>
+                      <input
+                        type="checkbox"
+                        name="lift"
+                        checked={formProps.values.lift}
+                        onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.lift)}
+                      />
                     </div>
-                    <input
-                      type="checkbox"
-                      name="liftTruck"
-                      checked={formProps.values.liftTruck}
-                      onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.liftTruck)}
-                    />
-                  </div>
-                  <div>
                     <div>
-                      <BsSnow3 style={{ marginRight: "24", transform: "scale(150%)" }} />
-                      <label htmlFor="airConditioning">Aire Acondicionado</label>
+                      <div>
+                        <TiArrowUnsorted style={{ marginRight: "20", transform: "scale(150%)" }} />
+                        <label htmlFor="dumbwaiter">Montaplatos</label>
+                      </div>
+                      <input
+                        type="checkbox"
+                        name="dumbwaiter"
+                        checked={formProps.values.dumbwaiter}
+                        onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.dumbwaiter)}
+                      />
                     </div>
-                    <input
-                      type="checkbox"
-                      name="airConditioning"
-                      checked={formProps.values.airConditioning}
-                      onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.airConditioning)}
-                    />
-                  </div>
-                  <div>
                     <div>
-                      <BsThermometerSun style={{ marginRight: "24", transform: "scale(150%)" }} />
-                      <label htmlFor="centralHeating">Calefacción Central</label>
+                      <div>
+                        <RiInboxArchiveLine style={{ marginRight: "20", transform: "scale(150%)" }} />
+                        <label htmlFor="liftTruck">Montacargas</label>
+                      </div>
+                      <input
+                        type="checkbox"
+                        name="liftTruck"
+                        checked={formProps.values.liftTruck}
+                        onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.liftTruck)}
+                      />
                     </div>
-                    <input
-                      type="checkbox"
-                      name="centralHeating"
-                      checked={formProps.values.centralHeating}
-                      onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.centralHeating)}
-                    />
-                  </div>
-                  <div>
                     <div>
-                      <GiHotSurface style={{ marginRight: "24", transform: "scale(150%)" }} />
-                      <label htmlFor="floorHeating">Suelo radiante</label>
+                      <div>
+                        <BsSnow3 style={{ marginRight: "20", transform: "scale(150%)" }} />
+                        <label htmlFor="airConditioning">Aire Acondicionado</label>
+                      </div>
+                      <input
+                        type="checkbox"
+                        name="airConditioning"
+                        checked={formProps.values.airConditioning}
+                        onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.airConditioning)}
+                      />
                     </div>
-                    <input
-                      type="checkbox"
-                      name="floorHeating"
-                      checked={formProps.values.floorHeating}
-                      onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.floorHeating)}
-                    />
-                  </div>
-                  <div>
                     <div>
-                      <GiLockedDoor style={{ marginRight: "24", transform: "scale(150%)" }} />
-                      <label htmlFor="indoorAlarm">Alarma interior</label>
+                      <div>
+                        <BsThermometerSun style={{ marginRight: "20", transform: "scale(150%)" }} />
+                        <label htmlFor="centralHeating">Calefacción Central</label>
+                      </div>
+                      <input
+                        type="checkbox"
+                        name="centralHeating"
+                        checked={formProps.values.centralHeating}
+                        onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.centralHeating)}
+                      />
                     </div>
-                    <input
-                      type="checkbox"
-                      name="indoorAlarm"
-                      checked={formProps.values.indoorAlarm}
-                      onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.indoorAlarm)}
-                    />
-                  </div>
-                  <div>
                     <div>
-                      <MdOutlineSecurity style={{ marginRight: "24", transform: "scale(150%)" }} />
-                      <label htmlFor="outdoorAlarm">Alarma perimetral</label>
+                      <div>
+                        <GiHotSurface style={{ marginRight: "20", transform: "scale(150%)" }} />
+                        <label htmlFor="floorHeating">Suelo radiante</label>
+                      </div>
+                      <input
+                        type="checkbox"
+                        name="floorHeating"
+                        checked={formProps.values.floorHeating}
+                        onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.floorHeating)}
+                      />
                     </div>
-                    <input
-                      type="checkbox"
-                      name="outdoorAlarm"
-                      checked={formProps.values.outdoorAlarm}
-                      onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.outdoorAlarm)}
-                    />
-                  </div>
-                  <div>
                     <div>
-                      <Ri24HoursLine style={{ marginRight: "24", transform: "scale(150%)" }} />
-                      <label htmlFor="fullHoursSecurity">Seguridad 24 h</label>
+                      <div>
+                        <GiLockedDoor style={{ marginRight: "20", transform: "scale(150%)" }} />
+                        <label htmlFor="indoorAlarm">Alarma interior</label>
+                      </div>
+                      <input
+                        type="checkbox"
+                        name="indoorAlarm"
+                        checked={formProps.values.indoorAlarm}
+                        onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.indoorAlarm)}
+                      />
                     </div>
-                    <input
-                      type="checkbox"
-                      name="fullHoursSecurity"
-                      checked={formProps.values.fullHoursSecurity}
-                      onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.fullHoursSecurity)}
-                    />
-                  </div>
-                  <div>
                     <div>
-                      <GiPistolGun style={{ marginRight: "24", transform: "scale(150%)" }} />
-                      <label htmlFor="gunRack">Armero</label>
+                      <div>
+                        <MdOutlineSecurity style={{ marginRight: "20", transform: "scale(150%)" }} />
+                        <label htmlFor="outdoorAlarm">Alarma perimetral</label>
+                      </div>
+                      <input
+                        type="checkbox"
+                        name="outdoorAlarm"
+                        checked={formProps.values.outdoorAlarm}
+                        onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.outdoorAlarm)}
+                      />
                     </div>
-                    <input
-                      type="checkbox"
-                      name="gunRack"
-                      checked={formProps.values.gunRack}
-                      onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.gunRack)}
-                    />
-                  </div>
-                  <div>
                     <div>
-                      <GiStrongbox style={{ marginRight: "24", transform: "scale(150%)" }} />
-                      <label htmlFor="strongBox">Caja fuerte</label>
+                      <div>
+                        <Ri24HoursLine style={{ marginRight: "20", transform: "scale(150%)" }} />
+                        <label htmlFor="fullHoursSecurity">Seguridad 24 h</label>
+                      </div>
+                      <input
+                        type="checkbox"
+                        name="fullHoursSecurity"
+                        checked={formProps.values.fullHoursSecurity}
+                        onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.fullHoursSecurity)}
+                      />
                     </div>
-                    <input
-                      type="checkbox"
-                      name="strongBox"
-                      checked={formProps.values.strongBox}
-                      onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.strongBox)}
-                    />
-                  </div>
-                  <div>
                     <div>
-                      <GiWell style={{ marginRight: "24", transform: "scale(150%)" }} />
-                      <label htmlFor="well">Pozo</label>
+                      <div>
+                        <GiPistolGun style={{ marginRight: "20", transform: "scale(150%)" }} />
+                        <label htmlFor="gunRack">Armero</label>
+                      </div>
+                      <input
+                        type="checkbox"
+                        name="gunRack"
+                        checked={formProps.values.gunRack}
+                        onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.gunRack)}
+                      />
                     </div>
-                    <input
-                      type="checkbox"
-                      name="well"
-                      checked={formProps.values.well}
-                      onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.well)}
-                    />
-                  </div>
-                  <div>
                     <div>
-                      <GoCircuitBoard style={{ marginRight: "24", transform: "scale(150%)" }} />
-                      <label htmlFor="homeAutomation">Domótica</label>
+                      <div>
+                        <GiStrongbox style={{ marginRight: "20", transform: "scale(150%)" }} />
+                        <label htmlFor="strongBox">Caja fuerte</label>
+                      </div>
+                      <input
+                        type="checkbox"
+                        name="strongBox"
+                        checked={formProps.values.strongBox}
+                        onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.strongBox)}
+                      />
                     </div>
-                    <input
-                      type="checkbox"
-                      name="homeAutomation"
-                      checked={formProps.values.homeAutomation}
-                      onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.homeAutomation)}
-                    />
-                  </div>
-                </div>
-                <div className="DetailsAds__container__col--qualities">
-                  <div>
                     <div>
-                      <GiVacuumCleaner style={{ marginRight: "24", transform: "scale(150%)" }} />
-                      <label htmlFor="centralVacuum">Aspiración centralizada</label>
+                      <div>
+                        <GiWell style={{ marginRight: "20", transform: "scale(150%)" }} />
+                        <label htmlFor="well">Pozo</label>
+                      </div>
+                      <input
+                        type="checkbox"
+                        name="well"
+                        checked={formProps.values.well}
+                        onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.well)}
+                      />
                     </div>
-                    <input
-                      type="checkbox"
-                      name="centralVacuum"
-                      checked={formProps.values.centralVacuum}
-                      onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.centralVacuum)}
-                    />
-                  </div>
-                  <div>
                     <div>
-                      <GiPingPongBat style={{ marginRight: "24", transform: "scale(150%)" }} />
-                      <label htmlFor="padelCourt">Pista de pádel</label>
+                      <div>
+                        <GoCircuitBoard style={{ marginRight: "20", transform: "scale(150%)" }} />
+                        <label htmlFor="homeAutomation">Domótica</label>
+                      </div>
+                      <input
+                        type="checkbox"
+                        name="homeAutomation"
+                        checked={formProps.values.homeAutomation}
+                        onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.homeAutomation)}
+                      />
                     </div>
-                    <input
-                      type="checkbox"
-                      name="padelCourt"
-                      checked={formProps.values.padelCourt}
-                      onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.padelCourt)}
-                    />
-                  </div>
-                  <div>
+
                     <div>
-                      <GiTennisCourt style={{ marginRight: "24", transform: "scale(150%)" }} />
-                      <label htmlFor="tennisCourt">Pista de tenis</label>
+                      <div>
+                        <GiVacuumCleaner style={{ marginRight: "20", transform: "scale(150%)" }} />
+                        <label htmlFor="centralVacuum">Aspiración centralizada</label>
+                      </div>
+                      <input
+                        type="checkbox"
+                        name="centralVacuum"
+                        checked={formProps.values.centralVacuum}
+                        onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.centralVacuum)}
+                      />
                     </div>
-                    <input
-                      type="checkbox"
-                      name="tennisCourt"
-                      checked={formProps.values.tennisCourt}
-                      onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.tennisCourt)}
-                    />
-                  </div>
-                  <div>
                     <div>
-                      <MdOutlineYard style={{ marginRight: "24", transform: "scale(150%)" }} />
-                      <label htmlFor="terrace">Terraza</label>
+                      <div>
+                        <GiPingPongBat style={{ marginRight: "20", transform: "scale(150%)" }} />
+                        <label htmlFor="padelCourt">Pista de pádel</label>
+                      </div>
+                      <input
+                        type="checkbox"
+                        name="padelCourt"
+                        checked={formProps.values.padelCourt}
+                        onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.padelCourt)}
+                      />
                     </div>
-                    <input
-                      type="checkbox"
-                      name="terrace"
-                      checked={formProps.values.terrace}
-                      onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.terrace)}
-                    />
-                  </div>
-                  <div>
                     <div>
-                      <BsBoxSeam style={{ marginRight: "24", transform: "scale(150%)" }} />
-                      <label htmlFor="storage">Trastero</label>
+                      <div>
+                        <GiTennisCourt style={{ marginRight: "20", transform: "scale(150%)" }} />
+                        <label htmlFor="tennisCourt">Pista de tenis</label>
+                      </div>
+                      <input
+                        type="checkbox"
+                        name="tennisCourt"
+                        checked={formProps.values.tennisCourt}
+                        onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.tennisCourt)}
+                      />
                     </div>
-                    <input
-                      type="checkbox"
-                      name="storage"
-                      checked={formProps.values.storage}
-                      onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.storage)}
-                    />
-                  </div>
-                  <div>
                     <div>
-                      <FaSwimmingPool style={{ marginRight: "24", transform: "scale(150%)" }} />
-                      <label htmlFor="swimmingPool">Piscina</label>
+                      <div>
+                        <MdOutlineYard style={{ marginRight: "20", transform: "scale(150%)" }} />
+                        <label htmlFor="terrace">Terraza</label>
+                      </div>
+                      <input
+                        type="checkbox"
+                        name="terrace"
+                        checked={formProps.values.terrace}
+                        onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.terrace)}
+                      />
                     </div>
-                    <input
-                      type="checkbox"
-                      name="swimmingPool"
-                      checked={formProps.values.swimmingPool}
-                      onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.swimmingPool)}
-                    />
-                  </div>
-                  <div>
                     <div>
-                      <GiHomeGarage style={{ marginRight: "24", transform: "scale(150%)" }} />
-                      <label htmlFor="garage">Garaje</label>
+                      <div>
+                        <BsBoxSeam style={{ marginRight: "20", transform: "scale(150%)" }} />
+                        <label htmlFor="storage">Trastero</label>
+                      </div>
+                      <input
+                        type="checkbox"
+                        name="storage"
+                        checked={formProps.values.storage}
+                        onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.storage)}
+                      />
                     </div>
-                    <input
-                      type="checkbox"
-                      name="garage"
-                      checked={formProps.values.garage}
-                      onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.garage)}
-                    />
-                  </div>
-                  <div>
                     <div>
-                      <MdRoofing style={{ marginRight: "24", transform: "scale(150%)" }} />
-                      <label htmlFor="falseCeiling">Falso techo</label>
+                      <div>
+                        <FaSwimmingPool style={{ marginRight: "20", transform: "scale(150%)" }} />
+                        <label htmlFor="swimmingPool">Piscina</label>
+                      </div>
+                      <input
+                        type="checkbox"
+                        name="swimmingPool"
+                        checked={formProps.values.swimmingPool}
+                        onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.swimmingPool)}
+                      />
                     </div>
-                    <input
-                      type="checkbox"
-                      name="falseCeiling"
-                      checked={formProps.values.falseCeiling}
-                      onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.falseCeiling)}
-                    />
-                  </div>
-                  <div>
                     <div>
-                      <FaGripLines style={{ marginRight: "24", transform: "scale(150%)" }} />
-                      <label htmlFor="raisedFloor">Suelo técnico</label>
+                      <div>
+                        <GiHomeGarage style={{ marginRight: "20", transform: "scale(150%)" }} />
+                        <label htmlFor="garage">Garaje</label>
+                      </div>
+                      <input
+                        type="checkbox"
+                        name="garage"
+                        checked={formProps.values.garage}
+                        onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.garage)}
+                      />
                     </div>
-                    <input
-                      type="checkbox"
-                      name="raisedFloor"
-                      checked={formProps.values.raisedFloor}
-                      onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.raisedFloor)}
-                    />
-                  </div>
-                  <div>
                     <div>
-                      <FaSink style={{ marginRight: "24", transform: "scale(150%)" }} />
-                      <label htmlFor="bathrooms">Baños</label>
+                      <div>
+                        <MdRoofing style={{ marginRight: "20", transform: "scale(150%)" }} />
+                        <label htmlFor="falseCeiling">Falso techo</label>
+                      </div>
+                      <input
+                        type="checkbox"
+                        name="falseCeiling"
+                        checked={formProps.values.falseCeiling}
+                        onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.falseCeiling)}
+                      />
                     </div>
-                    <input
-                      type="checkbox"
-                      name="bathrooms"
-                      checked={formProps.values.qualityBathrooms}
-                      onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.bathrooms)}
-                    />
-                  </div>
-                  <div>
                     <div>
-                      <AiOutlineVerticalAlignTop style={{ marginRight: "24", transform: "scale(150%)" }} />
-                      <label htmlFor="freeHeight">Altura libre &gt; 2,5 m</label>
+                      <div>
+                        <FaGripLines style={{ marginRight: "20", transform: "scale(150%)" }} />
+                        <label htmlFor="raisedFloor">Suelo técnico</label>
+                      </div>
+                      <input
+                        type="checkbox"
+                        name="raisedFloor"
+                        checked={formProps.values.raisedFloor}
+                        onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.raisedFloor)}
+                      />
                     </div>
-                    <input
-                      type="checkbox"
-                      name="freeHeight"
-                      checked={formProps.values.freeHeight}
-                      onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.freeHeight)}
-                    />
-                  </div>
-                  <div>
                     <div>
-                      <FaSmog style={{ marginRight: "24", transform: "scale(150%)" }} />
-                      <label htmlFor="smokeOutlet">Salida de humos</label>
+                      <div>
+                        <FaSink style={{ marginRight: "20", transform: "scale(150%)" }} />
+                        <label htmlFor="bathrooms">Baños</label>
+                      </div>
+                      <input
+                        type="checkbox"
+                        name="bathrooms"
+                        checked={formProps.values.qualityBathrooms}
+                        onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.bathrooms)}
+                      />
                     </div>
-                    <input
-                      type="checkbox"
-                      name="smokeOutlet"
-                      checked={formProps.values.smokeOutlet}
-                      onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.smokeOutlet)}
-                    />
-                  </div>
-                  <div>
                     <div>
-                      <GiSecurityGate style={{ marginRight: "24", transform: "scale(150%)" }} />
-                      <label htmlFor="accessControl">Control de accesos</label>
+                      <div>
+                        <AiOutlineVerticalAlignTop style={{ marginRight: "20", transform: "scale(150%)" }} />
+                        <label htmlFor="freeHeight">Altura libre &gt; 2,5 m</label>
+                      </div>
+                      <input
+                        type="checkbox"
+                        name="freeHeight"
+                        checked={formProps.values.freeHeight}
+                        onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.freeHeight)}
+                      />
                     </div>
-                    <input
-                      type="checkbox"
-                      name="accessControl"
-                      checked={formProps.values.accessControl}
-                      onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.accessControl)}
-                    />
+                    <div>
+                      <div>
+                        <FaSmog style={{ marginRight: "20", transform: "scale(150%)" }} />
+                        <label htmlFor="smokeOutlet">Salida de humos</label>
+                      </div>
+                      <input
+                        type="checkbox"
+                        name="smokeOutlet"
+                        checked={formProps.values.smokeOutlet}
+                        onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.smokeOutlet)}
+                      />
+                    </div>
+                    <div>
+                      <div>
+                        <GiSecurityGate style={{ marginRight: "20", transform: "scale(150%)" }} />
+                        <label htmlFor="accessControl">Control de accesos</label>
+                      </div>
+                      <input
+                        type="checkbox"
+                        name="accessControl"
+                        checked={formProps.values.accessControl}
+                        onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.accessControl)}
+                      />
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>
