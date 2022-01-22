@@ -84,7 +84,6 @@ const AdForm = () => {
     patrimonials.length !== 0 &&
     validateForm === false
   ) {
-    console.log("Entra a la selección");
     for (let zone of residentials) {
       if (adById.zone.includes(zone._id) && !residentialSelectedZones.includes(zone._id)) {
         residentialSelectedZones.push(zone._id);
@@ -100,7 +99,6 @@ const AdForm = () => {
 
   return (
     <div>
-      {console.log(user)}
       {user.length === 0 && history.push("/")}
       <Layout
         subTitle="Anuncios"
