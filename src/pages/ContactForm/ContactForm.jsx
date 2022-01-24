@@ -56,7 +56,7 @@ const ContactForm = () => {
   };
   return (
     <>
-      {!user && history.push("/")}
+      {user.length === 0 && history.push("/")}
       <Layout
         subTitle="Contactos"
         subUndertitle={<GoBack />}

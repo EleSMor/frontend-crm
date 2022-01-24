@@ -25,9 +25,8 @@ const Login = () => {
         password: password.value,
       };
       const user = await loginApi(form);
-      storeUser("user");
+      storeUser(user);
       history.push("/anuncios");
-      storage.set("user", user);
     } catch (error) {
       setError(error.message);
     }
