@@ -29,13 +29,13 @@ const RequestsMatching = ({ ads }) => {
 
   const saleBodyTemplate = (rowData) => {
     if (rowData.sale !== null && rowData.sale !== undefined) {
-      if (rowData.sale.saleValue && rowData.sale.saleValue !== 0) return formatCurrency(rowData.sale.saleValue);
+      if (rowData.sale.saleValue) return formatCurrency(rowData.sale.saleValue);
     } else return "";
   };
 
   const rentBodyTemplate = (rowData) => {
     if (rowData.sale !== null && rowData.sale !== undefined) {
-      if (rowData.rent.rentValue && rowData.rent.rentValue !== 0) return formatCurrency(rowData.rent.rentValue);
+      if (rowData.rent.rentValue) return formatCurrency(rowData.rent.rentValue);
     } else return "";
   };
 
@@ -52,8 +52,8 @@ const RequestsMatching = ({ ads }) => {
     >
       <Column field="title" header="Título" sortable></Column>
       <Column field="adType" header="Anuncio" sortable></Column>
-      <Column field="price.sale.saleValue" header="Precio" body={saleBodyTemplate} sortable></Column>
-      <Column field="price.rent.rentValue" header="Alquiler" body={rentBodyTemplate} sortable></Column>
+      <Column field="sale.saleValue" header="Precio" body={saleBodyTemplate} sortable></Column>
+      <Column field="rent.rentValue" header="Alquiler" body={rentBodyTemplate} sortable></Column>
       <Column field="buildSurface" header="m2 construidos" body={buildSurfaceBodyTemplate} sortable></Column>
       <Column field="plotSurface" header="m2 parcela" body={plotSurfaceBodyTemplate} sortable></Column>
       <Column

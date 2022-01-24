@@ -36,6 +36,7 @@ const AdForm = () => {
   const [residentials, setResidential] = useState([]);
   const [patrimonials, setPatrimonial] = useState([]);
   const [department, setDepartment] = useState("");
+  const [adStatus, setAdStatus] = useState("");
   const [validateForm, setValidateForm] = useState(false);
   const [firstLoad, setFirstLoad] = useState(true);
   const [owners, setOwners] = useState([]);
@@ -46,28 +47,37 @@ const AdForm = () => {
   const [loader, setLoader] = useState(true);
 
   useEffect(() => {
-    getAllAds();
-    getAllResidentialZones().then((res) => {
-      setResidential(res);
-    });
-    getAllPatrimonialZones().then((res) => {
-      setPatrimonial(res);
-    });
-    getAllOwners().then((res) => setOwners(...owners, res));
-    getAllConsultants().then((res) => setConsultants(...consultants, res));
-
-    if (id) {
-      getAdById(id).then((res) => {
-        setAdById(res);
-        setSelectedOwner(res.owner);
-        setSelectedConsultant(res.consultant);
-        setSelectedAdBuildingType(res.adBuildingType);
-        setSelectedAdType(res.adType);
-      });
-      getMatchedRequests(id).then((res) => setRequests(res));
-    }
-    if (id && adById.length !== 0 && residentials.length !== 0 && patrimonials.length !== 0) setLoader(false);
-    else if (!id) setLoader(false);
+    getAllAds()
+      .then(
+        getAllResidentialZones()
+          .then((res) => {
+            setResidential(res);
+          })
+          .then(
+            getAllPatrimonialZones().then((res) => {
+              setPatrimonial(res);
+            })
+          )
+      )
+      .then(getAllOwners().then((res) => setOwners(...owners, res)))
+      .then(getAllConsultants().then((res) => setConsultants(...consultants, res)))
+      .then(() => {
+        if (id) {
+          getAdById(id).then((res) => {
+            setAdById(res);
+            setAdStatus(res.adStatus);
+            setSelectedOwner(res.owner);
+            setSelectedConsultant(res.consultant);
+            setSelectedAdBuildingType(res.adBuildingType);
+            setSelectedAdType(res.adType);
+          });
+          getMatchedRequests(id).then((res) => setRequests(res));
+        }
+      })
+      .then(() => {
+        if (id && adById.length !== 0 && residentials.length !== 0 && patrimonials.length !== 0) setLoader(false);
+        else if (!id) setLoader(false);
+      })
   }, [id]);
 
   if (
@@ -236,6 +246,7 @@ const AdForm = () => {
                   data.adBuildingType = selectedAdBuildingType;
 
                   if (department[0]) data.department = department[0];
+                  if (adStatus[0]) data.adStatus = adStatus[0];
 
                   if (residentialSelectedZones.length !== 0) {
                     data.zone = residentialSelectedZones;
@@ -286,6 +297,8 @@ const AdForm = () => {
                       setPatrimonialZones={setPatrimonialSelectedZones}
                       department={department}
                       setDepartment={setDepartment}
+                      adStatus={adStatus}
+                      setAdStatus={setAdStatus}
                     />
                   </Form>
                 )}

@@ -46,6 +46,8 @@ const DetailsAds = ({
   adType,
   setAdType,
   setDepartment,
+  adStatus,
+  setAdStatus
 }) => {
   const size = useWindowSize();
 
@@ -232,7 +234,7 @@ const DetailsAds = ({
               label="Estado del anuncio"
               list={[{ name: "En preparación" }, { name: "Activo" }, { name: "Inactivo" }]}
               fields={{ groupBy: "", text: "name", value: "name" }}
-              fn={setDepartment}
+              fn={setAdStatus}
               defaultValues={formProps.values.adStatus ? [formProps.values.adStatus] : []}
             />
           </div>
