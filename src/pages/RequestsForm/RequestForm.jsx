@@ -139,6 +139,7 @@ const RequestForm = () => {
       <Layout
         subTitle="Peticiones"
         subUndertitle={<GoBack />}
+        subBreadcrumbs={id ? `Petición ${requestById.requestReference}` : "Crear nueva petición"}
         footContent={
           <>
             <button className="buttonForm" type="submit" form="RequestForm" style={{ marginRight: 8 }}>

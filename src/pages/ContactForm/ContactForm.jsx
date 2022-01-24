@@ -60,6 +60,7 @@ const ContactForm = () => {
       <Layout
         subTitle="Contactos"
         subUndertitle={<GoBack />}
+        subBreadcrumbs={id ? `Contacto ${contactById.fullName}` : "Crear nuevo contacto"}
         footContent={
           <>
             <button className="buttonForm" type="submit" form="ContactForm">

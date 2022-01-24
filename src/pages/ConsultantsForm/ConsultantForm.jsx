@@ -72,6 +72,7 @@ const ConsultantForm = () => {
       <Layout
         subTitle="Consultores"
         subUndertitle={<GoBack />}
+        subBreadcrumbs={id ? `Consultor ${consultantById.fullName}` : "Crear nuevo consultor"}
         footContent={
           <>
             <button className="buttonForm" type="submit" form="ConsultantForm" style={{ marginRight: 8 }}>

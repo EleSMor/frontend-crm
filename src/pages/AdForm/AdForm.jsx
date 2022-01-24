@@ -107,6 +107,7 @@ const AdForm = () => {
         subTitle="Anuncios"
         subUndertitle={<GoBack />}
         subLocation="/anuncios/crear"
+        subBreadcrumbs={id ? `Anuncio ${adById.adReference}` : "Crear nuevo anuncio"}
         footContent={
           <>
             <button className="buttonForm" type="submit" form="AdForm" style={{ marginRight: 8 }}>
