@@ -65,7 +65,6 @@ const AdForm = () => {
         if (id) {
           getAdById(id).then((res) => {
             setAdById(res);
-            setAdStatus(res.adStatus);
             setSelectedOwner(res.owner);
             setSelectedConsultant(res.consultant);
             setSelectedAdBuildingType(res.adBuildingType);
