@@ -9,30 +9,31 @@ const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter,
 
   const filterByDepartment = (department) => {
     let searchText = document.getElementById("search").value;
-    
+
     const filterByDeparment = list.filter((ad) => ad.department === department);
 
     const adsFiltered = list.filter((ad) => {
       if (department !== "todos" && ad.department === department && !searchText) return ad;
-      if (
+      else if (
         department === "todos" &&
         (checkIfIncludes(ad.adReference, searchText) ||
           checkIfIncludes(ad.title, searchText) ||
-          checkIfIncludes(ad.owner.fullName, searchText) ||
           checkIfIncludes(ad.adDirection, searchText) ||
-          checkIfIncludes(ad.consultant.fullName, searchText))) 
+          (ad.owner !== null && checkIfIncludes(ad.owner.fullName, searchText)) ||
+          (ad.consultant !== null && checkIfIncludes(ad.consultant.fullName, searchText)))
+      )
         return ad;
       if (
-        (checkIfIncludes(ad.adReference, searchText) ||
+        ad.department === department &&
+        (checkIfIncludes(ad.adDirection, searchText) ||
+          checkIfIncludes(ad.adReference, searchText) ||
           checkIfIncludes(ad.title, searchText) ||
-          checkIfIncludes(ad.owner.fullName, searchText) ||
-          checkIfIncludes(ad.adDirection, searchText) || 
-          checkIfIncludes(ad.consultant.fullName, searchText)) &&
-        ad.department === department
+          (ad.owner !== null && checkIfIncludes(ad.owner.fullName, searchText)) ||
+          (ad.consultant !== null && checkIfIncludes(ad.consultant.fullName, searchText)))
       )
         return ad;
     });
-    
+
     if (department === "todos") setSearchList(list);
     else setSearchList(filterByDeparment);
     setter(adsFiltered);
@@ -64,9 +65,9 @@ const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter,
         if (
           checkIfIncludes(ad.adReference, text) ||
           checkIfIncludes(ad.title, text) ||
-          checkIfIncludes(ad.owner.fullName, text) ||
-          checkIfIncludes(ad.consultant.fullName, text) ||
-          checkIfIncludes(ad.adDirection, text) 
+          checkIfIncludes(ad.adDirection, text) ||
+          (ad.owner !== null && checkIfIncludes(ad.owner.fullName, text)) ||
+          (ad.consultant !== null && checkIfIncludes(ad.consultant.fullName, text))
         )
           if (filterClass !== "todos") {
             if (ad.department.toLowerCase() === filterClass) return ad;
@@ -77,46 +78,43 @@ const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter,
       if (text) {
         setter(adsFiltered);
       } else setter(searchList);
-    }
-
-    /**
-     * Filtro para peticiones
-     * 1. Por nombre completo del contacto que crea la petición
-     * 2. Por la empresa del mismo contacto
-     * 3. Por el email del contacto
-     */
-    else if (title === "Peticiones") {
+    } else if (title === "Peticiones") {
+      /**
+       * Filtro para peticiones
+       * 1. Por nombre completo del contacto que crea la petición
+       * 2. Por la empresa del mismo contacto
+       * 3. Por el email del contacto
+       */
       const requestsFiltered = list.filter((request) => {
         if (
-          checkIfIncludes(request.requestContact.fullName, text) ||
-          checkIfIncludes(request.requestContact.company, text) ||
-          checkIfIncludes(request.requestContact.email, text) ||
-          checkIfIncludes(request.requestConsultant.fullName, text)
+          (request.requestContact !== null &&
+            (checkIfIncludes(request?.requestContact?.fullName, text) ||
+              checkIfIncludes(request?.requestContact?.company, text) ||
+              checkIfIncludes(request?.requestContact?.email, text))) ||
+          (request.requestConsultant !== null && checkIfIncludes(request?.requestConsultant?.fullName, text))
         )
           return request;
+
+        if (text === "") return request;
       });
       setter(requestsFiltered);
-    }
-
-    /**
-     * Filtro para consultores
-     * 1. Por nombre completo del consultor
-     * 2. Por el email del consultor
-     */
-    else if (title === "Consultores") {
+    } else if (title === "Consultores") {
+      /**
+       * Filtro para consultores
+       * 1. Por nombre completo del consultor
+       * 2. Por el email del consultor
+       */
       const consultantsFiltered = list.filter((consultant) => {
         if (checkIfIncludes(consultant.fullName, text) || checkIfIncludes(consultant.consultantEmail, text))
           return consultant;
       });
       setter(consultantsFiltered);
-    }
-
-    /**
-     * Filtro para contactos
-     * 1. Por nombre completo del contacto
-     * 2. Por el email del contacto
-     */
-    else if (title === "Contactos") {
+    } else if (title === "Contactos") {
+      /**
+       * Filtro para contactos
+       * 1. Por nombre completo del contacto
+       * 2. Por el email del contacto
+       */
       const contactFiltered = list.filter((contact) => {
         if (
           checkIfIncludes(contact.fullName, text) ||

@@ -20,6 +20,7 @@ import Textarea from "../../components/Textarea/Textarea";
 import InputsGroup from "../../components/InputsGroup/InputsGroup";
 import { createContact, getContactById, updateContact, deleteContact } from "../../api/contacts.api";
 import "../../styles/primeReact.scss";
+import useWindowSize from "../../hooks/useWindowSize";
 
 const ContactForm = () => {
   const [contactById, setContactById] = useState("");
@@ -27,6 +28,7 @@ const ContactForm = () => {
   const [selTag, setSelTag] = useState([]);
   const [loader, setLoader] = useState(false);
   let { name, phone, email } = useParams();
+  const size = useWindowSize();
 
   const history = useHistory();
   const { id } = useParams();
@@ -38,9 +40,7 @@ const ContactForm = () => {
       getContactById(id).then((contact) => {
         setContactById(contact);
         setSelTag(contact.tag);
-        console.log(contact);
         getRequestByContacts(contact._id).then((data) => setRequests(data));
-        console.log(requests);
         setLoader(false);
       });
     }
@@ -51,7 +51,6 @@ const ContactForm = () => {
       const newSelected = selected.filter((selected) => selected !== ev.target.value);
       setSelected(newSelected);
     } else {
-      console.log(ev.target.value);
       setSelected([...selected, ev.target.value]);
     }
   };
@@ -63,17 +62,25 @@ const ContactForm = () => {
         subUndertitle={<GoBack />}
         footContent={
           <>
+            <button className="buttonForm" type="submit" form="ContactForm">
+              <FiSave style={size > 480 ? { marginRight: 7 } : { marginRight: 7, transform: "scale(125%)", verticalAlign: "middle" }} />
+              {size > 480 && "Guardar"}
+            </button>
             <Link className="buttonFormCancel" to="/contactos">
               Cancelar
             </Link>
-            <button className="buttonForm" type="submit" form="ContactForm">
-              <FiSave style={{ marginRight: 7 }} />
-              Guardar
-            </button>
             {id && user.role !== "Consultor" && (
-              <button className="buttonFormDelete" onClick={() => deleteContact(id).then(() => history.push("/contactos"))}>
-                <FaTrash style={{ marginRight: 7 }} />
-                Borrar
+              <button
+                className="buttonFormDelete"
+                onClick={() =>
+                  deleteContact(id).then(() => {
+                    alert("Contacto borrado correctamente");
+                    history.push("/contactos");
+                  })
+                }
+              >
+                <FaTrash style={size > 480 ? { marginRight: 7 } : { marginRight: 7, transform: "scale(125%)", verticalAlign: "middle" }} />
+                {size > 480 && "Borrar"}
               </button>
             )}
           </>
@@ -122,7 +129,6 @@ const ContactForm = () => {
                     if (id) data.id = id;
                     data.tag = selTag;
 
-                    console.log(data);
                     if (!id) {
                       createContact(data).then((res) => {
                         alert(`El contacto ${res.fullName} ha sido creado`);

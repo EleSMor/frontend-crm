@@ -33,11 +33,13 @@ import {
   deleteRequest,
 } from "../../api/requests.api";
 import "./RequestForm.scss";
+import useWindowSize from "../../hooks/useWindowSize";
 
 const RequestForm = () => {
   const history = useHistory();
   const { user } = useContext(UserContext);
   const { id } = useParams();
+  const size = useWindowSize();
 
   const [reference, setReference] = useState(0);
   const [ads, setAds] = useState([]);
@@ -52,6 +54,7 @@ const RequestForm = () => {
   const [patrimonials, setPatrimonial] = useState([]);
   const [residentialSelectedZones, setResidentialSelectedZones] = useState([]);
   const [patrimonialSelectedZones, setPatrimonialSelectedZones] = useState([]);
+  const [activeIndex, setActiveIndex] = useState(0);
   const [loader, setLoader] = useState(true);
   const [firstLoad, setFirstLoad] = useState(true);
   const [validateForm, setValidateForm] = useState(false);
@@ -68,6 +71,7 @@ const RequestForm = () => {
       .then((res) => setContacts(res))
       .then(() => {
         if (id) {
+          getAdsMatched(id).then((res) => setAds(res));
           getRequestById(id).then((res) => {
             setRequestById(res);
             setSelectedContact([res.requestContact]);
@@ -75,7 +79,6 @@ const RequestForm = () => {
             setSelectedBuildingType(res.requestBuildingType);
             setSelectedAdType(res.requestAdType);
           });
-          getAdsMatched(id).then((res) => setAds(res));
         } else getLastReference().then((res) => setReference(res));
       })
       .then(
@@ -98,7 +101,7 @@ const RequestForm = () => {
 
   useEffect(() => {
     getFetchs();
-  }, [id]);
+  }, [id, activeIndex]);
 
   if (
     firstLoad === true &&
@@ -139,16 +142,36 @@ const RequestForm = () => {
         footContent={
           <>
             <button className="buttonForm" type="submit" form="RequestForm" style={{ marginRight: 8 }}>
-              <FiSave style={{ marginRight: 7 }} />
-              Guardar
+              <FiSave
+                style={
+                  size > 480
+                    ? { marginRight: 7 }
+                    : { marginRight: 7, transform: "scale(125%)", verticalAlign: "middle" }
+                }
+              />
+              {size > 480 && "Guardar"}
             </button>
             <Link className="buttonFormCancel" to="/peticiones">
               Cancelar
             </Link>
             {id && user.role !== "Consultor" && (
-              <button className="buttonFormDelete" onClick={() => deleteRequest(id).then(() => history.push("/peticiones"))}>
-                <FaTrash style={{ marginRight: 7 }} />
-                Borrar
+              <button
+                className="buttonFormDelete"
+                onClick={() =>
+                  deleteRequest(id).then(() => {
+                    alert("Petición borrada correctamente");
+                    history.push("/peticiones");
+                  })
+                }
+              >
+                <FaTrash
+                  style={
+                    size > 480
+                      ? { marginRight: 7 }
+                      : { marginRight: 7, transform: "scale(125%)", verticalAlign: "middle" }
+                  }
+                />
+                {size > 480 && "Borrar"}
               </button>
             )}
           </>
@@ -157,7 +180,7 @@ const RequestForm = () => {
         {residentialSelectedZones.length !== 0 && patrimonialSelectedZones.length !== 0 && loader ? (
           <Spinner />
         ) : (
-          <TabView>
+          <TabView activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)}>
             <TabPanel header="Detalles">
               <Formik
                 enableReinitialize={true}

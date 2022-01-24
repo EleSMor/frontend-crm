@@ -16,11 +16,13 @@ import { FiSave } from "react-icons/fi";
 import { FaTrash } from "react-icons/fa";
 import { getAllResidentialZones, getAllPatrimonialZones } from "../../api/zones.api";
 import "./AdForm.scss";
+import useWindowSize from "../../hooks/useWindowSize";
 
 const AdForm = () => {
   const history = useHistory();
   const { id } = useParams();
   const { user } = useContext(UserContext);
+  const size = useWindowSize();
 
   const [adById, setAdById] = useState("");
   const [requests, setRequests] = useState([]);
@@ -44,40 +46,32 @@ const AdForm = () => {
   const [loader, setLoader] = useState(true);
 
   useEffect(() => {
-    getAllAds()
-      .then(
-        getAllResidentialZones()
-          .then((res) => {
-            setResidential(res);
-          })
-          .then(
-            getAllPatrimonialZones().then((res) => {
-              setPatrimonial(res);
-            })
-          )
-      )
-      .then(getAllOwners().then((res) => setOwners(...owners, res)))
-      .then(getAllConsultants().then((res) => setConsultants(...consultants, res)))
-      .then(() => {
-        if (id) {
-          getAdById(id).then((res) => {
-            setAdById(res);
-            setSelectedOwner(res.owner);
-            setSelectedConsultant(res.consultant);
-            setSelectedAdBuildingType(res.adBuildingType);
-            setSelectedAdType(res.adType);
-          });
-          getMatchedRequests(id).then((res) => setRequests(res));
-        }
-      })
-      .then(() => {
-        if (id && adById.length !== 0 && residentials.length !== 0 && patrimonials.length !== 0) setLoader(false);
-        else if (!id) setLoader(false);
+    getAllAds();
+    getAllResidentialZones().then((res) => {
+      setResidential(res);
+    });
+    getAllPatrimonialZones().then((res) => {
+      setPatrimonial(res);
+    });
+    getAllOwners().then((res) => setOwners(...owners, res));
+    getAllConsultants().then((res) => setConsultants(...consultants, res));
+
+    if (id) {
+      getAdById(id).then((res) => {
+        setAdById(res);
+        setSelectedOwner(res.owner);
+        setSelectedConsultant(res.consultant);
+        setSelectedAdBuildingType(res.adBuildingType);
+        setSelectedAdType(res.adType);
       });
-  }, [id, activeIndex]);
+      getMatchedRequests(id).then((res) => setRequests(res));
+    }
+    if (id && adById.length !== 0 && residentials.length !== 0 && patrimonials.length !== 0) setLoader(false);
+    else if (!id) setLoader(false);
+  }, [id]);
 
   if (
-    firstLoad === true &&
+    firstLoad &&
     id &&
     adById.length !== 0 &&
     residentials.length !== 0 &&
@@ -107,16 +101,36 @@ const AdForm = () => {
         footContent={
           <>
             <button className="buttonForm" type="submit" form="AdForm" style={{ marginRight: 8 }}>
-              <FiSave style={{ marginRight: 7 }} />
-              Guardar
+              <FiSave
+                style={
+                  size > 480
+                    ? { marginRight: 7 }
+                    : { marginRight: 7, transform: "scale(125%)", verticalAlign: "middle" }
+                }
+              />
+              {size > 480 && "Guardar"}
             </button>
             <Link className="buttonFormCancel" to="/anuncios">
               Cancelar
             </Link>
             {id && user.role === "Admin" && (
-              <button className="buttonFormDelete" onClick={() => deleteAd(id).then(() => history.push("/anuncios"))}>
-                <FaTrash style={{ marginRight: 7 }} />
-                Borrar
+              <button
+                className="buttonFormDelete"
+                onClick={() =>
+                  deleteAd(id).then(() => {
+                    alert("Anuncio borrado correctamente");
+                    history.push("/anuncios");
+                  })
+                }
+              >
+                <FaTrash
+                  style={
+                    size > 480
+                      ? { marginRight: 7 }
+                      : { marginRight: 7, transform: "scale(125%)", verticalAlign: "middle" }
+                  }
+                />
+                {size > 480 && "Borrar"}
               </button>
             )}
           </>
@@ -132,6 +146,7 @@ const AdForm = () => {
                 initialValues={{
                   title: adById ? adById.title : "",
                   adReference: adById ? adById.adReference : "",
+                  adStatus: adById ? adById.adStatus : "",
                   showOnWeb: adById ? adById.showOnWeb : true,
                   featuredOnMain: adById ? adById.featuredOnMain : false,
                   street: adById ? adById.adDirection.address.street : "",
@@ -141,7 +156,7 @@ const AdForm = () => {
                   city: adById ? adById.adDirection.city : "Madrid",
                   country: adById ? adById.adDirection.country : "España",
                   adType: adById ? selectedAdType : [],
-                  gvOperationClose: adById ? adById.gvOperationClose : [],
+                  gvOperationClose: adById ? adById.gvOperationClose : "",
                   owner: adById ? [adById.owner] : "",
                   consultant: adById ? [adById.consultant] : "",
                   adBuildingType: adById ? selectedAdBuildingType : [],
@@ -163,10 +178,10 @@ const AdForm = () => {
                           surfaceDisponibility: "",
                         },
                       ],
-                  saleValue: adById ? adById.price.sale.saleValue : 0,
-                  saleShowOnWeb: adById ? adById.price.sale.saleShowOnWeb : true,
-                  rentValue: adById ? adById.price.rent.rentValue : 0,
-                  rentShowOnWeb: adById ? adById.price.rent.rentShowOnWeb : false,
+                  saleValue: adById.sale ? adById.sale.saleValue : 0,
+                  saleShowOnWeb: adById.sale ? adById.sale.saleShowOnWeb : true,
+                  rentValue: adById.rent ? adById.rent.rentValue : 0,
+                  rentShowOnWeb: adById.rent ? adById.rent.rentShowOnWeb : false,
                   monthlyRent: adById ? adById.monthlyRent : 0,
                   expenses: adById ? adById.expenses : 0,
                   expensesIncluded: adById ? adById.expensesIncluded : 0,

@@ -37,20 +37,17 @@ const Login = () => {
     ev.preventDefault();
     setError("");
 
-    console.log("entra a logout");
     try {
       await logoutApi();
       storage.clear();
     } catch (error) {
       setError(error.message);
-      console.log(error);
     }
     history.go(0);
   };
 
   return (
     <>
-      {console.log(user)}
       {user.length === 0 ? (
         <form onSubmit={submitForm}>
           <div className="login">

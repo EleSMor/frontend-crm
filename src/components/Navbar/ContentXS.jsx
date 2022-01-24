@@ -36,7 +36,7 @@ const ContentXS = ({ onClick }) => {
           <span className="ContentNavbarXS__item--text">Consultores</span>
         </div>
       </NavLink>
-      <NavLink className="ContentNavbarXS__item" to="/agenda">
+      {/* <NavLink className="ContentNavbarXS__item" to="/agenda">
         <div {...(onClick ? { onClick: () => onClick(`/agenda`) } : {})}>
           <Calendar className="ContentNavbarXS__item--icon" />
           <span className="ContentNavbarXS__item--text">Agenda</span>
@@ -47,7 +47,7 @@ const ContentXS = ({ onClick }) => {
           <Settings className="ContentNavbarXS__item--icon" />
           <span className="ContentNavbarXS__item--text">Configuración</span>
         </div>
-      </NavLink>
+      </NavLink> */}
     </div>
   );
 };

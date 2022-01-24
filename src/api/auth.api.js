@@ -36,10 +36,12 @@ export const loginApi = async (form) => {
       "Access-Control-Allow-Origin": "*",
     },
   });
-  const response = await request.json();
+  let response = {};
+  if (request.status === 200) response = await request.json();
+  else response.message = "Email o contraseña incorrectos"
 
   if (!request.ok) {
-    throw new Error("Error en la petición", response.message);
+    throw new Error("Email o contraseña incorrectos", response.message);
   }
 
   return response

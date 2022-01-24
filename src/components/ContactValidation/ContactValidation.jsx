@@ -11,8 +11,6 @@ const ContactValidation = ({ list }) => {
   const [email, setEmail] = useState("");
   const [isValidEmail, setIsValidEmail] = useState(false);
 
-  console.log("listado:", list);
-
   const checkIfIncludes = (origin, text) => {
     return origin
       .normalize("NFD")

@@ -9,6 +9,7 @@ import AdsTable from "../../components/AdsTable/AdsTable";
 import { UserContext } from "../../components/Context/AuthUser";
 import Input from "../../components/Input/Input";
 import Textarea from "../../components/Textarea/Textarea";
+import Checkboxes from "../../components/CheckBox/Checkboxes";
 import { AiOutlinePlus } from "react-icons/ai";
 import { BsPersonPlusFill } from "react-icons/bs";
 import { HiOutlineMail } from "react-icons/hi";
@@ -18,11 +19,13 @@ import { getAllAds } from "../../api/ads.api";
 import { createConsultant, getConsultantById, updateConsultant, deleteConsultant } from "../../api/consultants.api";
 import "./ConsultantForm.scss";
 import "../../styles/primeReact.scss";
+import useWindowSize from "../../hooks/useWindowSize";
 
 const ConsultantForm = () => {
   const history = useHistory();
   const { id } = useParams();
   const { user } = useContext(UserContext);
+  const size = useWindowSize();
 
   const [fullName, setFullName] = useState("");
   const [passwordError, setPasswordError] = useState("");
@@ -72,16 +75,36 @@ const ConsultantForm = () => {
         footContent={
           <>
             <button className="buttonForm" type="submit" form="ConsultantForm" style={{ marginRight: 8 }}>
-              <FiSave style={{ marginRight: 7 }} />
-              Guardar
+              <FiSave
+                style={
+                  size > 480
+                    ? { marginRight: 7 }
+                    : { marginRight: 7, transform: "scale(125%)", verticalAlign: "middle" }
+                }
+              />
+              {size > 480 && "Guardar"}
             </button>
             <Link className="buttonFormCancel" to="/consultores">
               Cancelar
             </Link>
             {id && user.role !== "Consultor" && (
-              <button className="buttonFormDelete" onClick={() => deleteConsultant(id).then(() => history.push("/consultores"))}>
-                <FaTrash style={{ marginRight: 7 }} />
-                Borrar
+              <button
+                className="buttonFormDelete"
+                onClick={() =>
+                  deleteConsultant(id).then(() => {
+                    alert("Consultor borrado correctamente");
+                    history.push("/consultores");
+                  })
+                }
+              >
+                <FaTrash
+                  style={
+                    size > 480
+                      ? { marginRight: 7 }
+                      : { marginRight: 7, transform: "scale(125%)", verticalAlign: "middle" }
+                  }
+                />
+                {size > 480 && "Borrar"}
               </button>
             )}
           </>
@@ -135,6 +158,7 @@ const ConsultantForm = () => {
                 <Formik
                   enableReinitialize={true}
                   initialValues={{
+                    role: consultantById ? consultantById.role : "Consultor",
                     consultantEmail: consultantById ? consultantById.consultantEmail : "",
                     consultantPassword: consultantById ? consultantById.consultantPassword : "",
                     fullName: consultantById ? consultantById.fullName : "",
@@ -153,7 +177,6 @@ const ConsultantForm = () => {
 
                     for (var key in values) {
                       data.append(key, values[key]);
-                      console.log("clave:", key, "valor", values[key]);
                     }
                     data.append("id", id);
 
@@ -206,7 +229,6 @@ const ConsultantForm = () => {
                               } else setPasswordError("");
                               formProps.setFieldValue(ev.target.name, ev.target.value);
                             }}
-                            onError={(ev) => console.log(ev)}
                             error={passwordError}
                           />
                           <Input
@@ -290,6 +312,24 @@ const ConsultantForm = () => {
                             value={formProps.values.consultantComments}
                             onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                           />
+                          {user.role === "Admin" && (
+                            <Checkboxes
+                              label="Rol"
+                              type="radio"
+                              textA="Consultor"
+                              valueA="Consultor"
+                              onChangeA={(ev) => {
+                                formProps.setFieldValue("role", ev.target.value);
+                              }}
+                              checkedA={formProps.values.role === "Consultor" ? true : ""}
+                              textB="Admin"
+                              valueB="Admin"
+                              onChangeB={(ev) => {
+                                formProps.setFieldValue("role", ev.target.value);
+                              }}
+                              checkedB={formProps.values.role === "Admin" ? true : ""}
+                            />
+                          )}
                           <div className="ConsultantForm__form">
                             <div className="ConsultantForm__form--col">
                               <label htmlFor="avatar">Avatar</label>

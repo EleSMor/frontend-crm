@@ -2,8 +2,7 @@ import { Link } from "react-router-dom";
 import { HiOutlineMail } from "react-icons/hi";
 import { FaPhoneAlt } from "react-icons/fa";
 
-const ContactList = ({ contacts, isValidEmail }) => {
-  console.log("listado:", contacts);
+const ContactList = ({ contacts }) => {
   return (
     <div>
       <p>Existen coincidencias con estos datos</p>

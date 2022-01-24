@@ -11,6 +11,10 @@ const Checkboxes = ({
   valueB,
   onChangeB,
   checkedB,
+  textC,
+  valueC,
+  onChangeC,
+  checkedC,
   type,
 }) => {
   return (
@@ -36,6 +40,18 @@ const Checkboxes = ({
             required={required}
           />
           <span style={{ marginLeft: 5 }}>{textB}</span>
+          {textC && (
+            <>
+              <input
+                type={type ? type : "checkbox"}
+                value={valueC}
+                onChange={onChangeC}
+                checked={checkedC}
+                required={required}
+              />
+              <span style={{ marginLeft: 5 }}>{textC}</span>
+            </>
+          )}
         </div>
       </label>
     </div>

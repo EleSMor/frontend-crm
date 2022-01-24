@@ -28,15 +28,15 @@ const RequestsMatching = ({ ads }) => {
   };
 
   const saleBodyTemplate = (rowData) => {
-    if (rowData.price.sale.saleValue && rowData.price.sale.saleValue !== 0)
-      return formatCurrency(rowData.price.sale.saleValue);
-    else return "";
+    if (rowData.sale !== null && rowData.sale !== undefined) {
+      if (rowData.sale.saleValue && rowData.sale.saleValue !== 0) return formatCurrency(rowData.sale.saleValue);
+    } else return "";
   };
 
   const rentBodyTemplate = (rowData) => {
-    if (rowData.price.rent.rentValue && rowData.price.rent.rentValue !== 0)
-      return formatCurrency(rowData.price.rent.rentValue);
-    else return "";
+    if (rowData.sale !== null && rowData.sale !== undefined) {
+      if (rowData.rent.rentValue && rowData.rent.rentValue !== 0) return formatCurrency(rowData.rent.rentValue);
+    } else return "";
   };
 
   return (

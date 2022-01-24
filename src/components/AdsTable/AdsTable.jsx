@@ -188,8 +188,8 @@ const AdsTable = ({ ads }) => {
         <Column header="Consultor" rowSpan={2} />
       </Row>
       <Row>
-        <Column header="Venta" colSpan={1} sortable field="price.sale.saleValue" />
-        <Column header="Alquiler" colSpan={1} sortable field="price.rent.rentValue" />
+        <Column header="Venta" colSpan={1} sortable field="sale.saleValue" />
+        <Column header="Alquiler" colSpan={1} sortable field="rent.rentValue" />
       </Row>
     </ColumnGroup>
   );
@@ -213,13 +213,15 @@ const AdsTable = ({ ads }) => {
   };
 
   const saleBodyTemplate = (rowData) => {
-    if (rowData.price.sale.saleValue !== 0) return formatCurrency(rowData.price.sale.saleValue);
-    else return "";
+    if (rowData.sale !== null && rowData.sale !== undefined) {
+      if (rowData.sale?.saleValue !== 0) return formatCurrency(rowData.sale.saleValue);
+    } else return "";
   };
 
   const rentBodyTemplate = (rowData) => {
-    if (rowData.price.rent.rentValue !== 0) return formatCurrency(rowData.price.rent.rentValue);
-    else return "";
+    if (rowData.rent !== null && rowData.rent !== undefined) {
+      if (rowData.rent?.rentValue !== 0) return formatCurrency(rowData.rent.rentValue);
+    } else return "";
   };
 
   const formatData = (ads) => {
@@ -265,8 +267,10 @@ const AdsTable = ({ ads }) => {
           <Column field="title"></Column>
           <Column field="adStatus"></Column>
           <Column field="closeOperationGV"></Column>
-          <Column field="price.sale.saleValue" body={saleBodyTemplate}></Column>
-          <Column field="price.rent.rentValue" body={rentBodyTemplate}></Column>
+          {/* <Column field="sale.saleValue" body={saleBodyTemplate}></Column>
+          <Column field="rent.rentValue" body={rentBodyTemplate}></Column> */}
+          <Column field="" body={saleBodyTemplate}></Column>
+          <Column field="" body={rentBodyTemplate}></Column>
           <Column field="buildSurface" body={surfaceBodyTemplate}></Column>
           <Column field="adBuildingType"></Column>
           <Column field="adType"></Column>

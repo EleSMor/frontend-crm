@@ -3,24 +3,24 @@
 .buttonForm {
   @include button-dark;
   font-size: 12px;
-  padding: 4px 40px;
+  padding: 4px 30px;
 }
 
 .buttonFormCancel {
   @include button-light-sm;
   background-color: #b0b0b0;
   color: $c-text-dark;
-  padding: 4px 40px;
-  margin-right: 20px;
+  padding: 4px 20px;
+  margin-left: 8px;
 }
 
 .buttonFormDelete {
-  @include button-light-sm;
+  @include button-dark;
   background-color: #aa2c2c;
   color: $c-text;
   font-size: 12px;
-  padding: 4px 40px;
-  margin: 0px;
+  padding: 4px 30px;
+  margin-left: 8px;
 }
 
 .ConsultantForm {

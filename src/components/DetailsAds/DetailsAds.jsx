@@ -40,9 +40,7 @@ const DetailsAds = ({
   residentials,
   patrimonials,
   setResidentialZones,
-  residentialSelectedZones,
   setPatrimonialZones,
-  patrimonialSelectedZones,
   buildingType,
   setBuildingType,
   adType,
@@ -65,8 +63,6 @@ const DetailsAds = ({
   const validateZone = (zones) => {
     return zones.some((zone) => formProps.values.zone.includes(zone._id));
   };
-
-  console.log();
 
   return (
     <>
@@ -192,78 +188,54 @@ const DetailsAds = ({
                   formProps.setFieldValue("gvOperationClose", ev.target.value);
                 }}
                 checkedB={formProps.values.gvOperationClose === "Vendido" ? true : ""}
+                textC="Ninguno"
+                valueC=""
+                onChangeC={(ev) => {
+                  formProps.setFieldValue("gvOperationClose", ev.target.value);
+                }}
+                checkedC={formProps.values.gvOperationClose === "" ? true : ""}
               />
             </div>
           </div>
         </div>
 
         <div className="DetailsAds__container__col">
-          {id ? (
-            formProps.values.owner.length !== 0 &&
-            formProps.values.consultant.length !== 0 && (
-              <>
-                <div>
-                  <Select
-                    label="Propietario"
-                    list={owners}
-                    fields={{ groupBy: "", text: "fullName", value: "_id" }}
-                    fn={setOwner}
-                    defaultValues={id ? (formProps.values.owner.length !== 0 ? formProps.values.owner : []) : []}
-                  />
-                </div>
-                <div>
-                  <Select
-                    label="Consultor"
-                    list={consultants}
-                    fields={{ groupBy: "", text: "fullName", value: "_id" }}
-                    fn={setConsultant}
-                    defaultValues={
-                      id ? (formProps.values.consultant.length !== 0 ? formProps.values.consultant : []) : []
-                    }
-                  />
-                </div>
-                <div>
-                  <Input
-                    required="required"
-                    label="Referencia del anuncio"
-                    name="adReference"
-                    value={formProps.values.adReference}
-                    onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                  />
-                </div>
-              </>
-            )
-          ) : (
-            <>
-              <div>
-                <Select
-                  label="Propietario"
-                  list={owners}
-                  fields={{ groupBy: "", text: "fullName", value: "_id" }}
-                  fn={setOwner}
-                  defaultValues={formProps.values.owner}
-                />
-              </div>
-              <div>
-                <Select
-                  label="Consultor"
-                  list={consultants}
-                  fields={{ groupBy: "", text: "fullName", value: "_id" }}
-                  fn={setConsultant}
-                  defaultValues={formProps.values.consultant}
-                />
-              </div>
-              <div>
-                <Input
-                  required="required"
-                  label="Referencia del anuncio"
-                  name="adReference"
-                  value={formProps.values.adReference}
-                  onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                />
-              </div>
-            </>
-          )}
+          <div>
+            <Select
+              label="Propietario"
+              list={owners}
+              fields={{ groupBy: "", text: "fullName", value: "_id" }}
+              fn={setOwner}
+              defaultValues={formProps.values.owner}
+            />
+          </div>
+          <div>
+            <Select
+              label="Consultor"
+              list={consultants}
+              fields={{ groupBy: "", text: "fullName", value: "_id" }}
+              fn={setConsultant}
+              defaultValues={formProps.values.consultant}
+            />
+          </div>
+          <div>
+            <Input
+              required="required"
+              label="Referencia del anuncio"
+              name="adReference"
+              value={formProps.values.adReference}
+              onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+            />
+          </div>
+          <div>
+            <Select
+              label="Estado del anuncio"
+              list={[{ name: "En preparación" }, { name: "Activo" }, { name: "Inactivo" }]}
+              fields={{ groupBy: "", text: "name", value: "name" }}
+              fn={setDepartment}
+              defaultValues={formProps.values.adStatus ? [formProps.values.adStatus] : []}
+            />
+          </div>
         </div>
       </div>
 
@@ -448,7 +420,7 @@ const DetailsAds = ({
                       name: "saleShowOnWeb",
                       label: "Mostrar Web",
                       type: "checkbox",
-                      value: formProps.values.saleShowOnWeb,
+                      checked: formProps.values.saleShowOnWeb,
                       lang: "es-ES",
                       onChange: (ev) => formProps.setFieldValue(ev.target.name, !formProps.values.saleShowOnWeb),
                       errors: "",
@@ -468,7 +440,7 @@ const DetailsAds = ({
                       name: "rentShowOnWeb",
                       label: "Mostrar Web",
                       type: "checkbox",
-                      value: formProps.values.rentShowOnWeb,
+                      checked: formProps.values.rentShowOnWeb,
                       lang: "es-ES",
                       onChange: (ev) => formProps.setFieldValue(ev.target.name, !formProps.values.rentShowOnWeb),
                       errors: "",
@@ -962,13 +934,13 @@ const DetailsAds = ({
                       <div>
                         <div>
                           <FaSink style={{ marginRight: "20", transform: "scale(150%)" }} />
-                          <label htmlFor="bathrooms">Baños</label>
+                          <label htmlFor="qualityBathrooms">Baños</label>
                         </div>
                         <input
                           type="checkbox"
-                          name="bathrooms"
+                          name="qualityBathrooms"
                           checked={formProps.values.qualityBathrooms}
-                          onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.bathrooms)}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.qualityBathrooms)}
                         />
                       </div>
                       <div>

@@ -44,7 +44,6 @@ const createConsultant = async (form) => {
     });
 
     const newConsultant = await request.json();
-    console.log(newConsultant)
     if (!request.ok) {
         throw new Error('Error creating new Consultant', newConsultant.message);
     };
@@ -59,7 +58,6 @@ const updateConsultant = async (form) => {
     });
 
     const updatedConsultant = await request.json();
-    console.log(updatedConsultant)
 
     if (!request.ok) {
         throw new Error('Error creating new Contact', updatedConsultant.message);
