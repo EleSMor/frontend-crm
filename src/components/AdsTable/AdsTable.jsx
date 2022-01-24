@@ -24,7 +24,8 @@ const AdsTable = ({ ads }) => {
   });
 
   const adStatusOptions = [{ name: "En preparación" }, { name: "Activo" }, { name: "Inactivo" }];
-  const gvOperationCloseOptions = [{ name: "Alquilado" }, { name: "Vendido" }, { name: "Ninguno" }];
+  const gvOperationCloseOptions = [{ name: "Alquilado" }, { name: "Vendido" }];
+  // const gvOperationCloseOptions = [{ name: "Alquilado" }, { name: "Vendido" }, { name: "Ninguno" }];
   const adTypeOptions = [{ name: "Alquiler" }, { name: "Venta" }];
   const adBuildingTypeOptions = [
     { name: "Casa" },
@@ -266,11 +267,9 @@ const AdsTable = ({ ads }) => {
           <Column field="adDirection"></Column>
           <Column field="title"></Column>
           <Column field="adStatus"></Column>
-          <Column field="closeOperationGV"></Column>
-          {/* <Column field="sale.saleValue" body={saleBodyTemplate}></Column>
-          <Column field="rent.rentValue" body={rentBodyTemplate}></Column> */}
-          <Column field="" body={saleBodyTemplate}></Column>
-          <Column field="" body={rentBodyTemplate}></Column>
+          <Column field="gvOperationClose"></Column>
+          <Column field="sale.saleValue" body={saleBodyTemplate}></Column>
+          <Column field="rent.rentValue" body={rentBodyTemplate}></Column>
           <Column field="buildSurface" body={surfaceBodyTemplate}></Column>
           <Column field="adBuildingType"></Column>
           <Column field="adType"></Column>

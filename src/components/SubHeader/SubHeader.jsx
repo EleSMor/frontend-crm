@@ -4,7 +4,7 @@ import { AiOutlineRight } from "react-icons/ai";
 import "./SubHeader.scss";
 
 const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter, filteredList }) => {
-  const [searchList, setSearchList] = useState(filteredList);
+  const [searchList, setSearchList] = useState(list);
   const [filterClass, setFilterClass] = useState("todos");
 
   const filterByDepartment = (department) => {
@@ -13,29 +13,34 @@ const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter,
     const filterByDeparment = list.filter((ad) => ad.department === department);
 
     const adsFiltered = list.filter((ad) => {
-      if (department !== "todos" && ad.department === department && !searchText) return ad;
-      else if (
+      if (department !== "todos" && ad.department === department && !searchText) {
+        return ad;
+      } else if (
         department === "todos" &&
         (checkIfIncludes(ad.adReference, searchText) ||
           checkIfIncludes(ad.title, searchText) ||
           checkIfIncludes(ad.adDirection, searchText) ||
           (ad.owner !== null && checkIfIncludes(ad.owner.fullName, searchText)) ||
           (ad.consultant !== null && checkIfIncludes(ad.consultant.fullName, searchText)))
-      )
+      ) {
         return ad;
-      if (
+      } else if (
         ad.department === department &&
         (checkIfIncludes(ad.adDirection, searchText) ||
           checkIfIncludes(ad.adReference, searchText) ||
           checkIfIncludes(ad.title, searchText) ||
           (ad.owner !== null && checkIfIncludes(ad.owner.fullName, searchText)) ||
           (ad.consultant !== null && checkIfIncludes(ad.consultant.fullName, searchText)))
-      )
+      ) {
         return ad;
+      }
     });
 
-    if (department === "todos") setSearchList(list);
-    else setSearchList(filterByDeparment);
+    if (department === "todos") {
+      setSearchList(list);
+    } else {
+      setSearchList(filterByDeparment);
+    }
     setter(adsFiltered);
   };
 
@@ -77,7 +82,11 @@ const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter,
       });
       if (text) {
         setter(adsFiltered);
-      } else setter(searchList);
+      } else if (text.trim().length !== 0 && searchList.length !== 0) {
+        setter(searchList);
+      } else {
+        setter(adsFiltered);
+      }
     } else if (title === "Peticiones") {
       /**
        * Filtro para peticiones

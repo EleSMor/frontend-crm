@@ -132,7 +132,7 @@ const ContactRequestCard = ({ request }) => {
               <h4>Petición {`#${request.requestReference}`}</h4>
               <p>
                 <BsPersonCircle fontSize="1.4em" color="#47535B" style={{ margin: "0 8 0 48" }} />
-                <span>{request.requestConsultant.fullName ? request.requestConsultant.fullName : "Sin consultor"}</span>
+                <span>{request.requestConsultant ? request.requestConsultant.fullName : "Sin consultor"}</span>
               </p>
 
               {request.requestBuildingType.map((buildingType, index) => {
