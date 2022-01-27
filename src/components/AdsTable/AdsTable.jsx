@@ -254,8 +254,8 @@ const AdsTable = ({ ads }) => {
           filterDisplay="menu"
           showGridlines
           filters={filters}
-          resizableColumns
           responsiveLayout="scroll"
+          emptyMessage="No se ha encontrado ningún anuncio"
         >
           <Column
             field="createdAt"

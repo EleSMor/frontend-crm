@@ -14,7 +14,7 @@ const PopUp = ({
   buttons,
 }) => {
   const modal = useRef(null);
-  const size = useWindowSize()
+  const size = useWindowSize();
 
   window.onclick = (event) => {
     if (event.target === modal.current) {

@@ -57,7 +57,6 @@ const ContactsList = () => {
         subLocation={() => handlePopUp(contacts)}
         subSetter={setContactsFiltered}
         footContent={<ContactListFooter />}
-        //subBreadcrumbs="Nuevo crear"
       >
         {popUp && (
           <PopUp handlePopUp={handlePopUp} height="68%" mobileHeight="85%" width="50%" title="Crear contacto nuevo">

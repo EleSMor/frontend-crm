@@ -220,9 +220,9 @@ const RequestsTable = ({ requests }) => {
           filterDisplay="menu"
           showGridlines
           filters={filters}
-          resizableColumns
           responsiveLayout="scroll"
           globalFilterFields={["requestAdType", "requestBuildingType"]}
+          emptyMessage="No se ha encontrado ninguna petición"
         >
           <Column
             field="createdAt"

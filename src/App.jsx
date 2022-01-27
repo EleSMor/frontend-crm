@@ -12,6 +12,7 @@ import {
   ConsultantForm,
   Login,
 } from "./pages";
+import Schedule from "./components/Schedule/Schedule";
 
 import "./App.scss";
 
@@ -28,18 +29,20 @@ function App() {
               <Route exact path="/peticiones" component={RequestsList} />
               <Route exact path="/contactos" component={ContactsList} />
               <Route exact path="/consultores" component={ConsultantsList} />
-              
-              {/* Components */}
+
+              {/* Create Components */}
               <Route exact path="/anuncios/crear" component={AdForm} />
               <Route exact path="/peticiones/crear" component={RequestForm} />
               <Route exact path="/contactos/crear/:name/:email/:phone" component={ContactForm} />
               <Route exact path="/consultores/crear" component={ConsultantForm} />
 
-              {/* Components */}
+              {/* Sheets Components */}
               <Route exact path="/anuncios/:id" children={<AdForm />} />
               <Route exact path="/peticiones/:id" children={<RequestForm />} />
               <Route exact path="/contactos/:id" children={<ContactForm />} />
               <Route exact path="/consultores/:id" children={<ConsultantForm />} />
+
+              <Route exact path="/agenda" children={<Schedule />} />
             </Switch>
           </Suspense>
         </AuthUser>

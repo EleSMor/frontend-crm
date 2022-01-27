@@ -1,10 +1,9 @@
 import { useState, useContext, useEffect } from "react";
 import { Formik, Form } from "formik";
 import { TabView, TabPanel } from "primereact/tabview";
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
 import { useHistory, useParams, Link } from "react-router-dom";
 import { DetailsAds, ImagesAds } from "../../components";
+import AdMatchedRequestsTable from "../../components/AdMatchedRequestsTable/AdMatchedRequestsTable";
 import { UserContext } from "../../components/Context/AuthUser";
 import { createAd, updateAd, getAllAds, getAdById, getMatchedRequests, deleteAd } from "../../api/ads.api.js";
 import { getAllOwners } from "../../api/contacts.api";
@@ -15,8 +14,8 @@ import GoBack from "../../components/GoBack/GoBack";
 import { FiSave } from "react-icons/fi";
 import { FaTrash } from "react-icons/fa";
 import { getAllResidentialZones, getAllPatrimonialZones } from "../../api/zones.api";
-import "./AdForm.scss";
 import useWindowSize from "../../hooks/useWindowSize";
+import "./AdForm.scss";
 
 const AdForm = () => {
   const history = useHistory();
@@ -25,7 +24,6 @@ const AdForm = () => {
   const size = useWindowSize();
 
   const [adById, setAdById] = useState("");
-  const [requests, setRequests] = useState([]);
 
   const [selectedOwner, setSelectedOwner] = useState("");
   const [selectedConsultant, setSelectedConsultant] = useState("");
@@ -36,7 +34,7 @@ const AdForm = () => {
   const [residentials, setResidential] = useState([]);
   const [patrimonials, setPatrimonial] = useState([]);
   const [department, setDepartment] = useState("");
-  const [adStatus, setAdStatus] = useState("");
+  const [adStatus, setAdStatus] = useState("En preparación");
   const [validateForm, setValidateForm] = useState(false);
   const [firstLoad, setFirstLoad] = useState(true);
   const [owners, setOwners] = useState([]);
@@ -66,17 +64,17 @@ const AdForm = () => {
           getAdById(id).then((res) => {
             setAdById(res);
             setSelectedOwner(res.owner);
+            setAdStatus(res.adStatus);
             setSelectedConsultant(res.consultant);
             setSelectedAdBuildingType(res.adBuildingType);
             setSelectedAdType(res.adType);
           });
-          getMatchedRequests(id).then((res) => setRequests(res));
         }
       })
       .then(() => {
         if (id && adById.length !== 0 && residentials.length !== 0 && patrimonials.length !== 0) setLoader(false);
         else if (!id) setLoader(false);
-      })
+      });
   }, [id]);
 
   if (
@@ -105,21 +103,59 @@ const AdForm = () => {
       {user.length === 0 && history.push("/")}
       <Layout
         subTitle="Anuncios"
-        subUndertitle={<GoBack />}
+        subUndertitle={
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <div>
+              <GoBack />
+            </div>
+            <div className="adForm__filter-box">
+              <button
+                className={
+                  adStatus === "En preparación" ? "adForm__filter-box--item__active" : "adForm__filter-box--item"
+                }
+                onClick={() => {
+                  setAdStatus("En preparación");
+                  setActiveIndex(0);
+                }}
+              >
+                <p>En preparación</p>
+              </button>
+              <button
+                className={adStatus === "Activo" ? "adForm__filter-box--item__active" : "adForm__filter-box--item"}
+                onClick={() => {
+                  setAdStatus("Activo");
+                }}
+              >
+                <p>Activo</p>
+              </button>
+              <button
+                className={adStatus === "Inactivo" ? "adForm__filter-box--item__active" : "adForm__filter-box--item"}
+                onClick={() => {
+                  setAdStatus("Inactivo");
+                  setActiveIndex(0);
+                }}
+              >
+                <p>Inactivo</p>
+              </button>
+            </div>
+          </div>
+        }
         subLocation="/anuncios/crear"
         subBreadcrumbs={id ? `Anuncio ${adById.adReference}` : "Crear nuevo anuncio"}
         footContent={
           <>
-            <button className="buttonForm" type="submit" form="AdForm" style={{ marginRight: 8 }}>
-              <FiSave
-                style={
-                  size > 480
-                    ? { marginRight: 7 }
-                    : { marginRight: 7, transform: "scale(125%)", verticalAlign: "middle" }
-                }
-              />
-              {size > 480 && "Guardar"}
-            </button>
+            {activeIndex === 0 && (
+              <button className="buttonForm" type="submit" form="AdForm" style={{ marginRight: 8 }}>
+                <FiSave
+                  style={
+                    size > 480
+                      ? { marginRight: 7 }
+                      : { marginRight: 7, transform: "scale(125%)", verticalAlign: "middle" }
+                  }
+                />
+                {size > 480 && "Guardar"}
+              </button>
+            )}
             <Link className="buttonFormCancel" to="/anuncios">
               Cancelar
             </Link>
@@ -156,7 +192,7 @@ const AdForm = () => {
                 initialValues={{
                   title: adById ? adById.title : "",
                   adReference: adById ? adById.adReference : "",
-                  adStatus: adById ? adById.adStatus : "",
+                  adStatus: adById ? adStatus : "En preparación",
                   showOnWeb: adById ? adById.showOnWeb : true,
                   featuredOnMain: adById ? adById.featuredOnMain : false,
                   street: adById ? adById.adDirection.address.street : "",
@@ -246,7 +282,7 @@ const AdForm = () => {
                   data.adBuildingType = selectedAdBuildingType;
 
                   if (department[0]) data.department = department[0];
-                  if (adStatus[0]) data.adStatus = adStatus[0];
+                  data.adStatus = adStatus;
 
                   if (residentialSelectedZones.length !== 0) {
                     data.zone = residentialSelectedZones;
@@ -309,30 +345,10 @@ const AdForm = () => {
                 <ImagesAds id={id} setActiveIndex={setActiveIndex} adById={adById ? adById : ""} />
               </TabPanel>
             )}
-            {id && (
+            {id && adById.adStatus === "Activo" && (
               <TabPanel header="Matching">
                 <div className="card">
-                  <DataTable
-                    value={requests.length !== 0 ? requests : ""}
-                    paginator
-                    rows={10}
-                    removableSort
-                    responsiveLayout="scroll"
-                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                    rowsPerPageOptions={[10, 25, 50]}
-                    dataKey="id"
-                  >
-                    <Column
-                      field="requestReference"
-                      header="Id Petición"
-                      body={(ev) => <Link to={`/peticiones/${ev._id}`}>{ev.requestReference}</Link>}
-                      sortable
-                    ></Column>
-                    <Column field="requestContact.fullName" header="Nombre Completo" sortable></Column>
-                    <Column field="requestContact.company" header="Empresa" sortable></Column>
-                    <Column field="requestContact.email" header="Email" sortable></Column>
-                    <Column field="requestContact.consultantComments" header="Comentarios" sortable></Column>
-                  </DataTable>
+                  <AdMatchedRequestsTable />
                 </div>
               </TabPanel>
             )}

@@ -47,7 +47,7 @@ const DetailsAds = ({
   setAdType,
   setDepartment,
   adStatus,
-  setAdStatus
+  setAdStatus,
 }) => {
   const size = useWindowSize();
 
@@ -229,7 +229,7 @@ const DetailsAds = ({
               onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
             />
           </div>
-          <div>
+          {/* <div>
             <Select
               label="Estado del anuncio"
               list={[{ name: "En preparación" }, { name: "Activo" }, { name: "Inactivo" }]}
@@ -237,7 +237,7 @@ const DetailsAds = ({
               fn={setAdStatus}
               defaultValues={formProps.values.adStatus ? [formProps.values.adStatus] : []}
             />
-          </div>
+          </div> */}
         </div>
       </div>
 
