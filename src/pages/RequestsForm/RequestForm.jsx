@@ -261,7 +261,7 @@ const RequestForm = () => {
                             label="Contacto"
                             list={contacts}
                             fields={{ groupBy: "", text: "fullName", value: "_id" }}
-                            fn={setSelectedContact}
+                            fn={(e) => setSelectedContact(e.target.value)}
                             defaultValues={selectedContact[0] ? selectedContact : []}
                           />
                           {validateForm && selectedContact.length === 0 && (
@@ -273,7 +273,7 @@ const RequestForm = () => {
                             label="Consultor"
                             list={consultants}
                             fields={{ groupBy: "", text: "fullName", value: "_id" }}
-                            fn={setSelectedConsultant}
+                            fn={(e) => setSelectedConsultant(e.target.value)}
                             defaultValues={selectedConsultant[0] ? selectedConsultant : []}
                           />
                           {validateForm && selectedConsultant.length === 0 && (
@@ -629,8 +629,8 @@ const RequestForm = () => {
               </Formik>
             </TabPanel>
             <TabPanel header="Matching">
-              {requestById.length !== 0 && 
-                <MatchedAdCard
+              {requestById.length !== 0 && <RequestsMatching ads={ads} />}
+              {/* <MatchedAdCard
                   ads={ads}
                   patrimonials={patrimonials}
                   patrimonialSelectedZones={patrimonialSelectedZones}
@@ -639,8 +639,7 @@ const RequestForm = () => {
                   setResidentialSelectedZones={setResidentialSelectedZones}
                   residentials={residentials}
                   requestById={requestById}
-                />
-              }
+                /> */}
             </TabPanel>
           </TabView>
         )}
