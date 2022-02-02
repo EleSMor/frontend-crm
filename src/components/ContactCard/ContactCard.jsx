@@ -16,14 +16,20 @@ const ContactCard = ({ contact }) => {
 
   const renderDirection = (contact) => {
     return (
-      <p>
-        <HiOutlineLocationMarker fontSize="1.2em" color="#47535B" style={{ marginRight: 5 }} />{" "}
-        {contact.contactDirection.address.directionNumber
-          ? contact.contactDirection.address.directionFloor
-            ? ` ${contact.contactDirection.address.street}, ${contact.contactDirection.address.directionNumber}, ${contact.contactDirection.address.directionFloor}`
-            : ` ${contact.contactDirection.address.street}, ${contact.contactDirection.address.directionNumber}`
-          : ` ${contact.contactDirection.address.street}`}
-      </p>
+      <>
+        {contact.contactDirection.address.street ? (
+          <p>
+            <HiOutlineLocationMarker fontSize="1.2em" color="#47535B" style={{ marginRight: 5 }} />{" "}
+            {contact.contactDirection.address.directionNumber
+              ? contact.contactDirection.address.directionFloor
+                ? ` ${contact.contactDirection.address.street}, ${contact.contactDirection.address.directionNumber}, ${contact.contactDirection.address.directionFloor}`
+                : ` ${contact.contactDirection.address.street}, ${contact.contactDirection.address.directionNumber}`
+              : ` ${contact.contactDirection.address.street}`}
+          </p>
+        ) : (
+          ""
+        )}
+      </>
     );
   };
 
@@ -31,13 +37,10 @@ const ContactCard = ({ contact }) => {
     <div className="ContactCards">
       <div className="ContactCard__Card" id={contact._id}>
         <div className="ContactCard__Card--item ContactCard__Card--item-genInfo">
-          <h3>{contact.fullName}</h3>
+          <h3>
+            <Link to={`/contactos/${contact._id}`}>{contact.fullName}</Link>
+          </h3>
           {renderDirection(contact)}
-          <p>
-            {contact.contactDirection.postalCode
-              ? `${contact.contactDirection.postalCode} ${contact.contactDirection.city}, ${contact.contactDirection.country}`
-              : "España"}
-          </p>
           <p>{contact.company}</p>
 
           <div className="ContactCard__Card--item__tags displayElements">

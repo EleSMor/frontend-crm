@@ -138,7 +138,6 @@ const ContactForm = () => {
                     } else
                       updateContact(data).then((res) => {
                         alert(`El contacto ${res.fullName} ha sido actualizado`);
-                        history.push("/contactos");
                       });
                   }}
                 >

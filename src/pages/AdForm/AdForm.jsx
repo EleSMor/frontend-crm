@@ -108,36 +108,38 @@ const AdForm = () => {
             <div>
               <GoBack />
             </div>
-            <div className="adForm__filter-box">
-              <button
-                className={
-                  adStatus === "En preparación" ? "adForm__filter-box--item__active" : "adForm__filter-box--item"
-                }
-                onClick={() => {
-                  setAdStatus("En preparación");
-                  setActiveIndex(0);
-                }}
-              >
-                <p>En preparación</p>
-              </button>
-              <button
-                className={adStatus === "Activo" ? "adForm__filter-box--item__active" : "adForm__filter-box--item"}
-                onClick={() => {
-                  setAdStatus("Activo");
-                }}
-              >
-                <p>Activo</p>
-              </button>
-              <button
-                className={adStatus === "Inactivo" ? "adForm__filter-box--item__active" : "adForm__filter-box--item"}
-                onClick={() => {
-                  setAdStatus("Inactivo");
-                  setActiveIndex(0);
-                }}
-              >
-                <p>Inactivo</p>
-              </button>
-            </div>
+            {activeIndex === 0 && (
+              <div className="adForm__filter-box">
+                <button
+                  className={
+                    adStatus === "En preparación" ? "adForm__filter-box--item__active" : "adForm__filter-box--item"
+                  }
+                  onClick={() => {
+                    setAdStatus("En preparación");
+                    setActiveIndex(0);
+                  }}
+                >
+                  <p>En preparación</p>
+                </button>
+                <button
+                  className={adStatus === "Activo" ? "adForm__filter-box--item__active" : "adForm__filter-box--item"}
+                  onClick={() => {
+                    setAdStatus("Activo");
+                  }}
+                >
+                  <p>Activo</p>
+                </button>
+                <button
+                  className={adStatus === "Inactivo" ? "adForm__filter-box--item__active" : "adForm__filter-box--item"}
+                  onClick={() => {
+                    setAdStatus("Inactivo");
+                    setActiveIndex(0);
+                  }}
+                >
+                  <p>Inactivo</p>
+                </button>
+              </div>
+            )}
           </div>
         }
         subLocation="/anuncios/crear"
@@ -227,7 +229,7 @@ const AdForm = () => {
                   saleValue: adById.sale ? adById.sale.saleValue : 0,
                   saleShowOnWeb: adById.sale ? adById.sale.saleShowOnWeb : true,
                   rentValue: adById.rent ? adById.rent.rentValue : 0,
-                  rentShowOnWeb: adById.rent ? adById.rent.rentShowOnWeb : false,
+                  rentShowOnWeb: adById.rent ? adById.rent.rentShowOnWeb : true,
                   monthlyRent: adById ? adById.monthlyRent : 0,
                   expenses: adById ? adById.expenses : 0,
                   expensesIncluded: adById ? adById.expensesIncluded : 0,
@@ -303,7 +305,6 @@ const AdForm = () => {
                     } else
                       updateAd(data).then((res) => {
                         alert(`El anuncio ${res.adReference} ha sido actualizado`);
-                        history.push(`/anuncios`);
                       });
                   } else {
                     alert("Debe indicar el departamento del anuncio");

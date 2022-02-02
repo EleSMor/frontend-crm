@@ -1,6 +1,6 @@
 @use "/src/styles/utils.scss" as *;
 
-.AdCard__CardMobile {
+.RequestCard__CardMobile {
   background-color: #fff;
   margin: 18px 0px;
   padding: 14px;
@@ -81,7 +81,7 @@
 }
 
 @media (min-width: $break-point) {
-  .AdCard__Card {
+  .RequestCard__Card {
     background-color: #fff;
     margin: 18px 0px;
     padding: 18px;
@@ -149,18 +149,18 @@
       }
     }
 
-    .AdCard__Card--item-genInfo {
+    .RequestCard__Card--item-genInfo {
       width: calc(30%);
     }
-    .AdCard__Card--item-iconsInfo {
+    .RequestCard__Card--item-iconsInfo {
       width: calc(26%);
     }
-    .AdCard__Card--item-textArea {
+    .RequestCard__Card--item-textArea {
       width: calc(28%);
       border-left: 1px solid rgba(0, 0, 0, 0.329);
       padding-left: 16px;
     }
-    .AdCard__Card--item-cta {
+    .RequestCard__Card--item-cta {
       width: calc(15%);
       height: 100%;
       display: flex;

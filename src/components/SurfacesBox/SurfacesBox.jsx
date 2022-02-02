@@ -19,7 +19,14 @@ const SurfacesBox = ({ formProps }) => {
   };
 
   const textEditor = (options) => {
-    return <InputText type="text" value={options.value} onChange={(e) => options.editorCallback(e.target.value)} />;
+    return (
+      <InputText
+        style={{ width: "105%" }}
+        type="text"
+        value={options.value}
+        onChange={(e) => options.editorCallback(e.target.value)}
+      />
+    );
   };
 
   const onRowEditComplete = (e) => {
@@ -47,6 +54,8 @@ const SurfacesBox = ({ formProps }) => {
         editMode="row"
         onRowEditComplete={onRowEditComplete}
         className="editable-cells-table"
+        resizableColumns
+        columnResizeMode="fit"
         responsiveLayout="scroll"
         emptyMessage="Añada una fila si lo necesita"
       >
@@ -79,9 +88,9 @@ const SurfacesBox = ({ formProps }) => {
           editor={(options) => textEditor(options)}
           style={{ width: "20%" }}
         />
-        <Column rowEditor headerStyle={{ width: "10%", minWidth: "8rem" }} bodyStyle={{ textAlign: "center" }} />
+        <Column rowEditor headerStyle={{ width: "10%" }} bodyStyle={{ textAlign: "center" }} />
         <Column
-          headerStyle={{ width: "10%" }}
+          style={{ width: "10%" }}
           bodyStyle={{ textAlign: "center" }}
           body={(ev) => (
             <div onClick={() => deleteRow(ev)}>
@@ -91,7 +100,12 @@ const SurfacesBox = ({ formProps }) => {
         />
       </DataTable>
       <br />
-      <button style={{ alignSelf: "flex-start", border: "1px solid rgba(128, 128, 128, 0.603)" }} type="button" onClick={handleAddRow} className="btn">
+      <button
+        style={{ alignSelf: "flex-start", border: "1px solid rgba(128, 128, 128, 0.603)" }}
+        type="button"
+        onClick={handleAddRow}
+        className="btn"
+      >
         Añadir fila
       </button>
       <hr />

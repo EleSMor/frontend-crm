@@ -32,7 +32,7 @@ const Navbar = ({ title }) => {
                   <GvreLogo className="navigate__link--logo" />
                 </li>
                 <li>
-                  <h1 className="navigate__title">GV Real State</h1>
+                  <h1 className="navigate__title">GV Real Estate</h1>
                 </li>
               </div>
               <NavLink

@@ -46,12 +46,9 @@ const DetailsAds = ({
   adType,
   setAdType,
   setDepartment,
-  adStatus,
-  setAdStatus,
 }) => {
+  const [zone, setZone] = useState(formProps.values.department);
   const size = useWindowSize();
-
-  useEffect(() => {}, [id]);
 
   const newSelect = (selected, setSelected, ev) => {
     if (selected.includes(ev.target.value)) {
@@ -61,6 +58,8 @@ const DetailsAds = ({
       setSelected([...selected, ev.target.value]);
     }
   };
+
+  useEffect(() => setZone(formProps.values.department), [formProps.values.department]);
 
   const validateZone = (zones) => {
     return zones.some((zone) => formProps.values.zone.includes(zone._id));
@@ -134,7 +133,6 @@ const DetailsAds = ({
                   label: "Código postal",
                   value: formProps.values.postalCode,
                   onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
-                  required: true,
                   style: "direction",
                   errors: "",
                 },
@@ -143,7 +141,6 @@ const DetailsAds = ({
                   label: "Ciudad",
                   value: formProps.values.city,
                   onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
-                  required: true,
                   style: "direction",
                   errors: "",
                 },
@@ -152,7 +149,6 @@ const DetailsAds = ({
                   label: "País",
                   value: formProps.values.country,
                   onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
-                  required: true,
                   style: "direction",
                   errors: "",
                 },
@@ -203,13 +199,13 @@ const DetailsAds = ({
 
         <div className="DetailsAds__container__col">
           <div>
-            <Select
-              label="Propietario"
-              list={owners}
-              fields={{ groupBy: "", text: "fullName", value: "_id" }}
-              fn={setOwner}
-              defaultValues={formProps.values.owner}
-            />
+              <Select
+                label="Propietario"
+                list={owners}
+                fields={{ groupBy: "", text: "fullName", value: "_id" }}
+                fn={setOwner}
+                defaultValues={formProps.values.owner ? [formProps.values.owner] : []}
+              />
           </div>
           <div>
             <Select
@@ -217,7 +213,7 @@ const DetailsAds = ({
               list={consultants}
               fields={{ groupBy: "", text: "fullName", value: "_id" }}
               fn={setConsultant}
-              defaultValues={formProps.values.consultant}
+              defaultValues={formProps.values.consultant ? [formProps.values.consultant] : []}
             />
           </div>
           <div>
@@ -229,15 +225,6 @@ const DetailsAds = ({
               onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
             />
           </div>
-          {/* <div>
-            <Select
-              label="Estado del anuncio"
-              list={[{ name: "En preparación" }, { name: "Activo" }, { name: "Inactivo" }]}
-              fields={{ groupBy: "", text: "name", value: "name" }}
-              fn={setAdStatus}
-              defaultValues={formProps.values.adStatus ? [formProps.values.adStatus] : []}
-            />
-          </div> */}
         </div>
       </div>
 
@@ -305,38 +292,47 @@ const DetailsAds = ({
                   ]}
                 />
               </div>
-              <div className="DetailsAds__container">
-                <div className="DetailsAds__container__col">
-                  <MultiSelect
-                    label="Residencial"
-                    list={residentials}
-                    mode={"Checkbox"}
-                    fields={{ groupBy: "zone", text: "name", value: "_id" }}
-                    onChange={(ev) => setResidentialZones(ev.value)}
-                    defaultValues={validateZone(residentials) ? formProps.values.zone : ""}
-                  />
-                </div>
-                <div className="DetailsAds__container__col">
-                  <MultiSelect
-                    label="Patrimonial"
-                    list={patrimonials}
-                    mode={"Checkbox"}
-                    fields={{ groupBy: "", text: "name", value: "_id" }}
-                    onChange={(ev) => setPatrimonialZones(ev.value)}
-                    defaultValues={validateZone(patrimonials) ? formProps.values.zone : ""}
-                  />
-                </div>
-              </div>
               <div>
                 <div>
                   <Select
                     label="Departamento"
                     list={[{ name: "Patrimonio" }, { name: "Residencial" }]}
                     fields={{ groupBy: "", text: "name", value: "name" }}
-                    fn={setDepartment}
+                    fn={(e) => {
+                      setDepartment(e.value);
+                      setZone(e.value[0]);
+                      if (e.value[0] === "Residencial") setPatrimonialZones([]);
+                      if (e.value[0] === "Patrimonio") setResidentialZones([]);
+                    }}
                     defaultValues={formProps.values.department ? [formProps.values.department] : []}
                   />
                 </div>
+              </div>
+              <div>
+                {zone === "Residencial" && (
+                  <div>
+                    <MultiSelect
+                      label="Residencial"
+                      list={residentials}
+                      mode={"Checkbox"}
+                      fields={{ groupBy: "zone", text: "name", value: "_id" }}
+                      onChange={(ev) => setResidentialZones(ev.value)}
+                      defaultValues={validateZone(residentials) ? formProps.values.zone : ""}
+                    />
+                  </div>
+                )}
+                {zone === "Patrimonio" && (
+                  <div>
+                    <MultiSelect
+                      label="Patrimonial"
+                      list={patrimonials}
+                      mode={"Checkbox"}
+                      fields={{ groupBy: "", text: "name", value: "_id" }}
+                      onChange={(ev) => setPatrimonialZones(ev.value)}
+                      defaultValues={validateZone(patrimonials) ? formProps.values.zone : ""}
+                    />
+                  </div>
+                )}
               </div>
               <div>
                 <Textarea
@@ -359,10 +355,9 @@ const DetailsAds = ({
                   onChange={(ev) => {
                     formProps.setFieldValue(ev.target.name, ev.target.value);
                     formProps.setFieldValue("rentValue", ev.target.value * formProps.values.monthlyRent);
-                    formProps.setFieldValue("expensesValue", ev.target.value * formProps.values.expenses);
                   }}
                 />
-                <span style={{ position: "absolute", left: "96.5%", top: "72%" }}>
+                <span style={{ position: "absolute", right: "0.5%", top: "72%" }}>
                   m<sup>2</sup>
                 </span>
               </div>
@@ -375,7 +370,7 @@ const DetailsAds = ({
                   value={formProps.values.plotSurface}
                   onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                 />
-                <span style={{ position: "absolute", left: "96.5%", top: "72%" }}>
+                <span style={{ position: "absolute", right: "0.5%", top: "72%" }}>
                   m<sup>2</sup>
                 </span>
               </div>
@@ -415,7 +410,7 @@ const DetailsAds = ({
                       value: formProps.values.saleValue,
                       lang: "es-ES",
                       onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
-                      span: <span style={{ position: "absolute", right: "2%", top: "52%" }}>€</span>,
+                      span: <span style={{ position: "absolute", right: "0.5%", top: "52%" }}>€</span>,
                       errors: "",
                     },
                     {
@@ -435,7 +430,7 @@ const DetailsAds = ({
                       value: formProps.values.rentValue,
                       lang: "es-ES",
                       onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
-                      span: <span style={{ position: "absolute", right: "2%", top: "52%" }}>€</span>,
+                      span: <span style={{ position: "absolute", right: "0.5%", top: "52%" }}>€/mes</span>,
                       errors: "",
                     },
                     {
@@ -452,7 +447,7 @@ const DetailsAds = ({
               </div>
               <div className="DetailsAds__container__col--item">
                 <InputsGroup
-                  label="Alquiler"
+                  label="Alquiler Patrimonio"
                   inputs={[
                     {
                       name: "monthlyRent",
@@ -471,7 +466,7 @@ const DetailsAds = ({
                         );
                       },
                       span: (
-                        <span style={{ position: "absolute", right: "2%", top: "52%" }}>
+                        <span style={{ position: "absolute", right: "0.5%", top: "52%" }}>
                           €/m<sup>2</sup>/mes
                         </span>
                       ),
@@ -486,7 +481,6 @@ const DetailsAds = ({
                       lang: "es-ES",
                       onChange: (ev) => {
                         formProps.setFieldValue(ev.target.name, ev.target.value);
-                        formProps.setFieldValue("expensesValue", ev.target.value * formProps.values.buildSurface);
                         formProps.setFieldValue(
                           "expensesIncluded",
                           formProps.values.monthlyRent * formProps.values.buildSurface +
@@ -494,7 +488,7 @@ const DetailsAds = ({
                         );
                       },
                       span: (
-                        <span style={{ position: "absolute", right: "2%", top: "52%" }}>
+                        <span style={{ position: "absolute", right: "0.5%", top: "52%" }}>
                           €/m<sup>2</sup>/mes
                         </span>
                       ),
@@ -510,7 +504,7 @@ const DetailsAds = ({
                       lang: "es-ES",
                       onChange: () => "",
                       required: true,
-                      span: <span style={{ position: "absolute", right: "2%", top: "52%" }}>€/mes</span>,
+                      span: <span style={{ position: "absolute", right: "0.5%", top: "52%" }}>€/mes</span>,
                       errors: "",
                     },
                   ]}
@@ -525,9 +519,9 @@ const DetailsAds = ({
                       name: "expensesValue",
                       label: "",
                       type: "number",
-                      value: formProps.values.buildSurface * formProps.values.expenses,
-                      onChange: () => "",
-                      span: <span style={{ position: "absolute", right: "1%", top: "10%" }}>€/mes</span>,
+                      value: formProps.values.expensesValue,
+                      onChange: (e) => formProps.setFieldValue("expensesValue", e.target.value),
+                      span: <span style={{ position: "absolute", right: "0.5%", top: "10%" }}>€/mes</span>,
                       errors: "",
                     },
                     {
@@ -552,7 +546,7 @@ const DetailsAds = ({
                       placeholder: "Escribe aquí",
                       value: formProps.values.ibiValue,
                       onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
-                      span: <span style={{ position: "absolute", right: "1%", top: "10%" }}>€/mes</span>,
+                      span: <span style={{ position: "absolute", right: "0.5%", top: "10%" }}>€/año</span>,
                       errors: "",
                     },
                     {

@@ -146,7 +146,7 @@ const deleteRequest = async (id) => {
 };
 
 const sendNewRequest = async (form) => {
-    const request = await fetch(`${requestsURL}/create`, {
+    const request = await fetch(`${requestsURL}/matching/new`, {
         method: 'POST',
         credentials: 'include',
         body: JSON.stringify(form),

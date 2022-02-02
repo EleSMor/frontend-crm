@@ -13,6 +13,7 @@ import Input from "../../components/Input/Input";
 import Textarea from "../../components/Textarea/Textarea";
 import InputsGroup from "../../components/InputsGroup/InputsGroup";
 import Multicheckbox from "../../components/CheckBox/Multicheckbox";
+import MatchedAdCard from "../../components/MatchedAdCard/MatchedAdCard";
 import { FiSave } from "react-icons/fi";
 import { FaTrash } from "react-icons/fa";
 import { RiMoneyEuroBoxLine } from "react-icons/ri";
@@ -24,6 +25,7 @@ import { GiPapers } from "react-icons/gi";
 import { getAllConsultants } from "../../api/consultants.api";
 import { getAllResidentialZones, getAllPatrimonialZones } from "../../api/zones.api";
 import { getAllContacts } from "../../api/contacts.api";
+import useWindowSize from "../../hooks/useWindowSize";
 import {
   createRequest,
   getLastReference,
@@ -33,7 +35,6 @@ import {
   deleteRequest,
 } from "../../api/requests.api";
 import "./RequestForm.scss";
-import useWindowSize from "../../hooks/useWindowSize";
 
 const RequestForm = () => {
   const history = useHistory();
@@ -247,7 +248,6 @@ const RequestForm = () => {
                     } else if (id)
                       updateRequest(data).then(() => {
                         alert(`La Petición ${requestById.requestReference} ha sido actualizada`);
-                        history.push("/peticiones");
                       });
                   } else alert(`Debe seleccionar al menos una zona`);
                 }}
@@ -262,7 +262,7 @@ const RequestForm = () => {
                             list={contacts}
                             fields={{ groupBy: "", text: "fullName", value: "_id" }}
                             fn={setSelectedContact}
-                            defaultValues={selectedContact}
+                            defaultValues={selectedContact[0] ? selectedContact : []}
                           />
                           {validateForm && selectedContact.length === 0 && (
                             <p style={{ color: "red" }}>* Seleccione un contacto</p>
@@ -274,7 +274,7 @@ const RequestForm = () => {
                             list={consultants}
                             fields={{ groupBy: "", text: "fullName", value: "_id" }}
                             fn={setSelectedConsultant}
-                            defaultValues={selectedConsultant}
+                            defaultValues={selectedConsultant[0] ? selectedConsultant : []}
                           />
                           {validateForm && selectedConsultant.length === 0 && (
                             <p style={{ color: "red" }}>* Seleccione un consultor</p>
@@ -629,7 +629,18 @@ const RequestForm = () => {
               </Formik>
             </TabPanel>
             <TabPanel header="Matching">
-              <RequestsMatching ads={ads} />
+              {requestById.length !== 0 && 
+                <MatchedAdCard
+                  ads={ads}
+                  patrimonials={patrimonials}
+                  patrimonialSelectedZones={patrimonialSelectedZones}
+                  setPatrimonialSelectedZones={setPatrimonialSelectedZones}
+                  residentialSelectedZones={residentialSelectedZones}
+                  setResidentialSelectedZones={setResidentialSelectedZones}
+                  residentials={residentials}
+                  requestById={requestById}
+                />
+              }
             </TabPanel>
           </TabView>
         )}

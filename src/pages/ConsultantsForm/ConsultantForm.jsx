@@ -9,14 +9,17 @@ import AdsTable from "../../components/AdsTable/AdsTable";
 import { UserContext } from "../../components/Context/AuthUser";
 import Input from "../../components/Input/Input";
 import Textarea from "../../components/Textarea/Textarea";
+import RequestCard from "../../components/RequestCard/RequestCard";
 import Checkboxes from "../../components/CheckBox/Checkboxes";
 import { AiOutlinePlus } from "react-icons/ai";
 import { BsPersonPlusFill } from "react-icons/bs";
 import { HiOutlineMail } from "react-icons/hi";
+import { MdLocationSearching } from "react-icons/md";
 import { FaPhoneAlt, FaTrash } from "react-icons/fa";
 import { FiSave } from "react-icons/fi";
 import { getAllAds } from "../../api/ads.api";
 import { createConsultant, getConsultantById, updateConsultant, deleteConsultant } from "../../api/consultants.api";
+import { getAllRequests } from "../../api/requests.api";
 import "./ConsultantForm.scss";
 import "../../styles/primeReact.scss";
 import useWindowSize from "../../hooks/useWindowSize";
@@ -35,6 +38,7 @@ const ConsultantForm = () => {
   const [companyUnitLogo, setCompanyUnitLogo] = useState("");
 
   const [ads, setAds] = useState([]);
+  const [requests, setRequests] = useState([]);
   const [consultantById, setConsultantById] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
   const [loader, setLoader] = useState(false);
@@ -51,6 +55,13 @@ const ConsultantForm = () => {
           return ad.consultant._id === id;
         });
         setAds(res);
+      });
+      getAllRequests().then((res) => {
+        res = res.filter((request) => {
+          return request.requestConsultant?._id === id;
+        });
+        console.log(res);
+        setRequests(res);
         setLoader(false);
       });
     }
@@ -192,7 +203,6 @@ const ConsultantForm = () => {
                       data.id = id;
                       updateConsultant(data).then((res) => {
                         alert(`El consultor ${res.fullName} ha sido actualizado`);
-                        history.push("/consultores");
                       });
                     }
                   }}
@@ -375,13 +385,21 @@ const ConsultantForm = () => {
                   )}
                 </Formik>
               </TabPanel>
-              {id ? (
-                <TabPanel header="Anuncios">
-                  <AdsTable ads={ads.length !== 0 ? ads : []} />
-                </TabPanel>
-              ) : (
-                <TabPanel header="Anuncios" disabled></TabPanel>
-              )}
+              <TabPanel header="Anuncios" disabled={id ? false : true}>
+                <AdsTable ads={ads.length !== 0 ? ads : []} />
+              </TabPanel>
+              <TabPanel header="Peticiones" disabled={id ? false : true}>
+                {requests.length === 0 ? (
+                  <div>
+                    <p style={{ marginTop: 100 }}>Este consultor no tiene peticiones creadas</p>
+                    <MdLocationSearching fontSize="2.5em" style={{ marginTop: 20, marginBottom: 100 }} />
+                  </div>
+                ) : (
+                  requests.map((request, index) => {
+                    return <RequestCard index={index} request={request} />;
+                  })
+                )}
+              </TabPanel>
             </TabView>
           </div>
         )}

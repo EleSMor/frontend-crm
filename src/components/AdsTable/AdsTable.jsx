@@ -139,13 +139,14 @@ const AdsTable = ({ ads }) => {
   let headerGroup = (
     <ColumnGroup>
       <Row>
-        <Column header="Fecha de creación" rowSpan={2} sortable field="createdAt" />
-        <Column header="Referencia" rowSpan={2} />
-        <Column header="Dirección" rowSpan={2} />
-        <Column header="Título" rowSpan={2} />
+        <Column header="Fecha de creación" rowSpan={2} sortable field="createdAt" style={{ width: "0%" }} />
+        <Column header="Referencia" rowSpan={2} style={{ width: "0%" }} />
+        <Column header="Dirección" rowSpan={2} style={{ width: "4%" }} />
+        <Column header="Título" rowSpan={2} style={{ width: "4%" }} />
         <Column
           header="Estado anuncio"
           rowSpan={2}
+          style={{ width: "0.1%" }}
           filter
           filterField="adStatus"
           filterElement={adStatusFilterTemplate}
@@ -156,6 +157,7 @@ const AdsTable = ({ ads }) => {
         <Column
           header="Cierre operación GV"
           rowSpan={2}
+          style={{ width: "0%" }}
           filter
           filterField="gvOperationClose"
           filterElement={gvOperationCloseFilterTemplate}
@@ -163,11 +165,12 @@ const AdsTable = ({ ads }) => {
           showApplyButton={false}
           showClearButton={false}
         />
-        <Column header="Precio" colSpan={2} />
-        <Column header="Superficie" rowSpan={2} />
+        <Column header="Precio" colSpan={2}/>
+        <Column header="Superficie" rowSpan={2} style={{ width: "1%" }} />
         <Column
           header="Tipo de inmueble"
           rowSpan={2}
+          style={{ width: "1%" }}
           filter
           filterField="adBuildingType"
           filterElement={adBuildingTypeFilterTemplate}
@@ -178,6 +181,7 @@ const AdsTable = ({ ads }) => {
         <Column
           header="Tipo de anuncio"
           rowSpan={2}
+          style={{ width: "0%" }}
           filter
           filterElement={adTypeFilterTemplate}
           filterField="adType"
@@ -185,12 +189,12 @@ const AdsTable = ({ ads }) => {
           showApplyButton={false}
           showClearButton={false}
         />
-        <Column header="Propietario" rowSpan={2} />
-        <Column header="Consultor" rowSpan={2} />
+        <Column header="Propietario" rowSpan={2} style={{ width: "2%" }} />
+        <Column header="Consultor" rowSpan={2} style={{ width: "2%" }} />
       </Row>
       <Row>
-        <Column header="Venta" colSpan={1} sortable field="sale.saleValue" />
-        <Column header="Alquiler" colSpan={1} sortable field="rent.rentValue" />
+        <Column header="Venta" colSpan={1} style={{ width: "2%" }} sortable field="sale.saleValue" />
+        <Column header="Alquiler" colSpan={1} style={{ width: "2%" }} sortable field="rent.rentValue" />
       </Row>
     </ColumnGroup>
   );
@@ -210,7 +214,27 @@ const AdsTable = ({ ads }) => {
   };
 
   const referenceBodyTemplate = (rowData) => {
-    return <Link to={`/anuncios/${rowData._id}`}>{rowData.adReference}</Link>;
+    return (
+      <Link style={{ textDecoration: "none", color: "inherit" }} to={`/anuncios/${rowData._id}`}>
+        {rowData.adReference}
+      </Link>
+    );
+  };
+
+  const titleBodyTemplate = (rowData) => {
+    return (
+      <Link style={{ textDecoration: "none", color: "inherit" }} to={`/anuncios/${rowData._id}`}>
+        {rowData.title}
+      </Link>
+    );
+  };
+
+  const directionBodyTemplate = (rowData) => {
+    return (
+      <Link style={{ textDecoration: "none", color: "inherit" }} to={`/anuncios/${rowData._id}`}>
+        {rowData.adDirection}
+      </Link>
+    );
   };
 
   const saleBodyTemplate = (rowData) => {
@@ -229,9 +253,7 @@ const AdsTable = ({ ads }) => {
     const newAds = ads.map((ad) => {
       if (typeof ad.adDirection === "object") {
         ad.adDirection.address = Object.values(ad.adDirection.address);
-        ad.adDirection = `${ad.adDirection.address.join(" ")}  ${ad.adDirection.postalCode} ${ad.adDirection.city} ${
-          ad.adDirection.country
-        }`;
+        ad.adDirection = `${ad.adDirection.address.join(" ")}`;
         ad.adBuildingType = ad.adBuildingType.sort().join(" ");
         ad.adType = ad.adType.sort().join(" ");
       }
@@ -252,6 +274,8 @@ const AdsTable = ({ ads }) => {
           sortField="createdAt"
           sortOrder={-1}
           filterDisplay="menu"
+          resizableColumns
+          columnResizeMode="fit"
           showGridlines
           filters={filters}
           responsiveLayout="scroll"
@@ -264,8 +288,8 @@ const AdsTable = ({ ads }) => {
             }}
           ></Column>
           <Column field="adReference" body={referenceBodyTemplate}></Column>
-          <Column field="adDirection"></Column>
-          <Column field="title"></Column>
+          <Column field="adDirection" body={directionBodyTemplate}></Column>
+          <Column field="title" body={titleBodyTemplate}></Column>
           <Column field="adStatus"></Column>
           <Column field="gvOperationClose"></Column>
           <Column field="sale.saleValue" body={saleBodyTemplate}></Column>

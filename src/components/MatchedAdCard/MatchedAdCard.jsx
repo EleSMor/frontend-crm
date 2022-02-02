@@ -1,16 +1,50 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { BsPersonCircle } from "react-icons/bs";
-import { GoPrimitiveDot } from "react-icons/go";
-import { GiPriceTag, GiPapers } from "react-icons/gi";
-import { IoIosResize } from "react-icons/io";
-import { BsChevronDoubleDown, BsChevronDoubleUp } from "react-icons/bs";
-import moment from "moment";
-import "moment/locale/es";
-import "./MatchedAdCard.scss";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { Formik, Form } from "formik";
+import NotFound from "../../components/NotFound/NotFound";
+import { MultiSelect } from "../../components";
+import { FiSave } from "react-icons/fi";
+import { DefaultImage } from "../../icons";
+import { BiBuildingHouse } from "react-icons/bi";
+import { GiPapers } from "react-icons/gi";
+import { RiMoneyEuroBoxLine } from "react-icons/ri";
+import { MdHeight } from "react-icons/md";
+import { ImMap2 } from "react-icons/im";
+import InputsGroup from "../../components/InputsGroup/InputsGroup";
 import useWindowSize from "../../hooks/useWindowSize";
+import "moment/locale/es";
+import { sendNewRequest } from "../../api/requests.api";
+import "./MatchedAdCard.scss";
 
-const MatchedAdCard = ({ ad }) => {
+const MatchedAdCard = ({
+  ads,
+  patrimonials,
+  residentials,
+  patrimonialSelectedZones,
+  setPatrimonialSelectedZones,
+  residentialSelectedZones,
+  setResidentialSelectedZones,
+  requestById,
+}) => {
+  const [adsMatched, setAdsMatched] = useState(ads)
+  const [selectedBuildingTypes, setSelectedBuildingTypes] = useState([]);
+  const { id } = useParams();
+  const adBuildingTypeOptions = [
+    { name: "Casa" },
+    { name: "Piso" },
+    { name: "Parcela" },
+    { name: "Ático" },
+    { name: "Oficina" },
+    { name: "Edificio" },
+    { name: "Local" },
+    { name: "Campo Rústico" },
+    { name: "Activos Singulares" },
+    { name: "Costa" },
+  ];
+
+  const size = useWindowSize();
+
+  useEffect(() => console.log(ads), [id]);
 
   const formatCurrency = (value) => {
     return value.toLocaleString("es-ES", {
@@ -18,13 +52,13 @@ const MatchedAdCard = ({ ad }) => {
       currency: "EUR",
     });
   };
-  const size = useWindowSize();
 
   const maskValues = (value, ref) => {
     let render = "";
 
     if (
-      (ref === "price" && value === 99999999) ||
+      (ref === "sale" && value === 99999999) ||
+      (ref === "rent" && value === 99999) ||
       (ref === "buildSurface" && value === 9999) ||
       (ref === "plotSurface" && value === 99999)
     ) {
@@ -32,7 +66,7 @@ const MatchedAdCard = ({ ad }) => {
     } else if (value === 0) {
       render = <p>Valor mín.</p>;
     } else {
-      if (ref === "price") render = <p>{formatCurrency(value)}</p>;
+      if (ref === "sale" || ref === "rent") render = <p>{formatCurrency(value)}</p>;
       else
         render = (
           <p>
@@ -43,163 +77,318 @@ const MatchedAdCard = ({ ad }) => {
     return render;
   };
 
+  const validateZone = (zones) => {
+    if (id && requestById.length !== 0) {
+      return zones.some((zone) => requestById.requestZone.includes(zone._id));
+    } else return "";
+  };
+
+  const renderDirection = (direction) => {
+    return (
+      <p>
+        {direction.address.directionNumber
+          ? direction.address.directionFloor
+            ? ` ${direction.address.street}, ${direction.address.directionNumber}, ${direction.address.directionFloor}`
+            : ` ${direction.address.street}, ${direction.address.directionNumber}`
+          : ` ${direction.address.street}`}
+      </p>
+    );
+  };
+
   return (
-    <div key={`${ad._id}-${ad.requestReference}`} className="AdCard">
-      {size < 880 ? (
-        <div className="AdCard__CardMobile">
-          <div className="AdCard__CardMobile--header">
-            <div className="AdCard__CardMobile--header-title">
-              <h4>Petición {`#${ad.requestReference}`}</h4>
+    <div>
+      {adsMatched.length !== 0 ? (
+        <div>
+          <Formik
+            enableReinitialize={true}
+            initialValues={{
+              id: requestById.length !== 0 ? requestById._id : "",
+              requestBuildingType: requestById.length !== 0 ? requestById.requestBuildingType : [],
+              requestZone: requestById.length !== 0 ? requestById.requestZone : [],
+              salePriceMax: requestById.length !== 0 ? requestById.requestSalePrice.salePriceMax : "",
+              salePriceMin: requestById.length !== 0 ? requestById.requestSalePrice.salePriceMin : "",
+              buildSurfaceMax: requestById.length !== 0 ? requestById.requestBuildSurface.buildSurfaceMax : "",
+              buildSurfaceMin: requestById.length !== 0 ? requestById.requestBuildSurface.buildSurfaceMin : "",
+              plotSurfaceMax: requestById.length !== 0 ? requestById.requestPlotSurface.plotSurfaceMax : "",
+              plotSurfaceMin: requestById.length !== 0 ? requestById.requestPlotSurface.plotSurfaceMin : "",
+            }}
+            onSubmit={(data) => {
+              if (id) data.id = id;
+              if (selectedBuildingTypes.length !== 0) data.requestBuildingType = selectedBuildingTypes;
+
+              if (residentialSelectedZones.length !== 0) {
+                data.requestZone = residentialSelectedZones;
+              } else if (patrimonialSelectedZones.length !== 0) {
+                data.requestZone = patrimonialSelectedZones;
+              }
+
+              if (patrimonialSelectedZones.length === 0 && residentialSelectedZones.length === 0) {
+                data.requestZone = [];
+              }
+
+              if (data.salePriceMax === "") data.salePriceMax = 99999999;
+              if (data.salePriceMin === "") data.salePriceMin = 0;
+
+              if (data.buildSurfaceMax === "") data.buildSurfaceMax = 9999;
+              if (data.buildSurfaceMin === "") data.buildSurfaceMin = 0;
+              if (data.plotSurfaceMax === "") data.plotSurfaceMax = 99999;
+              if (data.plotSurfaceMin === "") data.plotSurfaceMin = 0;
+
+              sendNewRequest(data).then((res) => {
+                alert(`Se ha actualizado la búsqueda`);
+                setAdsMatched(res)
+              });
+            }}
+          >
+            {(formProps) => (
+              <Form id="NewRequestForm">
+                <div className="RequestForm__container">
+                  <div className="RequestForm__container__col">
+                    <div className="RequestForm__container__col--item">
+                      <MultiSelect
+                        label={
+                          <span className="RequestForm__container__col--item-center">
+                            <BiBuildingHouse />
+                            <span>Tipo de inmueble</span>
+                          </span>
+                        }
+                        list={adBuildingTypeOptions}
+                        fields={{ groupBy: "", text: "name", value: "name" }}
+                        onChange={(ev) => {
+                          setSelectedBuildingTypes(ev.value);
+                        }}
+                        defaultValues={
+                          requestById.requestBuildingType.length !== 0 ? requestById.requestBuildingType : []
+                        }
+                      />
+                    </div>
+                    <div className="RequestForm__container__col--item">
+                      <MultiSelect
+                        label={
+                          <span className="RequestForm__container__col--item-center">
+                            <ImMap2 />
+                            <span>Residencial</span>
+                          </span>
+                        }
+                        list={residentials}
+                        fields={{ groupBy: "zone", text: "name", value: "_id" }}
+                        onChange={(ev) => {
+                          setResidentialSelectedZones(ev.value);
+                        }}
+                        defaultValues={validateZone(residentials) ? requestById.requestZone : ""}
+                      />
+                    </div>
+                    <div className="RequestForm__container__col--item">
+                      <MultiSelect
+                        label={
+                          <span className="RequestForm__container__col--item-center">
+                            <ImMap2 />
+                            <span>Patrimonial</span>
+                          </span>
+                        }
+                        list={patrimonials}
+                        fields={{ groupBy: "zone", text: "name", value: "_id" }}
+                        onChange={(ev) => {
+                          setPatrimonialSelectedZones(ev.value);
+                        }}
+                        defaultValues={validateZone(patrimonials) ? requestById.requestZone : ""}
+                      />
+                    </div>
+                    <div className="RequestForm__container__col--item">
+                      <InputsGroup
+                        label={
+                          <span className="RequestForm__container__col--item-center">
+                            <RiMoneyEuroBoxLine />
+                            <span>Precio de venta</span>
+                          </span>
+                        }
+                        inputs={[
+                          {
+                            name: "salePriceMax",
+                            placeholder: "€",
+                            label: "Máximo",
+                            type: "number",
+                            value: formProps.values.salePriceMax,
+                            onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
+                            span: <span style={{ position: "absolute", right: "1%", top: "52%" }}>€</span>,
+                            errors: "",
+                          },
+                          {
+                            name: "salePriceMin",
+                            label: "Mínimo",
+                            type: "number",
+                            value: formProps.values.salePriceMin,
+                            onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
+                            span: <span style={{ position: "absolute", right: "1%", top: "52%" }}>€</span>,
+                            errors: "",
+                          },
+                        ]}
+                      />
+                    </div>
+                    <div className="RequestForm__container__col--item">
+                      <InputsGroup
+                        label={
+                          <span className="RequestForm__container__col--item-center">
+                            <GiPapers />
+                            <span>Superficie construida</span>
+                          </span>
+                        }
+                        inputs={[
+                          {
+                            name: "buildSurfaceMax",
+                            label: "Máximo",
+                            type: "number",
+                            value: formProps.values.buildSurfaceMax,
+                            onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
+                            span: (
+                              <span style={{ position: "absolute", right: "1%", top: "52%" }}>
+                                m<sup>2</sup>
+                              </span>
+                            ),
+                            errors: "",
+                          },
+                          {
+                            name: "buildSurfaceMin",
+                            label: "Mínimo",
+                            type: "number",
+                            value: formProps.values.buildSurfaceMin,
+                            onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
+                            span: (
+                              <span style={{ position: "absolute", right: "1%", top: "52%" }}>
+                                m<sup>2</sup>
+                              </span>
+                            ),
+                            errors: "",
+                          },
+                        ]}
+                      />
+                    </div>
+                    <div className="RequestForm__container__col--item">
+                      <InputsGroup
+                        label={
+                          <span className="RequestForm__container__col--item-center">
+                            <MdHeight />
+                            <span>Superficie de parcela</span>
+                          </span>
+                        }
+                        inputs={[
+                          {
+                            name: "plotSurfaceMax",
+                            label: "Máximo",
+                            type: "number",
+                            value: formProps.values.plotSurfaceMax,
+                            onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
+                            span: (
+                              <span style={{ position: "absolute", right: "1%", top: "52%" }}>
+                                m<sup>2</sup>
+                              </span>
+                            ),
+                            errors: "",
+                          },
+                          {
+                            name: "plotSurfaceMin",
+                            label: "Mínimo",
+                            type: "number",
+                            value: formProps.values.plotSurfaceMin,
+                            onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
+                            span: (
+                              <span style={{ position: "absolute", right: "1%", top: "52%" }}>
+                                m<sup>2</sup>
+                              </span>
+                            ),
+                            errors: "",
+                          },
+                        ]}
+                      />
+                    </div>
+                    <button
+                      className="buttonForm"
+                      type="submit"
+                      form="NewRequestForm"
+                      style={{ marginRight: 8 }}
+                    >
+                      <FiSave
+                        style={
+                          size > 480
+                            ? { marginRight: 7 }
+                            : { marginRight: 7, transform: "scale(125%)", verticalAlign: "middle" }
+                        }
+                      />
+                      {size > 480 && "Aplicar filtros"}
+                    </button>
+                  </div>
+                </div>
+              </Form>
+            )}
+          </Formik>
+
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <div>
+              <input type="checkbox" />
+            </div>
+            <div>
+              <p>Título y dirección</p>
+            </div>
+            <div>
+              <p>Anuncio</p>
+            </div>
+            <div>
+              <p>Precio</p>
+            </div>
+            <div>
+              <p>Alquiler</p>
+            </div>
+            <div>
               <p>
-                <BsPersonCircle fontSize="1.4em" color="#47535B" style={{ margin: "0 8 0 0" }} />
-                <span>{ad.requestConsultant.fullName ? ad.requestConsultant.fullName : "Sin consultor"}</span>
+                m<sup>2</sup> construidos
               </p>
             </div>
-            <span>Creado el {moment(ad.createdAt).format("L")}</span>
-            {ad.requestBuildingType.length > 0 && (
-              <div className="AdCard__CardMobile--header-zones">
-                {ad.requestBuildingType.map((buildingType, index) => {
-                  return (
-                    <p key={`${index}-${ad.buildingType}`} className="">
-                      <GoPrimitiveDot fontSize="1.1em" color="#47535B" style={{ marginRight: 4, fontWeight: 2000 }} />
-                      {buildingType}
-                    </p>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-
-          <div className="AdCard__CardMobile--body">
-            <div className="AdCard__CardMobile--body--item">
-              <h4 className="AdCard__CardMobile--body--item--title">
-                <GiPriceTag fontSize="1em" style={{ marginRight: 7 }} />
-                <b>Precio</b>
-              </h4>
-              <div className="AdCard__CardMobile--body--item--content">
-                <div>
-                  <BsChevronDoubleUp fontSize="0.9em" style={{ marginRight: 9 }} />
-                  {maskValues(ad.sale.saleValue, "price")}
-                </div>
-                <div>
-                  <BsChevronDoubleDown fontSize="0.9em" style={{ marginRight: 9, marginLeft: 18 }} />
-                  {maskValues(ad.rent.rentValue, "price")}
-                </div>
-              </div>
+            <div>
+              <p>
+                m<sup>2</sup> parcela
+              </p>
             </div>
-            <div className="AdCard__CardMobile--body--item">
-              <h4 className="AdCard__CardMobile--body--item--title">
-                <GiPapers fontSize="1em" style={{ marginRight: 7 }} />
-                <b>Superficie construida</b>
-              </h4>
-              <div className="AdCard__CardMobile--body--item--content">
-                <div>
-                  <BsChevronDoubleUp fontSize="0.9em" style={{ marginRight: 9 }} />
-                  {maskValues(ad.buildSurface, "buildSurface")}
-                </div>
-              </div>
-            </div>
-            <div className="AdCard__CardMobile--body--item">
-              <h4 className="AdCard__CardMobile--body--item--title">
-                <IoIosResize fontSize="1em" style={{ marginRight: 7 }} />
-                <b>Superficie de parcela</b>
-              </h4>
-              <div className="AdCard__CardMobile--body--item--content">
-                <div>
-                  <BsChevronDoubleUp fontSize="0.9em" style={{ marginRight: 9 }} />
-                  {maskValues(ad.plotSurface, "plotSurface")}
-                </div>
-              </div>
+            <div>
+              <p>Inmueble</p>
             </div>
           </div>
-          <div className="AdCard__CardMobile--body--item--cta">
-            <Link className="AdCard__CardMobile--body--item--cta--button" to={`/peticiones/${ad._id}`}>
-              Consultar
-            </Link>
-          </div>
+          {adsMatched.map((ad) => (
+            <div key={`${ad._id}-${ad.requestReference}`} className="AdCard">
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <div>
+                  <input type="checkbox" />
+                </div>
+                <div style={{ display: "flex" }}>
+                  {ad.images?.main ? (
+                    <img src={ad.images?.main} alt={ad.images.title} width={81} height={75} />
+                  ) : (
+                    <DefaultImage
+                      style={{
+                        width: "81px",
+                        height: "75px",
+                        marginTop: "%",
+                      }}
+                    />
+                  )}
+                  <div>
+                    <p>{ad.title}</p>
+                    {renderDirection(ad.adDirection)}
+                  </div>
+                </div>
+                <div>{ad.adType.sort().join(" ")}</div>
+                <div>{maskValues(ad.sale.saleValue, "sale")}</div>
+                <div>{maskValues(ad.rent.rentValue, "rent")}</div>
+                <div>{maskValues(ad.buildSurface, "buildSurface")}</div>
+                <div>{maskValues(ad.plotSurface, "plotSurface")}</div>
+                <div>{ad.adBuildingType.sort().join(" ")}</div>
+              </div>
+            </div>
+          ))}
         </div>
       ) : (
-        <div className="AdCard__Card">
-          <div className="AdCard__Card--content">
-            <div className="AdCard__Card--content-header">
-              <h4>Petición {`#${ad.requestReference}`}</h4>
-              <p>
-                <BsPersonCircle fontSize="1.4em" color="#47535B" style={{ margin: "0 8 0 48" }} />
-                <span>{ad.requestConsultant ? ad.requestConsultant.fullName : "Sin consultor"}</span>
-              </p>
-
-              {ad.requestBuildingType.map((buildingType, index) => {
-                return (
-                  <p
-                    key={`${index}-${ad.buildingType}`}
-                    className="AdCard__Card--content-header"
-                    style={{ marginLeft: 24 }}
-                  >
-                    <GoPrimitiveDot fontSize="1.1em" color="#47535B" style={{ marginRight: 4, fontWeight: 2000 }} />
-                    {buildingType}
-                  </p>
-                );
-              })}
-            </div>
-
-            <div className="AdCard__Card--content-body">
-              <div className="AdCard__Card--content-body--item">
-                <h4 className="AdCard__Card--content-body--title">
-                  <GiPriceTag fontSize="1.2em" style={{ marginRight: 7 }} />
-                  <b>Precio</b>
-                </h4>
-                <div className="AdCard__Card--content-body--content">
-                  <div>
-                    <BsChevronDoubleUp fontSize="0.8em" style={{ marginRight: 7 }} />
-                    {maskValues(ad.requestSalePrice.salePriceMax, "price")}
-                  </div>
-                  <div>
-                    <BsChevronDoubleDown fontSize="0.8em" style={{ marginRight: 7 }} />
-                    {maskValues(ad.requestSalePrice.salePriceMin, "price")}
-                  </div>
-                </div>
-              </div>
-              <div className="AdCard__Card--content-body--item">
-                <h4 className="AdCard__Card--content-body--title">
-                  <GiPapers fontSize="1.2em" style={{ marginRight: 7 }} />
-                  <b>Superficie construida</b>
-                </h4>
-                <div className="AdCard__Card--content-body--content">
-                  <div>
-                    <BsChevronDoubleUp fontSize="0.8em" style={{ marginRight: 7 }} />
-                    {maskValues(ad.requestBuildSurface.buildSurfaceMax, "buildSurface")}
-                  </div>
-                  <div>
-                    <BsChevronDoubleDown fontSize="0.8em" style={{ marginRight: 7 }} />
-                    {maskValues(ad.requestBuildSurface.buildSurfaceMin, "buildSurface")}
-                  </div>
-                </div>
-              </div>
-              <div className="AdCard__Card--content-body--item">
-                <h4 className="AdCard__Card--content-body--title">
-                  <IoIosResize fontSize="1.2em" style={{ marginRight: 7 }} />
-                  <b>Superficie de parcela</b>
-                </h4>
-                <div className="AdCard__Card--content-body--content">
-                  <div>
-                    <BsChevronDoubleUp fontSize="0.8em" style={{ marginRight: 7 }} />
-                    {maskValues(ad.requestPlotSurface.plotSurfaceMax, "plotSurface")}
-                  </div>
-                  <div>
-                    <BsChevronDoubleDown fontSize="0.8em" style={{ marginRight: 7 }} />
-                    {maskValues(ad.requestPlotSurface.plotSurfaceMin, "plotSurface")}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="AdCard__Card--item AdCard__Card--item-cta">
-            <span>Creado el {moment(ad.createdAt).format("L")}</span>
-            <Link className="AdCard__Card--item-cta--button" to={`/peticiones/${ad._id}`}>
-              Consultar
-            </Link>
-          </div>
-        </div>
+        <>
+          <NotFound />
+        </>
       )}
     </div>
   );

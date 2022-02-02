@@ -218,6 +218,8 @@ const RequestsTable = ({ requests }) => {
           sortField="createdAt"
           sortOrder={-1}
           filterDisplay="menu"
+          resizableColumns
+          columnResizeMode="fit"
           showGridlines
           filters={filters}
           responsiveLayout="scroll"

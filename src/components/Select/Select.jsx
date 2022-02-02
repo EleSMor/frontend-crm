@@ -47,9 +47,7 @@ const CheckBoxGrouping = ({ list, fields, fn, disabled, defaultValues, label }) 
               showDropDownIcon={true}
               enableSelectionOrder={false}
               disabled={disabled}
-              onChange={(e) => {
-                fn(e.value);
-              }}
+              onChange={fn}
             />
           </div>
         </div>
