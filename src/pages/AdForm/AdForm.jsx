@@ -215,17 +215,7 @@ const AdForm = () => {
                   plotSurface: adById ? adById.plotSurface : 0,
                   floor: adById ? adById.floor : "",
                   disponibility: adById ? adById.disponibility : "",
-                  surfacesBox: adById
-                    ? adById.surfacesBox
-                    : [
-                        {
-                          surfaceFloor: "",
-                          surfaceUse: "",
-                          metersAvailables: "",
-                          metersPrice: "",
-                          surfaceDisponibility: "",
-                        },
-                      ],
+                  surfacesBox: adById ? adById.surfacesBox : [],
                   saleValue: adById.sale ? adById.sale.saleValue : 0,
                   saleShowOnWeb: adById.sale ? adById.sale.saleShowOnWeb : true,
                   rentValue: adById.rent ? adById.rent.rentValue : 0,
@@ -283,7 +273,6 @@ const AdForm = () => {
                   data.adType = selectedAdType;
                   data.adBuildingType = selectedAdBuildingType;
 
-                  if (department[0]) data.department = department[0];
                   data.adStatus = adStatus;
 
                   if (residentialSelectedZones.length !== 0) {

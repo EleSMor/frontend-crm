@@ -64,7 +64,13 @@ const ContactForm = () => {
         footContent={
           <>
             <button className="buttonForm" type="submit" form="ContactForm">
-              <FiSave style={size > 480 ? { marginRight: 7 } : { marginRight: 7, transform: "scale(125%)", verticalAlign: "middle" }} />
+              <FiSave
+                style={
+                  size > 480
+                    ? { marginRight: 7 }
+                    : { marginRight: 7, transform: "scale(125%)", verticalAlign: "middle" }
+                }
+              />
               {size > 480 && "Guardar"}
             </button>
             <Link className="buttonFormCancel" to="/contactos">
@@ -80,7 +86,13 @@ const ContactForm = () => {
                   })
                 }
               >
-                <FaTrash style={size > 480 ? { marginRight: 7 } : { marginRight: 7, transform: "scale(125%)", verticalAlign: "middle" }} />
+                <FaTrash
+                  style={
+                    size > 480
+                      ? { marginRight: 7 }
+                      : { marginRight: 7, transform: "scale(125%)", verticalAlign: "middle" }
+                  }
+                />
                 {size > 480 && "Borrar"}
               </button>
             )}
@@ -271,7 +283,9 @@ const ContactForm = () => {
                     </div>
                   ) : (
                     requests.map((request, index) => {
-                      return <ContactRequestCard index={index} request={request} />;
+                      return (
+                        <ContactRequestCard key={`${request._id}-${request.requestReference}`} request={request} />
+                      );
                     })
                   )}
                 </TabPanel>

@@ -54,8 +54,8 @@ const RequestsTable = ({ requests }) => {
     if (requests.length !== 0) {
       const newRequests = requests.map((request) => {
         if (request.requestBuildingType && loader)
-          request.requestBuildingType = request.requestBuildingType.sort().join(" ");
-        if (request.requestAdType && loader) request.requestAdType = request.requestAdType.sort().join(" ");
+          request.requestBuildingType = request.requestBuildingType.sort().join(", ");
+        if (request.requestAdType && loader) request.requestAdType = request.requestAdType.sort().join(", ");
         return request;
       });
       setRequestsFormated(newRequests);
@@ -106,10 +106,10 @@ const RequestsTable = ({ requests }) => {
   let headerGroup = (
     <ColumnGroup>
       <Row>
-        <Column header="Fecha de creación" rowSpan={2} sortable field="createdAt" />
-        <Column header="Referencia" rowSpan={2} />
-        <Column header="Contacto" rowSpan={2} />
-        <Column header="Empresa" rowSpan={2} />
+        <Column header="Fecha de modificación" rowSpan={2} sortable field="updatedAt" style={{ width: "0%"}} />
+        <Column header="Referencia" rowSpan={2} style={{ width: "0%"}} />
+        <Column header="Contacto" rowSpan={2} style={{ width: "0.5%"}} />
+        <Column header="Empresa" rowSpan={2} style={{ width: "0.25%"}} />
         <Column
           header="Tipo de inmueble"
           rowSpan={2}
@@ -119,6 +119,7 @@ const RequestsTable = ({ requests }) => {
           showFilterMatchModes={false}
           showApplyButton={false}
           showClearButton={false}
+          style={{ width: "0.15%"}}
         />
         <Column
           header="Tipo de anuncio"
@@ -130,19 +131,20 @@ const RequestsTable = ({ requests }) => {
           filterMatchMode="custom"
           showApplyButton={false}
           showClearButton={false}
+          style={{ width: "0.15%"}}
         />
-        <Column header="Precio" colSpan={2} />
-        <Column header="Superficie construida" colSpan={2} />
-        <Column header="Superficie parcela" colSpan={2} />
-        <Column header="Consultor" rowSpan={2} />
+        <Column header="Precio" colSpan={2}/>
+        <Column header="Superficie construida" colSpan={2}/>
+        <Column header="Superficie parcela" colSpan={2}/>
+        <Column header="Consultor" rowSpan={2} style={{ width: "0%"}}/>
       </Row>
       <Row>
-        <Column header="Máximo" colSpan={1} sortable field="requestSalePrice.salePriceMax" />
-        <Column header="Mínimo" colSpan={1} sortable field="requestSalePrice.salePriceMin" />
-        <Column header="Máxima" colSpan={1} sortable field="requestBuildSurface.buildSurfaceMax" />
-        <Column header="Mínima" colSpan={1} sortable field="requestBuildSurface.buildSurfaceMin" />
-        <Column header="Máxima" colSpan={1} sortable field="requestPlotSurface.plotSurfaceMax" />
-        <Column header="Mínima" colSpan={1} sortable field="requestPlotSurface.plotSurfaceMin" />
+        <Column header="Máximo" colSpan={1} sortable field="requestSalePrice.salePriceMax" style={{ width: "0.25%"}}/>
+        <Column header="Mínimo" colSpan={1} sortable field="requestSalePrice.salePriceMin" style={{ width: "0.25%"}}/>
+        <Column header="Máxima" colSpan={1} sortable field="requestBuildSurface.buildSurfaceMax" style={{ width: "0.15%"}}/>
+        <Column header="Mínima" colSpan={1} sortable field="requestBuildSurface.buildSurfaceMin" style={{ width: "0.15%"}}/>
+        <Column header="Máxima" colSpan={1} sortable field="requestPlotSurface.plotSurfaceMax" style={{ width: "0%"}}/>
+        <Column header="Mínima" colSpan={1} sortable field="requestPlotSurface.plotSurfaceMin" style={{ width: "0%"}}/>
       </Row>
     </ColumnGroup>
   );
@@ -215,7 +217,7 @@ const RequestsTable = ({ requests }) => {
           value={requests.length !== 0 ? requestsFormated : []}
           headerColumnGroup={headerGroup}
           removableSort
-          sortField="createdAt"
+          sortField="updatedAt"
           sortOrder={-1}
           filterDisplay="menu"
           resizableColumns
@@ -227,9 +229,9 @@ const RequestsTable = ({ requests }) => {
           emptyMessage="No se ha encontrado ninguna petición"
         >
           <Column
-            field="createdAt"
+            field="updatedAt"
             body={(rowData) => {
-              return moment(rowData.createdAt).locale("es").format("L");
+              return moment(rowData.updatedAt).locale("es").format("L");
             }}
           ></Column>
           <Column field="requestReference" body={referenceBodyTemplate}></Column>

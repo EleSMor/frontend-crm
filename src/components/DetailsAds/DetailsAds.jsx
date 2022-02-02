@@ -34,7 +34,9 @@ const DetailsAds = ({
   formProps,
   id,
   owners,
+  owner,
   consultants,
+  consultant,
   setOwner,
   setConsultant,
   residentials,
@@ -199,21 +201,25 @@ const DetailsAds = ({
 
         <div className="DetailsAds__container__col">
           <div>
-              <Select
-                label="Propietario"
-                list={owners}
-                fields={{ groupBy: "", text: "fullName", value: "_id" }}
-                fn={setOwner}
-                defaultValues={formProps.values.owner ? [formProps.values.owner] : []}
-              />
+            <Select
+              label="Propietario"
+              list={owners}
+              fields={{ groupBy: "", text: "fullName", value: "_id" }}
+              fn={(ev) => {
+                setOwner(ev.target.value);
+              }}
+              defaultValues={owner ? owner : ""}
+            />
           </div>
           <div>
             <Select
               label="Consultor"
               list={consultants}
-              fields={{ groupBy: "", text: "fullName", value: "_id" }}
-              fn={setConsultant}
-              defaultValues={formProps.values.consultant ? [formProps.values.consultant] : []}
+              fields={{ text: "fullName", value: "_id" }}
+              fn={(ev) => {
+                setConsultant(ev.target.value);
+              }}
+              defaultValues={consultant ? consultant : []}
             />
           </div>
           <div>
@@ -298,13 +304,25 @@ const DetailsAds = ({
                     label="Departamento"
                     list={[{ name: "Patrimonio" }, { name: "Residencial" }]}
                     fields={{ groupBy: "", text: "name", value: "name" }}
+                    filter={(e) => {
+                      const searchData = [{ name: "Patrimonio" }, { name: "Residencial" }].filter((department) =>
+                        department.name
+                          .normalize("NFD")
+                          .replace(/[\u0300-\u036f]/g, "")
+                          .toLowerCase()
+                          .includes(e.text.toLowerCase())
+                      );
+                      e.updateData(searchData);
+                    }}
                     fn={(e) => {
                       setDepartment(e.value);
-                      setZone(e.value[0]);
-                      if (e.value[0] === "Residencial") setPatrimonialZones([]);
-                      if (e.value[0] === "Patrimonio") setResidentialZones([]);
+                      setZone(e.value);
+                      if (e.value === "Residencial") setPatrimonialZones([]);
+                      if (e.value === "Patrimonio") setResidentialZones([]);
+                      formProps.setFieldValue("department", e.value)
+                      formProps.setFieldValue("zone", [])
                     }}
-                    defaultValues={formProps.values.department ? [formProps.values.department] : []}
+                    defaultValues={formProps.values.department ? formProps.values.department : ""}
                   />
                 </div>
               </div>
@@ -317,7 +335,7 @@ const DetailsAds = ({
                       mode={"Checkbox"}
                       fields={{ groupBy: "zone", text: "name", value: "_id" }}
                       onChange={(ev) => setResidentialZones(ev.value)}
-                      defaultValues={validateZone(residentials) ? formProps.values.zone : ""}
+                      defaultValues={validateZone(residentials) ? formProps.values.zone : []}
                     />
                   </div>
                 )}
@@ -328,8 +346,11 @@ const DetailsAds = ({
                       list={patrimonials}
                       mode={"Checkbox"}
                       fields={{ groupBy: "", text: "name", value: "_id" }}
-                      onChange={(ev) => setPatrimonialZones(ev.value)}
-                      defaultValues={validateZone(patrimonials) ? formProps.values.zone : ""}
+                      onChange={(ev) => {
+                        setPatrimonialZones(ev.value);
+                        formProps.setFieldValue("zone", ev.value)
+                      }}
+                      defaultValues={validateZone(patrimonials) ? formProps.values.zone : []}
                     />
                   </div>
                 )}
@@ -343,36 +364,6 @@ const DetailsAds = ({
                   value={formProps.values.webSubtitle}
                   onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                 />
-              </div>
-              <div style={{ position: "relative" }}>
-                <Input
-                  label="Superficie construida"
-                  type="number"
-                  required={true}
-                  name="buildSurface"
-                  placeholder="Escribe aquí"
-                  value={formProps.values.buildSurface}
-                  onChange={(ev) => {
-                    formProps.setFieldValue(ev.target.name, ev.target.value);
-                    formProps.setFieldValue("rentValue", ev.target.value * formProps.values.monthlyRent);
-                  }}
-                />
-                <span style={{ position: "absolute", right: "0.5%", top: "72%" }}>
-                  m<sup>2</sup>
-                </span>
-              </div>
-              <div style={{ position: "relative" }}>
-                <Input
-                  label="Superficie de parcela"
-                  type="number"
-                  name="plotSurface"
-                  placeholder="Escribe aquí"
-                  value={formProps.values.plotSurface}
-                  onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
-                />
-                <span style={{ position: "absolute", right: "0.5%", top: "72%" }}>
-                  m<sup>2</sup>
-                </span>
               </div>
               <div>
                 <Input
@@ -444,6 +435,36 @@ const DetailsAds = ({
                     },
                   ]}
                 />
+              </div>
+              <div style={{ position: "relative" }}>
+                <Input
+                  label="Superficie construida"
+                  type="number"
+                  required={true}
+                  name="buildSurface"
+                  placeholder="Escribe aquí"
+                  value={formProps.values.buildSurface}
+                  onChange={(ev) => {
+                    formProps.setFieldValue(ev.target.name, ev.target.value);
+                    formProps.setFieldValue("rentValue", ev.target.value * formProps.values.monthlyRent);
+                  }}
+                />
+                <span style={{ position: "absolute", right: "0.5%", top: "72%" }}>
+                  m<sup>2</sup>
+                </span>
+              </div>
+              <div style={{ position: "relative" }}>
+                <Input
+                  label="Superficie de parcela"
+                  type="number"
+                  name="plotSurface"
+                  placeholder="Escribe aquí"
+                  value={formProps.values.plotSurface}
+                  onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
+                />
+                <span style={{ position: "absolute", right: "0.5%", top: "72%" }}>
+                  m<sup>2</sup>
+                </span>
               </div>
               <div className="DetailsAds__container__col--item">
                 <InputsGroup

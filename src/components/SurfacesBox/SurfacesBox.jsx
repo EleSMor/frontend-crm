@@ -9,6 +9,7 @@ const SurfacesBox = ({ formProps }) => {
 
   const handleAddRow = () => {
     const item = {
+      id: surfacesBox.length + 1,
       surfaceFloor: "",
       surfaceUse: "",
       metersAvailables: "",
@@ -16,6 +17,8 @@ const SurfacesBox = ({ formProps }) => {
       surfaceDisponibility: "",
     };
     setSurfacesBox([...surfacesBox, item]);
+    formProps.setFieldValue("surfacesBox", [...surfacesBox, item]);
+
   };
 
   const textEditor = (options) => {
@@ -32,15 +35,17 @@ const SurfacesBox = ({ formProps }) => {
   const onRowEditComplete = (e) => {
     let updateSurface = surfacesBox;
     let { newData, index } = e;
-
+    
     updateSurface[index] = newData;
 
+
     setSurfacesBox(updateSurface);
-    formProps.setFieldValue("surfacesBox", surfacesBox);
+    formProps.setFieldValue("surfacesBox", updateSurface);
   };
 
   const deleteRow = (row) => {
-    const newSurfacesBox = surfacesBox.filter((surface) => surface._id !== row._id);
+    const newSurfacesBox = surfacesBox.filter((surfaceRow) => surfaceRow.id !== row.id);
+    formProps.setFieldValue("surfacesBox", newSurfacesBox);
     setSurfacesBox(newSurfacesBox);
   };
 
@@ -92,11 +97,11 @@ const SurfacesBox = ({ formProps }) => {
         <Column
           style={{ width: "10%" }}
           bodyStyle={{ textAlign: "center" }}
-          body={(ev) => (
-            <div onClick={() => deleteRow(ev)}>
-              <BsTrash />
-            </div>
-          )}
+          body={(row) => {
+            return (
+              <BsTrash onClick={() => deleteRow(row)} />
+            );
+          }}
         />
       </DataTable>
       <br />

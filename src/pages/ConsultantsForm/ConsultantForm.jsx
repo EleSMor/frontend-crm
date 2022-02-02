@@ -60,7 +60,6 @@ const ConsultantForm = () => {
         res = res.filter((request) => {
           return request.requestConsultant?._id === id;
         });
-        console.log(res);
         setRequests(res);
         setLoader(false);
       });
@@ -396,7 +395,7 @@ const ConsultantForm = () => {
                   </div>
                 ) : (
                   requests.map((request, index) => {
-                    return <RequestCard index={index} request={request} />;
+                    return <RequestCard key={`${request._id}-${request.requestReference}`} request={request} />;
                   })
                 )}
               </TabPanel>

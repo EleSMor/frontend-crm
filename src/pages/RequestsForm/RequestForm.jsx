@@ -75,8 +75,8 @@ const RequestForm = () => {
           getAdsMatched(id).then((res) => setAds(res));
           getRequestById(id).then((res) => {
             setRequestById(res);
-            setSelectedContact([res.requestContact]);
-            setSelectedConsultant([res.requestConsultant]);
+            setSelectedContact(res.requestContact);
+            setSelectedConsultant(res.requestConsultant);
             setSelectedBuildingType(res.requestBuildingType);
             setSelectedAdType(res.requestAdType);
           });
@@ -211,8 +211,8 @@ const RequestForm = () => {
                 onSubmit={(data) => {
                   setValidateForm(true);
                   if (id) data.id = id;
-                  data.requestContact = selectedContact[0];
-                  data.requestConsultant = selectedConsultant[0];
+                  data.requestContact = selectedContact;
+                  data.requestConsultant = selectedConsultant;
                   data.requestAdType = selectedAdType;
                   data.requestBuildingType = selectedBuildingType;
 
@@ -262,7 +262,7 @@ const RequestForm = () => {
                             list={contacts}
                             fields={{ groupBy: "", text: "fullName", value: "_id" }}
                             fn={(e) => setSelectedContact(e.target.value)}
-                            defaultValues={selectedContact[0] ? selectedContact : []}
+                            defaultValues={selectedContact ? selectedContact : ""}
                           />
                           {validateForm && selectedContact.length === 0 && (
                             <p style={{ color: "red" }}>* Seleccione un contacto</p>
@@ -274,7 +274,7 @@ const RequestForm = () => {
                             list={consultants}
                             fields={{ groupBy: "", text: "fullName", value: "_id" }}
                             fn={(e) => setSelectedConsultant(e.target.value)}
-                            defaultValues={selectedConsultant[0] ? selectedConsultant : []}
+                            defaultValues={selectedConsultant ? selectedConsultant : ""}
                           />
                           {validateForm && selectedConsultant.length === 0 && (
                             <p style={{ color: "red" }}>* Seleccione un consultor</p>

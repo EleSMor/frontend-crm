@@ -139,14 +139,14 @@ const AdsTable = ({ ads }) => {
   let headerGroup = (
     <ColumnGroup>
       <Row>
-        <Column header="Fecha de creación" rowSpan={2} sortable field="createdAt" style={{ width: "0%" }} />
+        <Column header="Fecha de modificación" rowSpan={2} sortable field="updatedAt" style={{ width: "0%" }} />
         <Column header="Referencia" rowSpan={2} style={{ width: "0%" }} />
-        <Column header="Dirección" rowSpan={2} style={{ width: "4%" }} />
-        <Column header="Título" rowSpan={2} style={{ width: "4%" }} />
+        <Column header="Dirección" rowSpan={2} style={{ width: "0.75%" }} />
+        <Column header="Título" rowSpan={2} style={{ width: "1.5%" }} />
         <Column
           header="Estado anuncio"
           rowSpan={2}
-          style={{ width: "0.1%" }}
+          style={{ width: "0.10%" }}
           filter
           filterField="adStatus"
           filterElement={adStatusFilterTemplate}
@@ -166,11 +166,11 @@ const AdsTable = ({ ads }) => {
           showClearButton={false}
         />
         <Column header="Precio" colSpan={2}/>
-        <Column header="Superficie" rowSpan={2} style={{ width: "1%" }} />
+        <Column header="Superficie" rowSpan={2} style={{ width: "0%" }} />
         <Column
           header="Tipo de inmueble"
           rowSpan={2}
-          style={{ width: "1%" }}
+          style={{ width: "0.15%" }}
           filter
           filterField="adBuildingType"
           filterElement={adBuildingTypeFilterTemplate}
@@ -189,12 +189,12 @@ const AdsTable = ({ ads }) => {
           showApplyButton={false}
           showClearButton={false}
         />
-        <Column header="Propietario" rowSpan={2} style={{ width: "2%" }} />
-        <Column header="Consultor" rowSpan={2} style={{ width: "2%" }} />
+        <Column header="Propietario" rowSpan={2} style={{ width: "0.15%" }} />
+        <Column header="Consultor" rowSpan={2} style={{ width: "0.15%" }} />
       </Row>
       <Row>
-        <Column header="Venta" colSpan={1} style={{ width: "2%" }} sortable field="sale.saleValue" />
-        <Column header="Alquiler" colSpan={1} style={{ width: "2%" }} sortable field="rent.rentValue" />
+        <Column header="Venta" colSpan={1} style={{ width: "0%" }} sortable field="sale.saleValue" />
+        <Column header="Alquiler" colSpan={1} style={{ width: "0%" }} sortable field="rent.rentValue" />
       </Row>
     </ColumnGroup>
   );
@@ -254,8 +254,8 @@ const AdsTable = ({ ads }) => {
       if (typeof ad.adDirection === "object") {
         ad.adDirection.address = Object.values(ad.adDirection.address);
         ad.adDirection = `${ad.adDirection.address.join(" ")}`;
-        ad.adBuildingType = ad.adBuildingType.sort().join(" ");
-        ad.adType = ad.adType.sort().join(" ");
+        ad.adBuildingType = ad.adBuildingType.sort().join(", ");
+        ad.adType = ad.adType.sort().join(", ");
       }
       return ad;
     });
@@ -271,20 +271,18 @@ const AdsTable = ({ ads }) => {
           headerColumnGroup={headerGroup}
           value={ads.length !== 0 ? adsFormated : []}
           removableSort
-          sortField="createdAt"
+          sortField="updatedAt"
           sortOrder={-1}
           filterDisplay="menu"
-          resizableColumns
-          columnResizeMode="fit"
           showGridlines
           filters={filters}
           responsiveLayout="scroll"
           emptyMessage="No se ha encontrado ningún anuncio"
         >
           <Column
-            field="createdAt"
+            field="updatedAt"
             body={(rowData) => {
-              return moment(rowData.createdAt).locale("es-ES").format("L");
+              return moment(rowData.updatedAt).locale("es-ES").format("L");
             }}
           ></Column>
           <Column field="adReference" body={referenceBodyTemplate}></Column>

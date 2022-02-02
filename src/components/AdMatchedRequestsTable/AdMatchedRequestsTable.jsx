@@ -9,7 +9,8 @@ const AdMatchedRequestsTable = () => {
 
   const [requests, setRequests] = useState([]);
 
-  useEffect(() => getMatchedRequests(id).then((res) => setRequests(res)));
+  useEffect(() => getMatchedRequests(id).then((res) => setRequests(res)), []);
+
   return (
     <div>
       <DataTable

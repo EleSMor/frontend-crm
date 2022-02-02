@@ -1,8 +1,8 @@
 import * as React from "react";
-import { MultiSelectComponent } from "@syncfusion/ej2-react-dropdowns";
+import { ComboBoxComponent } from "@syncfusion/ej2-react-dropdowns";
 import "./Select.scss";
 
-const CheckBoxGrouping = ({ list, fields, fn, disabled, defaultValues, label }) => {
+const CheckBoxGrouping = ({ list, fields, fn, filter, disabled, defaultValues, label }) => {
   const data = list;
   const checkFields = fields;
   // set the placeholder to the MultiSelect input
@@ -20,27 +20,18 @@ const CheckBoxGrouping = ({ list, fields, fn, disabled, defaultValues, label }) 
       <div id="multisection" className="control-panel">
         <div className="control-section">
           <div id="multigroup" className="control-styles Select__input">
-            <MultiSelectComponent
+            <ComboBoxComponent
               id="boxelement"
               dataSource={data}
               ignoreAccent={true}
               ignoreCase={true}
-              maximumSelectionLength={1}
+              // maximumSelectionLength={1}
               allowFiltering={true}
-              filtering={(e) => {
-                const searchData = data.filter((person) =>
-                  person.fullName
-                    .normalize("NFD")
-                    .replace(/[\u0300-\u036f]/g, "")
-                    .toLowerCase()
-                    .includes(e.text.toLowerCase())
-                );
-                e.updateData(searchData);
-              }}
+              filtering={filter}
               filterBarPlaceholder={filterBarPlaceholder}
               fields={checkFields}
               placeholder={checkWaterMark}
-              mode={mode}
+              // mode={mode}
               required={true}
               value={defaultValues}
               enableGroupCheckBox={enableGroupCheckBox}

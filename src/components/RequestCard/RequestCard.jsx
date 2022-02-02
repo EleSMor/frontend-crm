@@ -43,7 +43,7 @@ const RequestCard = ({ request }) => {
   };
 
   return (
-    <div key={`${request._id}-${request.requestReference}`} className="RequestCard">
+    <div className="RequestCard">
       {size < 880 ? (
         <div className="RequestCard__CardMobile">
           <div className="RequestCard__CardMobile--header">

@@ -60,7 +60,7 @@ const RequestsMatching = ({ ads }) => {
         field="adBuildingType"
         header="Inmueble"
         body={(rowData) => {
-          return `${rowData.adBuildingType.join(" ")}`;
+          return `${rowData.adBuildingType.join(", ")}`;
         }}
         sortable
       ></Column>
