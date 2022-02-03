@@ -4,7 +4,12 @@ import { Column } from "primereact/column";
 
 const RequestsMatching = ({ ads }) => {
   const formatCurrency = (value) => {
-    return value.toLocaleString("es-ES", { style: "currency", currency: "EUR" });
+    return value.toLocaleString("es-ES", {
+      style: "currency",
+      currency: "EUR",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    });
   };
 
   const buildSurfaceBodyTemplate = (rowData) => {

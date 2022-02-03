@@ -15,6 +15,8 @@ const ContactRequestCard = ({ request }) => {
     return value.toLocaleString("es-ES", {
       style: "currency",
       currency: "EUR",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
     });
   };
   const size = useWindowSize();

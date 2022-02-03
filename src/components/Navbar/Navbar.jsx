@@ -22,7 +22,7 @@ const Navbar = ({ title }) => {
   return (
     <>
       {size < 880 ? (
-        <NavbarXS title={title}/>
+        <NavbarXS title={title} />
       ) : (
         <nav className="navigate">
           <div className="navigate__left">
@@ -36,11 +36,7 @@ const Navbar = ({ title }) => {
                 </li>
               </div>
               <NavLink
-                className={
-                  location.includes("/anuncios")
-                    ? "navigate__route-active"
-                    : "navigate__route"
-                }
+                className={location.includes("/anuncios") ? "navigate__route-active" : "navigate__route"}
                 to="/anuncios"
               >
                 <li>
@@ -51,11 +47,7 @@ const Navbar = ({ title }) => {
                 </li>
               </NavLink>
               <NavLink
-                className={
-                  location.includes("/peticiones")
-                    ? "navigate__route-active"
-                    : "navigate__route"
-                }
+                className={location.includes("/peticiones") ? "navigate__route-active" : "navigate__route"}
                 to="/peticiones"
               >
                 <li>
@@ -66,11 +58,7 @@ const Navbar = ({ title }) => {
                 </li>
               </NavLink>
               <NavLink
-                className={
-                  location.includes("/contactos")
-                    ? "navigate__route-active"
-                    : "navigate__route"
-                }
+                className={location.includes("/contactos") ? "navigate__route-active" : "navigate__route"}
                 to="/contactos"
               >
                 <li>
@@ -81,11 +69,7 @@ const Navbar = ({ title }) => {
                 </li>
               </NavLink>
               <NavLink
-                className={
-                  location.includes("/consultores")
-                    ? "navigate__route-active"
-                    : "navigate__route"
-                }
+                className={location.includes("/consultores") ? "navigate__route-active" : "navigate__route"}
                 to="/consultores"
               >
                 <li>

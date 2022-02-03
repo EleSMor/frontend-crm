@@ -274,6 +274,8 @@ const AdForm = () => {
                   data.adBuildingType = selectedAdBuildingType;
 
                   data.adStatus = adStatus;
+                  if (data.saleValue === "") data.saleValue = 0;
+                  if (data.rentValue === "") data.rentValue = 0;
 
                   if (residentialSelectedZones.length !== 0) {
                     data.zone = residentialSelectedZones;

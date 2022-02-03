@@ -50,6 +50,8 @@ const MatchedAdCard = ({
     return value.toLocaleString("es-ES", {
       style: "currency",
       currency: "EUR",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
     });
   };
 
@@ -375,12 +377,12 @@ const MatchedAdCard = ({
                     {renderDirection(ad.adDirection)}
                   </div>
                 </div>
-                <div>{ad.adType.sort().join(" ")}</div>
+                <div>{ad.adType.sort().join(", ")}</div>
                 <div>{maskValues(ad.sale.saleValue, "sale")}</div>
                 <div>{maskValues(ad.rent.rentValue, "rent")}</div>
                 <div>{maskValues(ad.buildSurface, "buildSurface")}</div>
                 <div>{maskValues(ad.plotSurface, "plotSurface")}</div>
-                <div>{ad.adBuildingType.sort().join(" ")}</div>
+                <div>{ad.adBuildingType.sort().join(", ")}</div>
               </div>
             </div>
           ))}

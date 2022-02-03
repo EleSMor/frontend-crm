@@ -106,10 +106,10 @@ const RequestsTable = ({ requests }) => {
   let headerGroup = (
     <ColumnGroup>
       <Row>
-        <Column header="Fecha de modificación" rowSpan={2} sortable field="updatedAt" style={{ width: "0%"}} />
-        <Column header="Referencia" rowSpan={2} style={{ width: "0%"}} />
-        <Column header="Contacto" rowSpan={2} style={{ width: "0.5%"}} />
-        <Column header="Empresa" rowSpan={2} style={{ width: "0.25%"}} />
+        <Column header="Fecha de modificación" rowSpan={2} sortable field="updatedAt" style={{ width: "0%" }} />
+        <Column header="Referencia" rowSpan={2} style={{ width: "0%" }} />
+        <Column header="Contacto" rowSpan={2} style={{ width: "0.5%" }} />
+        <Column header="Empresa" rowSpan={2} style={{ width: "0.25%" }} />
         <Column
           header="Tipo de inmueble"
           rowSpan={2}
@@ -119,7 +119,7 @@ const RequestsTable = ({ requests }) => {
           showFilterMatchModes={false}
           showApplyButton={false}
           showClearButton={false}
-          style={{ width: "0.15%"}}
+          style={{ width: "0.15%" }}
         />
         <Column
           header="Tipo de anuncio"
@@ -131,26 +131,55 @@ const RequestsTable = ({ requests }) => {
           filterMatchMode="custom"
           showApplyButton={false}
           showClearButton={false}
-          style={{ width: "0.15%"}}
+          style={{ width: "0.15%" }}
         />
-        <Column header="Precio" colSpan={2}/>
-        <Column header="Superficie construida" colSpan={2}/>
-        <Column header="Superficie parcela" colSpan={2}/>
-        <Column header="Consultor" rowSpan={2} style={{ width: "0%"}}/>
+        <Column header="Precio" colSpan={2} />
+        <Column header="Superficie construida" colSpan={2} />
+        <Column header="Superficie parcela" colSpan={2} />
+        <Column header="Consultor" rowSpan={2} style={{ width: "0%" }} />
       </Row>
       <Row>
-        <Column header="Máximo" colSpan={1} sortable field="requestSalePrice.salePriceMax" style={{ width: "0.25%"}}/>
-        <Column header="Mínimo" colSpan={1} sortable field="requestSalePrice.salePriceMin" style={{ width: "0.25%"}}/>
-        <Column header="Máxima" colSpan={1} sortable field="requestBuildSurface.buildSurfaceMax" style={{ width: "0.15%"}}/>
-        <Column header="Mínima" colSpan={1} sortable field="requestBuildSurface.buildSurfaceMin" style={{ width: "0.15%"}}/>
-        <Column header="Máxima" colSpan={1} sortable field="requestPlotSurface.plotSurfaceMax" style={{ width: "0%"}}/>
-        <Column header="Mínima" colSpan={1} sortable field="requestPlotSurface.plotSurfaceMin" style={{ width: "0%"}}/>
+        <Column header="Máximo" colSpan={1} sortable field="requestSalePrice.salePriceMax" style={{ width: "0.25%" }} />
+        <Column header="Mínimo" colSpan={1} sortable field="requestSalePrice.salePriceMin" style={{ width: "0.25%" }} />
+        <Column
+          header="Máxima"
+          colSpan={1}
+          sortable
+          field="requestBuildSurface.buildSurfaceMax"
+          style={{ width: "0.15%" }}
+        />
+        <Column
+          header="Mínima"
+          colSpan={1}
+          sortable
+          field="requestBuildSurface.buildSurfaceMin"
+          style={{ width: "0.15%" }}
+        />
+        <Column
+          header="Máxima"
+          colSpan={1}
+          sortable
+          field="requestPlotSurface.plotSurfaceMax"
+          style={{ width: "0%" }}
+        />
+        <Column
+          header="Mínima"
+          colSpan={1}
+          sortable
+          field="requestPlotSurface.plotSurfaceMin"
+          style={{ width: "0%" }}
+        />
       </Row>
     </ColumnGroup>
   );
 
   const formatCurrency = (value) => {
-    return value.toLocaleString("es-ES", { style: "currency", currency: "EUR" });
+    return value.toLocaleString("es-ES", {
+      style: "currency",
+      currency: "EUR",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    });
   };
 
   const buildSurfaceMaxBodyTemplate = (rowData) => {

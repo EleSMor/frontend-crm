@@ -125,6 +125,15 @@ const RequestForm = () => {
     setFirstLoad(false);
   }
 
+  const formatCurrency = (value) => {
+    return value.toLocaleString("es-ES", {
+      style: "currency",
+      currency: "EUR",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    });
+  };
+
   const newSelect = (selected, setSelected, ev) => {
     if (selected.includes(ev.target.value)) {
       const newSelected = selected.filter((selected) => selected !== ev.target.value);
@@ -432,10 +441,11 @@ const RequestForm = () => {
                                 inputs={[
                                   {
                                     name: "salePriceMax",
-                                    placeholder: "€",
                                     label: "Máximo",
                                     type: "number",
-                                    value: formProps.values.salePriceMax,
+                                    placeholder: "Escriba aquí",
+                                    value:
+                                      formProps.values.salePriceMax === 99999999 ? "" : formProps.values.salePriceMax,
                                     onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                                     span: <span style={{ position: "absolute", right: "1%", top: "52%" }}>€</span>,
                                     errors: "",
@@ -444,7 +454,8 @@ const RequestForm = () => {
                                     name: "salePriceMin",
                                     label: "Mínimo",
                                     type: "number",
-                                    value: formProps.values.salePriceMin,
+                                    placeholder: "Escriba aquí",
+                                    value: formProps.values.salePriceMin === 0 ? "" : formProps.values.salePriceMin,
                                     onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                                     span: <span style={{ position: "absolute", right: "1%", top: "52%" }}>€</span>,
                                     errors: "",
@@ -465,7 +476,9 @@ const RequestForm = () => {
                                     name: "buildSurfaceMax",
                                     label: "Máximo",
                                     type: "number",
-                                    value: formProps.values.buildSurfaceMax,
+                                    placeholder: "Escriba aquí",
+                                    value:
+                                      formProps.values.buildSurfaceMax === 9999 ? "" : formProps.values.buildSurfaceMax,
                                     onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                                     span: (
                                       <span style={{ position: "absolute", right: "1%", top: "52%" }}>
@@ -478,7 +491,9 @@ const RequestForm = () => {
                                     name: "buildSurfaceMin",
                                     label: "Mínimo",
                                     type: "number",
-                                    value: formProps.values.buildSurfaceMin,
+                                    value:
+                                      formProps.values.buildSurfaceMin === 0 ? "" : formProps.values.buildSurfaceMin,
+                                    placeholder: "Escriba aquí",
                                     onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                                     span: (
                                       <span style={{ position: "absolute", right: "1%", top: "52%" }}>
@@ -504,7 +519,7 @@ const RequestForm = () => {
                                     label: "Máximo",
                                     type: "number",
                                     placeholder: "Escriba aquí",
-                                    value: formProps.values.bedroomsMax,
+                                    value: formProps.values.bedroomsMax === 99 ? "" : formProps.values.bedroomsMax,
                                     onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                                     errors: "",
                                   },
@@ -513,7 +528,7 @@ const RequestForm = () => {
                                     label: "Mínimo",
                                     type: "number",
                                     placeholder: "Escriba aquí",
-                                    value: formProps.values.bedroomsMin,
+                                    value: formProps.values.bedroomsMin === 0 ? "" : formProps.values.bedroomsMin,
                                     onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                                     errors: "",
                                   },
@@ -535,8 +550,14 @@ const RequestForm = () => {
                                     name: "rentPriceMax",
                                     label: "Máximo",
                                     type: "number",
-                                    value: formProps.values.rentPriceMax,
+                                    placeholder: "Escriba aquí",
+                                    value: formProps.values.rentPriceMax === 99999 ? "" : formProps.values.rentPriceMax,
                                     onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
+                                    // onBlur: (ev) => {
+                                    //   ev.target.type = "text";
+                                    //   formProps.setFieldValue("rentPriceMax", formatCurrency(ev.target.value));
+                                    // },
+                                    // onFocus: changeInputToNumber,
                                     span: <span style={{ position: "absolute", right: "1%", top: "52%" }}>€/mes</span>,
                                     errors: "",
                                   },
@@ -544,7 +565,8 @@ const RequestForm = () => {
                                     name: "rentPriceMin",
                                     label: "Mínimo",
                                     type: "number",
-                                    value: formProps.values.rentPriceMin,
+                                    placeholder: "Escriba aquí",
+                                    value: formProps.values.rentPriceMin === 0 ? "" : formProps.values.rentPriceMin,
                                     onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                                     span: <span style={{ position: "absolute", right: "1%", top: "52%" }}>€/mes</span>,
                                     errors: "",
@@ -565,7 +587,9 @@ const RequestForm = () => {
                                     name: "plotSurfaceMax",
                                     label: "Máximo",
                                     type: "number",
-                                    value: formProps.values.plotSurfaceMax,
+                                    placeholder: "Escriba aquí",
+                                    value:
+                                      formProps.values.plotSurfaceMax === 99999 ? "" : formProps.values.plotSurfaceMax,
                                     onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                                     span: (
                                       <span style={{ position: "absolute", right: "1%", top: "52%" }}>
@@ -578,7 +602,8 @@ const RequestForm = () => {
                                     name: "plotSurfaceMin",
                                     label: "Mínimo",
                                     type: "number",
-                                    value: formProps.values.plotSurfaceMin,
+                                    placeholder: "Escriba aquí",
+                                    value: formProps.values.plotSurfaceMin === 0 ? "" : formProps.values.plotSurfaceMin,
                                     onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                                     span: (
                                       <span style={{ position: "absolute", right: "1%", top: "52%" }}>
@@ -603,7 +628,7 @@ const RequestForm = () => {
                                     name: "bathroomsMax",
                                     label: "Máximo",
                                     type: "number",
-                                    value: formProps.values.bathroomsMax,
+                                    value: formProps.values.bathroomsMax === 99 ? "" : formProps.values.bathroomsMax,
                                     placeholder: "Escriba aquí",
                                     onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                                     errors: "",
@@ -613,7 +638,7 @@ const RequestForm = () => {
                                     label: "Mínimo",
                                     type: "number",
                                     placeholder: "Escriba aquí",
-                                    value: formProps.values.bathroomsMin,
+                                    value: formProps.values.bathroomsMin === 0 ? "" : formProps.values.bathroomsMin,
                                     onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                                     errors: "",
                                   },

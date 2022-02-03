@@ -165,7 +165,7 @@ const AdsTable = ({ ads }) => {
           showApplyButton={false}
           showClearButton={false}
         />
-        <Column header="Precio" colSpan={2}/>
+        <Column header="Precio" colSpan={2} />
         <Column header="Superficie" rowSpan={2} style={{ width: "0%" }} />
         <Column
           header="Tipo de inmueble"
@@ -200,7 +200,14 @@ const AdsTable = ({ ads }) => {
   );
 
   const formatCurrency = (value) => {
-    return value ? value.toLocaleString("es-ES", { style: "currency", currency: "EUR" }) : value;
+    return value
+      ? value.toLocaleString("es-ES", {
+          style: "currency",
+          currency: "EUR",
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        })
+      : value;
   };
 
   const surfaceBodyTemplate = (rowData) => {
