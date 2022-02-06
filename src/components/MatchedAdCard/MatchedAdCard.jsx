@@ -43,22 +43,25 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
   useEffect(() => {
     getAdsMatched(id).then((res) => {
       setAdsMatched(res);
-      for (let zone of residentials) {
-        if (requestById.requestZone.includes(zone._id) && !residentialSelectedZones.includes(zone._id)) {
-          setResidentialSelectedZones([...residentialSelectedZones, zone._id]);
-        }
-      }
-      for (let zone of patrimonials) {
-        if (requestById.requestZone.includes(zone._id) && !patrimonialSelectedZones.includes(zone._id)) {
-          setPatrimonialSelectedZones([...patrimonialSelectedZones, zone._id]);
-        }
-      }
     });
     getRequestById(id).then((res) => {
       setRequestById(res);
     });
     setLoader(false);
   }, [id]);
+
+  if (id && requestById.length !== 0 && residentials.length !== 0 && patrimonials.length !== 0 && loader) {
+    for (let zone of residentials) {
+      if (requestById.requestZone.includes(zone._id) && !residentialSelectedZones.includes(zone._id)) {
+        setResidentialSelectedZones([...residentialSelectedZones, zone._id]);
+      }
+    }
+    for (let zone of patrimonials) {
+      if (requestById.requestZone.includes(zone._id) && !patrimonialSelectedZones.includes(zone._id)) {
+        setPatrimonialSelectedZones([...patrimonialSelectedZones, zone._id]);
+      }
+    }
+  }
 
   const size = useWindowSize();
 
@@ -183,8 +186,8 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                 data.requestZone = patrimonialSelectedZones;
               }
 
-              console.log(patrimonialSelectedZones.length);
-              console.log(residentialSelectedZones.length);
+              console.log(patrimonialSelectedZones.length)
+              console.log(residentialSelectedZones.length)
               if (patrimonialSelectedZones.length === 0 && residentialSelectedZones.length === 0) {
                 data.requestZone = [];
               }
@@ -235,7 +238,7 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                       list={residentials}
                       fields={{ groupBy: "zone", text: "name", value: "_id" }}
                       onChange={(ev) => {
-                        console.log(ev.value);
+                        console.log(ev.value)
                         formProps.setFieldValue("requestZone", ev.value);
                         setResidentialSelectedZones(ev.value);
                       }}
