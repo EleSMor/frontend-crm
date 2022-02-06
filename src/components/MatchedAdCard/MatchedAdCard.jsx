@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { Formik, Form } from "formik";
 import NotFound from "../../components/NotFound/NotFound";
+import Spinner from "../../components/Spinner/Spinner";
 import { MultiSelect } from "../../components";
-import { FiSave } from "react-icons/fi";
-import { DefaultImage } from "../../icons";
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
+import { AiOutlineReload } from "react-icons/ai";
 import { BiBuildingHouse } from "react-icons/bi";
+import { HiOutlineMail } from "react-icons/hi";
 import { GiPapers } from "react-icons/gi";
 import { RiMoneyEuroBoxLine } from "react-icons/ri";
 import { MdHeight } from "react-icons/md";
@@ -13,21 +16,16 @@ import { ImMap2 } from "react-icons/im";
 import InputsGroup from "../../components/InputsGroup/InputsGroup";
 import useWindowSize from "../../hooks/useWindowSize";
 import "moment/locale/es";
-import { sendNewRequest } from "../../api/requests.api";
+import { getAdsMatched, sendNewRequest, getRequestById } from "../../api/requests.api";
 import "./MatchedAdCard.scss";
 
-const MatchedAdCard = ({
-  ads,
-  patrimonials,
-  residentials,
-  patrimonialSelectedZones,
-  setPatrimonialSelectedZones,
-  residentialSelectedZones,
-  setResidentialSelectedZones,
-  requestById,
-}) => {
-  const [adsMatched, setAdsMatched] = useState(ads)
-  const [selectedBuildingTypes, setSelectedBuildingTypes] = useState([]);
+const MatchedAdCard = ({ patrimonials, residentials }) => {
+  const [adsMatched, setAdsMatched] = useState([]);
+  const [requestById, setRequestById] = useState([]);
+  const [adsToSend, setAdsToSend] = useState([]);
+  const [residentialSelectedZones, setResidentialSelectedZones] = useState([]);
+  const [patrimonialSelectedZones, setPatrimonialSelectedZones] = useState([]);
+  const [loader, setLoader] = useState(true);
   const { id } = useParams();
   const adBuildingTypeOptions = [
     { name: "Casa" },
@@ -42,16 +40,34 @@ const MatchedAdCard = ({
     { name: "Costa" },
   ];
 
-  const size = useWindowSize();
+  useEffect(() => {
+    getAdsMatched(id).then((res) => {
+      setAdsMatched(res);
+      for (let zone of residentials) {
+        if (requestById.requestZone.includes(zone._id) && !residentialSelectedZones.includes(zone._id)) {
+          setResidentialSelectedZones([...residentialSelectedZones, zone._id]);
+        }
+      }
+      for (let zone of patrimonials) {
+        if (requestById.requestZone.includes(zone._id) && !patrimonialSelectedZones.includes(zone._id)) {
+          setPatrimonialSelectedZones([...patrimonialSelectedZones, zone._id]);
+        }
+      }
+    });
+    getRequestById(id).then((res) => {
+      setRequestById(res);
+    });
+    setLoader(false);
+  }, [id]);
 
-  useEffect(() => console.log(ads), [id]);
+  const size = useWindowSize();
 
   const formatCurrency = (value) => {
     return value.toLocaleString("es-ES", {
       style: "currency",
       currency: "EUR",
       minimumFractionDigits: 0,
-      maximumFractionDigits: 0
+      maximumFractionDigits: 0,
     });
   };
 
@@ -87,36 +103,79 @@ const MatchedAdCard = ({
 
   const renderDirection = (direction) => {
     return (
-      <p>
+      <span>
         {direction.address.directionNumber
           ? direction.address.directionFloor
             ? ` ${direction.address.street}, ${direction.address.directionNumber}, ${direction.address.directionFloor}`
             : ` ${direction.address.street}, ${direction.address.directionNumber}`
           : ` ${direction.address.street}`}
-      </p>
+      </span>
     );
   };
 
   return (
-    <div>
-      {adsMatched.length !== 0 ? (
-        <div>
+    <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
+      <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 12 }}>
+        <button
+          className="buttonForm"
+          type="submit"
+          form="NewRequestForm"
+          style={{
+            marginRight: 8,
+            display: "flex",
+            alignItems: "center",
+            backgroundColor: "white",
+            border: "1px solid #2b363d",
+          }}
+        >
+          {size < 480 ? (
+            <AiOutlineReload
+              style={{ marginRight: 7, transform: "scale(125%)", verticalAlign: "middle", color: "#2b363d" }}
+            />
+          ) : (
+            <>
+              <AiOutlineReload
+                style={{ marginRight: 7, transform: "scale(125%)", verticalAlign: "middle", color: "#2b363d" }}
+              />
+              <span style={{ color: "#2b363d" }}>Actualizar listado</span>
+            </>
+          )}
+        </button>
+        <button className="buttonForm" style={{ marginRight: 8, display: "flex", alignItems: "center" }}>
+          {size < 480 ? (
+            <HiOutlineMail style={{ marginRight: 7, transform: "scale(125%)", verticalAlign: "middle" }} />
+          ) : (
+            <>
+              <HiOutlineMail style={{ marginRight: 7, transform: "scale(125%)", verticalAlign: "middle" }} />
+              <span>Enviar email</span>
+            </>
+          )}
+        </button>
+      </div>
+      <div className="MatchedAd__container">
+        <div className={"MatchedAd__container__col--left"}>
+          <h5>Filtros</h5>
           <Formik
             enableReinitialize={true}
             initialValues={{
-              id: requestById.length !== 0 ? requestById._id : "",
+              requestAdType: requestById.length !== 0 ? requestById.requestAdType : [],
               requestBuildingType: requestById.length !== 0 ? requestById.requestBuildingType : [],
               requestZone: requestById.length !== 0 ? requestById.requestZone : [],
               salePriceMax: requestById.length !== 0 ? requestById.requestSalePrice.salePriceMax : "",
               salePriceMin: requestById.length !== 0 ? requestById.requestSalePrice.salePriceMin : "",
+              rentPriceMax: requestById.length !== 0 ? requestById.requestRentPrice.rentPriceMax : "",
+              rentPriceMin: requestById.length !== 0 ? requestById.requestRentPrice.rentPriceMin : "",
               buildSurfaceMax: requestById.length !== 0 ? requestById.requestBuildSurface.buildSurfaceMax : "",
               buildSurfaceMin: requestById.length !== 0 ? requestById.requestBuildSurface.buildSurfaceMin : "",
               plotSurfaceMax: requestById.length !== 0 ? requestById.requestPlotSurface.plotSurfaceMax : "",
               plotSurfaceMin: requestById.length !== 0 ? requestById.requestPlotSurface.plotSurfaceMin : "",
+              bedroomsMax: requestById.length !== 0 ? requestById.requestBedrooms.bedroomsMax : "",
+              bedroomsMin: requestById.length !== 0 ? requestById.requestBedrooms.bedroomsMin : "",
+              bathroomsMax: requestById.length !== 0 ? requestById.requestBathrooms.bathroomsMax : "",
+              bathroomsMin: requestById.length !== 0 ? requestById.requestBathrooms.bathroomsMin : "",
             }}
             onSubmit={(data) => {
               if (id) data.id = id;
-              if (selectedBuildingTypes.length !== 0) data.requestBuildingType = selectedBuildingTypes;
 
               if (residentialSelectedZones.length !== 0) {
                 data.requestZone = residentialSelectedZones;
@@ -124,6 +183,8 @@ const MatchedAdCard = ({
                 data.requestZone = patrimonialSelectedZones;
               }
 
+              console.log(patrimonialSelectedZones.length);
+              console.log(residentialSelectedZones.length);
               if (patrimonialSelectedZones.length === 0 && residentialSelectedZones.length === 0) {
                 data.requestZone = [];
               }
@@ -136,262 +197,336 @@ const MatchedAdCard = ({
               if (data.plotSurfaceMax === "") data.plotSurfaceMax = 99999;
               if (data.plotSurfaceMin === "") data.plotSurfaceMin = 0;
 
+              console.log(data);
+
               sendNewRequest(data).then((res) => {
                 alert(`Se ha actualizado la búsqueda`);
-                setAdsMatched(res)
+                setAdsMatched(res);
               });
             }}
           >
             {(formProps) => (
-              <Form id="NewRequestForm">
-                <div className="RequestForm__container">
-                  <div className="RequestForm__container__col">
-                    <div className="RequestForm__container__col--item">
-                      <MultiSelect
-                        label={
-                          <span className="RequestForm__container__col--item-center">
-                            <BiBuildingHouse />
-                            <span>Tipo de inmueble</span>
-                          </span>
-                        }
-                        list={adBuildingTypeOptions}
-                        fields={{ groupBy: "", text: "name", value: "name" }}
-                        onChange={(ev) => {
-                          setSelectedBuildingTypes(ev.value);
-                        }}
-                        defaultValues={
-                          requestById.requestBuildingType.length !== 0 ? requestById.requestBuildingType : []
-                        }
-                      />
-                    </div>
-                    <div className="RequestForm__container__col--item">
-                      <MultiSelect
-                        label={
-                          <span className="RequestForm__container__col--item-center">
-                            <ImMap2 />
-                            <span>Residencial</span>
-                          </span>
-                        }
-                        list={residentials}
-                        fields={{ groupBy: "zone", text: "name", value: "_id" }}
-                        onChange={(ev) => {
-                          setResidentialSelectedZones(ev.value);
-                        }}
-                        defaultValues={validateZone(residentials) ? requestById.requestZone : ""}
-                      />
-                    </div>
-                    <div className="RequestForm__container__col--item">
-                      <MultiSelect
-                        label={
-                          <span className="RequestForm__container__col--item-center">
-                            <ImMap2 />
-                            <span>Patrimonial</span>
-                          </span>
-                        }
-                        list={patrimonials}
-                        fields={{ groupBy: "zone", text: "name", value: "_id" }}
-                        onChange={(ev) => {
-                          setPatrimonialSelectedZones(ev.value);
-                        }}
-                        defaultValues={validateZone(patrimonials) ? requestById.requestZone : ""}
-                      />
-                    </div>
-                    <div className="RequestForm__container__col--item">
-                      <InputsGroup
-                        label={
-                          <span className="RequestForm__container__col--item-center">
-                            <RiMoneyEuroBoxLine />
-                            <span>Precio de venta</span>
-                          </span>
-                        }
-                        inputs={[
-                          {
-                            name: "salePriceMax",
-                            placeholder: "€",
-                            label: "Máximo",
-                            type: "number",
-                            value: formProps.values.salePriceMax,
-                            onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
-                            span: <span style={{ position: "absolute", right: "1%", top: "52%" }}>€</span>,
-                            errors: "",
+              <div style={{ padding: "12px" }}>
+                <Form id="NewRequestForm">
+                  <div className="MatchedAd__container__col--item">
+                    <MultiSelect
+                      label={
+                        <span className="MatchedAd__container__col--item-center">
+                          <BiBuildingHouse />
+                          <span>Tipo de inmueble</span>
+                        </span>
+                      }
+                      list={adBuildingTypeOptions}
+                      fields={{ groupBy: "", text: "name", value: "name" }}
+                      onChange={(ev) => {
+                        formProps.setFieldValue("requestBuildingType", ev.value);
+                      }}
+                      value={formProps.values.requestBuildingType}
+                    />
+                  </div>
+                  <div className="MatchedAd__container__col--item">
+                    <MultiSelect
+                      label={
+                        <span className="MatchedAd__container__col--item-center">
+                          <ImMap2 />
+                          <span>Residencial</span>
+                        </span>
+                      }
+                      list={residentials}
+                      fields={{ groupBy: "zone", text: "name", value: "_id" }}
+                      onChange={(ev) => {
+                        console.log(ev.value);
+                        formProps.setFieldValue("requestZone", ev.value);
+                        setResidentialSelectedZones(ev.value);
+                      }}
+                      value={validateZone(residentials) ? formProps.values.requestZone : []}
+                      // value={["618bf852c83a0c74f6b7e7f6"]}
+                    />
+                  </div>
+                  <div className="MatchedAd__container__col--item">
+                    <MultiSelect
+                      label={
+                        <span className="MatchedAd__container__col--item-center">
+                          <ImMap2 />
+                          <span>Patrimonial</span>
+                        </span>
+                      }
+                      list={patrimonials}
+                      fields={{ groupBy: "zone", text: "name", value: "_id" }}
+                      onChange={(ev) => {
+                        formProps.setFieldValue("requestZone", ev.value);
+                        setPatrimonialSelectedZones(ev.value);
+                      }}
+                      value={validateZone(patrimonials) ? formProps.values.requestZone : []}
+                    />
+                  </div>
+                  <div className="MatchedAd__container__col--item">
+                    <InputsGroup
+                      label={
+                        <span className="MatchedAd__container__col--item-center">
+                          <RiMoneyEuroBoxLine />
+                          <span>Precio de venta</span>
+                        </span>
+                      }
+                      inputs={[
+                        {
+                          name: "salePriceMax",
+                          placeholder: "€",
+                          label: "Máximo",
+                          type: "number",
+                          value: formProps.values.salePriceMax,
+                          onChange: (ev) => {
+                            if (isNaN(ev.target.valueAsNumber)) formProps.setFieldValue(ev.target.name, "");
+                            else formProps.setFieldValue(ev.target.name, ev.target.valueAsNumber);
                           },
-                          {
-                            name: "salePriceMin",
-                            label: "Mínimo",
-                            type: "number",
-                            value: formProps.values.salePriceMin,
-                            onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
-                            span: <span style={{ position: "absolute", right: "1%", top: "52%" }}>€</span>,
-                            errors: "",
+                          span: <span style={{ position: "absolute", right: "0.5%", top: "52%" }}>€</span>,
+                          errors: "",
+                        },
+                        {
+                          name: "salePriceMin",
+                          label: "Mínimo",
+                          type: "number",
+                          value: formProps.values.salePriceMin,
+                          onChange: (ev) => {
+                            if (isNaN(ev.target.valueAsNumber)) formProps.setFieldValue(ev.target.name, "");
+                            else formProps.setFieldValue(ev.target.name, ev.target.valueAsNumber);
                           },
-                        ]}
-                      />
-                    </div>
-                    <div className="RequestForm__container__col--item">
-                      <InputsGroup
-                        label={
-                          <span className="RequestForm__container__col--item-center">
-                            <GiPapers />
-                            <span>Superficie construida</span>
-                          </span>
-                        }
-                        inputs={[
-                          {
-                            name: "buildSurfaceMax",
-                            label: "Máximo",
-                            type: "number",
-                            value: formProps.values.buildSurfaceMax,
-                            onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
-                            span: (
-                              <span style={{ position: "absolute", right: "1%", top: "52%" }}>
-                                m<sup>2</sup>
-                              </span>
-                            ),
-                            errors: "",
+                          span: <span style={{ position: "absolute", right: "0.5%", top: "52%" }}>€</span>,
+                          errors: "",
+                        },
+                      ]}
+                    />
+                  </div>
+                  <div className="MatchedAd__container__col--item">
+                    <InputsGroup
+                      label={
+                        <span className="MatchedAd__container__col--item-center">
+                          <GiPapers />
+                          <span>Superficie construida</span>
+                        </span>
+                      }
+                      inputs={[
+                        {
+                          name: "buildSurfaceMax",
+                          label: "Máximo",
+                          type: "number",
+                          value: formProps.values.buildSurfaceMax,
+                          onChange: (ev) => {
+                            if (isNaN(ev.target.valueAsNumber)) formProps.setFieldValue(ev.target.name, "");
+                            else formProps.setFieldValue(ev.target.name, ev.target.valueAsNumber);
                           },
-                          {
-                            name: "buildSurfaceMin",
-                            label: "Mínimo",
-                            type: "number",
-                            value: formProps.values.buildSurfaceMin,
-                            onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
-                            span: (
-                              <span style={{ position: "absolute", right: "1%", top: "52%" }}>
-                                m<sup>2</sup>
-                              </span>
-                            ),
-                            errors: "",
+                          span: (
+                            <span style={{ position: "absolute", right: "0.5%", top: "52%" }}>
+                              m<sup>2</sup>
+                            </span>
+                          ),
+                          errors: "",
+                        },
+                        {
+                          name: "buildSurfaceMin",
+                          label: "Mínimo",
+                          type: "number",
+                          value: formProps.values.buildSurfaceMin,
+                          onChange: (ev) => {
+                            if (isNaN(ev.target.valueAsNumber)) formProps.setFieldValue(ev.target.name, "");
+                            else formProps.setFieldValue(ev.target.name, ev.target.valueAsNumber);
                           },
-                        ]}
-                      />
-                    </div>
-                    <div className="RequestForm__container__col--item">
-                      <InputsGroup
-                        label={
-                          <span className="RequestForm__container__col--item-center">
-                            <MdHeight />
-                            <span>Superficie de parcela</span>
-                          </span>
-                        }
-                        inputs={[
-                          {
-                            name: "plotSurfaceMax",
-                            label: "Máximo",
-                            type: "number",
-                            value: formProps.values.plotSurfaceMax,
-                            onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
-                            span: (
-                              <span style={{ position: "absolute", right: "1%", top: "52%" }}>
-                                m<sup>2</sup>
-                              </span>
-                            ),
-                            errors: "",
+                          span: (
+                            <span style={{ position: "absolute", right: "0.5%", top: "52%" }}>
+                              m<sup>2</sup>
+                            </span>
+                          ),
+                          errors: "",
+                        },
+                      ]}
+                    />
+                  </div>
+                  <div className="MatchedAd__container__col--item">
+                    <InputsGroup
+                      label={
+                        <span className="MatchedAd__container__col--item-center">
+                          <MdHeight />
+                          <span>Superficie de parcela</span>
+                        </span>
+                      }
+                      inputs={[
+                        {
+                          name: "plotSurfaceMax",
+                          label: "Máximo",
+                          type: "number",
+                          value: formProps.values.plotSurfaceMax,
+                          onChange: (ev) => {
+                            if (isNaN(ev.target.valueAsNumber)) formProps.setFieldValue(ev.target.name, "");
+                            else formProps.setFieldValue(ev.target.name, ev.target.valueAsNumber);
                           },
-                          {
-                            name: "plotSurfaceMin",
-                            label: "Mínimo",
-                            type: "number",
-                            value: formProps.values.plotSurfaceMin,
-                            onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
-                            span: (
-                              <span style={{ position: "absolute", right: "1%", top: "52%" }}>
-                                m<sup>2</sup>
-                              </span>
-                            ),
-                            errors: "",
+                          span: (
+                            <span style={{ position: "absolute", right: "0.5%", top: "52%" }}>
+                              m<sup>2</sup>
+                            </span>
+                          ),
+                          errors: "",
+                        },
+                        {
+                          name: "plotSurfaceMin",
+                          label: "Mínimo",
+                          type: "number",
+                          value: formProps.values.plotSurfaceMin,
+                          onChange: (ev) => {
+                            if (isNaN(ev.target.valueAsNumber)) formProps.setFieldValue(ev.target.name, "");
+                            else formProps.setFieldValue(ev.target.name, ev.target.valueAsNumber);
                           },
-                        ]}
-                      />
-                    </div>
-                    <button
-                      className="buttonForm"
-                      type="submit"
-                      form="NewRequestForm"
-                      style={{ marginRight: 8 }}
-                    >
-                      <FiSave
-                        style={
-                          size > 480
-                            ? { marginRight: 7 }
-                            : { marginRight: 7, transform: "scale(125%)", verticalAlign: "middle" }
-                        }
-                      />
-                      {size > 480 && "Aplicar filtros"}
+                          span: (
+                            <span style={{ position: "absolute", right: "0.5%", top: "52%" }}>
+                              m<sup>2</sup>
+                            </span>
+                          ),
+                          errors: "",
+                        },
+                      ]}
+                    />
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                    <button className="buttonForm" type="submit" form="NewRequestForm" style={{ marginRight: 8 }}>
+                      {size < 480 ? (
+                        <AiOutlineReload
+                          style={{ marginRight: 7, transform: "scale(125%)", verticalAlign: "middle" }}
+                        />
+                      ) : (
+                        <span>Aplicar filtros</span>
+                      )}
                     </button>
                   </div>
-                </div>
-              </Form>
+                </Form>
+              </div>
             )}
           </Formik>
-
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <div>
-              <input type="checkbox" />
-            </div>
-            <div>
-              <p>Título y dirección</p>
-            </div>
-            <div>
-              <p>Anuncio</p>
-            </div>
-            <div>
-              <p>Precio</p>
-            </div>
-            <div>
-              <p>Alquiler</p>
-            </div>
-            <div>
-              <p>
-                m<sup>2</sup> construidos
-              </p>
-            </div>
-            <div>
-              <p>
-                m<sup>2</sup> parcela
-              </p>
-            </div>
-            <div>
-              <p>Inmueble</p>
-            </div>
-          </div>
-          {adsMatched.map((ad) => (
-            <div key={`${ad._id}-${ad.requestReference}`} className="AdCard">
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <div>
-                  <input type="checkbox" />
-                </div>
-                <div style={{ display: "flex" }}>
-                  {ad.images?.main ? (
-                    <img src={ad.images?.main} alt={ad.images.title} width={81} height={75} />
-                  ) : (
-                    <DefaultImage
-                      style={{
-                        width: "81px",
-                        height: "75px",
-                        marginTop: "%",
-                      }}
-                    />
-                  )}
-                  <div>
-                    <p>{ad.title}</p>
-                    {renderDirection(ad.adDirection)}
-                  </div>
-                </div>
-                <div>{ad.adType.sort().join(", ")}</div>
-                <div>{maskValues(ad.sale.saleValue, "sale")}</div>
-                <div>{maskValues(ad.rent.rentValue, "rent")}</div>
-                <div>{maskValues(ad.buildSurface, "buildSurface")}</div>
-                <div>{maskValues(ad.plotSurface, "plotSurface")}</div>
-                <div>{ad.adBuildingType.sort().join(", ")}</div>
-              </div>
-            </div>
-          ))}
         </div>
-      ) : (
-        <>
-          <NotFound />
-        </>
-      )}
+        {loader ? (
+          <Spinner />
+        ) : adsMatched.length !== 0 ? (
+          <div className={size < 440 ? "MatchedAd__container__col" : "MatchedAd__container__col--right"}>
+            <DataTable
+              value={adsMatched.length !== 0 ? adsMatched : ""}
+              dataKey="_id"
+              selectionMode="checkbox"
+              selection={adsToSend}
+              onSelectionChange={(ev) => {
+                setAdsToSend(ev.value);
+              }}
+              responsiveLayout="scroll"
+              emptyMessage="La petición no coincide con ningún anuncio."
+              paginator
+              rows={10}
+              paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+              rowsPerPageOptions={[10, 25, 50]}
+            >
+              <Column selectionMode="multiple" headerStyle={{ width: "1%" }}></Column>
+              <Column
+                field="adTitle"
+                header="Título y dirección"
+                body={(ev) => (
+                  <div style={{ display: "flex", alignItems: "flex-start", textDecoration: "none" }}>
+                    {size > 440 ? (
+                      <>
+                        {ev.images?.main ? (
+                          <img
+                            src={ev.images?.main}
+                            alt={ev.images.title}
+                            style={{ width: 81, height: 75, borderRadius: "4px" }}
+                          />
+                        ) : (
+                          <img
+                            src="\defaultImage.png"
+                            alt="Imagen por defecto"
+                            style={{ width: 81, height: 75, borderRadius: "4px" }}
+                          />
+                        )}
+
+                        <Link to={`/anuncios/${ev._id}`} className="AdCard AdCard__row__title">
+                          <p>{ev.title}</p>
+                          {renderDirection(ev.adDirection)}
+                        </Link>
+                      </>
+                    ) : (
+                      <Link to={`/anuncios/${ev._id}`} className="AdCard AdCard__row__title">
+                        <p>{ev.title}</p>
+                        {renderDirection(ev.adDirection)}
+                      </Link>
+                    )}
+                  </div>
+                )}
+                bodyStyle={{ width: "35%", verticalAlign: "top" }}
+              ></Column>
+              <Column
+                field="adType"
+                header="Anuncio"
+                bodyStyle={{ width: "10%", verticalAlign: "top" }}
+                body={(ev) => <div style={{ alignSelf: "flex-start" }}>{ev.adType.sort().join(", ")}</div>}
+              ></Column>
+              <Column
+                field="sale.saleValue"
+                header="Precio"
+                bodyStyle={{ width: "10%", verticalAlign: "top" }}
+                body={(ev) => <span>{maskValues(ev.sale.saleValue, "sale")}</span>}
+              ></Column>
+              <Column
+                field="rent.rentValue"
+                header="Alquiler"
+                bodyStyle={{ width: "10%", verticalAlign: "top" }}
+                body={(ev) => <span>{maskValues(ev.rent.rentValue, "rent")}</span>}
+              ></Column>
+              <Column
+                field="buildSurface"
+                header={() =>
+                  size > 880 ? (
+                    <>
+                      m<sup>2</sup> construidos
+                    </>
+                  ) : (
+                    <>Construido</>
+                  )
+                }
+                bodyStyle={{ width: "15%", verticalAlign: "top" }}
+                body={(ev) => (
+                  <div>
+                    {ev.buildSurface} m<sup>2</sup>
+                  </div>
+                )}
+              ></Column>
+              <Column
+                field="plotSurface"
+                header={() =>
+                  size > 880 ? (
+                    <>
+                      m<sup>2</sup> parcela
+                    </>
+                  ) : (
+                    <>Parcela</>
+                  )
+                }
+                body={(ev) => (
+                  <div>
+                    {ev.plotSurface} m<sup>2</sup>
+                  </div>
+                )}
+                bodyStyle={{ width: "10%", verticalAlign: "top" }}
+              ></Column>
+              <Column
+                field="buildingType"
+                header="Inmueble"
+                bodyStyle={{ width: "10%", verticalAlign: "top" }}
+                body={(ev) => <div>{ev.adBuildingType.sort().join(", ")}</div>}
+              ></Column>
+            </DataTable>
+            {/* </div> */}
+            {/* </div> */}
+          </div>
+        ) : (
+          <>
+            <NotFound />
+          </>
+        )}
+      </div>
     </div>
   );
 };

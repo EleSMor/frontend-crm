@@ -219,7 +219,7 @@ const DetailsAds = ({
               fn={(ev) => {
                 setConsultant(ev.target.value);
               }}
-              defaultValues={consultant ? consultant : []}
+              defaultValues={consultant ? consultant : ""}
             />
           </div>
           <div>
@@ -335,7 +335,7 @@ const DetailsAds = ({
                       mode={"Checkbox"}
                       fields={{ groupBy: "zone", text: "name", value: "_id" }}
                       onChange={(ev) => setResidentialZones(ev.value)}
-                      defaultValues={validateZone(residentials) ? formProps.values.zone : []}
+                      value={validateZone(residentials) ? formProps.values.zone : []}
                     />
                   </div>
                 )}
@@ -350,7 +350,7 @@ const DetailsAds = ({
                         setPatrimonialZones(ev.value);
                         formProps.setFieldValue("zone", ev.value)
                       }}
-                      defaultValues={validateZone(patrimonials) ? formProps.values.zone : []}
+                      value={validateZone(patrimonials) ? formProps.values.zone : []}
                     />
                   </div>
                 )}

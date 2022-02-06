@@ -26,14 +26,7 @@ import { getAllConsultants } from "../../api/consultants.api";
 import { getAllResidentialZones, getAllPatrimonialZones } from "../../api/zones.api";
 import { getAllContacts } from "../../api/contacts.api";
 import useWindowSize from "../../hooks/useWindowSize";
-import {
-  createRequest,
-  getLastReference,
-  getAdsMatched,
-  getRequestById,
-  updateRequest,
-  deleteRequest,
-} from "../../api/requests.api";
+import { createRequest, getLastReference, getRequestById, updateRequest, deleteRequest } from "../../api/requests.api";
 import "./RequestForm.scss";
 
 const RequestForm = () => {
@@ -72,7 +65,6 @@ const RequestForm = () => {
       .then((res) => setContacts(res))
       .then(() => {
         if (id) {
-          getAdsMatched(id).then((res) => setAds(res));
           getRequestById(id).then((res) => {
             setRequestById(res);
             setSelectedContact(res.requestContact);
@@ -398,7 +390,7 @@ const RequestForm = () => {
                               onChange={(ev) => {
                                 setResidentialSelectedZones(ev.value);
                               }}
-                              defaultValues={validateZone(residentials) ? requestById.requestZone : ""}
+                              value={validateZone(residentials) ? requestById.requestZone : []}
                             />
 
                             {validateForm &&
@@ -415,7 +407,7 @@ const RequestForm = () => {
                               onChange={(ev) => {
                                 setPatrimonialSelectedZones(ev.value);
                               }}
-                              defaultValues={validateZone(patrimonials) ? requestById.requestZone : ""}
+                              value={validateZone(patrimonials) ? requestById.requestZone : []}
                             />
 
                             {validateForm &&
@@ -654,17 +646,8 @@ const RequestForm = () => {
               </Formik>
             </TabPanel>
             <TabPanel header="Matching">
-              {requestById.length !== 0 && <RequestsMatching ads={ads} />}
-              {/* <MatchedAdCard
-                  ads={ads}
-                  patrimonials={patrimonials}
-                  patrimonialSelectedZones={patrimonialSelectedZones}
-                  setPatrimonialSelectedZones={setPatrimonialSelectedZones}
-                  residentialSelectedZones={residentialSelectedZones}
-                  setResidentialSelectedZones={setResidentialSelectedZones}
-                  residentials={residentials}
-                  requestById={requestById}
-                /> */}
+              {/* {requestById.length !== 0 && <RequestsMatching ads={ads} />} */}
+              <MatchedAdCard patrimonials={patrimonials} residentials={residentials} />
             </TabPanel>
           </TabView>
         )}

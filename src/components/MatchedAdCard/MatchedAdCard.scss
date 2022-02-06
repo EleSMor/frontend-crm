@@ -1,182 +1,153 @@
-@use "/src/styles/utils.scss" as *;
+@use "src/styles/utils.scss" as *;
 
-.AdCard__CardMobile {
-  background-color: #fff;
-  margin: 18px 0px;
-  padding: 14px;
-  border-radius: 3px;
-  box-shadow: rgba(0, 0, 0, 0.046) 0px 1px 4px;
-  border: 1px solid rgba(0, 0, 0, 0.089);
-  border-left: 5px solid $c-background-dark;
-  text-align: left;
+.MatchedAd__container {
+  width: 100%;
 
-  &--header {
-    &-title {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 8px;
-      > h4 {
-        font-size: 16px;
-        font-weight: 700;
-      }
-      > p {
+  &__col {
+    width: 100%;
+    &--item:not(:first-child) {
+      margin: 30px 0;
+    }
+    &--item {
+      &-center {
         display: flex;
         align-items: center;
         > span {
-          border-radius: 3px;
-          border: 1px solid rgba(128, 128, 128, 0.658);
-          padding: 2px 8px;
+          margin-left: 8px;
         }
-      }
-    }
-    > span {
-      color: $c-text-light;
-    }
-    &-zones {
-      margin-top: 8px;
-      padding: 5px 0px;
-      display: flex;
-      align-items: center;
-      border-top: 1px solid rgba(128, 128, 128, 0.295);
-      border-bottom: 1px solid rgba(128, 128, 128, 0.295);
-      > p {
-        display: flex;
-        align-items: center;
-        margin-right: 20px;
       }
     }
   }
+  
+  &__col--left {
+    width: 100%;
+    border: 1px solid #dddddd;
+    box-sizing: border-box;
+    margin-bottom: 12px;
+    > h5 {
+      background-color: #dddddd;
+      padding: 8px;
+      margin: 0;
+      font-weight: 700;
+    }
+  }
 
-  &--body {
-    margin-top: 8px;
-    &--item {
-      margin: 15px 0;
-      &--title {
-        font-size: 12px;
-        display: flex;
-        align-items: center;
-      }
-      &--content {
-        display: flex;
-        align-items: center;
-        margin-top: 5px;
-        > div {
-          display: flex;
-          align-items: center;
-          width: 40%;
-        }
-      }
-      &--cta {
-        margin-top: 25px;
-        margin-bottom: 10px;
-        &--button {
-          @include button-dark;
-          font-size: 11px;
-          padding: 8px 18px;
-        }
+  .MatchedAd__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #dddddd;
+    padding: 8px;
+    margin: 0;
+    > h5 {
+      > p {
+        font-weight: 700;
       }
     }
+  }
+  .AdCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    &__row {
+      padding: 8px;
+      flex-direction: row;
+      &__title {
+        align-items: flex-start;
+        justify-content: flex-start;
+        margin-left: 12px;
+        text-decoration: none;
+        color: inherit;
+        > p {
+          font-weight: bold;
+        }
+      }
+      &__box {
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        width: 20%;
+        padding: 8px;
+        margin-left: 12px;
+      }
+    }
+  }
+  .p-datatable .p-datatable-thead > tr > th {
+    text-align: left;
+    font-size: 12px;
+    padding: 6px;
+    border: 1px solid #dfdfdf !important;
+    border-width: 0 0 1px 0;
+    font-weight: 700;
+    color: #343a40;
+    background: #dfdfdf !important;
+    transition: box-shadow 0.2s;
+  }
+  .p-datatable .p-datatable-thead > tr {
+    border: 1px solid #dfdfdf;
+    font-size: 12px !important;
+  }
+
+  .p-datatable .p-datatable-tbody > tr {
+    border-bottom: 2px solid #dfdfdf;
+    border-spacing: 75%;
+  }
+  .p-datatable {
+    border: 1px solid #f0efef;
+  }
+  .p-datatable .p-datatable-tbody > tr > td {
+    margin: 4px;
+  }
+  .p-datatable .p-datatable-tbody > tr.p-highlight {
+    background: #f0efef;
+    color: inherit;
+  }
+  .p-checkbox .p-checkbox-box.p-highlight {
+    border-color: #dfdfdf;
+    background: #2b363d !important;
+  }
+  .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box:hover {
+    border-color: #2b363d !important;
+  }
+  .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-highlight:hover {
+    border-color: #dfdfdf !important;
+    background: #2b363d !important;
+  }
+  .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: 0 0 0 0.2rem #c7d2fe;
+    border-color: #2b363d !important;
   }
 }
 
 @media (min-width: $break-point) {
-  .AdCard__Card {
-    background-color: #fff;
-    margin: 18px 0px;
-    padding: 18px;
-    border-radius: 3px;
-    box-shadow: rgba(0, 0, 0, 0.046) 0px 1px 4px;
-    border: 1px solid rgba(0, 0, 0, 0.089);
-    border-left: 5px solid $c-background-dark;
+  .MatchedAd__container {
     display: flex;
+    align-items: flex-start;
     justify-content: space-between;
-    align-items: center;
-    text-align: left;
-    height: 182px;
+    width: 100%;
 
-    &--content {
-      &-header {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: flex-start;
-        margin-bottom: 10px;
-        > h4 {
-          font-size: 20px;
-          font-weight: 700;
-        }
-        > p {
-          display: flex;
-          align-items: center;
-          margin: 0;
-          font-size: 11px;
-          > span {
-            border-radius: 3px;
-            border: 1px solid rgba(128, 128, 128, 0.658);
-            padding: 2px 8px;
-          }
-        }
-      }
-
-      &-body {
-        display: flex;
-        justify-content: space-between;
-        font-size: 14px;
-        padding-top: 16px;
-        &--title {
-          padding-right: 20px;
-          font-size: 12px;
-          display: flex;
-        }
-        &--item {
-          display: flex;
-          padding: 10px 25px 0 0;
-        }
-
-        &--item:not(:first-child) {
-          padding-left: 15px;
-          border-left: 1px solid rgba(128, 128, 128, 0.432);
-        }
-
-        &--content {
-          > div {
-            display: flex;
-            align-items: center;
-            font-size: 13px;
-          }
-        }
-      }
+    &__col {
+      width: 46%;
     }
 
-    .AdCard__Card--item-genInfo {
-      width: calc(30%);
-    }
-    .AdCard__Card--item-iconsInfo {
-      width: calc(26%);
-    }
-    .AdCard__Card--item-textArea {
-      width: calc(28%);
-      border-left: 1px solid rgba(0, 0, 0, 0.329);
-      padding-left: 16px;
-    }
-    .AdCard__Card--item-cta {
-      width: calc(15%);
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: flex-end;
-
-      > span {
-        color: $c-text-light;
+    &__col--left {
+      width: 28%;
+      border: 1px solid #dddddd;
+      box-sizing: border-box;
+      // padding: 12px;
+      > h5 {
+        background-color: #dddddd;
+        padding: 8px;
+        margin: 0;
+        font-weight: 700;
       }
-
-      &--button {
-        @include button-dark;
-        font-size: 12px;
-        padding: 8px 22px;
-      }
+    }
+    &__col--right {
+      width: 70%;
     }
   }
 }
