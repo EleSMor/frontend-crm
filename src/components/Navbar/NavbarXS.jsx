@@ -27,7 +27,7 @@ const NavbarXS = ({ title }) => {
     <>
       <nav className="NavbarXS">
         <div className="NavbarXS--logoHam">
-          <GvreLogo className="NavbarXS--logoHa--logo" />
+          <GvreLogo className="NavbarXS--logoHam--logo" />
           <HamburgerMenu
             isOpen={openHam}
             menuClicked={() => handleHamClick()}

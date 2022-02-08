@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { InputText } from "primereact/inputtext";
 import { AiOutlineRight } from "react-icons/ai";
+import useWindowSize from "../../hooks/useWindowSize";
 import "./SubHeader.scss";
 
 const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter, filteredList }) => {
   const [searchList, setSearchList] = useState(list);
   const [filterClass, setFilterClass] = useState("todos");
+  const size = useWindowSize();
 
   const filterByDepartment = (department) => {
     let searchText = document.getElementById("search").value;
@@ -156,66 +158,80 @@ const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter,
         ) : (
           <>
             <div className="subHeader__subtitle-item noDisplay">
-              <span>
+              <span style={{ overflow: "hidden", textOverflow: "ellipsis" }}>
                 {list.length !== 0 ? (list.length > 50 ? list.length : list.length) : 0}
-                &nbsp;elementos · Ordenado por fecha de última modificación · Se actualizó hace unos segundos
+                &nbsp;elementos{" "}
+                {size > 1141 && "· Ordenado por fecha de última modificación · Se actualizó hace unos segundos"}
               </span>
             </div>
-            {window.location.pathname.includes(`anuncios`) && !window.location.pathname.includes(`anuncios/`) && (
-              <div className="subHeader__filter-box">
+            <div style={size > 425 ? { display: "flex" } : { display: "flex", flexDirection: "column" }}>
+              {window.location.pathname.includes(`anuncios`) && !window.location.pathname.includes(`anuncios/`) && (
                 <div
-                  className={
-                    filterClass === "patrimonio" ? "subHeader__filter-box--item__active" : "subHeader__filter-box--item"
-                  }
-                  onClick={() => {
-                    setFilterClass("patrimonio");
-                    filterByDepartment("Patrimonio");
-                  }}
+                  className="subHeader__subtitle-item subHeader__filter-box"
                 >
-                  <p>Patrimonio</p>
+                  <div
+                    className={
+                      filterClass === "patrimonio"
+                        ? "subHeader__filter-box--item__active"
+                        : "subHeader__filter-box--item"
+                    }
+                    onClick={() => {
+                      setFilterClass("patrimonio");
+                      filterByDepartment("Patrimonio");
+                    }}
+                  >
+                    <p>Patrimonio</p>
+                  </div>
+                  <div
+                    className={
+                      filterClass === "residencial"
+                        ? "subHeader__filter-box--item subHeader__filter-box--item__border__active"
+                        : "subHeader__filter-box--item subHeader__filter-box--item__border"
+                    }
+                    onClick={() => {
+                      setFilterClass("residencial");
+                      filterByDepartment("Residencial");
+                    }}
+                  >
+                    <p>Residencial</p>
+                  </div>
+                  <div
+                    className={
+                      filterClass === "todos" ? "subHeader__filter-box--item__active" : "subHeader__filter-box--item"
+                    }
+                    onClick={() => {
+                      setFilterClass("todos");
+                      filterByDepartment("todos");
+                    }}
+                  >
+                    <p>Todos</p>
+                  </div>
                 </div>
-                <div
-                  className={
-                    filterClass === "residencial"
-                      ? "subHeader__filter-box--item subHeader__filter-box--item__border__active"
-                      : "subHeader__filter-box--item subHeader__filter-box--item__border"
-                  }
-                  onClick={() => {
-                    setFilterClass("residencial");
-                    filterByDepartment("Residencial");
-                  }}
-                >
-                  <p>Residencial</p>
+              )}
+              <div
+                style={
+                  size < 425 ? { display: "flex", width: "90vw", justifyContent: "space-between" } : { display: "flex" }
+                }
+              >
+                <div className="p-input-icon-left">
+                  <i className="pi pi-search" />
+                  <InputText
+                    id="search"
+                    onChange={(ev) => {
+                      customFilter(ev.target.value);
+                    }}
+                    placeholder="Buscar en esta lista"
+                    style={size > 425 ? { width: "30rem", marginRight: "1vw" } : { width: "20rem" }}
+                  />
                 </div>
-                <div
-                  className={
-                    filterClass === "todos" ? "subHeader__filter-box--item__active" : "subHeader__filter-box--item"
-                  }
-                  onClick={() => {
-                    setFilterClass("todos");
-                    filterByDepartment("todos");
-                  }}
-                >
-                  <p>Todos</p>
-                </div>
+                {!window.location.pathname.includes(`${title.toLowerCase()}/`) && (
+                  <button tpye="button" className="subHeader__btn" onClick={location}>
+                    Nuevo
+                  </button>
+                )}
               </div>
-            )}
-            <div className="p-input-icon-left">
-              <i className="pi pi-search" />
-              <InputText
-                id="search"
-                onChange={(ev) => {
-                  customFilter(ev.target.value);
-                }}
-                placeholder="Buscar en esta lista"
-              />
             </div>
           </>
-        )}
-        {!window.location.pathname.includes(`${title.toLowerCase()}/`) && (
-          <button tpye="button" className="subHeader__btn" onClick={location}>
-            Nuevo
-          </button>
         )}
       </div>
     </div>

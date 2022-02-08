@@ -118,12 +118,7 @@ const RequestForm = () => {
   }
 
   const formatCurrency = (value) => {
-    return value.toLocaleString("es-ES", {
-      style: "currency",
-      currency: "EUR",
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    });
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
   const newSelect = (selected, setSelected, ev) => {
@@ -372,7 +367,7 @@ const RequestForm = () => {
                             placeholder="Escriba aquí"
                             vale={formProps.values.requestComment}
                             onChange={(ev) => {
-                              formProps.setFieldValue(ev.target.name, ev.target.value);
+                              formProps.setFieldValue("requestComment", ev.target.value);
                             }}
                           />
                         </div>
@@ -438,6 +433,14 @@ const RequestForm = () => {
                                     placeholder: "Escriba aquí",
                                     value:
                                       formProps.values.salePriceMax === 99999999 ? "" : formProps.values.salePriceMax,
+                                    onBlur: (ev) => {
+                                      ev.target.type = "String";
+                                      ev.target.value = formatCurrency(ev.target.value);
+                                    },
+                                    onFocus: (ev) => {
+                                      ev.target.value = ev.target.value.replaceAll(".", "");
+                                      ev.target.type = "Number";
+                                    },
                                     onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                                     span: <span style={{ position: "absolute", right: "1%", top: "52%" }}>€</span>,
                                     errors: "",
@@ -448,6 +451,14 @@ const RequestForm = () => {
                                     type: "number",
                                     placeholder: "Escriba aquí",
                                     value: formProps.values.salePriceMin === 0 ? "" : formProps.values.salePriceMin,
+                                    onBlur: (ev) => {
+                                      ev.target.type = "String";
+                                      ev.target.value = formatCurrency(ev.target.value);
+                                    },
+                                    onFocus: (ev) => {
+                                      ev.target.value = ev.target.value.replaceAll(".", "");
+                                      ev.target.type = "Number";
+                                    },
                                     onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                                     span: <span style={{ position: "absolute", right: "1%", top: "52%" }}>€</span>,
                                     errors: "",
@@ -471,6 +482,14 @@ const RequestForm = () => {
                                     placeholder: "Escriba aquí",
                                     value:
                                       formProps.values.buildSurfaceMax === 9999 ? "" : formProps.values.buildSurfaceMax,
+                                    onBlur: (ev) => {
+                                      ev.target.type = "String";
+                                      ev.target.value = formatCurrency(ev.target.value);
+                                    },
+                                    onFocus: (ev) => {
+                                      ev.target.value = ev.target.value.replaceAll(".", "");
+                                      ev.target.type = "Number";
+                                    },
                                     onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                                     span: (
                                       <span style={{ position: "absolute", right: "1%", top: "52%" }}>
@@ -486,6 +505,14 @@ const RequestForm = () => {
                                     value:
                                       formProps.values.buildSurfaceMin === 0 ? "" : formProps.values.buildSurfaceMin,
                                     placeholder: "Escriba aquí",
+                                    onBlur: (ev) => {
+                                      ev.target.type = "String";
+                                      ev.target.value = formatCurrency(ev.target.value);
+                                    },
+                                    onFocus: (ev) => {
+                                      ev.target.value = ev.target.value.replaceAll(".", "");
+                                      ev.target.type = "Number";
+                                    },
                                     onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                                     span: (
                                       <span style={{ position: "absolute", right: "1%", top: "52%" }}>
@@ -544,12 +571,15 @@ const RequestForm = () => {
                                     type: "number",
                                     placeholder: "Escriba aquí",
                                     value: formProps.values.rentPriceMax === 99999 ? "" : formProps.values.rentPriceMax,
+                                    onBlur: (ev) => {
+                                      ev.target.type = "String";
+                                      ev.target.value = formatCurrency(ev.target.value);
+                                    },
+                                    onFocus: (ev) => {
+                                      ev.target.value = ev.target.value.replaceAll(".", "");
+                                      ev.target.type = "Number";
+                                    },
                                     onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
-                                    // onBlur: (ev) => {
-                                    //   ev.target.type = "text";
-                                    //   formProps.setFieldValue("rentPriceMax", formatCurrency(ev.target.value));
-                                    // },
-                                    // onFocus: changeInputToNumber,
                                     span: <span style={{ position: "absolute", right: "1%", top: "52%" }}>€/mes</span>,
                                     errors: "",
                                   },
@@ -559,6 +589,14 @@ const RequestForm = () => {
                                     type: "number",
                                     placeholder: "Escriba aquí",
                                     value: formProps.values.rentPriceMin === 0 ? "" : formProps.values.rentPriceMin,
+                                    onBlur: (ev) => {
+                                      ev.target.type = "String";
+                                      ev.target.value = formatCurrency(ev.target.value);
+                                    },
+                                    onFocus: (ev) => {
+                                      ev.target.value = ev.target.value.replaceAll(".", "");
+                                      ev.target.type = "Number";
+                                    },
                                     onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                                     span: <span style={{ position: "absolute", right: "1%", top: "52%" }}>€/mes</span>,
                                     errors: "",
@@ -582,6 +620,14 @@ const RequestForm = () => {
                                     placeholder: "Escriba aquí",
                                     value:
                                       formProps.values.plotSurfaceMax === 99999 ? "" : formProps.values.plotSurfaceMax,
+                                    onBlur: (ev) => {
+                                      ev.target.type = "String";
+                                      ev.target.value = formatCurrency(ev.target.value);
+                                    },
+                                    onFocus: (ev) => {
+                                      ev.target.value = ev.target.value.replaceAll(".", "");
+                                      ev.target.type = "Number";
+                                    },
                                     onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                                     span: (
                                       <span style={{ position: "absolute", right: "1%", top: "52%" }}>
@@ -596,6 +642,14 @@ const RequestForm = () => {
                                     type: "number",
                                     placeholder: "Escriba aquí",
                                     value: formProps.values.plotSurfaceMin === 0 ? "" : formProps.values.plotSurfaceMin,
+                                    onBlur: (ev) => {
+                                      ev.target.type = "String";
+                                      ev.target.value = formatCurrency(ev.target.value);
+                                    },
+                                    onFocus: (ev) => {
+                                      ev.target.value = ev.target.value.replaceAll(".", "");
+                                      ev.target.type = "Number";
+                                    },
                                     onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                                     span: (
                                       <span style={{ position: "absolute", right: "1%", top: "52%" }}>

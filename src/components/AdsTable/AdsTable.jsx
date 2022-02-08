@@ -193,28 +193,26 @@ const AdsTable = ({ ads }) => {
         <Column header="Consultor" rowSpan={2} style={{ width: "0.15%" }} />
       </Row>
       <Row>
-        <Column header="Venta" colSpan={1} style={{ width: "0%" }} sortable field="sale.saleValue" />
-        <Column header="Alquiler" colSpan={1} style={{ width: "0%" }} sortable field="rent.rentValue" />
+        <Column header="Venta" colSpan={1} style={{ width: "0.08%" }} sortable field="sale.saleValue" />
+        <Column header="Alquiler" colSpan={1} style={{ width: "0.08%" }} sortable field="rent.rentValue" />
       </Row>
     </ColumnGroup>
   );
 
   const formatCurrency = (value) => {
     return value
-      ? value.toLocaleString("es-ES", {
-          style: "currency",
-          currency: "EUR",
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 0,
-        })
+      ? value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ' €'
       : value;
+  };
+  const numberWithDots = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ' €/mes';
   };
 
   const surfaceBodyTemplate = (rowData) => {
     if (rowData.buildSurface !== 0) {
       return (
         <p>
-          {rowData.buildSurface.toLocaleString("es-ES")} m<sup>2</sup>
+          {rowData.buildSurface.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} m<sup>2</sup>
         </p>
       );
     }
@@ -252,7 +250,7 @@ const AdsTable = ({ ads }) => {
 
   const rentBodyTemplate = (rowData) => {
     if (rowData.rent !== null && rowData.rent !== undefined) {
-      if (rowData.rent?.rentValue !== 0) return formatCurrency(rowData.rent.rentValue);
+      if (rowData.rent?.rentValue !== 0) return numberWithDots(rowData.rent.rentValue);
     } else return "";
   };
 

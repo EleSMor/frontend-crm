@@ -8,7 +8,7 @@ import Layout from "../Layout/Layout";
 import Spinner from "../../components/Spinner/Spinner";
 import Pagination from "../../components/Pagination/Pagination";
 import ContactValidation from "../../components/ContactValidation/ContactValidation";
-import { BsCloudArrowUp } from "react-icons/bs";
+import { MdOutlineSearchOff } from "react-icons/md";
 
 const ContactsList = () => {
   const [contacts, setContacts] = useState([]);
@@ -67,8 +67,8 @@ const ContactsList = () => {
           <Spinner />
         ) : currentContacts.length === 0 ? (
           <div style={{ height: 200 }}>
-            <p style={{ lineHeight: 4 }}>No ha creado ningún contacto </p>
-            <BsCloudArrowUp fontSize="2.5em" />
+            <p style={{ lineHeight: 4 }}>No se ha encontrado ningún contacto</p>
+            <MdOutlineSearchOff fontSize="2.5em" />
           </div>
         ) : (
           currentContacts.map((contact, index) => <ContactCard key={`${contact._id}-${index}`} contact={contact} />)

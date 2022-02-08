@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
+import Popup from "reactjs-popup";
 import { useParams, Link } from "react-router-dom";
 import { Formik, Form } from "formik";
-import NotFound from "../../components/NotFound/NotFound";
 import Spinner from "../../components/Spinner/Spinner";
 import { MultiSelect } from "../../components";
 import { DataTable } from "primereact/datatable";
@@ -15,6 +15,7 @@ import { MdHeight } from "react-icons/md";
 import { ImMap2 } from "react-icons/im";
 import InputsGroup from "../../components/InputsGroup/InputsGroup";
 import useWindowSize from "../../hooks/useWindowSize";
+import "reactjs-popup/dist/index.css";
 import "moment/locale/es";
 import { getAdsMatched, sendNewRequest, getRequestById } from "../../api/requests.api";
 import "./MatchedAdCard.scss";
@@ -26,7 +27,11 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
   const [residentialSelectedZones, setResidentialSelectedZones] = useState([]);
   const [patrimonialSelectedZones, setPatrimonialSelectedZones] = useState([]);
   const [loader, setLoader] = useState(true);
+  const [open, setOpen] = useState(false);
+  const closeModal = () => setOpen(false);
   const { id } = useParams();
+  const size = useWindowSize();
+
   const adBuildingTypeOptions = [
     { name: "Casa" },
     { name: "Piso" },
@@ -50,7 +55,7 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
     setLoader(false);
   }, [id]);
 
-  if (id && requestById.length !== 0 && residentials.length !== 0 && patrimonials.length !== 0 && loader) {
+  if (id && requestById.length !== 0 && residentials.length !== 0 && patrimonials.length !== 0 && !loader) {
     for (let zone of residentials) {
       if (requestById.requestZone.includes(zone._id) && !residentialSelectedZones.includes(zone._id)) {
         setResidentialSelectedZones([...residentialSelectedZones, zone._id]);
@@ -63,15 +68,8 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
     }
   }
 
-  const size = useWindowSize();
-
   const formatCurrency = (value) => {
-    return value.toLocaleString("es-ES", {
-      style: "currency",
-      currency: "EUR",
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    });
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
   const maskValues = (value, ref) => {
@@ -87,11 +85,12 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
     } else if (value === 0) {
       render = <p>Valor mín.</p>;
     } else {
-      if (ref === "sale" || ref === "rent") render = <p>{formatCurrency(value)}</p>;
+      if (ref === "sale" || ref === "rent")
+        render = <p>{formatCurrency(value) + (ref === "sale" ? " €" : " €/mes")}</p>;
       else
         render = (
           <p>
-            {value.toLocaleString("es-ES")} m<sup>2</sup>
+            {value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} m<sup>2</sup>
           </p>
         );
     }
@@ -115,6 +114,65 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
       </span>
     );
   };
+
+  const Modal = () => (
+    <Popup
+      trigger={
+        <button
+          className="buttonForm"
+          style={{
+            marginRight: 8,
+            display: "flex",
+            alignItems: "center",
+            backgroundColor: "white",
+            color: "#2b363d",
+            border: "1px solid #2b363d",
+          }}
+        >
+          {" "}
+          Open Modal{" "}
+        </button>
+      }
+      modal
+    >
+      {(close) => (
+        <div className="modal">
+          <button className="close" onClick={close}>
+            &times;
+          </button>
+          <div className="header"> Modal Title </div>
+          <div className="content">
+            {" "}
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, a nostrum. Dolorem, repellat quidem ut,
+            minima sint vel eveniet quibusdam voluptates delectus doloremque, explicabo tempore dicta adipisci fugit
+            amet dignissimos?
+            <br />
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur sit commodi beatae optio voluptatum
+            sed eius cumque, delectus saepe repudiandae explicabo nemo nam libero ad, doloribus, voluptas rem alias.
+            Vitae?
+          </div>
+          <div className="actions">
+            <Popup trigger={<button className="button"> Trigger </button>} position="top center" nested>
+              <span>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae magni omnis delectus nemo, maxime
+                molestiae dolorem numquam mollitia, voluptate ea, accusamus excepturi deleniti ratione sapiente!
+                Laudantium, aperiam doloribus. Odit, aut.
+              </span>
+            </Popup>
+            <button
+              className="button"
+              onClick={() => {
+                console.log("modal closed ");
+                close();
+              }}
+            >
+              close modal
+            </button>
+          </div>
+        </div>
+      )}
+    </Popup>
+  );
 
   return (
     <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
@@ -154,6 +212,7 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
             </>
           )}
         </button>
+        {/* {Modal()} */}
       </div>
       <div className="MatchedAd__container">
         <div className={"MatchedAd__container__col--left"}>
@@ -186,9 +245,7 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                 data.requestZone = patrimonialSelectedZones;
               }
 
-              console.log(patrimonialSelectedZones.length)
-              console.log(residentialSelectedZones.length)
-              if (patrimonialSelectedZones.length === 0 && residentialSelectedZones.length === 0) {
+              if (patrimonialSelectedZones.length === 0 && residentialSelectedZones.length === 0 && data.requestZone) {
                 data.requestZone = [];
               }
 
@@ -238,12 +295,10 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                       list={residentials}
                       fields={{ groupBy: "zone", text: "name", value: "_id" }}
                       onChange={(ev) => {
-                        console.log(ev.value)
                         formProps.setFieldValue("requestZone", ev.value);
                         setResidentialSelectedZones(ev.value);
                       }}
                       value={validateZone(residentials) ? formProps.values.requestZone : []}
-                      // value={["618bf852c83a0c74f6b7e7f6"]}
                     />
                   </div>
                   <div className="MatchedAd__container__col--item">
@@ -406,7 +461,7 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
         </div>
         {loader ? (
           <Spinner />
-        ) : adsMatched.length !== 0 ? (
+        ) : (
           <div className={size < 440 ? "MatchedAd__container__col" : "MatchedAd__container__col--right"}>
             <DataTable
               value={adsMatched.length !== 0 ? adsMatched : ""}
@@ -490,11 +545,7 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                   )
                 }
                 bodyStyle={{ width: "15%", verticalAlign: "top" }}
-                body={(ev) => (
-                  <div>
-                    {ev.buildSurface} m<sup>2</sup>
-                  </div>
-                )}
+                body={(ev) => <div>{maskValues(ev.buildSurface, "buildSurface")}</div>}
               ></Column>
               <Column
                 field="plotSurface"
@@ -507,11 +558,7 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                     <>Parcela</>
                   )
                 }
-                body={(ev) => (
-                  <div>
-                    {ev.plotSurface} m<sup>2</sup>
-                  </div>
-                )}
+                body={(ev) => <div>{maskValues(ev.plotSurface, "plotSurface")}</div>}
                 bodyStyle={{ width: "10%", verticalAlign: "top" }}
               ></Column>
               <Column
@@ -521,13 +568,7 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                 body={(ev) => <div>{ev.adBuildingType.sort().join(", ")}</div>}
               ></Column>
             </DataTable>
-            {/* </div> */}
-            {/* </div> */}
           </div>
-        ) : (
-          <>
-            <NotFound />
-          </>
         )}
       </div>
     </div>

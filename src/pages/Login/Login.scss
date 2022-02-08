@@ -24,9 +24,9 @@
 
     &-logo {
       position: relative;
-      top: 10%;
+      top: 15%;
       color: #ffff;
-      transform: scale(300%);
+      width: 15rem;
     }
 
     &-form {
@@ -115,7 +115,7 @@
 
     &-logo {
       padding-left: 0.5vw;
-      width: 16%;
+      width: 8rem;
     }
   }
 }
@@ -126,7 +126,7 @@
     justify-content: space-between;
     align-items: center;
     flex-direction: column;
-    min-height: 100vh;
+    height: 100vh;
     background-color: #2b363d;
 
     &__box {
@@ -135,7 +135,6 @@
       align-items: center;
       flex-direction: column;
 
-      margin-top: 5%;
       max-width: 40vw;
       height: 75vh;
       width: 40vw;
@@ -144,10 +143,9 @@
       background-color: #2b363d;
 
       &-logo {
-        position: relative;
-        top: 10%;
         color: #ffff;
-        transform: scale(300%);
+        transform: translateY(-35%);
+        width: 15rem;
       }
 
       &-form {
@@ -233,7 +231,7 @@
 
       &-logo {
         padding-left: 0.5vw;
-        width: 16%;
+        width: 8rem;
       }
     }
   }

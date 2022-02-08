@@ -4,19 +4,14 @@ import { Column } from "primereact/column";
 
 const RequestsMatching = ({ ads }) => {
   const formatCurrency = (value) => {
-    return value.toLocaleString("es-ES", {
-      style: "currency",
-      currency: "EUR",
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    });
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
   };
 
   const buildSurfaceBodyTemplate = (rowData) => {
     if (rowData.buildSurface && rowData.buildSurface !== 0) {
       return (
         <p>
-          {rowData.buildSurface.toLocaleString("es-ES")} m<sup>2</sup>
+          {rowData.buildSurface.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} m<sup>2</sup>
         </p>
       );
     }
@@ -26,7 +21,7 @@ const RequestsMatching = ({ ads }) => {
     if (rowData.plotSurface && rowData.plotSurface !== 0) {
       return (
         <p>
-          {rowData.plotSurface.toLocaleString("es-ES")} m<sup>2</sup>
+          {rowData.plotSurface.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} m<sup>2</sup>
         </p>
       );
     }
@@ -34,13 +29,13 @@ const RequestsMatching = ({ ads }) => {
 
   const saleBodyTemplate = (rowData) => {
     if (rowData.sale !== null && rowData.sale !== undefined) {
-      if (rowData.sale.saleValue) return formatCurrency(rowData.sale.saleValue);
+      if (rowData.sale.saleValue) return formatCurrency(rowData.sale.saleValue) + ' €';
     } else return "";
   };
 
   const rentBodyTemplate = (rowData) => {
     if (rowData.sale !== null && rowData.sale !== undefined) {
-      if (rowData.rent.rentValue) return formatCurrency(rowData.rent.rentValue);
+      if (rowData.rent.rentValue) return formatCurrency(rowData.rent.rentValue) + ' €/mes';
     } else return "";
   };
 

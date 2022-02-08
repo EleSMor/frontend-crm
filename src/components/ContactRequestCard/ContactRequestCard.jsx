@@ -12,12 +12,7 @@ import useWindowSize from "../../hooks/useWindowSize";
 
 const ContactRequestCard = ({ request }) => {
   const formatCurrency = (value) => {
-    return value.toLocaleString("es-ES", {
-      style: "currency",
-      currency: "EUR",
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    });
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ' €';
   };
   const size = useWindowSize();
 
@@ -37,7 +32,7 @@ const ContactRequestCard = ({ request }) => {
       else
         render = (
           <p>
-            {value.toLocaleString("es-ES")} m<sup>2</sup>
+            {value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} m<sup>2</sup>
           </p>
         );
     }

@@ -174,19 +174,14 @@ const RequestsTable = ({ requests }) => {
   );
 
   const formatCurrency = (value) => {
-    return value.toLocaleString("es-ES", {
-      style: "currency",
-      currency: "EUR",
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    });
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " €";
   };
 
   const buildSurfaceMaxBodyTemplate = (rowData) => {
     if (rowData.requestBuildSurface.buildSurfaceMax !== 0 && rowData.requestBuildSurface.buildSurfaceMax !== 9999) {
       return (
         <p>
-          {rowData.requestBuildSurface.buildSurfaceMax.toLocaleString("es-ES")} m<sup>2</sup>
+          {rowData.requestBuildSurface.buildSurfaceMax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} m<sup>2</sup>
         </p>
       );
     }
@@ -196,7 +191,7 @@ const RequestsTable = ({ requests }) => {
     if (rowData.requestBuildSurface.buildSurfaceMin !== 0) {
       return (
         <p>
-          {rowData.requestBuildSurface.buildSurfaceMin.toLocaleString("es-ES")} m<sup>2</sup>
+          {rowData.requestBuildSurface.buildSurfaceMin.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} m<sup>2</sup>
         </p>
       );
     }
@@ -206,7 +201,7 @@ const RequestsTable = ({ requests }) => {
     if (rowData.requestPlotSurface.plotSurfaceMax !== 0 && rowData.requestPlotSurface.plotSurfaceMax !== 99999) {
       return (
         <p>
-          {rowData.requestPlotSurface.plotSurfaceMax.toLocaleString("es-ES")} m<sup>2</sup>
+          {rowData.requestPlotSurface.plotSurfaceMax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} m<sup>2</sup>
         </p>
       );
     }
@@ -216,7 +211,7 @@ const RequestsTable = ({ requests }) => {
     if (rowData.requestPlotSurface.plotSurfaceMin !== 0) {
       return (
         <p>
-          {rowData.requestPlotSurface.plotSurfaceMin.toLocaleString("es-ES")} m<sup>2</sup>
+          {rowData.requestPlotSurface.plotSurfaceMin.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} m<sup>2</sup>
         </p>
       );
     }

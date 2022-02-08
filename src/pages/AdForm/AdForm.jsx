@@ -194,7 +194,7 @@ const AdForm = () => {
                 initialValues={{
                   title: adById ? adById.title : "",
                   adReference: adById ? adById.adReference : "",
-                  adStatus: adById ? adStatus : "En preparación",
+                  adStatus: adById ? adById.adStatus : "En preparación",
                   showOnWeb: adById ? adById.showOnWeb : true,
                   featuredOnMain: adById ? adById.featuredOnMain : false,
                   street: adById ? adById.adDirection.address.street : "",
@@ -272,6 +272,7 @@ const AdForm = () => {
                   data.consultant = selectedConsultant;
                   data.adType = selectedAdType;
                   data.adBuildingType = selectedAdBuildingType;
+                  if (data.adStatus !== adStatus) data.adStatus = adStatus;
 
                   data.adStatus = adStatus;
                   if (data.saleValue === "") data.saleValue = 0;

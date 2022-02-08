@@ -39,11 +39,10 @@ const ContactValidation = ({ list }) => {
     const emailValue = document.querySelector('input[name="email"]').value;
 
     search = list.filter((contact) => {
-      if (
-        checkIfIncludes(contact.fullName, fullNameValue) &&
-        checkIfIncludes(contact.contactMobileNumber, mobileValue) &&
-        checkIfIncludes(contact.email, emailValue)
-      ) {
+      if (fullNameValue && checkIfIncludes(contact.fullName, fullNameValue)) return contact;
+      if (mobileValue && checkIfIncludes(contact.contactMobileNumber, mobileValue)) return contact;
+      if (emailValue && checkIfIncludes(contact.email, emailValue)) {
+        setIsValidEmail(false);
         return contact;
       }
       if (emailValue !== "" && !checkIfIncludes(contact.email, emailValue)) {
@@ -109,7 +108,7 @@ const ContactValidation = ({ list }) => {
 
       <div className="ContactValidation--button">
         {(list.length === 0 && email && fullName && contactMobileNumber) ||
-        (contacts.length === 0 && email && fullName && contactMobileNumber && isValidEmail) ? (
+        (contacts.length === 0 && email && isValidEmail) ? (
           <Link
             className="ContactValidation--button--button__active"
             to={`/contactos/crear/${fullName}/${email}/${contactMobileNumber}`}
