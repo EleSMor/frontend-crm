@@ -96,6 +96,19 @@ const RequestForm = () => {
     getFetchs();
   }, [id, activeIndex]);
 
+  const checkIfIncludes = (origin, text) => {
+    return origin
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .includes(
+        text
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .toLowerCase()
+      );
+  };
+
   if (
     firstLoad === true &&
     id &&
@@ -257,6 +270,19 @@ const RequestForm = () => {
                             label="Contacto"
                             list={contacts}
                             fields={{ groupBy: "", text: "fullName", value: "_id" }}
+                            filter={(e) => {
+                              const searchData = contacts.filter((contact) => {
+                                if (
+                                  checkIfIncludes(contact.fullName, e.text) ||
+                                  checkIfIncludes(contact.email, e.text) ||
+                                  checkIfIncludes(contact.company, e.text) ||
+                                  checkIfIncludes(contact.contactMobileNumber, e.text)
+                                )
+                                  return contact;
+                              });
+                              if (searchData.length !== 0) e.updateData(searchData);
+                              else e.updateData([]);
+                            }}
                             fn={(e) => setSelectedContact(e.target.value)}
                             defaultValues={selectedContact ? selectedContact : ""}
                           />
@@ -269,6 +295,18 @@ const RequestForm = () => {
                             label="Consultor"
                             list={consultants}
                             fields={{ groupBy: "", text: "fullName", value: "_id" }}
+                            filter={(e) => {
+                              const searchData = consultants.filter((consultant) => {
+                                if (
+                                  checkIfIncludes(consultant.fullName, e.text) ||
+                                  checkIfIncludes(consultant.consultantEmail, e.text) ||
+                                  checkIfIncludes(consultant.consultantMobileNumber, e.text)
+                                )
+                                  return consultant;
+                              });
+                              if (searchData.length !== 0) e.updateData(searchData);
+                              else e.updateData([]);
+                            }}
                             fn={(e) => setSelectedConsultant(e.target.value)}
                             defaultValues={selectedConsultant ? selectedConsultant : ""}
                           />

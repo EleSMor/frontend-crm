@@ -63,6 +63,19 @@ const DetailsAds = ({
 
   useEffect(() => setZone(formProps.values.department), [formProps.values.department]);
 
+  const checkIfIncludes = (origin, text) => {
+    return origin
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .includes(
+        text
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .toLowerCase()
+      );
+  };
+
   const validateZone = (zones) => {
     return zones.some((zone) => formProps.values.zone.includes(zone._id));
   };
@@ -205,6 +218,19 @@ const DetailsAds = ({
               label="Propietario"
               list={owners}
               fields={{ groupBy: "", text: "fullName", value: "_id" }}
+              filter={(e) => {
+                const searchData = owners.filter((owner) => {
+                  if (
+                    checkIfIncludes(owner.fullName, e.text) ||
+                    checkIfIncludes(owner.email, e.text) ||
+                    checkIfIncludes(owner.company, e.text) ||
+                    checkIfIncludes(owner.contactMobileNumber, e.text)
+                  )
+                    return owner;
+                });
+                if (searchData.length !== 0) e.updateData(searchData);
+                else e.updateData([]);
+              }}
               fn={(ev) => {
                 setOwner(ev.target.value);
               }}
@@ -215,6 +241,18 @@ const DetailsAds = ({
             <Select
               label="Consultor"
               list={consultants}
+              filter={(e) => {
+                const searchData = consultants.filter((consultant) => {
+                  if (
+                    checkIfIncludes(consultant.fullName, e.text) ||
+                    checkIfIncludes(consultant.consultantEmail, e.text) ||
+                    checkIfIncludes(consultant.consultantMobileNumber, e.text)
+                  )
+                    return consultant;
+                });
+                if (searchData.length !== 0) e.updateData(searchData);
+                else e.updateData([]);
+              }}
               fields={{ text: "fullName", value: "_id" }}
               fn={(ev) => {
                 setConsultant(ev.target.value);
@@ -306,11 +344,7 @@ const DetailsAds = ({
                     fields={{ groupBy: "", text: "name", value: "name" }}
                     filter={(e) => {
                       const searchData = [{ name: "Patrimonio" }, { name: "Residencial" }].filter((department) =>
-                        department.name
-                          .normalize("NFD")
-                          .replace(/[\u0300-\u036f]/g, "")
-                          .toLowerCase()
-                          .includes(e.text.toLowerCase())
+                        checkIfIncludes(department.name, e.text)
                       );
                       e.updateData(searchData);
                     }}
@@ -319,8 +353,8 @@ const DetailsAds = ({
                       setZone(e.value);
                       if (e.value === "Residencial") setPatrimonialZones([]);
                       if (e.value === "Patrimonio") setResidentialZones([]);
-                      formProps.setFieldValue("department", e.value)
-                      formProps.setFieldValue("zone", [])
+                      formProps.setFieldValue("department", e.value);
+                      formProps.setFieldValue("zone", []);
                     }}
                     defaultValues={formProps.values.department ? formProps.values.department : ""}
                   />
@@ -348,7 +382,7 @@ const DetailsAds = ({
                       fields={{ groupBy: "", text: "name", value: "_id" }}
                       onChange={(ev) => {
                         setPatrimonialZones(ev.value);
-                        formProps.setFieldValue("zone", ev.value)
+                        formProps.setFieldValue("zone", ev.value);
                       }}
                       value={validateZone(patrimonials) ? formProps.values.zone : []}
                     />
