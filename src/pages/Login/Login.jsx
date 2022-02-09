@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import { GvreLogo, AttomoLogo } from "../../icons";
 import { MdOutlineAlternateEmail } from "react-icons/md";
 import { BiKey } from "react-icons/bi";
-import { AiOutlineLogout } from "react-icons/ai";
+import { AiOutlineLogout, AiOutlineHome } from "react-icons/ai";
 import storage from "../../services/storage";
 import { loginApi, logoutApi } from "../../api/auth.api";
 import "./Login.scss";
@@ -83,6 +83,12 @@ const Login = () => {
         <div className="login">
           <div className="login__box">
             <GvreLogo className="login__box-logo" />
+            <div className="login__box-field">
+              <div className="login__submit login__submit" onClick={() => history.push('/anuncios')}>
+                <AiOutlineHome style={{ transform: "scale(200%)", marginRight: 20 }} />
+                Inicio
+              </div>
+            </div>
             <div className="login__box-field">
               <div className="login__submit login__submit--logout" onClick={logout}>
                 <AiOutlineLogout style={{ transform: "scale(200%)", marginRight: 20 }} />

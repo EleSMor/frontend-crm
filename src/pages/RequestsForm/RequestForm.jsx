@@ -94,7 +94,7 @@ const RequestForm = () => {
 
   useEffect(() => {
     getFetchs();
-  }, [id, activeIndex]);
+  }, [id]);
 
   const checkIfIncludes = (origin, text) => {
     return origin
@@ -403,7 +403,7 @@ const RequestForm = () => {
                             label="Comentarios"
                             name="requestComment"
                             placeholder="Escriba aquí"
-                            vale={formProps.values.requestComment}
+                            value={formProps.values.requestComment}
                             onChange={(ev) => {
                               formProps.setFieldValue("requestComment", ev.target.value);
                             }}
@@ -738,7 +738,6 @@ const RequestForm = () => {
               </Formik>
             </TabPanel>
             <TabPanel header="Matching">
-              {/* {requestById.length !== 0 && <RequestsMatching ads={ads} />} */}
               <MatchedAdCard patrimonials={patrimonials} residentials={residentials} />
             </TabPanel>
           </TabView>

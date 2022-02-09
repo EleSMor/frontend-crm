@@ -9,7 +9,7 @@ const ContactValidation = ({ list }) => {
   const [fullName, setFullName] = useState("");
   const [contactMobileNumber, setContactMobileNumber] = useState("");
   const [email, setEmail] = useState("");
-  const [isValidEmail, setIsValidEmail] = useState(false);
+  const [isValidEmail, setIsValidEmail] = useState(true);
 
   const checkIfIncludes = (origin, text) => {
     return origin
@@ -39,18 +39,17 @@ const ContactValidation = ({ list }) => {
     const emailValue = document.querySelector('input[name="email"]').value;
 
     search = list.filter((contact) => {
-      if (fullNameValue && checkIfIncludes(contact.fullName, fullNameValue)) return contact;
-      if (mobileValue && checkIfIncludes(contact.contactMobileNumber, mobileValue)) return contact;
-      if (emailValue && checkIfIncludes(contact.email, emailValue)) {
-        setIsValidEmail(false);
+      if (
+        checkIfIncludes(contact.fullName, fullNameValue) &&
+        checkIfIncludes(contact.contactMobileNumber, mobileValue) &&
+        checkIfIncludes(contact.email, emailValue)
+      ) {
         return contact;
       }
-      if (emailValue !== "" && !checkIfIncludes(contact.email, emailValue)) {
-        setIsValidEmail(true);
-      } else if (emailValue === "") {
-        setIsValidEmail(false);
-      }
     });
+
+    if (list.some((contact) => checkIfIncludes(contact.email, emailValue))) setIsValidEmail(false);
+    else setIsValidEmail(true);
 
     if (fullNameValue === "" && mobileValue === "" && emailValue === "") {
       setContacts([]);
