@@ -115,6 +115,11 @@ const ContactForm = () => {
                   {contactById?.contactMobileNumber || phone}
                 </p>
               </div>
+              <div>
+                <button className="buttonForm" style={{ marginLeft: 20 }} onClick={() => history.push('/peticiones/crear')}>
+                  Crear nueva petición
+                </button>
+              </div>
             </div>
 
             <TabView>
