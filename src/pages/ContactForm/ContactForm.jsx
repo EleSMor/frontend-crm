@@ -128,7 +128,7 @@ const ContactForm = () => {
                   enableReinitialize={true}
                   initialValues={{
                     fullName: contactById ? contactById.fullName : name,
-                    tag: contactById ? selTag : [],
+                    tag: contactById ? contactById.tag : [],
                     email: contactById ? contactById.email : email,
                     contactMobileNumber: contactById ? contactById.contactMobileNumber : phone,
                     contactPhoneNumber: contactById ? contactById.contactPhoneNumber : "",
