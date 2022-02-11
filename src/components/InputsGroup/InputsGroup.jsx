@@ -10,6 +10,9 @@ const InputsGroup = ({ label, inputs, directionStyle }) => {
             {input?.type === "checkbox" ? (
               <div className={"InputsGroup__inputs-input--flex"}>
                 <input
+                  onWheel={(e) => e.target.blur()}
+                  onKeyUp={(e) => e.preventDefault()}
+                  onKeyDown={(e) => e.preventDefault()}
                   name={input.name}
                   value={input.value}
                   onChange={input.onChange}
@@ -30,6 +33,9 @@ const InputsGroup = ({ label, inputs, directionStyle }) => {
               >
                 <label htmlFor={input.name}>{input.label}</label>
                 <input
+                  onWheel={(e) => e.target.blur()}
+                  onKeyUp={(e) => e.preventDefault()}
+                  onKeyDown={(e) => e.preventDefault()}
                   name={input.name}
                   value={input.value}
                   onChange={input.onChange}

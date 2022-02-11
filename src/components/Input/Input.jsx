@@ -31,6 +31,9 @@ const Input = ({
           autoComplete={autoComplete}
           readOnly={readOnly}
           min="0"
+          onWheel={(e) => e.target.blur()}
+          onKeyUp={(e) => e.preventDefault()}
+          onKeyDown={(e) => e.preventDefault()}
         />
       </div>
 
