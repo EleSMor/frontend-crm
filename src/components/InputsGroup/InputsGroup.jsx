@@ -11,8 +11,12 @@ const InputsGroup = ({ label, inputs, directionStyle }) => {
               <div className={"InputsGroup__inputs-input--flex"}>
                 <input
                   onWheel={(e) => e.target.blur()}
-                  // onKeyUp={(e) => e.preventDefault()}
-                  // onKeyDown={(e) => e.preventDefault()}
+                  onKeyUp={(e) => {
+                    if (e.key === "ArrowUp" || e.key === "ArrowDown") e.preventDefault();
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "ArrowUp" || e.key === "ArrowDown") e.preventDefault();
+                  }}
                   name={input.name}
                   value={input.value}
                   onChange={input.onChange}
@@ -34,8 +38,12 @@ const InputsGroup = ({ label, inputs, directionStyle }) => {
                 <label htmlFor={input.name}>{input.label}</label>
                 <input
                   onWheel={(e) => e.target.blur()}
-                  // onKeyUp={(e) => e.preventDefault()}
-                  // onKeyDown={(e) => e.preventDefault()}
+                  onKeyUp={(e) => {
+                    if (e.key === "ArrowUp" || e.key === "ArrowDown") e.preventDefault();
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "ArrowUp" || e.key === "ArrowDown") e.preventDefault();
+                  }}
                   name={input.name}
                   value={input.value}
                   onChange={input.onChange}
