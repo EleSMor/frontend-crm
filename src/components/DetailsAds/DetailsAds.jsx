@@ -782,8 +782,8 @@ const DetailsAds = ({
                         <input
                           type="checkbox"
                           name="subfloorHeating"
-                          checked={formProps.values.floorHeating}
-                          onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.floorHeating)}
+                          checked={formProps.values.subfloorHeating}
+                          onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.subfloorHeating)}
                         />
                       </div>
                       <div>
