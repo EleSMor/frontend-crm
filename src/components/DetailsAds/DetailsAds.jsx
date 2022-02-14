@@ -777,11 +777,11 @@ const DetailsAds = ({
                       <div>
                         <div>
                           <GiHotSurface style={{ marginRight: "20", transform: "scale(150%)" }} />
-                          <label htmlFor="floorHeating">Suelo radiante</label>
+                          <label htmlFor="subfloorHeating">Suelo radiante</label>
                         </div>
                         <input
                           type="checkbox"
-                          name="floorHeating"
+                          name="subfloorHeating"
                           checked={formProps.values.floorHeating}
                           onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.floorHeating)}
                         />
@@ -1099,13 +1099,13 @@ const DetailsAds = ({
                     <div>
                       <div>
                         <GiHotSurface style={{ marginRight: "20", transform: "scale(150%)" }} />
-                        <label htmlFor="floorHeating">Suelo radiante</label>
+                        <label htmlFor="subfloorHeating">Suelo radiante</label>
                       </div>
                       <input
                         type="checkbox"
-                        name="floorHeating"
-                        checked={formProps.values.floorHeating}
-                        onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.floorHeating)}
+                        name="subfloorHeating"
+                        checked={formProps.values.subfloorHeating}
+                        onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.subfloorHeating)}
                       />
                     </div>
                     <div>

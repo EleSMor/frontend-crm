@@ -257,6 +257,7 @@ const AdForm = () => {
                   swimmingPool: adById ? adById.quality.others.swimmingPool : false,
                   garage: adById ? adById.quality.others.garage : false,
                   falseCeiling: adById ? adById.quality.others.falseCeiling : false,
+                  raisedFloor: adById ? adById.quality.others.raisedFloor : false,
                   qualityBathrooms: adById ? adById.quality.others.qualityBathrooms : false,
                   freeHeight: adById ? adById.quality.others.freeHeight : false,
                   smokeOutlet: adById ? adById.quality.others.smokeOutlet : false,
