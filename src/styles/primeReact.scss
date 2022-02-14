@@ -1,0 +1,113 @@
+@use "src/styles/utils.scss" as *;
+
+// TABS
+.p-tabview .p-tabview-nav .p-tabview-ink-bar {
+  background-color: $c-background-dark;
+}
+
+.p-tabview-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: $c-background-dark !important;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.p-tabview-title:hover {
+  text-decoration: none;
+}
+
+.p-tabview-selected {
+  color: $c-text-dark !important;
+  text-decoration: none;
+  &:hover {
+    text-decoration: none;
+    border-color: none;
+  }
+}
+
+.p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+  border-color: grey;
+  color: #ffffff;
+  border-color: none;
+}
+a {
+  text-decoration: none;
+}
+
+.p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link:focus {
+  outline: none;
+  outline-offset: none;
+  box-shadow: none;
+}
+
+.p-tabview .p-tabview-nav li .p-tabview-nav-link:not(.p-disabled):focus {
+  outline: none;
+  outline-offset: none;
+  box-shadow: none;
+}
+
+.p-tabview .p-tabview-nav li .p-tabview-nav-link {
+  transition: none;
+}
+
+// ACCORDION
+.p-accordion .p-accordion-header .p-accordion-header-link {
+  background-color: #c4c4c4;
+  border-radius: 2px;
+  border: none;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.719);
+  text-decoration: none;
+}
+
+.p-accordion .p-accordion-header:not(.p-highlight):not(.p-disabled):hover .p-accordion-header-link {
+  border: none;
+  text-decoration: none;
+}
+
+.p-accordion .p-accordion-header:not(.p-disabled) .p-accordion-header-link:focus {
+  border: none !important;
+  box-shadow: none;
+  color: none;
+}
+
+.p-accordion .p-accordion-content {
+  border: none;
+  padding-top: 20px;
+  padding-bottom: 50px;
+}
+
+.p-button {
+  color: $c-dark-grey;
+  background: $c-background-mid;
+  border: 1px solid #B0B0B0;
+  padding: 0.75rem rem 1.25rem;
+  font-size: 1rem;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  border-radius: 6px;
+}
+
+.p-fileupload .p-fileupload-buttonbar {
+  background: #f8f9fa;
+  padding: 1.25rem;
+  border-top: 1px solid #dee2e6;
+  border-radius: 0;
+  color: #343a40;
+  border-bottom: 0 none;
+  border-left: 0 none;
+  border-right: 0 none;
+  // border-top-right-radius: 6px;
+  // border-top-left-radius: 6px;
+}
+
+.p-fileupload .p-fileupload-content {
+  background: #ffffff;
+  padding: 2rem 1rem;
+  border: none;
+  color: #495057;
+  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 6px;
+}

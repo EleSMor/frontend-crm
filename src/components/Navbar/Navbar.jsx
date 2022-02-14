@@ -1,5 +1,5 @@
-import React from "react";
 import { NavLink } from "react-router-dom";
+import useWindowSize from "../../hooks/useWindowSize";
 import {
   GvreLogo,
   Ads,
@@ -8,99 +8,106 @@ import {
   Consultants,
   Calendar,
   Settings,
-  Bell,
-  Mail,
   Ellipse2,
   Ellipse3,
   User,
 } from "../../icons/index.js";
 import "./Navbar.scss";
+import NavbarXS from "./NavbarXS";
 
-const Navbar = () => {
+const Navbar = ({ title }) => {
+  let location = window.location.pathname;
+  const size = useWindowSize();
+
   return (
-    <nav className="nav">
-      <div className="nav__left">
-        <ul>
-          <li className="nav__link">
-            <NavLink to="/">
-              <GvreLogo />
-            </NavLink>
-          </li>
-          <li className="nav__link">
-            <div>
-              <NavLink to="/ads">
-                <Ads />
-                <span>Anuncios</span>
+    <>
+      {size < 880 ? (
+        <NavbarXS title={title} />
+      ) : (
+        <nav className="navigate">
+          <div className="navigate__left">
+            <ul>
+              <div className="navigate__home">
+                <li>
+                  <GvreLogo className="navigate__link--logo" />
+                </li>
+                <li>
+                  <h1 className="navigate__title">GV Real Estate</h1>
+                </li>
+              </div>
+              <NavLink
+                className={location.includes("/anuncios") ? "navigate__route-active" : "navigate__route"}
+                to="/anuncios"
+              >
+                <li>
+                  <div>
+                    <Ads className="navigate__link--icon" />
+                    <span className="navigate__link--text">Anuncios</span>
+                  </div>
+                </li>
               </NavLink>
-            </div>
-          </li>
-          <li className="nav__link">
-            <div>
-              <NavLink to="/requests">
-                <Requests />
-                <span>Peticiones</span>
+              <NavLink
+                className={location.includes("/peticiones") ? "navigate__route-active" : "navigate__route"}
+                to="/peticiones"
+              >
+                <li>
+                  <div>
+                    <Requests className="navigate__link--icon" />
+                    <span className="navigate__link--text">Peticiones</span>
+                  </div>
+                </li>
               </NavLink>
-            </div>
-          </li>
-          <li className="nav__link">
-            <div>
-              <NavLink to="/contacts">
-                <Contacts />
-                <span>Contactos</span>
+              <NavLink
+                className={location.includes("/contactos") ? "navigate__route-active" : "navigate__route"}
+                to="/contactos"
+              >
+                <li>
+                  <div>
+                    <Contacts className="navigate__link--icon" />
+                    <span className="navigate__link--text">Contactos</span>
+                  </div>
+                </li>
               </NavLink>
-            </div>
-          </li>
-          <li className="nav__link">
-            <div>
-              <NavLink to="/consultants">
-                <Consultants />
-                <span>Consultores</span>
+              <NavLink
+                className={location.includes("/consultores") ? "navigate__route-active" : "navigate__route"}
+                to="/consultores"
+              >
+                <li>
+                  <div>
+                    <Consultants className="navigate__link--icon" />
+                    <span className="navigate__link--text">Consultores</span>
+                  </div>
+                </li>
               </NavLink>
-            </div>
-          </li>
-          <li className="nav__link">
-            <div>
-              <NavLink to="/schedule">
-                <Calendar />
-                <span>Agenda</span>
-              </NavLink>
-            </div>
-          </li>
-          <li className="nav__link">
-            <div>
-              <NavLink to="/settings">
-                <Settings />
-                <span>Configuración</span>
-              </NavLink>
-            </div>
-          </li>
-        </ul>
-      </div>
+              {/* <span className="navigate__route" to="">
+                <li>
+                  <div>
+                    <Calendar className="navigate__link--icon" />
+                    <span className="navigate__link--text">Agenda</span>
+                  </div>
+                </li>
+              </span>
+              <span className="navigate__route" to="">
+                <li>
+                  <div>
+                    <Settings className="navigate__link--icon" />
+                    <span className="navigate__link--text">Configuración</span>
+                  </div>
+                </li>
+              </span> */}
+            </ul>
+          </div>
 
-      <div className="nav__right">
-        <ul>
-          <li className="nav__link">
-            <NavLink to="/">
-              <Bell />
+          <div className="navigate__right">
+            <Ellipse2 className="navigate__logging-ellipse1"></Ellipse2>
+            <Ellipse3 className="navigate__logging-ellipse2"></Ellipse3>
+            <NavLink activeClassName="" to="/">
+              <User className="navigate__logging-user" />
             </NavLink>
-          </li>
-          <li className="nav__link">
-            <NavLink to="/">
-              <Mail />
-            </NavLink>
-          </li>
-          <li className="nav__link">
-            <NavLink to="/">
-              <Ellipse2>
-                <Ellipse3>
-                  <User />
-                </Ellipse3>
-              </Ellipse2>
-            </NavLink>
-          </li>
-        </ul>
-      </div>
-    </nav>
+          </div>
+        </nav>
+      )}
+    </>
   );
 };
 

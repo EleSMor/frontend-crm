@@ -1,0 +1,18 @@
+.p-fileupload {
+  border: none;
+  &-files {
+    display: flex;
+  }
+}
+
+.preview {
+  margin-right: 40px;
+  margin-top: 20px;
+  margin-bottom: 40px;
+  width: 284px;
+  height: 246px;
+  > img {
+    width: 284px;
+    height: 246px;
+  }
+}

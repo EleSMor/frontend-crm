@@ -1,0 +1,110 @@
+@use "src/styles/utils.scss" as *;
+
+@keyframes openMenu {
+  0% {
+    height: 0;
+  }
+  100% {
+    height: 295px;
+  }
+}
+@keyframes openItems {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.NavbarXS {
+  background-color: $c-background-dark;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 10px 10px 10px;
+  height: calc($subHeader-height - 15px);
+
+  &--logoHam {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 20%;
+    &--logo {
+      width: 4rem;
+    }
+  }
+
+  &--title {
+    font-size: 18px;
+    font-weight: 700;
+    width: 60%;
+  }
+
+  &--user {
+    width: 20%;
+    display: flex;
+    justify-content: flex-end;
+
+    &-circle1 {
+      height: 50px;
+      width: 50px;
+      background-color: #fff;
+      border-radius: 50%;
+      border: 1px solid $c-background-dark;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      &-circle2 {
+        height: 44px;
+        width: 44px;
+        background-color: #fff;
+        border-radius: 50%;
+        border: 1px solid $c-background-dark;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+}
+
+.ContentNavbarXS {
+  animation: openMenu 0.5s;
+  height: 325px;
+  position: absolute;
+  top: calc($subHeader-height - 20px);
+  left: 0;
+  width: 100%;
+  background-color: $c-background-dark;
+  text-align: left;
+  padding: 20px 18px;
+  z-index: 1;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+
+  &__item {
+    animation: openItems 0.9s;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid rgba(172, 172, 172, 0.842);
+    padding: 10px 0px;
+    
+    &--icon {
+      height: 3vh;
+      padding-right: 10px;
+      vertical-align: middle;
+    }
+    &--text {
+      vertical-align: middle;
+    }
+  }
+  
+  &__item:last-child {
+    border-bottom: 1px solid rgba(172, 172, 172, 0.842);
+  }
+}

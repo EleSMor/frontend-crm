@@ -1,0 +1,12 @@
+@use "src/styles/utils.scss" as *;
+
+.Footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: $footer-height;
+  min-height: $footer-height;
+  width: 100%;
+  background-color: $c-background-light;
+  padding: $all-margins;
+}

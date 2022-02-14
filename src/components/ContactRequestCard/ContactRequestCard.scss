@@ -1,0 +1,182 @@
+@use "/src/styles/utils.scss" as *;
+
+.RequestCard__CardMobile {
+  background-color: #fff;
+  margin: 18px 0px;
+  padding: 14px;
+  border-radius: 3px;
+  box-shadow: rgba(0, 0, 0, 0.046) 0px 1px 4px;
+  border: 1px solid rgba(0, 0, 0, 0.089);
+  border-left: 5px solid $c-background-dark;
+  text-align: left;
+
+  &--header {
+    &-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      > h4 {
+        font-size: 16px;
+        font-weight: 700;
+      }
+      > p {
+        display: flex;
+        align-items: center;
+        > span {
+          border-radius: 3px;
+          border: 1px solid rgba(128, 128, 128, 0.658);
+          padding: 2px 8px;
+        }
+      }
+    }
+    > span {
+      color: $c-text-light;
+    }
+    &-zones {
+      margin-top: 8px;
+      padding: 5px 0px;
+      display: flex;
+      align-items: center;
+      border-top: 1px solid rgba(128, 128, 128, 0.295);
+      border-bottom: 1px solid rgba(128, 128, 128, 0.295);
+      > p {
+        display: flex;
+        align-items: center;
+        margin-right: 20px;
+      }
+    }
+  }
+
+  &--body {
+    margin-top: 8px;
+    &--item {
+      margin: 15px 0;
+      &--title {
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+      }
+      &--content {
+        display: flex;
+        align-items: center;
+        margin-top: 5px;
+        > div {
+          display: flex;
+          align-items: center;
+          width: 40%;
+        }
+      }
+      &--cta {
+        margin-top: 25px;
+        margin-bottom: 10px;
+        &--button {
+          @include button-dark;
+          font-size: 11px;
+          padding: 8px 18px;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: $break-point) {
+  .RequestCard__Card {
+    background-color: #fff;
+    margin: 18px 0px;
+    padding: 18px;
+    border-radius: 3px;
+    box-shadow: rgba(0, 0, 0, 0.046) 0px 1px 4px;
+    border: 1px solid rgba(0, 0, 0, 0.089);
+    border-left: 5px solid $c-background-dark;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+    height: 182px;
+
+    &--content {
+      &-header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        margin-bottom: 10px;
+        > h4 {
+          font-size: 20px;
+          font-weight: 700;
+        }
+        > p {
+          display: flex;
+          align-items: center;
+          margin: 0;
+          font-size: 11px;
+          > span {
+            border-radius: 3px;
+            border: 1px solid rgba(128, 128, 128, 0.658);
+            padding: 2px 8px;
+          }
+        }
+      }
+
+      &-body {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        padding-top: 16px;
+        &--title {
+          padding-right: 20px;
+          font-size: 12px;
+          display: flex;
+        }
+        &--item {
+          display: flex;
+          padding: 10px 25px 0 0;
+        }
+
+        &--item:not(:first-child) {
+          padding-left: 15px;
+          border-left: 1px solid rgba(128, 128, 128, 0.432);
+        }
+
+        &--content {
+          > div {
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+          }
+        }
+      }
+    }
+
+    .RequestCard__Card--item-genInfo {
+      width: calc(30%);
+    }
+    .RequestCard__Card--item-iconsInfo {
+      width: calc(26%);
+    }
+    .RequestCard__Card--item-textArea {
+      width: calc(28%);
+      border-left: 1px solid rgba(0, 0, 0, 0.329);
+      padding-left: 16px;
+    }
+    .RequestCard__Card--item-cta {
+      width: calc(15%);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-end;
+
+      > span {
+        color: $c-text-light;
+      }
+
+      &--button {
+        @include button-dark;
+        font-size: 12px;
+        padding: 8px 22px;
+      }
+    }
+  }
+}

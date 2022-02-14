@@ -1,14 +1,19 @@
-.nav {
+@use "src/styles/utils.scss" as *;
+
+.navigate {
+  position: fixed;
+  top: $navBar-margin-top;
+  height: $navbar-height;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
-  background-color: #2b363d;
+  background-color: $c-background-dark;
+  max-width: 100%;
   width: 100%;
-  height: 2%;
-  margin-top: 1%;
-  color: white;
-  font-family: Arial, Helvetica, sans-serif;
-  font-weight: bold;
+  color: #f3f2f2;
+  font-family: arial;
+  font-size: 14px;
+  font-weight: 600;
 
   ul {
     margin: 0;
@@ -25,18 +30,125 @@
     border: none;
     padding: 4px 8px;
     background-color: rgba(255, 255, 255, 0.3);
-    color: white;
+    color: #f3f2f2;
     border-radius: 4px;
   }
 
   a {
     text-decoration: none;
     color: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__route {
+    position: relative;
+    top: 0.7vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5vh 1.2vw 3vh 1.2vw;
+
+    &-active {
+      position: relative;
+      top: 0.7vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5vh 1.2vw 3vh 1.2vw;
+      text-decoration: none;
+      background-color: #f3f2f2;
+      border-radius: 4px;
+      color: #2b363d !important;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+    
+    &:focus,
+    &:hover {
+      text-decoration: none;
+      background-color: #f3f2f2;
+      border-radius: 4px;
+      color: #2b363d;
+    }
+  }
+
+  &__home {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 3vw 0 1vw;
+    a:hover,
+    a:focus {
+      text-decoration: none !important;
+      color: inherit !important;
+    }
+  }
+
+  &__title {
+    padding-left: 0.8vw;
+    padding-bottom: 1.2vh;
+    color: inherit;
+    font-family: Arial;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 1.8vh;
   }
 
   &__link {
-    display: flex;
-    justify-content: space-between;
-    margin-left: 16px;
+    &--icon {
+      vertical-align: middle;
+      height: 2.8vh;
+      padding-right: 0.4vw;
+    }
+
+    &--logo {
+      width: 4rem;
+    }
+
+    &--text {
+      vertical-align: middle;
+      font-size: 1.9vh;
+    }
+  }
+
+  &__right {
+    margin-right: 7.2vw;
+    height: 100%;
+  }
+
+  /* External ellipse */
+  &__logging-ellipse2 {
+    position: fixed;
+    width: 10vw;
+    height: 9.5vh;
+    left: 90vw;
+    top: 0.8vh;
+  }
+
+  /* Internal ellipse */
+  &__logging-ellipse1 {
+    position: fixed;
+    width: 10vw;
+    height: 9vh;
+    left: 90vw;
+    top: 1vh;
+    color: #f3f2f2;
+  }
+
+  /* User */
+  &__logging-user {
+    position: fixed;
+    width: 3vw;
+    height: 4vh;
+    left: 93.5vw;
+    top: 3vh;
+    color: #2b363d;
+    &:hover {
+      transform: scale(120%);
+    }
   }
 }
+

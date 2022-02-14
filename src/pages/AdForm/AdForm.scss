@@ -1,0 +1,91 @@
+@use "src/styles/utils.scss" as *;
+
+@import url("https://unpkg.com/primeicons/primeicons.css");
+@import url("https://unpkg.com/primereact/resources/themes/lara-light-indigo/theme.css");
+@import url("https://unpkg.com/primereact/resources/primereact.min.css");
+@import url("https://unpkg.com/primeflex@2.0.0/primeflex.min.css");
+
+/* AccordionDemo.css */
+.surfaceBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.accordion-demo .accordion-custom i,
+.accordion-demo .accordion-custom span {
+  vertical-align: middle;
+}
+
+.accordion-demo .accordion-custom span {
+  margin: 0 0.5rem;
+}
+
+.accordion-demo .p-accordion p {
+  line-height: 1.5;
+  margin: 0;
+}
+
+.buttonForm {
+  @include button-dark;
+  font-size: 12px;
+  padding: 4px 30px;
+}
+
+.buttonFormCancel {
+  @include button-light-sm;
+  background-color: #b0b0b0;
+  color: $c-text-dark;
+  padding: 4px 20px;
+  margin-left: 8px;
+  &:hover {
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
+.buttonFormDelete {
+  @include button-dark;
+  background-color: #aa2c2c;
+  color: $c-text;
+  font-size: 12px;
+  padding: 4px 30px;
+  margin-left: 8px;
+}
+
+.adForm {
+  &__filter-box {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    border-radius: 4px;
+    margin-left: 32px !important;
+    background-color: none;
+
+    &--item {
+      @include button-light-sm;
+      padding: 4px 32px 4px 32px;
+      border-radius: 4px;
+      border: 1px solid $c-background-dark;
+      margin-right: 8px;
+
+      &__active {
+        // border: 1px solid $c-background-light;
+        padding: 4px 32px 4px 32px;
+        border-radius: 4px;
+        color: #ffffff;
+        background: #2b363d;
+        cursor: pointer;
+        border: 1px solid $c-background-dark;
+        margin-right: 8px;
+      }
+    }
+    & button:focus,
+    button:hover {
+      text-decoration: none;
+      color: #ffffff;
+      background: #2b363d;
+      cursor: pointer;
+    }
+  }
+}

@@ -1,0 +1,68 @@
+@use "src/styles/constants" as *;
+
+@mixin tag {
+  padding: 4px 22px;
+  background: #dfdfdf;
+  border-radius: 2px;
+  margin-right: 8px;
+}
+
+@mixin tag-medium {
+  padding: 10px 8px;
+  background: #DFDFDF;
+  border-radius: 2px;
+  font-size: 10px;
+  line-height: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin button-dark {
+  padding: 8px 18px;
+  color: #fff;
+  border-radius: 3px;
+  background-color: $c-background-dark;
+  border: none;
+
+  &:hover {
+    text-decoration: none;
+    box-shadow: rgba(0, 0, 0, 0.14) 0px 3px 8px;
+    color: #fff;
+  }
+}
+
+@mixin button-dark-sm {
+  @include button-dark;
+  padding: 0px 14px;
+  font-size: 12px;
+  height: $buttons-searchbars;
+
+  &:hover {
+    text-decoration: none;
+    box-shadow: rgba(0, 0, 0, 0.14) 0px 3px 8px;
+  }
+}
+
+@mixin button-light-sm {
+  font-size: 12px;
+  padding: 4px 14px 4px 14px;
+  border: 1px solid rgba(0, 0, 0, 0.26);
+  border-radius: 3px;
+  &:hover {
+    text-decoration: none;
+    box-shadow: rgba(0, 0, 0, 0.032) 0px 3px 8px;
+  }
+}
+@mixin button-disabled {
+  background-color: #C8C8C8;
+  color: #fff;
+  padding: 8px 18px;
+  border-radius: 3px;
+  &:hover {
+    color: #fff;
+    text-decoration: none;
+  }
+}
+
+

@@ -1,0 +1,160 @@
+@use "src/styles/utils.scss" as *;
+
+.buttonForm {
+  @include button-dark;
+  font-size: 12px;
+  padding: 4px 30px;
+}
+
+.buttonFormCancel {
+  @include button-light-sm;
+  background-color: #b0b0b0;
+  color: $c-text-dark;
+  padding: 4px 20px;
+  margin-left: 8px;
+}
+
+.buttonFormDelete {
+  @include button-dark;
+  background-color: #aa2c2c;
+  color: $c-text;
+  font-size: 12px;
+  padding: 4px 30px;
+  margin-left: 8px;
+}
+
+.ConsultantForm {
+  background-color: #fff;
+  padding: 10px 10px;
+  border-radius: 3px;
+  box-shadow: rgba(0, 0, 0, 0.046) 0px 1px 4px;
+  border: 1px solid rgba(0, 0, 0, 0.089);
+
+  &__header {
+    display: none;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    &--col {
+      width: 100%;
+    }
+  }
+}
+
+.Input,
+.Checkboxes,
+.CheckBox,
+.Textarea {
+  margin: 20px 0px;
+}
+
+.Textarea {
+  margin-bottom: 40px;
+}
+
+@media (min-width: $break-point) {
+  .ConsultantForm {
+    padding: 40px 32px;
+    &__header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 40px;
+      &--left {
+        display: flex;
+      }
+      &--img {
+        display: flex;
+        flex-direction: column;
+        > div {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 100px;
+          width: 100px;
+          border-radius: 3px;
+          background-color: #dfdfdf;
+          position: relative;
+
+          > img {
+            width: 95%;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            min-height: 100%;
+            min-width: 100%;
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: cover;
+            border-radius: 3px;
+          }
+        }
+      }
+      &--company {
+        display: flex;
+        flex-direction: column;
+        align-self: flex-end;
+
+        > div {
+          display: flex;
+          align-self: center;
+          align-items: center;
+          justify-content: center;
+          height: 100px;
+          width: 150px;
+          border-radius: 3px;
+          background-color: white;
+          border: 1px solid #b0b0b0;
+          position: relative;
+
+          > p {
+            color: #b0b0b0;
+            font-size: 10px;
+            text-align: center;
+          }
+
+          > img {
+            width: 95%;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            min-height: 100%;
+            min-width: 100%;
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: cover;
+            border-radius: 3px;
+          }
+        }
+      }
+
+      &--info {
+        margin-left: 30px;
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+
+        > p {
+          display: flex;
+          align-content: center;
+          align-items: center;
+          margin-top: 10px;
+        }
+      }
+    }
+    &__form {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      width: 100%;
+
+      &--col {
+        width: 46%;
+      }
+    }
+  }
+}

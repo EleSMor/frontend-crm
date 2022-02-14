@@ -1,0 +1,53 @@
+@use "src/styles/utils.scss" as *;
+
+.Checkboxes {
+  text-align: left;
+  
+  &__label {
+    font-size: 14px;
+  }
+  
+  &__checks {
+    margin-top: 15px;
+    padding-left: 8px;
+    border-left: 2px solid $c-background-dark;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+    
+    &-column {
+      flex-direction: column;
+    }
+    
+    span {
+      font-weight: 400;
+      margin-left: 5px;
+    }
+    span:not(:first-child) {
+      margin-right: 20px;
+    }
+    
+    &--group {
+      margin-bottom: 10px;
+      margin-top: 10px;
+      display: flex;
+      align-items: flex-end;
+    }
+  }
+}
+
+.CheckBox {
+  text-align: left;
+  display: flex;
+  align-content: center;
+  
+  > label {
+    padding-right: 8px;
+    padding-left: 8px;
+    margin: 0;
+  }
+  > input[type="checkbox"] {
+    margin: 0;
+  }
+}
