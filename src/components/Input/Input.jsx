@@ -32,8 +32,12 @@ const Input = ({
           readOnly={readOnly}
           min="0"
           onWheel={(e) => e.target.blur()}
-          onKeyUp={(e) => e.preventDefault()}
-          onKeyDown={(e) => e.preventDefault()}
+          // onKeyUp={(e) => {
+          //   e.target.blur();
+          // }}
+          // onKeyDown={(e) => {
+          //   e.target.blur();
+          // }}
         />
       </div>
 
