@@ -4,13 +4,20 @@ import { TabView, TabPanel } from "primereact/tabview";
 import { useHistory, useParams, Link } from "react-router-dom";
 import { DetailsAds, ImagesAds } from "../../components";
 import AdMatchedRequestsTable from "../../components/AdMatchedRequestsTable/AdMatchedRequestsTable";
+import PopUp from "../../components/PopUp/PopUp";
+import GoBack from "../../components/GoBack/GoBack";
+import Layout from "../Layout/Layout";
 import { UserContext } from "../../components/Context/AuthUser";
-import { createAd, updateAd, getAllAds, getAdById, getMatchedRequests, deleteAd } from "../../api/ads.api.js";
+import { createAd, updateAd, getAllAds, getAdById, deleteAd } from "../../api/ads.api.js";
+import { sendAdsApi } from "../../api/mails.api";
 import { getAllOwners } from "../../api/contacts.api";
 import { getAllConsultants } from "../../api/consultants.api";
-import Layout from "../Layout/Layout";
 import Spinner from "../../components/Spinner/Spinner";
-import GoBack from "../../components/GoBack/GoBack";
+import { GvreLogo } from "../../icons/index";
+import { HiOutlineMail } from "react-icons/hi";
+import { BiArea } from "react-icons/bi";
+import { AiOutlineHome } from "react-icons/ai";
+import { FaSwimmingPool, FaBath, FaBed } from "react-icons/fa";
 import { FiSave } from "react-icons/fi";
 import { FaTrash } from "react-icons/fa";
 import { getAllResidentialZones, getAllPatrimonialZones } from "../../api/zones.api";
@@ -39,6 +46,11 @@ const AdForm = () => {
   const [firstLoad, setFirstLoad] = useState(true);
   const [owners, setOwners] = useState([]);
   const [consultants, setConsultants] = useState([]);
+  const [popUp, setPopUp] = useState(false);
+  const handlePopUp = () => {
+    setPopUp(!popUp);
+  };
+  const [requestsToSend, setRequestsToSend] = useState([]);
 
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -97,6 +109,57 @@ const AdForm = () => {
     }
     setFirstLoad(false);
   }
+
+  const formatCurrency = (value) => {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
+
+  const maskValues = (value, ref) => {
+    let render = "";
+
+    if (
+      (ref === "sale" && value === 99999999) ||
+      (ref === "rent" && value === 99999) ||
+      (ref === "buildSurface" && value === 9999) ||
+      (ref === "plotSurface" && value === 99999)
+    ) {
+      render = <p>Valor máx.</p>;
+    } else if (value === 0) {
+      render = <p>Valor mín.</p>;
+    } else {
+      if (ref === "sale" || ref === "rent")
+        render = <p>{formatCurrency(value) + (ref === "sale" ? " €" : " €/mes")}</p>;
+      else
+        render = (
+          <p>
+            {value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} m<sup>2</sup>
+          </p>
+        );
+    }
+    return render;
+  };
+
+  const maskTemplate = (value, ref) => {
+    let render = "";
+
+    if ((ref === "sale" && value === 99999999) || (ref === "rent" && value === 99999)) {
+      render = <p>Valor máx.</p>;
+    } else if (value === 0) {
+      render = <p>Sin precio</p>;
+    } else {
+      if (ref === "sale" || ref === "rent")
+        render = (
+          <p>{`${value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} ${ref === "sale" ? " €" : " €/mes"}`}</p>
+        );
+      else
+        render = (
+          <p>
+            {value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} m<sup>2</sup>
+          </p>
+        );
+    }
+    return render;
+  };
 
   return (
     <div>
@@ -341,8 +404,253 @@ const AdForm = () => {
             )}
             {id && adById.adStatus === "Activo" && (
               <TabPanel header="Matching">
+                <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
+                  <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 12 }}>
+                    <span
+                      className={requestsToSend.length !== 0 ? "buttonForm" : "buttonForm--disabled"}
+                      style={{ marginRight: 8, display: "flex", alignItems: "center" }}
+                      onClick={() => {
+                        if (requestsToSend.length !== 0) handlePopUp();
+                      }}
+                    >
+                      {size < 480 ? (
+                        <HiOutlineMail style={{ marginRight: 7, transform: "scale(125%)", verticalAlign: "middle" }} />
+                      ) : (
+                        <>
+                          <HiOutlineMail
+                            style={{ marginRight: 7, transform: "scale(125%)", verticalAlign: "middle" }}
+                          />
+                          <span>Enviar email</span>
+                        </>
+                      )}
+                    </span>
+
+                    {popUp && (
+                      <PopUp
+                        handlePopUp={handlePopUp}
+                        height="85%"
+                        mobileHeight="85%"
+                        width="30%"
+                        title="Plantilla de email"
+                        buttons={
+                          <>
+                            <button className="buttonFormCancel" onClick={handlePopUp}>
+                              Cancelar
+                            </button>
+                            <button
+                              className="buttonForm"
+                              onClick={() =>
+                                sendAdsApi({
+                                  consultant: user.email,
+                                  message: document.getElementById("mailMessage").value,
+                                  requests: requestsToSend,
+                                }).then((res) => console.log(res))
+                              }
+                            >
+                              Enviar
+                            </button>
+                          </>
+                        }
+                        fixedButtons={true}
+                      >
+                        <div style={{ border: "1px solid lightgrey", marginTop: 16 }}>
+                          <textarea
+                            id="mailMessage"
+                            style={{
+                              padding: "24px 24px 0 24px",
+                              width: "100%",
+                              border: "none",
+                              resize: "none",
+                              height: "10%",
+                              alignSelf: "start",
+                              fontSize: 12,
+                              marginBottom: 24,
+                            }}
+                            defaultValue={`Estimado/a ${requestsToSend[0].requestContact.fullName}, le envío el siguiente inmueble que puede resultarle interesante según la petición que ha realizado`}
+                            onChange={(ev) => console.log(ev.target.value)}
+                          />
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              borderBottom: "solid 1px lightgrey",
+                              padding: `24px 24px 24px 24px`,
+                            }}
+                          >
+                            <div
+                              style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "start",
+                                justifyContent: "space-between",
+                                width: "58%",
+                              }}
+                            >
+                              <div style={{ width: "100%" }}>
+                                <h3 style={{ textAlign: "start", marginBottom: 12, fontSize: "200%" }}>
+                                  {adById.title}
+                                </h3>
+                                <h4
+                                  style={{ textAlign: "start", fontWeight: "bold", marginBottom: 12, fontSize: "150%" }}
+                                >
+                                  {maskTemplate(adById.sale.saleValue, "sale")}
+                                </h4>
+                                <h5 style={{ textAlign: "start", marginBottom: 12, fontSize: "125%" }}>
+                                  {adById.adDirection.city}
+                                </h5>
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    flexWrap: "wrap",
+                                    alignItems: "start",
+                                    justifyContent: "start",
+                                    width: "100%",
+                                  }}
+                                >
+                                  <div style={{ display: "flex", alignItems: "center" }}>
+                                    <BiArea style={{ transform: "scale(140%)" }} />
+                                    <span style={{ marginLeft: 8, fontSize: "100%" }}>
+                                      {maskValues(adById.plotSurface, "plotSurface")}
+                                    </span>
+                                  </div>
+                                  <div style={{ display: "flex", alignItems: "center", marginLeft: "4%" }}>
+                                    <AiOutlineHome style={{ transform: "scale(140%)" }} />
+                                    <span style={{ marginLeft: 8, fontSize: "100%" }}>
+                                      {maskValues(adById.buildSurface, "buildSurface")}
+                                    </span>
+                                  </div>
+                                  <div style={{ display: "flex", alignItems: "center", marginLeft: "4%" }}>
+                                    <FaSwimmingPool style={{ transform: "scale(140%)" }} />
+                                    <span style={{ marginLeft: 8, fontSize: "100%" }}>{adById.quality.indoorPool}</span>
+                                  </div>
+                                  <div style={{ display: "flex", alignItems: "center", marginLeft: "4%" }}>
+                                    <FaBath style={{ transform: "scale(130%)" }} />
+                                    <span style={{ marginLeft: 8, fontSize: "100%" }}>{adById.quality.bathrooms}</span>
+                                  </div>
+                                  <div style={{ display: "flex", alignItems: "center", marginLeft: "4%" }}>
+                                    <FaBed style={{ transform: "scale(150%)" }} />
+                                    <span style={{ marginLeft: 8, fontSize: "100%" }}>{adById.quality.bedrooms}</span>
+                                  </div>
+                                </div>
+                              </div>
+                              <button
+                                style={{ margin: "16px 6px 0 0", alignSelf: "end" }}
+                                className="buttonForm"
+                                onClick={() => history.push(`/anuncios/${adById._id}`)}
+                              >
+                                Consultar
+                              </button>
+                            </div>
+                            {adById.images.main ? (
+                              <img src={adById.images.main} alt="Imagen principal" style={{ width: "40%" }} />
+                            ) : (
+                              <img
+                                src="\defaultImage.png"
+                                alt="Imagen por defecto"
+                                style={{
+                                  width: "25%",
+                                  height: "100%",
+                                  borderRadius: "4px",
+                                  marginRight: 12,
+                                  marginLeft: "10%",
+                                }}
+                              />
+                            )}
+                          </div>
+                          <div style={{ display: "flex", justifyContent: "space-evenly", marginTop: 24, fontSize: 12 }}>
+                            <GvreLogo
+                              style={{
+                                width: "8%",
+                                color: "#2B363D",
+                                bottom: "-52%",
+                                left: "-78%",
+                              }}
+                            />
+                            <div style={{ display: "flex", flexDirection: "column", alignItems: "start" }}>
+                              <p
+                                style={{
+                                  fontFamily: "Jost",
+                                  fontStyle: "normal",
+                                  fontWeight: "500",
+                                  fontSize: size > 800 ? 14 : 12,
+                                  lineHeight: 1.5,
+                                }}
+                              >
+                                +34 917 36 53 85
+                              </p>
+                              <p
+                                style={{
+                                  fontFamily: "Jost",
+                                  fontStyle: "normal",
+                                  fontWeight: "500",
+                                  fontSize: size > 800 ? 14 : 12,
+                                  lineHeight: 1.5,
+                                }}
+                              >
+                                info@gvre.es
+                              </p>
+                              <p
+                                style={{
+                                  fontFamily: "Jost",
+                                  fontStyle: "normal",
+                                  fontWeight: "500",
+                                  fontSize: size > 800 ? 14 : 12,
+                                  lineHeight: 1.5,
+                                }}
+                              >
+                                C. de Bailén, 41, 28005 Madrid
+                              </p>
+                            </div>
+                            <div style={{ display: "flex", flexDirection: "column", alignItems: "start" }}>
+                              <p
+                                style={{
+                                  fontFamily: "Jost",
+                                  fontStyle: "normal",
+                                  fontWeight: "500",
+                                  fontSize: size > 800 ? 14 : 12,
+                                  lineHeight: 1.5,
+                                }}
+                              >
+                                +34 917 36 53 85
+                              </p>
+                              <p
+                                style={{
+                                  fontFamily: "Jost",
+                                  fontStyle: "normal",
+                                  fontWeight: "500",
+                                  fontSize: size > 800 ? 14 : 12,
+                                  lineHeight: 1.5,
+                                }}
+                              >
+                                info@gvre.es
+                              </p>
+                              <p
+                                style={{
+                                  fontFamily: "Jost",
+                                  fontStyle: "normal",
+                                  fontWeight: "500",
+                                  fontSize: size > 800 ? 14 : 12,
+                                  lineHeight: 1.5,
+                                }}
+                              >
+                                C. de la Isla de Oza, 16, 28035 Madrid
+                              </p>
+                            </div>
+                          </div>
+                          <div style={{ color: "#B1B1B1", marginTop: 24 }}>
+                            Si desea dejar de recibir este tipo de email, puede{" "}
+                            <span style={{ color: "inherit", textDecoration: "underline", cursor: "pointer" }}>
+                              darse de baja aquí
+                            </span>
+                          </div>
+                        </div>
+                      </PopUp>
+                    )}
+                  </div>
+                </div>
+
                 <div className="card">
-                  <AdMatchedRequestsTable />
+                  <AdMatchedRequestsTable requestsToSend={requestsToSend} setRequestsToSend={setRequestsToSend} />
                 </div>
               </TabPanel>
             )}

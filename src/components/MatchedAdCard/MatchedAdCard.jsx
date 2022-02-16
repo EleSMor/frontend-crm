@@ -231,6 +231,7 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                   height: "10%",
                   alignSelf: "start",
                   fontSize: 12,
+                  marginBottom: 24,
                 }}
                 defaultValue={
                   adsToSend.length === 1
@@ -258,7 +259,7 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                         width: "58%",
                       }}
                     >
-                      <div>
+                      <div style={{width: "100%"}}>
                         <h3 style={{ textAlign: "start", marginBottom: 12, fontSize: "200%" }}>{ad.title}</h3>
                         <h4 style={{ textAlign: "start", fontWeight: "bold", marginBottom: 12, fontSize: "150%" }}>
                           {maskTemplate(ad.sale.saleValue, "sale")}
@@ -272,7 +273,7 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                             flexWrap: "wrap",
                             alignItems: "start",
                             justifyContent: "start",
-                            width: "120%"
+                            width: "100%"
                           }}
                         >
                           <div style={{ display: "flex", alignItems: "center" }}>
@@ -302,7 +303,7 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                         </div>
                       </div>
                       <button
-                        style={{ margin: "6px 6px 0 0", alignSelf: "end" }}
+                        style={{ margin: "16px 6px 0 0", alignSelf: "end" }}
                         className="buttonForm"
                         onClick={() => history.push(`/anuncios/${ad._id}`)}
                       >
@@ -310,7 +311,7 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                       </button>
                     </div>
                     {ad.images.main ? (
-                      <img src={ad.images.main} alt="Imagen principal" style={{ width: "40%", height: "100%" }} />
+                      <img src={ad.images.main} alt="Imagen principal" style={{ width: "40%" }} />
                     ) : (
                       <img
                         src="\defaultImage.png"

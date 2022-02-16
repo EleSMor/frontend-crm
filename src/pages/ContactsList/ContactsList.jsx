@@ -59,7 +59,7 @@ const ContactsList = () => {
         footContent={<ContactListFooter />}
       >
         {popUp && (
-          <PopUp handlePopUp={handlePopUp} height="75%" mobileHeight="85%" width="50%" title="Crear contacto nuevo">
+          <PopUp handlePopUp={handlePopUp} height="90%" mobileHeight="90%" width="45%" title="Crear contacto nuevo">
             <ContactValidation list={contacts} />
           </PopUp>
         )}
