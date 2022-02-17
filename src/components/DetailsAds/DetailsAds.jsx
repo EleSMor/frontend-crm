@@ -434,7 +434,7 @@ const DetailsAds = ({
                     {
                       name: "saleValue",
                       label: "Venta",
-                      type: "number",
+                      type: "text",
                       placeholder: "Escribe aquí",
                       value: formProps.values.saleValue === 0 ? "" : formatCurrency(formProps.values.saleValue),
                       lang: "es-ES",
