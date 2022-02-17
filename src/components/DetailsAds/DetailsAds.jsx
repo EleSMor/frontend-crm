@@ -436,7 +436,7 @@ const DetailsAds = ({
                       label: "Venta",
                       type: "number",
                       placeholder: "Escribe aquí",
-                      value: formProps.values.saleValue === 0 ? "" : formProps.values.saleValue,
+                      value: formProps.values.saleValue === 0 ? "" : formatCurrency(formProps.values.saleValue),
                       lang: "es-ES",
                       onBlur: (ev) => {
                         ev.target.type = "text";
