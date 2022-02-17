@@ -467,37 +467,50 @@ const RequestForm = () => {
                                   {
                                     name: "salePriceMax",
                                     label: "Máximo",
-                                    type: "number",
+                                    type: "text",
                                     placeholder: "Escriba aquí",
                                     value:
-                                      formProps.values.salePriceMax === 99999999 ? "" : formProps.values.salePriceMax,
+                                      formProps.values.salePriceMax === 99999999
+                                        ? ""
+                                        : formatCurrency(formProps.values.salePriceMax),
                                     onBlur: (ev) => {
-                                      ev.target.type = "String";
+                                      ev.target.type = "text";
                                       ev.target.value = formatCurrency(ev.target.value);
                                     },
-                                    onFocus: (ev) => {
+                                    onChange: (ev) => {
                                       ev.target.value = ev.target.value.replaceAll(".", "");
-                                      ev.target.type = "Number";
+                                      ev.target.value = parseFloat(ev.target.value);
+                                      ev.target.type = "number";
+                                      if (isNaN(ev.target.valueAsNumber)) {
+                                        formProps.setFieldValue(ev.target.name, "");
+                                      } else formProps.setFieldValue(ev.target.name, ev.target.valueAsNumber);
+                                      if (ev.target.value.length > 3) ev.target.type = "text";
                                     },
-                                    onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                                     span: <span style={{ position: "absolute", right: "1%", top: "52%" }}>€</span>,
                                     errors: "",
                                   },
                                   {
                                     name: "salePriceMin",
                                     label: "Mínimo",
-                                    type: "number",
+                                    type: "text",
                                     placeholder: "Escriba aquí",
-                                    value: formProps.values.salePriceMin === 0 ? "" : formProps.values.salePriceMin,
+                                    value:
+                                      formProps.values.salePriceMin === 0
+                                        ? ""
+                                        : formatCurrency(formProps.values.salePriceMin),
                                     onBlur: (ev) => {
-                                      ev.target.type = "String";
+                                      ev.target.type = "text";
                                       ev.target.value = formatCurrency(ev.target.value);
                                     },
-                                    onFocus: (ev) => {
+                                    onChange: (ev) => {
                                       ev.target.value = ev.target.value.replaceAll(".", "");
-                                      ev.target.type = "Number";
+                                      ev.target.value = parseFloat(ev.target.value);
+                                      ev.target.type = "number";
+                                      if (isNaN(ev.target.valueAsNumber)) {
+                                        formProps.setFieldValue(ev.target.name, "");
+                                      } else formProps.setFieldValue(ev.target.name, ev.target.valueAsNumber);
+                                      if (ev.target.value.length > 3) ev.target.type = "text";
                                     },
-                                    onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                                     span: <span style={{ position: "absolute", right: "1%", top: "52%" }}>€</span>,
                                     errors: "",
                                   },
@@ -516,19 +529,25 @@ const RequestForm = () => {
                                   {
                                     name: "buildSurfaceMax",
                                     label: "Máximo",
-                                    type: "number",
+                                    type: "text",
                                     placeholder: "Escriba aquí",
                                     value:
-                                      formProps.values.buildSurfaceMax === 9999 ? "" : formProps.values.buildSurfaceMax,
+                                      formProps.values.buildSurfaceMax === 9999
+                                        ? ""
+                                        : formatCurrency(formProps.values.buildSurfaceMax),
                                     onBlur: (ev) => {
-                                      ev.target.type = "String";
+                                      ev.target.type = "text";
                                       ev.target.value = formatCurrency(ev.target.value);
                                     },
-                                    onFocus: (ev) => {
+                                    onChange: (ev) => {
                                       ev.target.value = ev.target.value.replaceAll(".", "");
-                                      ev.target.type = "Number";
+                                      ev.target.value = parseFloat(ev.target.value);
+                                      ev.target.type = "number";
+                                      if (isNaN(ev.target.valueAsNumber)) {
+                                        formProps.setFieldValue(ev.target.name, "");
+                                      } else formProps.setFieldValue(ev.target.name, ev.target.valueAsNumber);
+                                      if (ev.target.value.length > 3) ev.target.type = "text";
                                     },
-                                    onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                                     span: (
                                       <span style={{ position: "absolute", right: "1%", top: "52%" }}>
                                         m<sup>2</sup>
@@ -539,19 +558,25 @@ const RequestForm = () => {
                                   {
                                     name: "buildSurfaceMin",
                                     label: "Mínimo",
-                                    type: "number",
+                                    type: "text",
                                     value:
-                                      formProps.values.buildSurfaceMin === 0 ? "" : formProps.values.buildSurfaceMin,
+                                      formProps.values.buildSurfaceMin === 0
+                                        ? ""
+                                        : formatCurrency(formProps.values.buildSurfaceMin),
                                     placeholder: "Escriba aquí",
                                     onBlur: (ev) => {
-                                      ev.target.type = "String";
+                                      ev.target.type = "text";
                                       ev.target.value = formatCurrency(ev.target.value);
                                     },
-                                    onFocus: (ev) => {
+                                    onChange: (ev) => {
                                       ev.target.value = ev.target.value.replaceAll(".", "");
-                                      ev.target.type = "Number";
+                                      ev.target.value = parseFloat(ev.target.value);
+                                      ev.target.type = "number";
+                                      if (isNaN(ev.target.valueAsNumber)) {
+                                        formProps.setFieldValue(ev.target.name, "");
+                                      } else formProps.setFieldValue(ev.target.name, ev.target.valueAsNumber);
+                                      if (ev.target.value.length > 3) ev.target.type = "text";
                                     },
-                                    onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                                     span: (
                                       <span style={{ position: "absolute", right: "1%", top: "52%" }}>
                                         m<sup>2</sup>
@@ -606,36 +631,50 @@ const RequestForm = () => {
                                   {
                                     name: "rentPriceMax",
                                     label: "Máximo",
-                                    type: "number",
+                                    type: "text",
                                     placeholder: "Escriba aquí",
-                                    value: formProps.values.rentPriceMax === 99999 ? "" : formProps.values.rentPriceMax,
+                                    value:
+                                      formProps.values.rentPriceMax === 99999
+                                        ? ""
+                                        : formatCurrency(formProps.values.rentPriceMax),
                                     onBlur: (ev) => {
-                                      ev.target.type = "String";
+                                      ev.target.type = "text";
                                       ev.target.value = formatCurrency(ev.target.value);
                                     },
-                                    onFocus: (ev) => {
+                                    onChange: (ev) => {
                                       ev.target.value = ev.target.value.replaceAll(".", "");
-                                      ev.target.type = "Number";
+                                      ev.target.value = parseFloat(ev.target.value);
+                                      ev.target.type = "number";
+                                      if (isNaN(ev.target.valueAsNumber)) {
+                                        formProps.setFieldValue(ev.target.name, "");
+                                      } else formProps.setFieldValue(ev.target.name, ev.target.valueAsNumber);
+                                      if (ev.target.value.length > 3) ev.target.type = "text";
                                     },
-                                    onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                                     span: <span style={{ position: "absolute", right: "1%", top: "52%" }}>€/mes</span>,
                                     errors: "",
                                   },
                                   {
                                     name: "rentPriceMin",
                                     label: "Mínimo",
-                                    type: "number",
+                                    type: "text",
                                     placeholder: "Escriba aquí",
-                                    value: formProps.values.rentPriceMin === 0 ? "" : formProps.values.rentPriceMin,
+                                    value:
+                                      formProps.values.rentPriceMin === 0
+                                        ? ""
+                                        : formatCurrency(formProps.values.rentPriceMin),
                                     onBlur: (ev) => {
-                                      ev.target.type = "String";
+                                      ev.target.type = "text";
                                       ev.target.value = formatCurrency(ev.target.value);
                                     },
-                                    onFocus: (ev) => {
+                                    onChange: (ev) => {
                                       ev.target.value = ev.target.value.replaceAll(".", "");
-                                      ev.target.type = "Number";
+                                      ev.target.value = parseFloat(ev.target.value);
+                                      ev.target.type = "number";
+                                      if (isNaN(ev.target.valueAsNumber)) {
+                                        formProps.setFieldValue(ev.target.name, "");
+                                      } else formProps.setFieldValue(ev.target.name, ev.target.valueAsNumber);
+                                      if (ev.target.value.length > 3) ev.target.type = "text";
                                     },
-                                    onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                                     span: <span style={{ position: "absolute", right: "1%", top: "52%" }}>€/mes</span>,
                                     errors: "",
                                   },
@@ -654,19 +693,25 @@ const RequestForm = () => {
                                   {
                                     name: "plotSurfaceMax",
                                     label: "Máximo",
-                                    type: "number",
+                                    type: "text",
                                     placeholder: "Escriba aquí",
                                     value:
-                                      formProps.values.plotSurfaceMax === 99999 ? "" : formProps.values.plotSurfaceMax,
+                                      formProps.values.plotSurfaceMax === 99999
+                                        ? ""
+                                        : formatCurrency(formProps.values.plotSurfaceMax),
                                     onBlur: (ev) => {
-                                      ev.target.type = "String";
+                                      ev.target.type = "text";
                                       ev.target.value = formatCurrency(ev.target.value);
                                     },
-                                    onFocus: (ev) => {
+                                    onChange: (ev) => {
                                       ev.target.value = ev.target.value.replaceAll(".", "");
-                                      ev.target.type = "Number";
+                                      ev.target.value = parseFloat(ev.target.value);
+                                      ev.target.type = "number";
+                                      if (isNaN(ev.target.valueAsNumber)) {
+                                        formProps.setFieldValue(ev.target.name, "");
+                                      } else formProps.setFieldValue(ev.target.name, ev.target.valueAsNumber);
+                                      if (ev.target.value.length > 3) ev.target.type = "text";
                                     },
-                                    onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                                     span: (
                                       <span style={{ position: "absolute", right: "1%", top: "52%" }}>
                                         m<sup>2</sup>
@@ -677,18 +722,25 @@ const RequestForm = () => {
                                   {
                                     name: "plotSurfaceMin",
                                     label: "Mínimo",
-                                    type: "number",
+                                    type: "text",
                                     placeholder: "Escriba aquí",
-                                    value: formProps.values.plotSurfaceMin === 0 ? "" : formProps.values.plotSurfaceMin,
+                                    value:
+                                      formProps.values.plotSurfaceMin === 0
+                                        ? ""
+                                        : formatCurrency(formProps.values.plotSurfaceMin),
                                     onBlur: (ev) => {
-                                      ev.target.type = "String";
+                                      ev.target.type = "text";
                                       ev.target.value = formatCurrency(ev.target.value);
                                     },
-                                    onFocus: (ev) => {
+                                    onChange: (ev) => {
                                       ev.target.value = ev.target.value.replaceAll(".", "");
-                                      ev.target.type = "Number";
+                                      ev.target.value = parseFloat(ev.target.value);
+                                      ev.target.type = "number";
+                                      if (isNaN(ev.target.valueAsNumber)) {
+                                        formProps.setFieldValue(ev.target.name, "");
+                                      } else formProps.setFieldValue(ev.target.name, ev.target.valueAsNumber);
+                                      if (ev.target.value.length > 3) ev.target.type = "text";
                                     },
-                                    onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                                     span: (
                                       <span style={{ position: "absolute", right: "1%", top: "52%" }}>
                                         m<sup>2</sup>

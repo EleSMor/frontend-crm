@@ -80,6 +80,10 @@ const DetailsAds = ({
     return zones.some((zone) => formProps.values.zone.includes(zone._id));
   };
 
+  const formatCurrency = (value) => {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
+
   return (
     <>
       <div className="DetailsAds__container">
@@ -434,7 +438,19 @@ const DetailsAds = ({
                       placeholder: "Escribe aquí",
                       value: formProps.values.saleValue === 0 ? "" : formProps.values.saleValue,
                       lang: "es-ES",
-                      onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
+                      onBlur: (ev) => {
+                        ev.target.type = "text";
+                        ev.target.value = formatCurrency(ev.target.value);
+                      },
+                      onChange: (ev) => {
+                        ev.target.value = ev.target.value.replaceAll(".", "");
+                        ev.target.value = parseFloat(ev.target.value);
+                        ev.target.type = "number";
+                        if (isNaN(ev.target.valueAsNumber)) {
+                          formProps.setFieldValue(ev.target.name, "");
+                        } else formProps.setFieldValue(ev.target.name, ev.target.valueAsNumber);
+                        if (ev.target.value.length > 3) ev.target.type = "text";
+                      },
                       span: <span style={{ position: "absolute", right: "0.5%", top: "52%" }}>€</span>,
                       errors: "",
                     },
@@ -450,11 +466,23 @@ const DetailsAds = ({
                     {
                       name: "rentValue",
                       label: "Alquiler",
-                      type: "number",
+                      type: "text",
                       placeholder: "Escribe aquí",
-                      value: formProps.values.rentValue === 0 ? "" : formProps.values.rentValue,
+                      value: formProps.values.rentValue === 0 ? "" : formatCurrency(formProps.values.rentValue),
                       lang: "es-ES",
-                      onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
+                      onBlur: (ev) => {
+                        ev.target.type = "text";
+                        ev.target.value = formatCurrency(ev.target.value);
+                      },
+                      onChange: (ev) => {
+                        ev.target.value = ev.target.value.replaceAll(".", "");
+                        ev.target.value = parseFloat(ev.target.value);
+                        ev.target.type = "number";
+                        if (isNaN(ev.target.valueAsNumber)) {
+                          formProps.setFieldValue(ev.target.name, "");
+                        } else formProps.setFieldValue(ev.target.name, ev.target.valueAsNumber);
+                        if (ev.target.value.length > 3) ev.target.type = "text";
+                      },
                       span: <span style={{ position: "absolute", right: "0.5%", top: "52%" }}>€/mes</span>,
                       errors: "",
                     },

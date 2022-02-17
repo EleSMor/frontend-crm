@@ -20,8 +20,8 @@ const InputsGroup = ({ label, inputs, directionStyle }) => {
                   name={input.name}
                   value={input.value}
                   onChange={input.onChange}
-                  // onBlur={input.onBlur}
-                  // onFocus={input.onFocus}
+                  onBlur={input.onBlur}
+                  onFocus={input.onFocus}
                   type={input.type}
                   placeholder={input?.placeholder}
                   required={input?.required}
@@ -47,8 +47,8 @@ const InputsGroup = ({ label, inputs, directionStyle }) => {
                   name={input.name}
                   value={input.value}
                   onChange={input.onChange}
-                  // onBlur={input.onBlur}
-                  // onFocus={input.onFocus}
+                  onBlur={input.onBlur}
+                  onFocus={input.onFocus}
                   type={input.type}
                   placeholder={input?.placeholder}
                   required={input?.required}

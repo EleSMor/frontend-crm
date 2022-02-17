@@ -18,7 +18,7 @@ import InputsGroup from "../../components/InputsGroup/InputsGroup";
 import PopUp from "../../components/PopUp/PopUp";
 import useWindowSize from "../../hooks/useWindowSize";
 import { getAdsMatched, sendNewRequest, getRequestById } from "../../api/requests.api";
-import { sendAdsApi } from "../../api/mails.api";
+import { sendAdsToContact } from "../../api/mails.api";
 import { GvreLogo } from "../../icons/index";
 import "reactjs-popup/dist/index.css";
 import "moment/locale/es";
@@ -206,12 +206,15 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                 <button
                   className="buttonForm"
                   onClick={() =>
-                    sendAdsApi({
+                    sendAdsToContact({
                       consultant: user.email,
-                      contact: requestById.requestContact.email,
+                      contact: requestById.requestContact,
                       message: document.getElementById("mailMessage").value,
                       ads: adsToSend,
-                    }).then((res) => console.log(res))
+                    }).then((res) => {
+                      alert(`${res}`);
+                      console.log(res);
+                    })
                   }
                 >
                   Enviar
@@ -259,7 +262,7 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                         width: "58%",
                       }}
                     >
-                      <div style={{width: "100%"}}>
+                      <div style={{ width: "100%" }}>
                         <h3 style={{ textAlign: "start", marginBottom: 12, fontSize: "200%" }}>{ad.title}</h3>
                         <h4 style={{ textAlign: "start", fontWeight: "bold", marginBottom: 12, fontSize: "150%" }}>
                           {maskTemplate(ad.sale.saleValue, "sale")}
@@ -273,7 +276,7 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                             flexWrap: "wrap",
                             alignItems: "start",
                             justifyContent: "start",
-                            width: "100%"
+                            width: "100%",
                           }}
                         >
                           <div style={{ display: "flex", alignItems: "center" }}>

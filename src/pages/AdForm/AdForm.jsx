@@ -9,7 +9,7 @@ import GoBack from "../../components/GoBack/GoBack";
 import Layout from "../Layout/Layout";
 import { UserContext } from "../../components/Context/AuthUser";
 import { createAd, updateAd, getAllAds, getAdById, deleteAd } from "../../api/ads.api.js";
-import { sendAdsApi } from "../../api/mails.api";
+import { sendAdToContacts } from "../../api/mails.api";
 import { getAllOwners } from "../../api/contacts.api";
 import { getAllConsultants } from "../../api/consultants.api";
 import Spinner from "../../components/Spinner/Spinner";
@@ -440,10 +440,11 @@ const AdForm = () => {
                             <button
                               className="buttonForm"
                               onClick={() =>
-                                sendAdsApi({
+                                sendAdToContacts({
                                   consultant: user.email,
                                   message: document.getElementById("mailMessage").value,
                                   requests: requestsToSend,
+                                  ad: adById,
                                 }).then((res) => console.log(res))
                               }
                             >
