@@ -205,7 +205,7 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                 </button>
                 <button
                   className="buttonForm"
-                  onClick={() =>
+                  onClick={() => {
                     sendAdsToContact({
                       consultant: user.email,
                       contact: requestById.requestContact,
@@ -213,8 +213,9 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                       ads: adsToSend,
                     }).then((res) => {
                       alert(`${res}`);
-                    })
-                  }
+                      handlePopUp();
+                    });
+                  }}
                 >
                   Enviar
                 </button>

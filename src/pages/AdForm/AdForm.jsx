@@ -447,6 +447,7 @@ const AdForm = () => {
                                   ad: adById,
                                 }).then((res) => {
                                   alert(`${res}`);
+                                  handlePopUp();
                                 })
                               }
                             >
