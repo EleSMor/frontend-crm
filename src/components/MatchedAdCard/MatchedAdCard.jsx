@@ -213,7 +213,6 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                       ads: adsToSend,
                     }).then((res) => {
                       alert(`${res}`);
-                      console.log(res);
                     })
                   }
                 >

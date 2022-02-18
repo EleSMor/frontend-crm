@@ -445,7 +445,9 @@ const AdForm = () => {
                                   message: document.getElementById("mailMessage").value,
                                   requests: requestsToSend,
                                   ad: adById,
-                                }).then((res) => console.log(res))
+                                }).then((res) => {
+                                  alert(`${res}`);
+                                })
                               }
                             >
                               Enviar
