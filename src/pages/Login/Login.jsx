@@ -5,12 +5,11 @@ import { GvreLogo, AttomoLogo } from "../../icons";
 import { MdOutlineAlternateEmail } from "react-icons/md";
 import { BiKey } from "react-icons/bi";
 import { AiOutlineLogout, AiOutlineHome } from "react-icons/ai";
-import storage from "../../services/storage";
 import { loginApi, logoutApi } from "../../api/auth.api";
 import "./Login.scss";
 
 const Login = () => {
-  const { user, storeUser } = useContext(UserContext);
+  const { user, storeUser, deleteUser } = useContext(UserContext);
   const history = useHistory();
   const [error, setError] = useState();
 
@@ -38,7 +37,7 @@ const Login = () => {
 
     try {
       await logoutApi();
-      storage.clear();
+      deleteUser("user");
     } catch (error) {
       setError(error.message);
     }

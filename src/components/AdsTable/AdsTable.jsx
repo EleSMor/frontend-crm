@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { FilterService } from "primereact/api";
+import { CustomAdsFilters } from "../../components/Context/AdsFilters";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { ColumnGroup } from "primereact/columngroup";
@@ -15,17 +16,18 @@ import "./AdsTable.scss";
 
 const AdsTable = ({ ads }) => {
   const [adsFormated, setAdsFormated] = useState([]);
+  const customAdsFilters = useContext(CustomAdsFilters);
+  const [adsFilters, setAdsFilters] = useState(customAdsFilters.adsFilters);
   const [loader, setLoader] = useState(true);
   const [filters, setFilters] = useState({
-    adType: { value: null, matchMode: "INCLUDES" },
-    adBuildingType: { value: null, matchMode: "INCLUDES" },
-    gvOperationClose: { value: null, matchMode: "INCLUDES" },
-    adStatus: { value: null, matchMode: "INCLUDES" },
+    adType: { value: adsFilters.adType, matchMode: "INCLUDES" },
+    adBuildingType: { value: adsFilters.adBuildingType, matchMode: "INCLUDES" },
+    gvOperationClose: { value: adsFilters.gvOperationClose, matchMode: "INCLUDES" },
+    adStatus: { value: adsFilters.adStatus, matchMode: "INCLUDES" },
   });
 
   const adStatusOptions = [{ name: "En preparación" }, { name: "Activo" }, { name: "Inactivo" }];
   const gvOperationCloseOptions = [{ name: "Alquilado" }, { name: "Vendido" }];
-  // const gvOperationCloseOptions = [{ name: "Alquilado" }, { name: "Vendido" }, { name: "Ninguno" }];
   const adTypeOptions = [{ name: "Alquiler" }, { name: "Venta" }];
   const adBuildingTypeOptions = [
     { name: "Casa" },
@@ -65,14 +67,19 @@ const AdsTable = ({ ads }) => {
     }
   }, [ads]);
 
+  console.log(filters);
   const adTypeFilterTemplate = (options) => {
     return (
       <React.Fragment>
         <MultiSelect
-          value={options.value}
+          value={adsFilters.adType}
           options={adTypeOptions}
           itemTemplate={itemsTemplate}
-          onChange={(e) => options.filterApplyCallback(e.value)}
+          onChange={(e) => {
+            adsFilters.adType = e.value;
+            customAdsFilters.storeAdsFilters(adsFilters);
+            options.filterApplyCallback(e.value);
+          }}
           optionLabel="name"
           placeholder="Todos"
           className="p-column-filter"
@@ -85,10 +92,14 @@ const AdsTable = ({ ads }) => {
     return (
       <React.Fragment>
         <MultiSelect
-          value={options.value}
+          value={adsFilters.adBuildingType}
           options={adBuildingTypeOptions}
           itemTemplate={itemsTemplate}
-          onChange={(e) => options.filterApplyCallback(e.value)}
+          onChange={(e) => {
+            adsFilters.adBuildingType = e.value;
+            customAdsFilters.storeAdsFilters(adsFilters);
+            options.filterApplyCallback(e.value);
+          }}
           optionLabel="name"
           placeholder="Todos"
           className="p-column-filter"
@@ -100,10 +111,14 @@ const AdsTable = ({ ads }) => {
     return (
       <React.Fragment>
         <MultiSelect
-          value={options.value}
+          value={adsFilters.adStatus}
           options={adStatusOptions}
           itemTemplate={itemsTemplate}
-          onChange={(e) => options.filterApplyCallback(e.value)}
+          onChange={(e) => {
+            adsFilters.adStatus = e.value;
+            customAdsFilters.storeAdsFilters(adsFilters);
+            options.filterApplyCallback(e.value);
+          }}
           optionLabel="name"
           placeholder="Todos"
           className="p-column-filter"
@@ -116,10 +131,14 @@ const AdsTable = ({ ads }) => {
     return (
       <React.Fragment>
         <MultiSelect
-          value={options.value}
+          value={adsFilters.gvOperationClose}
           options={gvOperationCloseOptions}
           itemTemplate={itemsTemplate}
-          onChange={(e) => options.filterApplyCallback(e.value)}
+          onChange={(e) => {
+            adsFilters.gvOperationClose = e.value;
+            customAdsFilters.storeAdsFilters(adsFilters);
+            options.filterApplyCallback(e.value);
+          }}
           optionLabel="name"
           placeholder="Todos"
           className="p-column-filter"
@@ -200,12 +219,10 @@ const AdsTable = ({ ads }) => {
   );
 
   const formatCurrency = (value) => {
-    return value
-      ? value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ' €'
-      : value;
+    return value ? value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " €" : value;
   };
   const numberWithDots = (x) => {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ' €/mes';
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " €/mes";
   };
 
   const surfaceBodyTemplate = (rowData) => {
