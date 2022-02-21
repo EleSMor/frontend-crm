@@ -30,6 +30,7 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
   const [adsToSend, setAdsToSend] = useState([]);
   const [residentialSelectedZones, setResidentialSelectedZones] = useState([]);
   const [patrimonialSelectedZones, setPatrimonialSelectedZones] = useState([]);
+  const [zonesAdded, setzonesAdded] = useState(false);
   const [loader, setLoader] = useState(true);
   const { user } = useContext(UserContext);
   const { id } = useParams();
@@ -63,17 +64,26 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
     setLoader(false);
   }, [id]);
 
-  if (id && requestById.length !== 0 && residentials.length !== 0 && patrimonials.length !== 0 && !loader) {
-    for (let zone of residentials) {
-      if (requestById.requestZone.includes(zone._id) && !residentialSelectedZones.includes(zone._id)) {
-        setResidentialSelectedZones([...residentialSelectedZones, zone._id]);
+  if (id && requestById.length !== 0 && !loader && !zonesAdded) {
+    console.log("entra al if de las zonas");
+    for (let residentialZone of residentials) {
+      if (
+        requestById.requestZone.includes(residentialZone._id) &&
+        !residentialSelectedZones.includes(residentialZone._id)
+      ) {
+        console.log([...residentialSelectedZones], residentialZone._id);
+        residentialSelectedZones.push(residentialZone._id);
       }
     }
-    for (let zone of patrimonials) {
-      if (requestById.requestZone.includes(zone._id) && !patrimonialSelectedZones.includes(zone._id)) {
-        setPatrimonialSelectedZones([...patrimonialSelectedZones, zone._id]);
+    for (let patrimonialZone of patrimonials) {
+      if (
+        requestById.requestZone.includes(patrimonialZone._id) &&
+        !patrimonialSelectedZones.includes(patrimonialZone._id)
+      ) {
+        patrimonialSelectedZones.push(patrimonialZone._id);
       }
     }
+    setzonesAdded(true);
   }
 
   const formatCurrency = (value) => {
@@ -462,25 +472,29 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
             onSubmit={(data) => {
               if (id) data.id = id;
 
+              console.log("Zonas residenciales seleccionadas", residentialSelectedZones.length);
+              console.log("Zonas patrimoniales seleccionadas", patrimonialSelectedZones.length);
               if (residentialSelectedZones.length !== 0) {
                 data.requestZone = residentialSelectedZones;
               } else if (patrimonialSelectedZones.length !== 0) {
                 data.requestZone = patrimonialSelectedZones;
               }
 
-              if (patrimonialSelectedZones.length === 0 && residentialSelectedZones.length === 0 && data.requestZone) {
+              if (patrimonialSelectedZones.length === 0 && residentialSelectedZones.length === 0) {
                 data.requestZone = [];
               }
 
               if (data.salePriceMax === "") data.salePriceMax = 99999999;
               if (data.salePriceMin === "") data.salePriceMin = 0;
+              if (data.rentPriceMax === "") data.rentPriceMax = 99999;
+              if (data.rentPriceMin === "") data.rentPriceMin = 0;
 
               if (data.buildSurfaceMax === "") data.buildSurfaceMax = 9999;
               if (data.buildSurfaceMin === "") data.buildSurfaceMin = 0;
               if (data.plotSurfaceMax === "") data.plotSurfaceMax = 99999;
               if (data.plotSurfaceMin === "") data.plotSurfaceMin = 0;
 
-              console.log(data);
+              console.log("formulario", data);
 
               sendNewRequest(data).then((res) => {
                 alert(`Se ha actualizado la búsqueda`);
@@ -520,6 +534,7 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                       onChange={(ev) => {
                         formProps.setFieldValue("requestZone", ev.value);
                         setResidentialSelectedZones(ev.value);
+                        console.log("Valor del multiselect", ev.value);
                       }}
                       value={validateZone(residentials) ? residentialSelectedZones : []}
                     />
@@ -536,6 +551,7 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                       fields={{ groupBy: "zone", text: "name", value: "_id" }}
                       onChange={(ev) => {
                         formProps.setFieldValue("requestZone", ev.value);
+                        console.log(patrimonialSelectedZones);
                         setPatrimonialSelectedZones(ev.value);
                       }}
                       value={validateZone(patrimonials) ? patrimonialSelectedZones : []}
@@ -552,13 +568,25 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                       inputs={[
                         {
                           name: "salePriceMax",
-                          placeholder: "€",
+                          placeholder: "Escriba aquí",
                           label: "Máximo",
-                          type: "number",
-                          value: formProps.values.salePriceMax,
+                          type: "text",
+                          value:
+                            formProps.values.salePriceMax === 99999999
+                              ? ""
+                              : formatCurrency(formProps.values.salePriceMax),
+                          onBlur: (ev) => {
+                            ev.target.type = "text";
+                            ev.target.value = formatCurrency(ev.target.value);
+                          },
                           onChange: (ev) => {
-                            if (isNaN(ev.target.valueAsNumber)) formProps.setFieldValue(ev.target.name, "");
-                            else formProps.setFieldValue(ev.target.name, ev.target.valueAsNumber);
+                            ev.target.value = ev.target.value.replaceAll(".", "");
+                            ev.target.value = parseFloat(ev.target.value);
+                            ev.target.type = "number";
+                            if (isNaN(ev.target.valueAsNumber)) {
+                              formProps.setFieldValue(ev.target.name, "");
+                            } else formProps.setFieldValue(ev.target.name, ev.target.valueAsNumber);
+                            if (ev.target.value.length > 3) ev.target.type = "text";
                           },
                           span: <span style={{ position: "absolute", right: "0.5%", top: "52%" }}>€</span>,
                           errors: "",
@@ -566,13 +594,84 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                         {
                           name: "salePriceMin",
                           label: "Mínimo",
-                          type: "number",
-                          value: formProps.values.salePriceMin,
+                          type: "text",
+                          placeholder: "Escriba aquí",
+                          value:
+                            formProps.values.salePriceMin === 0 ? "" : formatCurrency(formProps.values.salePriceMin),
+                          onBlur: (ev) => {
+                            ev.target.type = "text";
+                            ev.target.value = formatCurrency(ev.target.value);
+                          },
                           onChange: (ev) => {
-                            if (isNaN(ev.target.valueAsNumber)) formProps.setFieldValue(ev.target.name, "");
-                            else formProps.setFieldValue(ev.target.name, ev.target.valueAsNumber);
+                            ev.target.value = ev.target.value.replaceAll(".", "");
+                            ev.target.value = parseFloat(ev.target.value);
+                            ev.target.type = "number";
+                            if (isNaN(ev.target.valueAsNumber)) {
+                              formProps.setFieldValue(ev.target.name, "");
+                            } else formProps.setFieldValue(ev.target.name, ev.target.valueAsNumber);
+                            if (ev.target.value.length > 3) ev.target.type = "text";
                           },
                           span: <span style={{ position: "absolute", right: "0.5%", top: "52%" }}>€</span>,
+                          errors: "",
+                        },
+                      ]}
+                    />
+                  </div>
+                  <div className="MatchedAd__container__col--item">
+                    <InputsGroup
+                      label={
+                        <span className="MatchedAd__container__col--item-center">
+                          <RiMoneyEuroBoxLine />
+                          <span>Precio de alquiler</span>
+                        </span>
+                      }
+                      inputs={[
+                        {
+                          name: "rentPriceMax",
+                          placeholder: "Escriba aquí",
+                          label: "Máximo",
+                          type: "text",
+                          value:
+                            formProps.values.rentPriceMax === 99999
+                              ? ""
+                              : formatCurrency(formProps.values.rentPriceMax),
+                          onBlur: (ev) => {
+                            ev.target.type = "text";
+                            ev.target.value = formatCurrency(ev.target.value);
+                          },
+                          onChange: (ev) => {
+                            ev.target.value = ev.target.value.replaceAll(".", "");
+                            ev.target.value = parseFloat(ev.target.value);
+                            ev.target.type = "number";
+                            if (isNaN(ev.target.valueAsNumber)) {
+                              formProps.setFieldValue(ev.target.name, "");
+                            } else formProps.setFieldValue(ev.target.name, ev.target.valueAsNumber);
+                            if (ev.target.value.length > 3) ev.target.type = "text";
+                          },
+                          span: <span style={{ position: "absolute", right: "0.5%", top: "52%" }}>€/mes</span>,
+                          errors: "",
+                        },
+                        {
+                          name: "rentPriceMin",
+                          label: "Mínimo",
+                          type: "text",
+                          placeholder: "Escriba aquí",
+                          value:
+                            formProps.values.rentPriceMin === 0 ? "" : formatCurrency(formProps.values.rentPriceMin),
+                          onBlur: (ev) => {
+                            ev.target.type = "text";
+                            ev.target.value = formatCurrency(ev.target.value);
+                          },
+                          onChange: (ev) => {
+                            ev.target.value = ev.target.value.replaceAll(".", "");
+                            ev.target.value = parseFloat(ev.target.value);
+                            ev.target.type = "number";
+                            if (isNaN(ev.target.valueAsNumber)) {
+                              formProps.setFieldValue(ev.target.name, "");
+                            } else formProps.setFieldValue(ev.target.name, ev.target.valueAsNumber);
+                            if (ev.target.value.length > 3) ev.target.type = "text";
+                          },
+                          span: <span style={{ position: "absolute", right: "0.5%", top: "52%" }}>€/mes</span>,
                           errors: "",
                         },
                       ]}
@@ -590,11 +689,24 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                         {
                           name: "buildSurfaceMax",
                           label: "Máximo",
-                          type: "number",
-                          value: formProps.values.buildSurfaceMax,
+                          type: "text",
+                          placeholder: "Escriba aquí",
+                          value:
+                            formProps.values.buildSurfaceMax === 9999
+                              ? ""
+                              : formatCurrency(formProps.values.buildSurfaceMax),
+                          onBlur: (ev) => {
+                            ev.target.type = "text";
+                            ev.target.value = formatCurrency(ev.target.value);
+                          },
                           onChange: (ev) => {
-                            if (isNaN(ev.target.valueAsNumber)) formProps.setFieldValue(ev.target.name, "");
-                            else formProps.setFieldValue(ev.target.name, ev.target.valueAsNumber);
+                            ev.target.value = ev.target.value.replaceAll(".", "");
+                            ev.target.value = parseFloat(ev.target.value);
+                            ev.target.type = "number";
+                            if (isNaN(ev.target.valueAsNumber)) {
+                              formProps.setFieldValue(ev.target.name, "");
+                            } else formProps.setFieldValue(ev.target.name, ev.target.valueAsNumber);
+                            if (ev.target.value.length > 3) ev.target.type = "text";
                           },
                           span: (
                             <span style={{ position: "absolute", right: "0.5%", top: "52%" }}>
@@ -607,10 +719,23 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                           name: "buildSurfaceMin",
                           label: "Mínimo",
                           type: "number",
-                          value: formProps.values.buildSurfaceMin,
+                          placeholder: "Escriba aquí",
+                          value:
+                            formProps.values.buildSurfaceMin === 0
+                              ? ""
+                              : formatCurrency(formProps.values.buildSurfaceMin),
+                          onBlur: (ev) => {
+                            ev.target.type = "text";
+                            ev.target.value = formatCurrency(ev.target.value);
+                          },
                           onChange: (ev) => {
-                            if (isNaN(ev.target.valueAsNumber)) formProps.setFieldValue(ev.target.name, "");
-                            else formProps.setFieldValue(ev.target.name, ev.target.valueAsNumber);
+                            ev.target.value = ev.target.value.replaceAll(".", "");
+                            ev.target.value = parseFloat(ev.target.value);
+                            ev.target.type = "number";
+                            if (isNaN(ev.target.valueAsNumber)) {
+                              formProps.setFieldValue(ev.target.name, "");
+                            } else formProps.setFieldValue(ev.target.name, ev.target.valueAsNumber);
+                            if (ev.target.value.length > 3) ev.target.type = "text";
                           },
                           span: (
                             <span style={{ position: "absolute", right: "0.5%", top: "52%" }}>
@@ -634,11 +759,24 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                         {
                           name: "plotSurfaceMax",
                           label: "Máximo",
-                          type: "number",
-                          value: formProps.values.plotSurfaceMax,
+                          type: "text",
+                          placeholder: "Escriba aquí",
+                          value:
+                            formProps.values.plotSurfaceMax === 99999
+                              ? ""
+                              : formatCurrency(formProps.values.plotSurfaceMax),
+                          onBlur: (ev) => {
+                            ev.target.type = "text";
+                            ev.target.value = formatCurrency(ev.target.value);
+                          },
                           onChange: (ev) => {
-                            if (isNaN(ev.target.valueAsNumber)) formProps.setFieldValue(ev.target.name, "");
-                            else formProps.setFieldValue(ev.target.name, ev.target.valueAsNumber);
+                            ev.target.value = ev.target.value.replaceAll(".", "");
+                            ev.target.value = parseFloat(ev.target.value);
+                            ev.target.type = "number";
+                            if (isNaN(ev.target.valueAsNumber)) {
+                              formProps.setFieldValue(ev.target.name, "");
+                            } else formProps.setFieldValue(ev.target.name, ev.target.valueAsNumber);
+                            if (ev.target.value.length > 3) ev.target.type = "text";
                           },
                           span: (
                             <span style={{ position: "absolute", right: "0.5%", top: "52%" }}>
@@ -650,11 +788,24 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                         {
                           name: "plotSurfaceMin",
                           label: "Mínimo",
-                          type: "number",
-                          value: formProps.values.plotSurfaceMin,
+                          type: "text",
+                          placeholder: "Escriba aquí",
+                          value:
+                            formProps.values.plotSurfaceMin === 0
+                              ? ""
+                              : formatCurrency(formProps.values.plotSurfaceMin),
+                          onBlur: (ev) => {
+                            ev.target.type = "text";
+                            ev.target.value = formatCurrency(ev.target.value);
+                          },
                           onChange: (ev) => {
-                            if (isNaN(ev.target.valueAsNumber)) formProps.setFieldValue(ev.target.name, "");
-                            else formProps.setFieldValue(ev.target.name, ev.target.valueAsNumber);
+                            ev.target.value = ev.target.value.replaceAll(".", "");
+                            ev.target.value = parseFloat(ev.target.value);
+                            ev.target.type = "number";
+                            if (isNaN(ev.target.valueAsNumber)) {
+                              formProps.setFieldValue(ev.target.name, "");
+                            } else formProps.setFieldValue(ev.target.name, ev.target.valueAsNumber);
+                            if (ev.target.value.length > 3) ev.target.type = "text";
                           },
                           span: (
                             <span style={{ position: "absolute", right: "0.5%", top: "52%" }}>
@@ -736,7 +887,13 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                     )}
                   </div>
                 )}
-                bodyStyle={{ width: "35%", verticalAlign: "top" }}
+                bodyStyle={{ width: "30%", verticalAlign: "top" }}
+              ></Column>
+              <Column
+                field="buildingType"
+                header="Inmueble"
+                bodyStyle={{ width: "10%", verticalAlign: "top" }}
+                body={(ev) => <div>{ev.adBuildingType.sort().join(", ")}</div>}
               ></Column>
               <Column
                 field="adType"
@@ -767,7 +924,7 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                     <>Construido</>
                   )
                 }
-                bodyStyle={{ width: "15%", verticalAlign: "top" }}
+                bodyStyle={{ width: "10%", verticalAlign: "top" }}
                 body={(ev) => <div>{maskValues(ev.buildSurface, "buildSurface")}</div>}
               ></Column>
               <Column
@@ -785,10 +942,10 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                 bodyStyle={{ width: "10%", verticalAlign: "top" }}
               ></Column>
               <Column
-                field="buildingType"
-                header="Inmueble"
-                bodyStyle={{ width: "10%", verticalAlign: "top" }}
-                body={(ev) => <div>{ev.adBuildingType.sort().join(", ")}</div>}
+                field="quality.parking"
+                header="Plazas de garaje"
+                bodyStyle={{ width: "10%", verticalAlign: "top", textAlign: "center" }}
+                headerStyle={{ width: "10%" }}
               ></Column>
             </DataTable>
           </div>

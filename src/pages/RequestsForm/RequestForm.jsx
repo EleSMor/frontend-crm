@@ -94,7 +94,7 @@ const RequestForm = () => {
 
   useEffect(() => {
     getFetchs();
-  }, [id]);
+  }, [id, activeIndex]);
 
   const checkIfIncludes = (origin, text) => {
     return origin
@@ -559,11 +559,11 @@ const RequestForm = () => {
                                     name: "buildSurfaceMin",
                                     label: "Mínimo",
                                     type: "text",
+                                    placeholder: "Escriba aquí",
                                     value:
                                       formProps.values.buildSurfaceMin === 0
                                         ? ""
                                         : formatCurrency(formProps.values.buildSurfaceMin),
-                                    placeholder: "Escriba aquí",
                                     onBlur: (ev) => {
                                       ev.target.type = "text";
                                       ev.target.value = formatCurrency(ev.target.value);
@@ -790,7 +790,7 @@ const RequestForm = () => {
               </Formik>
             </TabPanel>
             <TabPanel header="Matching">
-              <MatchedAdCard patrimonials={patrimonials} residentials={residentials} />
+              <MatchedAdCard patrimonials={patrimonials} residentials={residentials} requestById={requestById} />
             </TabPanel>
           </TabView>
         )}
