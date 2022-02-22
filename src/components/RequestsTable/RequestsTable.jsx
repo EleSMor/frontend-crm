@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { CustomRequestsFilters } from "../../components/Context/RequestsFilters";
 import { FilterService } from "primereact/api";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
@@ -14,9 +15,11 @@ import "./RequestTable.scss";
 const RequestsTable = ({ requests }) => {
   const [requestsFormated, setRequestsFormated] = useState([]);
   const [loader, setLoader] = useState(true);
+  const customRequestsFilters = useContext(CustomRequestsFilters);
+  const [requestsFilters, setRequestsFilters] = useState(customRequestsFilters.requestsFilters);
   const [filters, setFilters] = useState({
-    requestAdType: { value: null, matchMode: "INCLUDES" },
-    requestBuildingType: { value: null, matchMode: "INCLUDES" },
+    requestAdType: { value: requestsFilters.requestAdType, matchMode: "INCLUDES" },
+    requestBuildingType: { value: requestsFilters.requestBuildingType, matchMode: "INCLUDES" },
   });
 
   const adTypeOptions = [{ name: "Alquiler" }, { name: "Venta" }];
@@ -67,10 +70,14 @@ const RequestsTable = ({ requests }) => {
     return (
       <React.Fragment>
         <MultiSelect
-          value={options.value}
+          value={requestsFilters.requestAdType}
           options={adTypeOptions}
           itemTemplate={itemsTemplate}
-          onChange={(e) => options.filterApplyCallback(e.value)}
+          onChange={(e) => {
+            requestsFilters.requestAdType = e.value;
+            customRequestsFilters.storeRequestsFilters(requestsFilters);
+            options.filterApplyCallback(e.value);
+          }}
           optionLabel="name"
           placeholder="Todos"
           className="p-column-filter"
@@ -83,10 +90,14 @@ const RequestsTable = ({ requests }) => {
     return (
       <React.Fragment>
         <MultiSelect
-          value={options.value}
+          value={requestsFilters.requestBuildingType}
           options={buildingTypeOptions}
           itemTemplate={itemsTemplate}
-          onChange={(e) => options.filterApplyCallback(e.value)}
+          onChange={(e) => {
+            requestsFilters.requestBuildingType = e.value;
+            customRequestsFilters.storeRequestsFilters(requestsFilters);
+            options.filterApplyCallback(e.value);
+          }}
           optionLabel="name"
           placeholder="Todos"
           className="p-column-filter"
