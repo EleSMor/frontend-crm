@@ -1,4 +1,6 @@
+import { useContext } from "react";
 import { NavLink } from "react-router-dom";
+import { UserContext } from "../Context/AuthUser";
 import useWindowSize from "../../hooks/useWindowSize";
 import {
   GvreLogo,
@@ -18,6 +20,7 @@ import NavbarXS from "./NavbarXS";
 const Navbar = ({ title }) => {
   let location = window.location.pathname;
   const size = useWindowSize();
+  const { user } = useContext(UserContext);
 
   return (
     <>
@@ -99,11 +102,17 @@ const Navbar = ({ title }) => {
           </div>
 
           <div className="navigate__right">
-            <Ellipse2 className="navigate__logging-ellipse1"></Ellipse2>
-            <Ellipse3 className="navigate__logging-ellipse2"></Ellipse3>
-            <NavLink activeClassName="" to="/">
-              <User className="navigate__logging-user" />
-            </NavLink>
+            <div className="navigate__logging-ellipse1">
+              <div className="navigate__logging-ellipse2">
+                <NavLink to="/">
+                  {user.avatar ? (
+                    <img src={user.avatar} alt={user.fullName} width={5} className="navigate__logging-user--avatar" />
+                  ) : (
+                    <User className="navigate__logging-user" />
+                  )}
+                </NavLink>
+              </div>
+            </div>
           </div>
         </nav>
       )}

@@ -68,6 +68,16 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        &-avatar {
+          height: 44px;
+          width: 44px;
+          background-color: #fff;
+          border-radius: 50%;
+          border: 1px solid $c-background-dark;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
       }
     }
   }

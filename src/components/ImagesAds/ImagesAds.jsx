@@ -266,7 +266,7 @@ const ImagesAds = ({ id, adById }) => {
                 headerTemplate={headerTemplate}
               />
               {blueprintPreview ? (
-                <div style={{ margin: "0.5%", marginTop: "2.5%", width: 200, height: 200 }}>
+                <div className="preview">
                   <img
                     src={blueprintPreview}
                     alt="Planos"
