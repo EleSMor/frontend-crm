@@ -119,47 +119,55 @@
     height: 100%;
   }
 
-  /* internal ellipse */
-  &__logging-ellipse2 {
-    position: fixed;
-    min-width: 77px;
-    min-height: 8.4%;
-    right: 1.55%;
-    top: 0.9%;
-    border: 2px solid #2b363d;
-    border-radius: 50%;
-  }
+  &--user {
+    position: absolute;
+    right: 2%;
+    // width: 45%;
+    display: flex;
+    justify-content: flex-end;
 
-  /* external ellipse */
-  &__logging-ellipse1 {
-    position: fixed;
-    width: 80px;
-    height: 9%;
-    right: 1.5%;
-    top: 0.6%;
-    color: #f3f2f2;
-    border: 1px solid #f3f2f2;
-    border-radius: 50%;
-    background-color: #f3f2f2;
-  }
-
-  /* User */
-  &__logging-user {
-    position: fixed;
-    width: 80px;
-    height: 4.2%;
-    right: 1.5%;
-    top: 2.5%;
-    color: #2b363d;
-    &:hover {
-      transform: scale(120%);
+    &-circle1 {
+      height: 80px;
+      width: 80px;
+      background-color: #fff;
+      border-radius: 50%;
+      border: 1px solid #f3f2f2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      &-circle2 {
+        height: 73px;
+        width: 73px;
+        background-color: #fff;
+        border-radius: 50%;
+        border: 2px solid $c-background-dark;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &-avatar {
+          height: 73px;
+          width: 73px;
+          background-color: #fff;
+          border-radius: 50%;
+          border: 2px solid $c-background-dark;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        &-user {
+          height: 40px;
+          width: 40px;
+          background-color: #fff;
+          border-radius: 40%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          transform: translateY(-4%);
+          &:hover {
+            transform: scale(115%) translateY(-4%);
+          }
+        }
+      }
     }
-  }
-
-  &__logging-user--avatar {
-    border-radius: 50%;
-    width: 73px;
-    height: 73px;
-    margin-right: 1px;
   }
 }

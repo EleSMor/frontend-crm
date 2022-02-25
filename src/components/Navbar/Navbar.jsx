@@ -101,19 +101,21 @@ const Navbar = ({ title }) => {
             </ul>
           </div>
 
-          <div className="navigate__right">
-            <div className="navigate__logging-ellipse1">
-              <div className="navigate__logging-ellipse2">
+          <div className="navigate--user">
+          <div className="navigate--user-circle1">
+            <div className="navigate--user-circle1-circle2">
+              {user.avatar ? (
                 <NavLink to="/">
-                  {user.avatar ? (
-                    <img src={user.avatar} alt={user.fullName} width={5} className="navigate__logging-user--avatar" />
-                  ) : (
-                    <User className="navigate__logging-user" />
-                  )}
+                  <img src={user.avatar} alt={user.fullName} className="navigate--user-circle1-circle2-avatar" />
                 </NavLink>
-              </div>
+              ) : (
+                <NavLink to="/">
+                  <User className="navigate--user-circle1-circle2-user" style={{height: 38, width: 38, border: "none" }} />
+                </NavLink>
+              )}
             </div>
           </div>
+        </div>
         </nav>
       )}
     </>
