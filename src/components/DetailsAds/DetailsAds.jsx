@@ -539,6 +539,7 @@ const DetailsAds = ({
                       placeholder: "Escribe aquí",
                       value: formProps.values.monthlyRent,
                       lang: "es-ES",
+                      step: "0.01",
                       onChange: (ev) => {
                         formProps.setFieldValue(ev.target.name, ev.target.value);
                         formProps.setFieldValue("rentValue", ev.target.value * formProps.values.buildSurface);
@@ -562,6 +563,7 @@ const DetailsAds = ({
                       value: formProps.values.expenses,
                       placeholder: "Escribe aquí",
                       lang: "es-ES",
+                      step: "0.01",
                       onChange: (ev) => {
                         formProps.setFieldValue(ev.target.name, ev.target.value);
                         formProps.setFieldValue(
@@ -603,6 +605,7 @@ const DetailsAds = ({
                       label: "",
                       type: "number",
                       value: formProps.values.expensesValue,
+                      step: "0.01",
                       onChange: (e) => formProps.setFieldValue("expensesValue", e.target.value),
                       span: <span style={{ position: "absolute", right: "0.5%", top: "10%" }}>€/mes</span>,
                       errors: "",
@@ -628,6 +631,7 @@ const DetailsAds = ({
                       type: "number",
                       placeholder: "Escribe aquí",
                       value: formProps.values.ibiValue,
+                      step: "0.01",
                       onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
                       span: <span style={{ position: "absolute", right: "0.5%", top: "10%" }}>€/año</span>,
                       errors: "",

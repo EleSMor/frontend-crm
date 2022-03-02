@@ -42,7 +42,7 @@ const ConsultantCard = ({ consultant }) => {
         <p>
           <FaPhoneAlt fontSize="0.85em" color="#47535B" style={{ marginRight: 11 }} />
           {consultant.consultantMobileNumber}{" "}
-          {consultant.consultantMobileNumber && `| ${consultant.consultantMobileNumber}`}
+          {consultant.consultantMobileNumber && consultant.consultantPhoneNumber && `| ${consultant.consultantPhoneNumber}`}
         </p>
       </div>
 

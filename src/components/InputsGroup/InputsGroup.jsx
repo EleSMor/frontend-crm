@@ -27,6 +27,7 @@ const InputsGroup = ({ label, inputs, directionStyle }) => {
                   required={input?.required}
                   lang={input?.lang}
                   checked={input?.checked}
+                  step={input?.step}
                 />
                 <label htmlFor={input.name}>{input.label}</label>
                 <p>{input.error}</p>
@@ -55,6 +56,7 @@ const InputsGroup = ({ label, inputs, directionStyle }) => {
                   lang={input?.lang}
                   checked={input?.checked}
                   min="0"
+                  step={input?.step}
                 />
                 {!!input?.span && input?.span}
                 <p>{input.error}</p>

@@ -216,19 +216,21 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                 <button
                   className="buttonForm"
                   onClick={() => {
-                    sendAdsToContact({
-                      consultant: user.email,
-                      contact: requestById.requestContact,
-                      messageP1: document.getElementById("mailMessage1").value,
-                      messageP2: document.getElementById("mailMessage2").value,
-                      messageP3: document.getElementById("mailMessage3").value,
-                      messageGoodbayP1: document.getElementById("mailMessage4").value,
-                      messageGoodbayP2: document.getElementById("mailMessage5").value,
-                      ads: adsToSend,
-                    }).then((res) => {
-                      alert(`${res}`);
-                      handlePopUp();
-                    });
+                    // sendAdsToContact({
+                    //   consultant: user.email,
+                    //   contact: requestById.requestContact,
+                    //   messageP1: document.getElementById("mailMessage1").value,
+                    //   messageP2: document.getElementById("mailMessage2").value,
+                    //   messageP3: document.getElementById("mailMessage3").value,
+                    //   messageGoodbyeP1: document.getElementById("mailMessage4").value,
+                    //   messageGoodbyeP2: document.getElementById("mailMessage5").value,
+                    //   ads: adsToSend,
+                    // }).then((res) => {
+                    //   alert(`${res}`);
+                    //   handlePopUp();
+                    // });
+                    alert(`Estamos trabajando en el envío de los mails, agradecemos su paciencia`);
+                    handlePopUp();
                   }}
                 >
                   Enviar
@@ -294,7 +296,7 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
 
                             <h4>{maskTemplate(ad.sale.saleValue, "sale")}</h4>
 
-                            <p>REF{ad.adReference}</p>
+                            <p>REF {ad.adReference}</p>
 
                             <div className="EmailTemplate__Body__Estates__Item__Properties">
                               <div>
@@ -336,7 +338,7 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                     );
                   })}
                 </div>
-{/* CONSLUSION */}
+{/* CONCLUSION */}
                 <div className="EmailTemplate__Body__Introduction">
                   <textarea
                     id="mailMessage4"

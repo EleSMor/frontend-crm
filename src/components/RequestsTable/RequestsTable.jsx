@@ -119,8 +119,8 @@ const RequestsTable = ({ requests }) => {
       <Row>
         <Column header="Fecha de modificación" rowSpan={2} sortable field="updatedAt" style={{ width: "0%" }} />
         <Column header="Referencia" rowSpan={2} style={{ width: "0%" }} />
-        <Column header="Contacto" rowSpan={2} style={{ width: "0.5%" }} />
-        <Column header="Empresa" rowSpan={2} style={{ width: "0.25%" }} />
+        <Column header="Contacto" rowSpan={2} style={{ width: "0.50%" }} />
+        <Column header="Empresa" rowSpan={2} style={{ width: "0.20%" }} />
         <Column
           header="Tipo de inmueble"
           rowSpan={2}
@@ -142,16 +142,19 @@ const RequestsTable = ({ requests }) => {
           filterMatchMode="custom"
           showApplyButton={false}
           showClearButton={false}
-          style={{ width: "0.15%" }}
+          style={{ width: "0.02%" }}
         />
         <Column header="Precio" colSpan={2} />
+        <Column header="Alquiler" colSpan={2} />
         <Column header="Superficie construida" colSpan={2} />
         <Column header="Superficie parcela" colSpan={2} />
-        <Column header="Consultor" rowSpan={2} style={{ width: "0%" }} />
+        <Column header="Consultor" rowSpan={2} style={{ width: "0.2%" }} />
       </Row>
       <Row>
-        <Column header="Máximo" colSpan={1} sortable field="requestSalePrice.salePriceMax" style={{ width: "0.25%" }} />
-        <Column header="Mínimo" colSpan={1} sortable field="requestSalePrice.salePriceMin" style={{ width: "0.25%" }} />
+        <Column header="Máximo" colSpan={1} sortable field="requestSalePrice.salePriceMax" style={{ width: "0.15%" }} />
+        <Column header="Mínimo" colSpan={1} sortable field="requestSalePrice.salePriceMin" style={{ width: "0.15%" }} />
+        <Column header="Máximo" colSpan={1} sortable field="requestRentPrice.rentPriceMax" style={{ width: "0.15%" }} />
+        <Column header="Mínimo" colSpan={1} sortable field="requestRentPrice.rentPriceMin" style={{ width: "0.15%" }} />
         <Column
           header="Máxima"
           colSpan={1}
@@ -184,8 +187,8 @@ const RequestsTable = ({ requests }) => {
     </ColumnGroup>
   );
 
-  const formatCurrency = (value) => {
-    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " €";
+  const formatCurrency = (value, type) => {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + (type === "price" ? " €" : " €/mes");
   };
 
   const buildSurfaceMaxBodyTemplate = (rowData) => {
@@ -234,13 +237,25 @@ const RequestsTable = ({ requests }) => {
 
   const priceMaxBodyTemplate = (rowData) => {
     if (rowData.requestSalePrice.salePriceMax !== 0 && rowData.requestSalePrice.salePriceMax !== 99999999) {
-      return formatCurrency(rowData.requestSalePrice.salePriceMax);
+      return formatCurrency(rowData.requestSalePrice.salePriceMax, "price");
     }
   };
 
   const priceMinBodyTemplate = (rowData) => {
     if (rowData.requestSalePrice.salePriceMin !== 0) {
-      return formatCurrency(rowData.requestSalePrice.salePriceMin);
+      return formatCurrency(rowData.requestSalePrice.salePriceMin, "price");
+    }
+  };
+
+  const rentMaxBodyTemplate = (rowData) => {
+    if (rowData.requestRentPrice.rentPriceMax !== 0 && rowData.requestRentPrice.rentPriceMax !== 99999) {
+      return formatCurrency(rowData.requestRentPrice.rentPriceMax);
+    }
+  };
+
+  const rentMinBodyTemplate = (rowData) => {
+    if (rowData.requestRentPrice.rentPriceMin !== 0) {
+      return formatCurrency(rowData.requestRentPrice.rentPriceMin);
     }
   };
 
@@ -276,6 +291,8 @@ const RequestsTable = ({ requests }) => {
           <Column field="requestAdType"></Column>
           <Column field="requestSalePrice.salePriceMax" body={priceMaxBodyTemplate}></Column>
           <Column field="requestSalePrice.salePriceMin" body={priceMinBodyTemplate}></Column>
+          <Column field="requestRentPrice.rentPriceMax" body={rentMaxBodyTemplate}></Column>
+          <Column field="requestRentPrice.rentPriceMin" body={rentMinBodyTemplate}></Column>
           <Column field="requestBuildSurface.buildSurfaceMax" body={buildSurfaceMaxBodyTemplate}></Column>
           <Column field="requestBuildSurface.buildSurfaceMin" body={buildSurfaceMinBodyTemplate}></Column>
           <Column field="requestPlotSurface.plotSurfaceMax" body={plotSurfaceMaxBodyTemplate}></Column>
