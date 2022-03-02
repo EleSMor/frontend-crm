@@ -10,7 +10,7 @@ import "./ImagesAds.scss";
 
 const ImagesAds = ({ id, adById }) => {
   const [mainPreview, setMainPreview] = useState("");
-  const [blueprintPreview, setBlueprintPreview] = useState("");
+  const [blueprintPreview, setBlueprintPreview] = useState([]);
   const [othersPreview, setOthersPreview] = useState([]);
   const [photoIndex, setPhotoIndex] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
@@ -26,9 +26,9 @@ const ImagesAds = ({ id, adById }) => {
 
   const upload = (e) => {
     let data = new FormData();
-    if (e.options.props.name === "others") {
+    if (e.options.props.name === "others" | e.options.props.name === "blueprint") {
       for (let file of e.files) {
-        data.append("others", file);
+        data.append(e.options.props.name, file);
       }
     } else {
       data.append(e.options.props.name, e.files[0]);
@@ -62,13 +62,13 @@ const ImagesAds = ({ id, adById }) => {
     reader.readAsDataURL(e);
   };
 
-  const handleChangeFiles = (images) => {
+  const handleChangeFiles = (images, previewField, setter) => {
     if (images) {
-      const preview = othersPreview;
+      
       for (let image of images) {
-        preview.push(image.objectURL);
+        previewField.push(image.objectURL);
       }
-      setOthersPreview(preview);
+      setter(previewField);
     }
   };
 
@@ -102,7 +102,7 @@ const ImagesAds = ({ id, adById }) => {
     );
   };
 
-  const renderOthers = (source) => {
+  const renderMultiple = (source, setter, origin) => {
     return (
       <div className="p-d-flex p-ai-left p-flex-wrap p-order-6">
         {source.map((imgURL, index) => {
@@ -115,7 +115,7 @@ const ImagesAds = ({ id, adById }) => {
                 height={200}
                 onClick={() => {
                   setIsOpen(true);
-                  setImages(othersPreview);
+                  setImages(source);
                 }}
               />
               <Button
@@ -131,13 +131,13 @@ const ImagesAds = ({ id, adById }) => {
                 }}
                 onClick={() => {
                   const delIndex = source.indexOf(imgURL);
-                  const newFileList = Array.from(othersPreview).filter((file, index) => index !== delIndex);
-                  setOthersPreview(newFileList);
+                  const newFileList = Array.from(source).filter((file, index) => index !== delIndex);
+                  setter(newFileList);
 
-                  const newPreviews = othersPreview.filter((other) => other !== imgURL);
-                  setOthersPreview(newPreviews);
+                  const newPreviews = source.filter((other) => other !== imgURL);
+                  setter(newPreviews);
 
-                  deleteImg(imgURL, "others");
+                  deleteImg(imgURL, origin);
                 }}
               />
             </div>
@@ -152,7 +152,7 @@ const ImagesAds = ({ id, adById }) => {
       enableReinitialize={true}
       initialValues={{
         main: mainPreview ? mainPreview : "",
-        blueprint: blueprintPreview ? blueprintPreview : "",
+        blueprint: blueprintPreview ? blueprintPreview : [],
         others: othersPreview.length !== 0 ? othersPreview : [],
       }}
     >
@@ -180,7 +180,7 @@ const ImagesAds = ({ id, adById }) => {
                 uploadHandler={upload}
                 customUpload={true}
                 accept="image/*"
-                maxFileSize={5242880}
+                maxFileSize={20971520}
                 onRemove={() => setMainPreview(adById ? adById.images.main : "")}
                 onSelect={(e) => {
                   formProps.setFieldValue("main", e.files[0]);
@@ -227,46 +227,52 @@ const ImagesAds = ({ id, adById }) => {
             </h4>
             <div>
               <FileUpload
+                multiple
                 name="others"
                 chooseLabel="Cargar imágenes"
                 uploadHandler={upload}
                 customUpload={true}
                 onUpload={(props) => props.onClear()}
                 className="p-fileupload"
-                multiple
                 onRemove={(ev) => {
                   const newPreview = othersPreview.filter((preview) => preview !== ev.file.objectURL);
                   setOthersPreview(newPreview.length === 0 ? (adById ? adById.images.others : []) : newPreview);
                 }}
                 onSelect={(ev) => {
                   formProps.setFieldValue("others", ev.files);
-                  handleChangeFiles(ev.files);
+                  handleChangeFiles(ev.files, othersPreview, setOthersPreview);
                 }}
                 accept="image/*"
                 maxFileSize={20971520}
                 headerTemplate={headerTemplate}
               />
-              {othersPreview.length !== 0 ? renderOthers(othersPreview) : emptyTemplate()}
+              {othersPreview.length !== 0 ? renderMultiple(othersPreview, setOthersPreview, "others") : emptyTemplate()}
             </div>
             <hr />
             <h4 style={{ textAlign: "start", margin: "10px 0px", marginTop: "20px", color: "black" }}>Planos</h4>
             <div>
               <FileUpload
+                multiple
                 name="blueprint"
+                className="p-fileupload"
                 chooseLabel="Cargar plano"
                 uploadHandler={upload}
                 customUpload={true}
+                onUpload={(props) => props.onClear()}
                 accept="image/*"
-                maxFileSize={5242880}
-                onRemove={() => setBlueprintPreview(adById ? adById.images.blueprint : "")}
-                onSelect={(e) => {
-                  formProps.setFieldValue("blueprint", e.files[0]);
-                  handleChangeFile(e.files[0], setBlueprintPreview);
+                maxFileSize={20971520}
+                onRemove={(ev) => {
+                  const newPreview = blueprintPreview.filter((preview) => preview !== ev.file.objectURL);
+                  setBlueprintPreview(newPreview.length === 0 ? (adById ? adById.images.blueprint : []) : newPreview);
+                }}
+                onSelect={(ev) => {
+                  formProps.setFieldValue("blueprint", ev.files);
+                  handleChangeFiles(ev.files, blueprintPreview, setBlueprintPreview);
                 }}
                 headerTemplate={headerTemplate}
               />
-              {blueprintPreview ? (
-                <div className="preview">
+              {blueprintPreview ? renderMultiple(blueprintPreview, setBlueprintPreview, "blueprint") : emptyTemplate()}
+              {/* <div className="preview">
                   <img
                     src={blueprintPreview}
                     alt="Planos"
@@ -293,10 +299,7 @@ const ImagesAds = ({ id, adById }) => {
                       deleteImg(blueprintPreview, "blueprint");
                     }}
                   />
-                </div>
-              ) : (
-                emptyTemplate()
-              )}
+                </div> */}
             </div>
           </div>
         </Form>
