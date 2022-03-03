@@ -9,7 +9,7 @@ import "./SubHeader.scss";
 const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter, filteredList }) => {
   const [searchList, setSearchList] = useState(list);
   const customAdsDepartmentFilters = useContext(CustomAdsDepartmentFilters);
-  const [filterClass, setFilterClass] = useState(customAdsDepartmentFilters.departmentFilter);
+  const [filterClass, setFilterClass] = useState(customAdsDepartmentFilters?.departmentFilter || "Todos");
   const size = useWindowSize();
 
   useEffect(() => {
