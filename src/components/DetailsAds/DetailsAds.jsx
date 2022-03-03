@@ -587,6 +587,7 @@ const DetailsAds = ({
                         formProps.values.buildSurface * formProps.values.monthlyRent +
                         formProps.values.buildSurface * formProps.values.expenses,
                       lang: "es-ES",
+                      step: "0.01",
                       onChange: () => "",
                       required: true,
                       span: <span style={{ position: "absolute", right: "0.5%", top: "52%" }}>€/mes</span>,
