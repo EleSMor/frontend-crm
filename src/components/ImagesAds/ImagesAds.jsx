@@ -152,7 +152,7 @@ const ImagesAds = ({ id, adById }) => {
       enableReinitialize={true}
       initialValues={{
         main: mainPreview ? mainPreview : "",
-        blueprint: blueprintPreview ? blueprintPreview : [],
+        blueprint: blueprintPreview.length !== 0 ? blueprintPreview : [],
         others: othersPreview.length !== 0 ? othersPreview : [],
       }}
     >
@@ -271,7 +271,9 @@ const ImagesAds = ({ id, adById }) => {
                 }}
                 headerTemplate={headerTemplate}
               />
-              {blueprintPreview ? renderMultiple(blueprintPreview, setBlueprintPreview, "blueprint") : emptyTemplate()}
+              {console.log(blueprintPreview.length)}
+              {console.log(blueprintPreview)}
+              {blueprintPreview.length !== 0 ? renderMultiple(blueprintPreview, setBlueprintPreview, "blueprint") : emptyTemplate()}
               {/* <div className="preview">
                   <img
                     src={blueprintPreview}
