@@ -3,10 +3,10 @@ import storage from "../../services/storage";
 
 export const CustomAdsDepartmentFilters = React.createContext();
 
-const INITIAL_ADS_DEPARTMENT_FILTERS = storage.get("departmentFilter").length !== 0 ? storage.get("departmentFilter") : "Todos";
+const INITIAL_ADS_DEPARTMENT_FILTERS = storage.get("departmentFilter");
 
 const AdsDepartmentFilter = (props) => {
-  const [departmentFilter, setFilters] = useState(INITIAL_ADS_DEPARTMENT_FILTERS);
+  const [departmentFilter, setFilters] = useState(INITIAL_ADS_DEPARTMENT_FILTERS.length !== 0 ? INITIAL_ADS_DEPARTMENT_FILTERS : "Todos");
 
   const storeDepartmentFilter = (filters) => {
     setFilters(filters);
