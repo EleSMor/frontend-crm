@@ -8,17 +8,14 @@ import "./SubHeader.scss";
 
 const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter, filteredList }) => {
   const [searchList, setSearchList] = useState(list);
-  const customAdsDepartmentFilters = useContext(CustomAdsDepartmentFilters);
-  const [filterClass, setFilterClass] = useState(customAdsDepartmentFilters?.departmentFilter || "Todos");
+  const { departmentFilter, storeDepartmentFilter } = useContext(CustomAdsDepartmentFilters);
+  const [filterClass, setFilterClass] = useState(departmentFilter);
   const size = useWindowSize();
 
   useEffect(() => {
-    customAdsDepartmentFilters.storeDepartmentFilter(filterClass);
-    if (title === "Anuncios")
-      filterByDepartment(
-        filterClass ? filterClass : "Todos"
-      );
-  }, [list, filterClass]);
+    storeDepartmentFilter(filterClass);
+    if (title === "Anuncios" && !underTitle) filterByDepartment(filterClass ? filterClass : "Todos");
+  }, [filterClass]);
 
   const filterByDepartment = (department) => {
     let searchText = document.getElementById("search").value;
