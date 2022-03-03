@@ -1,13 +1,24 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import { InputText } from "primereact/inputtext";
+import { CustomAdsDepartmentFilters } from "../../components/Context/AdsDepartmentFilters";
 import { AiOutlineRight } from "react-icons/ai";
+
 import useWindowSize from "../../hooks/useWindowSize";
 import "./SubHeader.scss";
 
 const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter, filteredList }) => {
   const [searchList, setSearchList] = useState(list);
-  const [filterClass, setFilterClass] = useState("todos");
+  const customAdsDepartmentFilters = useContext(CustomAdsDepartmentFilters);
+  const [filterClass, setFilterClass] = useState(customAdsDepartmentFilters.departmentFilter);
   const size = useWindowSize();
+
+  useEffect(() => {
+    customAdsDepartmentFilters.storeDepartmentFilter(filterClass);
+    if (title === "Anuncios")
+      filterByDepartment(
+        filterClass ? filterClass : "Todos"
+      );
+  }, [list, filterClass]);
 
   const filterByDepartment = (department) => {
     let searchText = document.getElementById("search").value;
@@ -15,10 +26,10 @@ const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter,
     const filterByDeparment = list.filter((ad) => ad.department === department);
 
     const adsFiltered = list.filter((ad) => {
-      if (department !== "todos" && ad.department === department && !searchText) {
+      if (department !== "Todos" && ad.department === department && !searchText) {
         return ad;
       } else if (
-        department === "todos" &&
+        department === "Todos" &&
         (checkIfIncludes(ad.adReference, searchText) ||
           checkIfIncludes(ad.title, searchText) ||
           checkIfIncludes(ad.adDirection, searchText) ||
@@ -38,7 +49,7 @@ const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter,
       }
     });
 
-    if (department === "todos") {
+    if (department === "Todos") {
       setSearchList(list);
     } else {
       setSearchList(filterByDeparment);
@@ -76,7 +87,7 @@ const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter,
           (ad.owner !== null && checkIfIncludes(ad.owner.fullName, text)) ||
           (ad.consultant !== null && checkIfIncludes(ad.consultant.fullName, text))
         )
-          if (filterClass !== "todos") {
+          if (filterClass !== "Todos") {
             if (ad.department.toLowerCase() === filterClass) return ad;
           } else {
             return ad;
@@ -166,42 +177,37 @@ const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter,
             </div>
             <div style={size > 425 ? { display: "flex" } : { display: "flex", flexDirection: "column" }}>
               {window.location.pathname.includes(`anuncios`) && !window.location.pathname.includes(`anuncios/`) && (
-                <div
-                  className="subHeader__subtitle-item subHeader__filter-box"
-                >
+                <div className="subHeader__subtitle-item subHeader__filter-box">
                   <div
                     className={
-                      filterClass === "patrimonio"
+                      filterClass === "Patrimonio"
                         ? "subHeader__filter-box--item__active"
                         : "subHeader__filter-box--item"
                     }
                     onClick={() => {
-                      setFilterClass("patrimonio");
-                      filterByDepartment("Patrimonio");
+                      setFilterClass("Patrimonio");
                     }}
                   >
                     <p>Patrimonio</p>
                   </div>
                   <div
                     className={
-                      filterClass === "residencial"
+                      filterClass === "Residencial"
                         ? "subHeader__filter-box--item subHeader__filter-box--item__border__active"
                         : "subHeader__filter-box--item subHeader__filter-box--item__border"
                     }
                     onClick={() => {
-                      setFilterClass("residencial");
-                      filterByDepartment("Residencial");
+                      setFilterClass("Residencial");
                     }}
                   >
                     <p>Residencial</p>
                   </div>
                   <div
                     className={
-                      filterClass === "todos" ? "subHeader__filter-box--item__active" : "subHeader__filter-box--item"
+                      filterClass === "Todos" ? "subHeader__filter-box--item__active" : "subHeader__filter-box--item"
                     }
                     onClick={() => {
-                      setFilterClass("todos");
-                      filterByDepartment("todos");
+                      setFilterClass("Todos");
                     }}
                   >
                     <p>Todos</p>

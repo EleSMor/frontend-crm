@@ -271,8 +271,6 @@ const ImagesAds = ({ id, adById }) => {
                 }}
                 headerTemplate={headerTemplate}
               />
-              {console.log(blueprintPreview.length)}
-              {console.log(blueprintPreview)}
               {blueprintPreview.length !== 0 ? renderMultiple(blueprintPreview, setBlueprintPreview, "blueprint") : emptyTemplate()}
               {/* <div className="preview">
                   <img
