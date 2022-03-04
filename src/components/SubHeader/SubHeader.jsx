@@ -14,8 +14,8 @@ const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter,
 
   useEffect(() => {
     storeDepartmentFilter(filterClass);
-    if (title === "Anuncios" && !underTitle) filterByDepartment(filterClass ? filterClass : "Todos");
-  }, [filterClass]);
+    if (title === "Anuncios" && !underTitle) filterByDepartment(filterClass);
+  }, [list, filterClass]);
 
   const filterByDepartment = (department) => {
     let searchText = document.getElementById("search").value;
