@@ -23,7 +23,7 @@ import { GvreLogo } from "../../icons/index";
 import "reactjs-popup/dist/index.css";
 import "moment/locale/es";
 import "./MatchedAdCard.scss";
-import "./EmailTemplate.scss"
+import "./EmailTemplate.scss";
 
 const MatchedAdCard = ({ patrimonials, residentials }) => {
   const [adsMatched, setAdsMatched] = useState([]);
@@ -66,13 +66,11 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
   }, [id]);
 
   if (id && requestById.length !== 0 && !loader && !zonesAdded) {
-    console.log("entra al if de las zonas");
     for (let residentialZone of residentials) {
       if (
         requestById.requestZone.includes(residentialZone._id) &&
         !residentialSelectedZones.includes(residentialZone._id)
       ) {
-        console.log([...residentialSelectedZones], residentialZone._id);
         residentialSelectedZones.push(residentialZone._id);
       }
     }
@@ -216,21 +214,22 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                 <button
                   className="buttonForm"
                   onClick={() => {
-                    // sendAdsToContact({
-                    //   consultant: user.email,
-                    //   contact: requestById.requestContact,
-                    //   messageP1: document.getElementById("mailMessage1").value,
-                    //   messageP2: document.getElementById("mailMessage2").value,
-                    //   messageP3: document.getElementById("mailMessage3").value,
-                    //   messageGoodbyeP1: document.getElementById("mailMessage4").value,
-                    //   messageGoodbyeP2: document.getElementById("mailMessage5").value,
-                    //   ads: adsToSend,
-                    // }).then((res) => {
-                    //   alert(`${res}`);
-                    //   handlePopUp();
-                    // });
-                    alert(`Estamos trabajando en el envío de los mails, agradecemos su paciencia`);
-                    handlePopUp();
+                    sendAdsToContact({
+                      consultant: user,
+                      contact: requestById.requestContact,
+                      messageP1: document.getElementById("mailMessage1").value,
+                      messageP2: document.getElementById("mailMessage2").value,
+                      messageP3: document.getElementById("mailMessage3").value,
+                      messageGoodbyeP1: document.getElementById("mailMessage4").value,
+                      messageGoodbyeP2: document.getElementById("mailMessage5").value,
+                      ads: adsToSend,
+                    }).then((res) => {
+                      alert(`${res}`);
+                      handlePopUp();
+                      adsToSend.map((ad) => {
+                        ad.adComment = "";
+                      });
+                    });
                   }}
                 >
                   Enviar
@@ -239,25 +238,25 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
             }
             fixedButtons={true}
           >
-{/* // ================================================================================ */}
+            {/* // ================================================================================ */}
             <div className="EmailTemplate">
               <div className="EmailTemplate__Header">
                 <GvreLogo
-                    style={{
-                      width: "6%",
-                      color: "#FFF",
-                      bottom: "50%",
-                      left: "50%",
-                      margin: 12
-                    }}
-                  />
+                  style={{
+                    width: "6%",
+                    color: "#FFF",
+                    bottom: "50%",
+                    left: "50%",
+                    margin: 12,
+                  }}
+                />
               </div>
               <div className="EmailTemplate__Body">
-{/* INTRO */}
+                {/* INTRO */}
                 <div className="EmailTemplate__Body__Introduction">
                   <textarea
                     id="mailMessage1"
-                    defaultValue={`Buenos días,`}
+                    defaultValue={`Buenos días ${requestById.requestContact.fullName},`}
                     onChange={(ev) => console.log(ev.target.value)}
                   />
                   <textarea
@@ -271,74 +270,80 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                     onChange={(ev) => console.log(ev.target.value)}
                   />
                 </div>
-{/* ESTATES */}
+                {/* ESTATES */}
                 <div className="EmailTemplate__Body__Estates">
                   {adsToSend.map((ad, index) => {
                     return (
                       <div className="EmailTemplate__Body__Estates__Item" key={index}>
-                            <h5><b>{`${ad.adDirection.address.street} ${ad.adDirection.address.directionNumber}, ${ad.adDirection.city}`}</b></h5>
-                            <h3>{ad.title}</h3>
-                            {ad.images.main ? (
-                            <img src={ad.images.main} alt="Imagen principal" style={{ width: "76%", marginBottom: 20 }} />
-                              ) : (
-                                <img
-                                  src="\defaultImage.png"
-                                  alt="Imagen por defecto"
-                                  style={{
-                                    width: "75%",
-                                    height: "100%",
-                                    borderRadius: "4px",
-                                    marginRight: 12,
-                                    marginLeft: "10%",
-                                  }}
-                                />
-                              )}
+                        <div className="EmailTemplate__Body__Introduction">
+                          <textarea
+                            placeholder={"Inserte un comentario"}
+                            defaultValue={""}
+                            onChange={(ev) => (ad.adComment = ev.target.value)}
+                            style={{ minHeight: "5%" }}
+                          />
+                        </div>
+                        <h5>
+                          <b>{`${ad.adDirection.address.street} ${ad.adDirection.address.directionNumber}, ${ad.adDirection.city}`}</b>
+                        </h5>
+                        <h3>{ad.title}</h3>
+                        {ad.images.main ? (
+                          <img src={ad.images.main} alt="Imagen principal" style={{ width: "76%", marginBottom: 20 }} />
+                        ) : (
+                          <img
+                            src="\defaultImage.png"
+                            alt="Imagen por defecto"
+                            style={{
+                              width: "75%",
+                              height: "100%",
+                              borderRadius: "4px",
+                              marginRight: 12,
+                              marginLeft: "10%",
+                            }}
+                          />
+                        )}
 
-                            <h4>{maskTemplate(ad.sale.saleValue, "sale")}</h4>
+                        <h4>{maskTemplate(ad.sale.saleValue, "sale")}</h4>
 
-                            <p>REF {ad.adReference}</p>
+                        <p>REF {ad.adReference}</p>
 
-                            <div className="EmailTemplate__Body__Estates__Item__Properties">
-                              <div>
-                                <BiArea />
-                                <p>
-                                  {maskValues(ad.plotSurface, "plotSurface")}
-                                </p>
-                              </div>
-                              <div>
-                                <AiOutlineHome />
-                                <p>
-                                  {maskValues(ad.buildSurface, "buildSurface")}
-                                </p>
-                              </div>
-                              <div>
-                                <FaSwimmingPool />
-                                <p>{ad.quality.indoorPool}</p>
-                              </div>
-                              <div>
-                                <FaBath/>
-                                <p>{ad.quality.bathrooms}</p>
-                              </div>
-                              <div >
-                                <FaBed  />
-                                <p>{ad.quality.bedrooms}</p>
-                              </div>
-                            </div>
-                          
-                            <p>{ad.description.emailPDF}.</p>
+                        <div className="EmailTemplate__Body__Estates__Item__Properties">
+                          <div>
+                            <BiArea />
+                            <p>{maskValues(ad.plotSurface, "plotSurface")}</p>
+                          </div>
+                          <div>
+                            <AiOutlineHome />
+                            <p>{maskValues(ad.buildSurface, "buildSurface")}</p>
+                          </div>
+                          <div>
+                            <FaSwimmingPool />
+                            <p>{ad.quality.outdoorPool}</p>
+                          </div>
+                          <div>
+                            <FaBath />
+                            <p>{ad.quality.bathrooms}</p>
+                          </div>
+                          <div>
+                            <FaBed />
+                            <p>{ad.quality.bedrooms}</p>
+                          </div>
+                        </div>
 
-                            <div className="EmailTemplate__Body__Estates__Item__Button">
-                              <button
-                                onClick={() => history.push(`/anuncios/${ad._id}`)}
-                              >
-                                Saber más
-                              </button>
-                            </div>
+                        <p>{ad.description.emailPDF}.</p>
+
+                        <div className="EmailTemplate__Body__Estates__Item__Button">
+                          <button
+                          // onClick={() => history.push(`/anuncios/${ad._id}`)}
+                          >
+                            Saber más
+                          </button>
+                        </div>
                       </div>
                     );
                   })}
                 </div>
-{/* CONCLUSION */}
+                {/* CONCLUSION */}
                 <div className="EmailTemplate__Body__Introduction">
                   <textarea
                     id="mailMessage4"
@@ -351,7 +356,7 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                     onChange={(ev) => console.log(ev.target.value)}
                   />
                 </div>
-{/* SIGNATURE */}
+                {/* SIGNATURE */}
                 <div className="EmailTemplate__Body__Signature">
                   <GvreLogo
                     style={{
@@ -362,25 +367,17 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                     }}
                   />
                   <div>
-                    <p>
-                      {user.fullName}
-                    </p>
-                    <p>
-                      {user.position}
-                    </p>
-                    <p>
-                      {user.consultantMobileNumber}
-                    </p>
-                    <p>
-                      {user.consultantEmail}
-                    </p>
+                    <p>{user.fullName}</p>
+                    <p>{user.position}</p>
+                    <p>{user.consultantMobileNumber}</p>
+                    <p>{user.consultantEmail}</p>
                   </div>
                 </div>
               </div>
             </div>
           </PopUp>
         )}
-{/* ============================================================================================================== */}
+        {/* ============================================================================================================== */}
       </div>
       <div className="MatchedAd__container">
         <div className={"MatchedAd__container__col--left"}>
@@ -407,8 +404,6 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
             onSubmit={(data) => {
               if (id) data.id = id;
 
-              console.log("Zonas residenciales seleccionadas", residentialSelectedZones.length);
-              console.log("Zonas patrimoniales seleccionadas", patrimonialSelectedZones.length);
               if (residentialSelectedZones.length !== 0) {
                 data.requestZone = residentialSelectedZones;
               } else if (patrimonialSelectedZones.length !== 0) {
@@ -428,8 +423,6 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
               if (data.buildSurfaceMin === "") data.buildSurfaceMin = 0;
               if (data.plotSurfaceMax === "") data.plotSurfaceMax = 99999;
               if (data.plotSurfaceMin === "") data.plotSurfaceMin = 0;
-
-              console.log("formulario", data);
 
               sendNewRequest(data).then((res) => {
                 alert(`Se ha actualizado la búsqueda`);
@@ -469,7 +462,6 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                       onChange={(ev) => {
                         formProps.setFieldValue("requestZone", ev.value);
                         setResidentialSelectedZones(ev.value);
-                        console.log("Valor del multiselect", ev.value);
                       }}
                       value={validateZone(residentials) ? residentialSelectedZones : []}
                     />
@@ -486,7 +478,6 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                       fields={{ groupBy: "zone", text: "name", value: "_id" }}
                       onChange={(ev) => {
                         formProps.setFieldValue("requestZone", ev.value);
-                        console.log(patrimonialSelectedZones);
                         setPatrimonialSelectedZones(ev.value);
                       }}
                       value={validateZone(patrimonials) ? patrimonialSelectedZones : []}

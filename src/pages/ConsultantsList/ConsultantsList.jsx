@@ -7,6 +7,7 @@ import Layout from "../Layout/Layout";
 import Spinner from "../../components/Spinner/Spinner";
 import Pagination from "../../components/Pagination/Pagination";
 import { BsCloudArrowUp } from "react-icons/bs";
+import { checkSession } from "../../api/auth.api"
 
 const ConsultantsList = () => {
   const [consultants, setConsultants] = useState([]);
@@ -16,8 +17,17 @@ const ConsultantsList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [qPerPage] = useState(100);
 
-  const { user } = useContext(UserContext);
+  const { user, deleteUser } = useContext(UserContext);
   const history = useHistory();
+
+  useEffect(() => {
+    checkSession().then((res) => {
+      if (res === "Acceso restringido") {
+        deleteUser();
+        history.push("/");
+      }
+    });
+  }, []);
 
   useEffect(
     () =>

@@ -67,7 +67,6 @@ const AdsTable = ({ ads }) => {
     }
   }, [ads]);
 
-  console.log(filters);
   const adTypeFilterTemplate = (options) => {
     return (
       <React.Fragment>

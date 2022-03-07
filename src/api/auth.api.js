@@ -3,6 +3,7 @@ import { BASE_URL } from "./constants"
 const registerUrl = `${BASE_URL}/auth/register`;
 const loginUrl = `${BASE_URL}/auth/login`;
 const logoutUrl = `${BASE_URL}/auth/logout`;
+const checkSessionUrl = `${BASE_URL}/auth/check-session`;
 
 export const registerApi = async (form) => {
   const request = await fetch(registerUrl, {
@@ -63,6 +64,26 @@ export const logoutApi = async () => {
 
   if (!request.ok) {
     throw new Error(response.message);
+  }
+
+  return response;
+}
+
+export const checkSession = async () => {
+  const request = await fetch(checkSessionUrl, {
+    method: 'GET',
+    headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*"
+    },
+    credentials: 'include',
+  });
+
+  const response = await request.json();
+
+  if (!request.ok) {
+    return (response.message);
   }
 
   return response;

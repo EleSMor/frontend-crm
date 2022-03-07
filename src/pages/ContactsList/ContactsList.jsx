@@ -9,6 +9,7 @@ import Spinner from "../../components/Spinner/Spinner";
 import Pagination from "../../components/Pagination/Pagination";
 import ContactValidation from "../../components/ContactValidation/ContactValidation";
 import { MdOutlineSearchOff } from "react-icons/md";
+import { checkSession } from "../../api/auth.api"
 
 const ContactsList = () => {
   const [contacts, setContacts] = useState([]);
@@ -19,12 +20,21 @@ const ContactsList = () => {
   const [qPerPage] = useState(100);
   const [loader, setLoader] = useState(true);
 
-  const { user } = useContext(UserContext);
+  const { user, deleteUser } = useContext(UserContext);
   const history = useHistory();
 
   const handlePopUp = () => {
     setPopUp(!popUp);
   };
+
+  useEffect(() => {
+    checkSession().then((res) => {
+      if (res === "Acceso restringido") {
+        deleteUser();
+        history.push("/");
+      }
+    });
+  }, []);
 
   useEffect(() => {
     getAllContacts().then((res) => {

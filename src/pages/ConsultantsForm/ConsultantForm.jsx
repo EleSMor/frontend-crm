@@ -23,11 +23,12 @@ import { getAllRequests } from "../../api/requests.api";
 import "./ConsultantForm.scss";
 import "../../styles/primeReact.scss";
 import useWindowSize from "../../hooks/useWindowSize";
+import { checkSession } from "../../api/auth.api"
 
 const ConsultantForm = () => {
   const history = useHistory();
   const { id } = useParams();
-  const { user } = useContext(UserContext);
+  const { user, deleteUser } = useContext(UserContext);
   const size = useWindowSize();
 
   const [fullName, setFullName] = useState("");
@@ -44,7 +45,7 @@ const ConsultantForm = () => {
   const [loader, setLoader] = useState(false);
 
   useEffect(() => {
-    if (id) {
+    if (id && user.length !== 0) {
       getConsultantById(id).then((res) => {
         setAvatar(res.avatar);
         setCompanyUnitLogo(res.companyUnitLogo);
@@ -66,6 +67,15 @@ const ConsultantForm = () => {
     }
   }, [activeIndex]);
 
+  useEffect(() => {
+    checkSession().then((res) => {
+      if (res === "Acceso restringido") {
+        deleteUser();
+        history.push("/");
+      }
+    });
+  }, []);
+  
   const handleChangeFile = (e, setter) => {
     let reader = new FileReader();
     reader.onload = () => {
@@ -152,7 +162,7 @@ const ConsultantForm = () => {
               </div>
               <div className="ConsultantForm__header--company">
                 {companyUnitLogo ? (
-                  <div className="ConsultantForm__header--img">
+                  <div className="ConsultantForm__header--company">
                     <img src={companyUnitLogo} alt="companyUnitLogo" />
                   </div>
                 ) : (
@@ -171,6 +181,7 @@ const ConsultantForm = () => {
                   initialValues={{
                     role: consultantById ? consultantById.role : "Consultor",
                     consultantEmail: consultantById ? consultantById.consultantEmail : "",
+                    showOnWeb: consultantById ? consultantById.showOnWeb : "true",
                     consultantPassword: consultantById ? consultantById.consultantPassword : "",
                     fullName: consultantById ? consultantById.fullName : "",
                     avatar: "",
@@ -190,6 +201,8 @@ const ConsultantForm = () => {
                       data.append(key, values[key]);
                     }
                     data.append("id", id);
+                    if (data.showOnWeb === "true") data.showOnWeb = true;
+                    else if (data.showOnWeb === "false") data.showOnWeb = false;
 
                     if (!id) {
                       createConsultant(data).then((res) => {
@@ -323,22 +336,44 @@ const ConsultantForm = () => {
                             onChange={(ev) => formProps.setFieldValue(ev.target.name, ev.target.value)}
                           />
                           {user.role === "Admin" && (
-                            <Checkboxes
-                              label="Rol"
-                              type="radio"
-                              textA="Consultor"
-                              valueA="Consultor"
-                              onChangeA={(ev) => {
-                                formProps.setFieldValue("role", ev.target.value);
-                              }}
-                              checkedA={formProps.values.role === "Consultor" ? true : ""}
-                              textB="Admin"
-                              valueB="Admin"
-                              onChangeB={(ev) => {
-                                formProps.setFieldValue("role", ev.target.value);
-                              }}
-                              checkedB={formProps.values.role === "Admin" ? true : ""}
-                            />
+                            <div className="ConsultantForm__form">
+                              <div className="ConsultantForm__form--col">
+                                <Checkboxes
+                                  label="Mostrar en la web"
+                                  type="radio"
+                                  textA="Si"
+                                  valueA={true}
+                                  onChangeA={(ev) => {
+                                    formProps.setFieldValue("showOnWeb", ev.target.value);
+                                  }}
+                                  checkedA={formProps.values.showOnWeb === "true" && true}
+                                  textB="No"
+                                  valueB={false}
+                                  onChangeB={(ev) => {
+                                    formProps.setFieldValue("showOnWeb", ev.target.value);
+                                  }}
+                                  checkedB={formProps.values.showOnWeb === "false" && true}
+                                />
+                              </div>
+                              <div className="ConsultantForm__form--col">
+                                <Checkboxes
+                                  label="Rol"
+                                  type="radio"
+                                  textA="Consultor"
+                                  valueA="Consultor"
+                                  onChangeA={(ev) => {
+                                    formProps.setFieldValue("role", ev.target.value);
+                                  }}
+                                  checkedA={formProps.values.role === "Consultor" ? true : ""}
+                                  textB="Admin"
+                                  valueB="Admin"
+                                  onChangeB={(ev) => {
+                                    formProps.setFieldValue("role", ev.target.value);
+                                  }}
+                                  checkedB={formProps.values.role === "Admin" ? true : ""}
+                                />
+                              </div>
+                            </div>
                           )}
                           <div className="ConsultantForm__form">
                             <div className="ConsultantForm__form--col">

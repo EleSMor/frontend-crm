@@ -3,6 +3,7 @@ import { useHistory, Link, useParams } from "react-router-dom";
 import { Formik, Form } from "formik";
 import { TabView, TabPanel } from "primereact/tabview";
 import { Select, MultiSelect, RequestsMatching } from "../../components";
+import PopUpExit from "../../components/PopUpExit/PopUpExit";
 import Layout from "../Layout/Layout";
 import Spinner from "../../components/Spinner/Spinner";
 import GoBack from "../../components/GoBack/GoBack";
@@ -14,6 +15,7 @@ import Textarea from "../../components/Textarea/Textarea";
 import InputsGroup from "../../components/InputsGroup/InputsGroup";
 import Multicheckbox from "../../components/CheckBox/Multicheckbox";
 import MatchedAdCard from "../../components/MatchedAdCard/MatchedAdCard";
+import { AiOutlineLeft } from "react-icons/ai";
 import { FiSave } from "react-icons/fi";
 import { FaTrash } from "react-icons/fa";
 import { RiMoneyEuroBoxLine } from "react-icons/ri";
@@ -27,13 +29,15 @@ import { getAllResidentialZones, getAllPatrimonialZones } from "../../api/zones.
 import { getAllContacts } from "../../api/contacts.api";
 import useWindowSize from "../../hooks/useWindowSize";
 import { createRequest, getLastReference, getRequestById, updateRequest, deleteRequest } from "../../api/requests.api";
+import { checkSession } from "../../api/auth.api"
 import "./RequestForm.scss";
 
 const RequestForm = () => {
   const history = useHistory();
-  const { user } = useContext(UserContext);
+  const { user, deleteUser } = useContext(UserContext);
   const { id } = useParams();
   const size = useWindowSize();
+  const [exit, setExit] = useState(false);
 
   const [reference, setReference] = useState(0);
   const [ads, setAds] = useState([]);
@@ -52,6 +56,54 @@ const RequestForm = () => {
   const [loader, setLoader] = useState(true);
   const [firstLoad, setFirstLoad] = useState(true);
   const [validateForm, setValidateForm] = useState(false);
+  const [popUp, setPopUp] = useState(false);
+  const [popUpButtons, setPopUpButtons] = useState(
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: 24 }}>
+      <button
+        style={{
+          cursor: "pointer",
+          padding: size < 426 ? "8% 20%" : "2% 15%",
+          color: "#2B363D",
+          backgroundColor: "white",
+          border: "1px solid #5C5C5C",
+          borderRadius: 3,
+          fontWeight: "bold",
+          fontSize: 12,
+          marginRight: "5%",
+        }}
+        onClick={() => {
+          setExit(true);
+          handlePopUp();
+          history.push("/peticiones");
+        }}
+      >
+        Salir
+      </button>
+      <button
+        style={{
+          padding: size < 426 ? "4% 20%" : "2% 10%",
+          color: "white",
+          backgroundColor: "#2B363D",
+          border: "1px solid #5C5C5C",
+          borderRadius: 3,
+          fontWeight: "bold",
+          fontSize: 12,
+        }}
+        type="submit"
+        onClick={() => {
+          document.getElementById("form").handleSubmit();
+          setExit(true);
+          history.push("/peticiones");
+        }}
+      >
+        Guardar y salir
+      </button>
+    </div>
+  );
+  const handlePopUp = () => {
+    setPopUp(!popUp);
+    setExit(false);
+  };
 
   const validateZone = (zones) => {
     if (id && requestById.length !== 0) {
@@ -91,6 +143,15 @@ const RequestForm = () => {
         } else if (!id) setLoader(false);
       });
   };
+
+  useEffect(() => {
+    checkSession().then((res) => {
+      if (res === "Acceso restringido") {
+        deleteUser();
+        history.push("/");
+      }
+    });
+  }, []);
 
   useEffect(() => {
     getFetchs();
@@ -143,12 +204,119 @@ const RequestForm = () => {
     }
   };
 
+  const saveAndExit = () => {
+    return (
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: 24 }}>
+        <button
+          style={{
+            cursor: "pointer",
+            padding: size < 426 ? "8% 20%" : "2% 15%",
+            color: "#2B363D",
+            backgroundColor: "white",
+            border: "1px solid #5C5C5C",
+            borderRadius: 3,
+            fontWeight: "bold",
+            fontSize: 12,
+            marginRight: "5%",
+          }}
+          onClick={() => {
+            setExit(true);
+            handlePopUp();
+            history.push("/peticiones");
+          }}
+        >
+          Salir
+        </button>
+        <button
+          style={{
+            padding: size < 426 ? "4% 20%" : "2% 10%",
+            color: "white",
+            backgroundColor: "#2B363D",
+            border: "1px solid #5C5C5C",
+            borderRadius: 3,
+            fontWeight: "bold",
+            fontSize: 12,
+          }}
+          type="submit"
+          onClick={() => {
+            setExit(true);
+            handlePopUp();
+            history.push("/peticiones");
+          }}
+        >
+          Guardar y salir
+        </button>
+      </div>
+    );
+  };
+
+  const saveAndReturn = () => {
+    return (
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: 24 }}>
+        <button
+          type="button"
+          style={{
+            cursor: "pointer",
+            padding: size < 426 ? "8% 20%" : "2% 15%",
+            color: "#2B363D",
+            backgroundColor: "white",
+            border: "1px solid #5C5C5C",
+            borderRadius: 3,
+            fontWeight: "bold",
+            fontSize: 12,
+            marginRight: "5%",
+          }}
+          onClick={() => {
+            setExit(true);
+            handlePopUp();
+            history.goBack();
+          }}
+        >
+          Volver
+        </button>
+        <button
+          style={{
+            padding: size < 426 ? "4% 20%" : "2% 10%",
+            color: "white",
+            backgroundColor: "#2B363D",
+            border: "1px solid #5C5C5C",
+            borderRadius: 3,
+            fontWeight: "bold",
+            fontSize: 12,
+          }}
+          type="submit"
+          form="RequestForm"
+          onClick={() => {
+            setExit(true);
+            history.goBack();
+          }}
+        >
+          Guardar y volver
+        </button>
+      </div>
+    );
+  };
+
   return (
     <>
       {user.length === 0 && history.push("/")}
       <Layout
         subTitle="Peticiones"
-        subUndertitle={<GoBack />}
+        subUndertitle={
+          <div onClick={handlePopUp}>
+            <button
+              className="GoBack"
+              onClick={() => {
+                // if (activeIndex === 0) setPopUpButtons(saveAndReturn);
+                // else history.goBack();
+                history.goBack();
+              }}
+            >
+              <AiOutlineLeft fontSize={"0.8em"} style={{ marginRight: 5, color: "#5C5C5C" }} />
+              Volver
+            </button>
+          </div>
+        }
         subBreadcrumbs={id ? `Petición ${requestById.requestReference}` : "Crear nueva petición"}
         footContent={
           <>
@@ -162,9 +330,17 @@ const RequestForm = () => {
               />
               {size > 480 && "Guardar"}
             </button>
-            <Link className="buttonFormCancel" to="/peticiones">
+            <button
+              className="buttonFormCancel"
+              onClick={() => {
+                // if (activeIndex === 0) {
+                //   setPopUpButtons(saveAndExit);
+                // } else history.push("/peticiones");
+                history.push("/peticiones");
+              }}
+            >
               Cancelar
-            </Link>
+            </button>
             {id && user.role !== "Consultor" && (
               <button
                 className="buttonFormDelete"
@@ -263,6 +439,17 @@ const RequestForm = () => {
               >
                 {(formProps) => (
                   <Form id="RequestForm" className="RequestForm">
+                    {/* {popUp && (
+                      <PopUpExit
+                        handlePopUp={handlePopUp}
+                        height="20%"
+                        mobileHeight="20%"
+                        width="30%"
+                        title="¿Salir sin guardar cambios?"
+                      >
+                        {popUpButtons}
+                      </PopUpExit>
+                    )} */}
                     <div className="RequestForm__container">
                       <div className="RequestForm__container__col">
                         <div>

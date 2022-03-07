@@ -1,5 +1,142 @@
 @use "src/styles/utils.scss" as *;
 
+.buttonForm {
+  @include button-dark;
+  cursor: pointer;
+  &--disabled {
+    cursor: not-allowed;
+    @include button-disabled;
+    font-size: 12px;
+    padding: 4px 20px;
+  }
+}
+@keyframes opacity {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 100%;
+  }
+}
+
+.PopUp__overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  border: none;
+  background: rgba(0, 0, 0, 0.527);
+  animation: opacity 200ms;
+  opacity: 1;
+  display: flex;
+  justify-content: center;
+  padding-top: 35%;
+  z-index: 99999;
+
+  &__container {
+    position: relative;
+    background: #fff;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    border-radius: 3px;
+    min-width: 80%;
+    min-height: 25%;
+    
+    &--titleBanner {
+      margin-top: 10px;
+      position: relative;
+      width: 100%;
+      height: 30px;
+
+      text-align: center;
+      
+      > h4 {
+        font-size: 14px;
+        text-align: center;
+        line-height: 1.6;
+      }
+
+      &__close {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        background-color: transparent;
+        border: none;
+        font-weight: 500;
+      }
+    }
+
+    &--titleBannerSimple {
+      position: relative;
+      width: 100%;
+      text-align: center;
+
+      &__closeSimple {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        background-color: transparent;
+        border: none;
+        font-weight: 500;
+      }
+    }
+
+    &--content::-webkit-scrollbar {
+      //display: none;
+      width: 8px; /* width of the entire scrollbar */
+    }
+
+    &--content::-webkit-scrollbar-track {
+      background: #fff; /* color of the tracking area */
+    }
+
+    &--content::-webkit-scrollbar-thumb {
+      background-color: $c-dark-grey; /* color of the scroll thumb */
+    }
+
+    &--content {
+      height: calc(100% - 40px);
+      width: 100%;
+      padding: 10px 30px;
+      overflow: hidden;
+      overflow-y: scroll;
+      -ms-overflow-style: none; /* Internet Explorer 10+ */
+      scrollbar-width: none; /* Firefox */
+    }
+
+    &--contentButtons::-webkit-scrollbar {
+      display: none;
+    }
+
+    &--contentButtons {
+      height: calc(100% - 40px - 50px);
+      width: 100%;
+      padding: 10px;
+      overflow: hidden;
+      overflow-y: scroll;
+      -ms-overflow-style: none; /* Internet Explorer 10+ */
+      scrollbar-width: none; /* Firefox */
+    }
+
+    &--fixedButtons {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      transform: translateY(-50%);
+      background-color: #fff;
+      height: 50px;
+      width: 100%;
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+      // padding-top: 30px;
+    }
+  }
+}
+
 .RequestForm__container {
   width: 100%;
 
@@ -27,9 +164,20 @@
     align-items: flex-start;
     justify-content: space-between;
     width: 100%;
-  
+
     &__col {
       width: 46%;
+    }
+  }
+  .PopUp__overlay {
+    padding-top: 12%;
+    &__container {
+      min-width: 30%;
+      min-height: 20%;
+
+      &--content {
+        padding: 10px 18px;
+      }
     }
   }
 }

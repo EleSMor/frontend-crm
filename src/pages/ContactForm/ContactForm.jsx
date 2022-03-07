@@ -21,6 +21,7 @@ import InputsGroup from "../../components/InputsGroup/InputsGroup";
 import { createContact, getContactById, updateContact, deleteContact } from "../../api/contacts.api";
 import "../../styles/primeReact.scss";
 import useWindowSize from "../../hooks/useWindowSize";
+import { checkSession } from "../../api/auth.api"
 
 const ContactForm = () => {
   const [contactById, setContactById] = useState("");
@@ -33,10 +34,19 @@ const ContactForm = () => {
   const history = useHistory();
   const { id } = useParams();
 
-  const { user } = useContext(UserContext);
+  const { user, deleteUser } = useContext(UserContext);
 
   useEffect(() => {
-    if (id) {
+    checkSession().then((res) => {
+      if (res === "Acceso restringido") {
+        deleteUser();
+        history.push("/");
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    if (id && user.length !== 0) {
       getContactById(id).then((contact) => {
         setContactById(contact);
         setSelTag(contact.tag);

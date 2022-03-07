@@ -22,12 +22,14 @@ import { FiSave } from "react-icons/fi";
 import { FaTrash } from "react-icons/fa";
 import { getAllResidentialZones, getAllPatrimonialZones } from "../../api/zones.api";
 import useWindowSize from "../../hooks/useWindowSize";
+import { checkSession } from "../../api/auth.api"
 import "./AdForm.scss";
+import "./EmailTemplate.scss";
 
 const AdForm = () => {
   const history = useHistory();
   const { id } = useParams();
-  const { user } = useContext(UserContext);
+  const { user, deleteUser } = useContext(UserContext);
   const size = useWindowSize();
 
   const [adById, setAdById] = useState("");
@@ -55,6 +57,15 @@ const AdForm = () => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const [loader, setLoader] = useState(true);
+
+  useEffect(() => {
+    checkSession().then((res) => {
+      if (res === "Acceso restringido") {
+        deleteUser();
+        history.push("/");
+      }
+    });
+  }, []);
 
   useEffect(() => {
     getAllAds()
@@ -428,9 +439,9 @@ const AdForm = () => {
                     {popUp && (
                       <PopUp
                         handlePopUp={handlePopUp}
-                        height="85%"
+                        height="95%"
                         mobileHeight="85%"
-                        width="30%"
+                        width="60%"
                         title="Plantilla de email"
                         buttons={
                           <>
@@ -439,17 +450,21 @@ const AdForm = () => {
                             </button>
                             <button
                               className="buttonForm"
-                              onClick={() =>
+                              onClick={() => {
                                 sendAdToContacts({
-                                  consultant: user.email,
-                                  message: document.getElementById("mailMessage").value,
+                                  consultant: user,
+                                  messageP1: document.getElementById("mailMessage1").value,
+                                  messageP2: document.getElementById("mailMessage2").value,
+                                  messageP3: document.getElementById("mailMessage3").value,
+                                  messageGoodbyeP1: document.getElementById("mailMessage4").value,
+                                  messageGoodbyeP2: document.getElementById("mailMessage5").value,
                                   requests: requestsToSend,
                                   ad: adById,
                                 }).then((res) => {
                                   alert(`${res}`);
                                   handlePopUp();
-                                })
-                              }
+                                });
+                              }}
                             >
                               Enviar
                             </button>
@@ -457,199 +472,147 @@ const AdForm = () => {
                         }
                         fixedButtons={true}
                       >
-                        <div style={{ border: "1px solid lightgrey", marginTop: 16 }}>
-                          <textarea
-                            id="mailMessage"
-                            style={{
-                              padding: "24px 24px 0 24px",
-                              width: "100%",
-                              border: "none",
-                              resize: "none",
-                              height: "10%",
-                              alignSelf: "start",
-                              fontSize: 12,
-                              marginBottom: 24,
-                            }}
-                            defaultValue={`Estimado/a ${requestsToSend[0].requestContact.fullName}, le envío el siguiente inmueble que puede resultarle interesante según la petición que ha realizado`}
-                            onChange={(ev) => console.log(ev.target.value)}
-                          />
-                          <div
-                            style={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                              borderBottom: "solid 1px lightgrey",
-                              padding: `24px 24px 24px 24px`,
-                            }}
-                          >
-                            <div
-                              style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                alignItems: "start",
-                                justifyContent: "space-between",
-                                width: "58%",
-                              }}
-                            >
-                              <div style={{ width: "100%" }}>
-                                <h3 style={{ textAlign: "start", marginBottom: 12, fontSize: "200%" }}>
-                                  {adById.title}
-                                </h3>
-                                <h4
-                                  style={{ textAlign: "start", fontWeight: "bold", marginBottom: 12, fontSize: "150%" }}
-                                >
-                                  {maskTemplate(adById.sale.saleValue, "sale")}
-                                </h4>
-                                <h5 style={{ textAlign: "start", marginBottom: 12, fontSize: "125%" }}>
-                                  {adById.adDirection.city}
-                                </h5>
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    flexWrap: "wrap",
-                                    alignItems: "start",
-                                    justifyContent: "start",
-                                    width: "100%",
-                                  }}
-                                >
-                                  <div style={{ display: "flex", alignItems: "center" }}>
-                                    <BiArea style={{ transform: "scale(140%)" }} />
-                                    <span style={{ marginLeft: 8, fontSize: "100%" }}>
-                                      {maskValues(adById.plotSurface, "plotSurface")}
-                                    </span>
-                                  </div>
-                                  <div style={{ display: "flex", alignItems: "center", marginLeft: "4%" }}>
-                                    <AiOutlineHome style={{ transform: "scale(140%)" }} />
-                                    <span style={{ marginLeft: 8, fontSize: "100%" }}>
-                                      {maskValues(adById.buildSurface, "buildSurface")}
-                                    </span>
-                                  </div>
-                                  <div style={{ display: "flex", alignItems: "center", marginLeft: "4%" }}>
-                                    <FaSwimmingPool style={{ transform: "scale(140%)" }} />
-                                    <span style={{ marginLeft: 8, fontSize: "100%" }}>{adById.quality.indoorPool}</span>
-                                  </div>
-                                  <div style={{ display: "flex", alignItems: "center", marginLeft: "4%" }}>
-                                    <FaBath style={{ transform: "scale(130%)" }} />
-                                    <span style={{ marginLeft: 8, fontSize: "100%" }}>{adById.quality.bathrooms}</span>
-                                  </div>
-                                  <div style={{ display: "flex", alignItems: "center", marginLeft: "4%" }}>
-                                    <FaBed style={{ transform: "scale(150%)" }} />
-                                    <span style={{ marginLeft: 8, fontSize: "100%" }}>{adById.quality.bedrooms}</span>
-                                  </div>
-                                </div>
-                              </div>
-                              <button
-                                style={{ margin: "16px 6px 0 0", alignSelf: "end" }}
-                                className="buttonForm"
-                                onClick={() => history.push(`/anuncios/${adById._id}`)}
-                              >
-                                Consultar
-                              </button>
-                            </div>
-                            {adById.images.main ? (
-                              <img src={adById.images.main} alt="Imagen principal" style={{ width: "40%" }} />
-                            ) : (
-                              <img
-                                src="\defaultImage.png"
-                                alt="Imagen por defecto"
-                                style={{
-                                  width: "25%",
-                                  height: "100%",
-                                  borderRadius: "4px",
-                                  marginRight: 12,
-                                  marginLeft: "10%",
-                                }}
-                              />
-                            )}
-                          </div>
-                          <div style={{ display: "flex", justifyContent: "space-evenly", marginTop: 24, fontSize: 12 }}>
+                        {/* // ================================================================================ */}
+                        <div className="EmailTemplate">
+                          <div className="EmailTemplate__Header">
                             <GvreLogo
                               style={{
-                                width: "8%",
-                                color: "#2B363D",
-                                bottom: "-52%",
-                                left: "-78%",
+                                width: "6%",
+                                color: "#FFF",
+                                bottom: "50%",
+                                left: "50%",
+                                margin: 12,
                               }}
                             />
-                            <div style={{ display: "flex", flexDirection: "column", alignItems: "start" }}>
-                              <p
-                                style={{
-                                  fontFamily: "Jost",
-                                  fontStyle: "normal",
-                                  fontWeight: "500",
-                                  fontSize: size > 800 ? 14 : 12,
-                                  lineHeight: 1.5,
-                                }}
-                              >
-                                +34 917 36 53 85
-                              </p>
-                              <p
-                                style={{
-                                  fontFamily: "Jost",
-                                  fontStyle: "normal",
-                                  fontWeight: "500",
-                                  fontSize: size > 800 ? 14 : 12,
-                                  lineHeight: 1.5,
-                                }}
-                              >
-                                info@gvre.es
-                              </p>
-                              <p
-                                style={{
-                                  fontFamily: "Jost",
-                                  fontStyle: "normal",
-                                  fontWeight: "500",
-                                  fontSize: size > 800 ? 14 : 12,
-                                  lineHeight: 1.5,
-                                }}
-                              >
-                                C. de Bailén, 41, 28005 Madrid
-                              </p>
-                            </div>
-                            <div style={{ display: "flex", flexDirection: "column", alignItems: "start" }}>
-                              <p
-                                style={{
-                                  fontFamily: "Jost",
-                                  fontStyle: "normal",
-                                  fontWeight: "500",
-                                  fontSize: size > 800 ? 14 : 12,
-                                  lineHeight: 1.5,
-                                }}
-                              >
-                                +34 917 36 53 85
-                              </p>
-                              <p
-                                style={{
-                                  fontFamily: "Jost",
-                                  fontStyle: "normal",
-                                  fontWeight: "500",
-                                  fontSize: size > 800 ? 14 : 12,
-                                  lineHeight: 1.5,
-                                }}
-                              >
-                                info@gvre.es
-                              </p>
-                              <p
-                                style={{
-                                  fontFamily: "Jost",
-                                  fontStyle: "normal",
-                                  fontWeight: "500",
-                                  fontSize: size > 800 ? 14 : 12,
-                                  lineHeight: 1.5,
-                                }}
-                              >
-                                C. de la Isla de Oza, 16, 28035 Madrid
-                              </p>
-                            </div>
                           </div>
-                          <div style={{ color: "#B1B1B1", marginTop: 24 }}>
-                            Si desea dejar de recibir este tipo de email, puede{" "}
-                            <span style={{ color: "inherit", textDecoration: "underline", cursor: "pointer" }}>
-                              darse de baja aquí
-                            </span>
+                          <div className="EmailTemplate__Body">
+                            {/* INTRO */}
+                            <div className="EmailTemplate__Body__Introduction">
+                              <textarea
+                                id="mailMessage1"
+                                defaultValue={`Buenos días ${requestsToSend[0].requestContact.fullName}`}
+                                onChange={(ev) => console.log(ev.target.value)}
+                              />
+                              <textarea
+                                id="mailMessage2"
+                                defaultValue={`Tal y como hemos hablado, te envío información sobre los diferentes inmuebles.`}
+                                onChange={(ev) => console.log(ev.target.value)}
+                              />
+                              <textarea
+                                id="mailMessage3"
+                                defaultValue={`En cada enlace podrás encontrar información al respecto, además te indico dirección exacta. Si tienes dudas no dudes en contactar conmigo`}
+                                onChange={(ev) => console.log(ev.target.value)}
+                              />
+                            </div>
+                            {/* ESTATES */}
+                            <div className="EmailTemplate__Body__Estates">
+                              <div className="EmailTemplate__Body__Estates__Item">
+                                <div className="EmailTemplate__Body__Introduction">
+                                  <textarea
+                                    placeholder={"Inserte un comentario"}
+                                    defaultValue={""}
+                                    onChange={(ev) => (adById.adComment = ev.target.value)}
+                                    style={{ minHeight: "5%" }}
+                                  />
+                                </div>
+                                <h5>
+                                  <b>{`${adById.adDirection.address.street} ${adById.adDirection.address.directionNumber}, ${adById.adDirection.city}`}</b>
+                                </h5>
+                                <h3>{adById.title}</h3>
+                                {adById.images.main ? (
+                                  <img
+                                    src={adById.images.main}
+                                    alt="Imagen principal"
+                                    style={{ width: "76%", marginBottom: 20 }}
+                                  />
+                                ) : (
+                                  <img
+                                    src="\defaultImage.png"
+                                    alt="Imagen por defecto"
+                                    style={{
+                                      width: "75%",
+                                      height: "100%",
+                                      borderRadius: "4px",
+                                      marginRight: 12,
+                                      marginLeft: "10%",
+                                      marginBottom: 20,
+                                    }}
+                                  />
+                                )}
+
+                                <h4>{maskTemplate(adById.sale.saleValue, "sale")}</h4>
+
+                                <p>REF {adById.adReference}</p>
+
+                                <div className="EmailTemplate__Body__Estates__Item__Properties">
+                                  <div>
+                                    <BiArea />
+                                    <p>{maskValues(adById.plotSurface, "plotSurface")}</p>
+                                  </div>
+                                  <div>
+                                    <AiOutlineHome />
+                                    <p>{maskValues(adById.buildSurface, "buildSurface")}</p>
+                                  </div>
+                                  <div>
+                                    <FaSwimmingPool />
+                                    <p>{adById.quality.outdoorPool}</p>
+                                  </div>
+                                  <div>
+                                    <FaBath />
+                                    <p>{adById.quality.bathrooms}</p>
+                                  </div>
+                                  <div>
+                                    <FaBed />
+                                    <p>{adById.quality.bedrooms}</p>
+                                  </div>
+                                </div>
+
+                                <p>{adById.description.emailPDF}</p>
+
+                                <div className="EmailTemplate__Body__Estates__Item__Button">
+                                  <button
+                                  // onClick={() => history.push(`/anuncios/${ad._id}`)}
+                                  >
+                                    Saber más
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                            {/* CONCLUSION */}
+                            <div className="EmailTemplate__Body__Introduction">
+                              <textarea
+                                id="mailMessage4"
+                                defaultValue={`Si quieres organizar alguna visita por favor ponte en contacto conmigo.`}
+                                onChange={(ev) => console.log(ev.target.value)}
+                              />
+                              <textarea
+                                id="mailMessage5"
+                                defaultValue={`Un cordial saludo,`}
+                                onChange={(ev) => console.log(ev.target.value)}
+                              />
+                            </div>
+                            {/* SIGNATURE */}
+                            <div className="EmailTemplate__Body__Signature">
+                              <GvreLogo
+                                style={{
+                                  width: "8%",
+                                  color: "#2B363D",
+                                  bottom: "-52%",
+                                  left: "-78%",
+                                }}
+                              />
+                              <div>
+                                <p>{user.fullName}</p>
+                                <p>{user.position}</p>
+                                <p>{user.consultantMobileNumber}</p>
+                                <p>{user.consultantEmail}</p>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </PopUp>
                     )}
+                    {/* ============================================================================================================== */}
                   </div>
                 </div>
 

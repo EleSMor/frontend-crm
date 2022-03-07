@@ -6,6 +6,7 @@ import { UserContext } from "../../components/Context/AuthUser";
 import Layout from "../Layout/Layout";
 import Spinner from "../../components/Spinner/Spinner";
 import Pagination from "../../components/Pagination/Pagination";
+import { checkSession } from "../../api/auth.api"
 
 const AdsList = () => {
   const [ads, setAds] = useState([]);
@@ -15,8 +16,17 @@ const AdsList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [qPerPage] = useState(100);
 
-  const { user } = useContext(UserContext);
+  const { user, deleteUser } = useContext(UserContext);
   const history = useHistory();
+
+  useEffect(() => {
+    checkSession().then((res) => {
+      if (res === "Acceso restringido") {
+        deleteUser();
+        history.push("/");
+      }
+    });
+  }, []);
 
   useEffect(() => {
     getAllAds().then((res) => {

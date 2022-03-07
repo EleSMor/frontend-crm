@@ -2,7 +2,7 @@ import { useRef } from "react";
 import useWindowSize from "../../hooks/useWindowSize";
 import "./PopUpExit.scss";
 
-const PopUp = ({
+const PopUpExit = ({
   handlePopUp,
   title,
   children,
@@ -68,12 +68,12 @@ const PopUp = ({
   );
 };
 
-PopUp.defaultProps = {
-  height: "50%",
-  width: "50%",
+PopUpExit.defaultProps = {
+  height: "10%",
+  width: "20%",
   simpleStyle: false,
   title: "Include a title prop please",
   fixedButtons: false,
 };
 
-export default PopUp;
+export default PopUpExit;
