@@ -67,14 +67,14 @@ const ConsultantForm = () => {
     }
   }, [activeIndex]);
 
-  useEffect(() => {
-    checkSession().then((res) => {
-      if (res === "Acceso restringido") {
-        deleteUser();
-        history.push("/");
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   checkSession().then((res) => {
+  //     if (res === "Acceso restringido") {
+  //       deleteUser();
+  //       history.push("/");
+  //     }
+  //   });
+  // }, []);
   
   const handleChangeFile = (e, setter) => {
     let reader = new FileReader();

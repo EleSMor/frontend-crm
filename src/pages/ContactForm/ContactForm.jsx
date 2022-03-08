@@ -36,14 +36,14 @@ const ContactForm = () => {
 
   const { user, deleteUser } = useContext(UserContext);
 
-  useEffect(() => {
-    checkSession().then((res) => {
-      if (res === "Acceso restringido") {
-        deleteUser();
-        history.push("/");
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   checkSession().then((res) => {
+  //     if (res === "Acceso restringido") {
+  //       deleteUser();
+  //       history.push("/");
+  //     }
+  //   });
+  // }, []);
 
   useEffect(() => {
     if (id && user.length !== 0) {

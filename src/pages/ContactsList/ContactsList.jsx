@@ -27,14 +27,14 @@ const ContactsList = () => {
     setPopUp(!popUp);
   };
 
-  useEffect(() => {
-    checkSession().then((res) => {
-      if (res === "Acceso restringido") {
-        deleteUser();
-        history.push("/");
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   checkSession().then((res) => {
+  //     if (res === "Acceso restringido") {
+  //       deleteUser();
+  //       history.push("/");
+  //     }
+  //   });
+  // }, []);
 
   useEffect(() => {
     getAllContacts().then((res) => {
