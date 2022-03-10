@@ -281,17 +281,27 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                             placeholder={"Inserte un comentario"}
                             defaultValue={""}
                             onChange={(ev) => (ad.adComment = ev.target.value)}
-                            style={{ minHeight: "5%"}}
+                            style={{ minHeight: "5%" }}
                           />
                         </div>
                         <Checkbox
-                          label="Enviar dirección completa"
-                          onChange={(ev) =>
-                            console.log(ev)
-                          }
+                          id="sendFullAddress"
+                          label="Enviar dirección con número incluido"
+                          onChange={(ev) => {
+                            if (ev.target.checked) {
+                              ad.adDirectionFull =
+                                ad.adDirection.address.street +
+                                " " +
+                                ad.adDirection.address.directionNumber +
+                                ", " +
+                                ad.adDirection.city;
+                            } else {
+                              ad.adDirectionFull = undefined;
+                            }
+                          }}
                         />
                         <h5>
-                          <b>{`${ad.adDirection.address.street} ${ad.adDirection.address.directionNumber}, ${ad.adDirection.city}`}</b>
+                          <b>{ad.adDirection.address.street + ", " + ad.adDirection.city}</b>
                         </h5>
                         <div className="EmailTemplate__Body__Title">
                           <textarea
@@ -307,8 +317,7 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                             }}
                             defaultValue={ad.title}
                             onChange={(ev) => {
-                              console.log(ev.target.value);
-                              // ad.title = ev.target.value;
+                              ad.titleEdited = ev.target.value;
                             }}
                           />
                         </div>
@@ -407,12 +416,40 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                   />
                   <div>
                     <p>{user.fullName}</p>
-                    <p>{user.profession ? user.position + " | " + user.profession : user.position}</p>
-                    <p>{user.consultantMobileNumber}</p>
-                    {user.office1 && user.office1 ? (
-                      <p>{user.office1 + " | " + user.office2}</p>
+                    <p>
+                      {user.profession ? (
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%" }}>
+                          <div style={{ float: "left", width: "100%", textAlign: "end" }}>{user.position}</div>
+                          <div style={{ float: "none", textAlign: "end", padding: "0 8px 0 8px" }}>|</div>
+                          <div style={{ float: "right", width: "100%", textAlign: "start" }}>{user.profession}</div>
+                        </div>
+                      ) : (
+                        user.position
+                      )}
+                    </p>
+                    <p>
+                      {user.consultantPhoneNumber ? (
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%" }}>
+                          <div style={{ float: "left", width: "100%", textAlign: "end" }}>
+                            {user.consultantMobileNumber}
+                          </div>
+                          <div style={{ float: "none", textAlign: "end", padding: "0 8px 0 8px" }}>|</div>
+                          <div style={{ float: "right", width: "100%", textAlign: "start" }}>
+                            {user.consultantPhoneNumber}
+                          </div>
+                        </div>
+                      ) : (
+                        user.consultantMobileNumber
+                      )}
+                    </p>
+                    {user.office2 ? (
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%" }}>
+                        <div style={{ float: "left", width: "100%", textAlign: "end" }}>{user.office1}</div>
+                        <div style={{ float: "none", textAlign: "end", padding: "0 8px 0 8px" }}>|</div>
+                        <div style={{ float: "right", width: "100%", textAlign: "start" }}>{user.office2}</div>
+                      </div>
                     ) : (
-                      <p>{user.office1}</p>
+                      user.office1
                     )}
                     <p>{user.consultantEmail}</p>
                   </div>
