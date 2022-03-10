@@ -8,6 +8,7 @@ import PopUp from "../../components/PopUp/PopUp";
 import GoBack from "../../components/GoBack/GoBack";
 import Layout from "../Layout/Layout";
 import { UserContext } from "../../components/Context/AuthUser";
+import Checkbox from "../../components/CheckBox/Checkbox";
 import { createAd, updateAd, getAllAds, getAdById, deleteAd } from "../../api/ads.api.js";
 import { sendAdToContacts } from "../../api/mails.api";
 import { getAllOwners } from "../../api/contacts.api";
@@ -22,7 +23,7 @@ import { FiSave } from "react-icons/fi";
 import { FaTrash } from "react-icons/fa";
 import { getAllResidentialZones, getAllPatrimonialZones } from "../../api/zones.api";
 import useWindowSize from "../../hooks/useWindowSize";
-import { checkSession } from "../../api/auth.api"
+import { checkSession } from "../../api/auth.api";
 import "./AdForm.scss";
 import "./EmailTemplate.scss";
 
@@ -515,10 +516,29 @@ const AdForm = () => {
                                     style={{ minHeight: "5%" }}
                                   />
                                 </div>
+                                <Checkbox label="Enviar dirección completa" onChange={(ev) => console.log(ev)} />
                                 <h5>
                                   <b>{`${adById.adDirection.address.street} ${adById.adDirection.address.directionNumber}, ${adById.adDirection.city}`}</b>
                                 </h5>
-                                <h3>{adById.title}</h3>
+                                <div className="EmailTemplate__Body__Title">
+                                  <textarea
+                                    style={{
+                                      display: "block",
+                                      fontSize: "1.17em",
+                                      marginTop: "1em",
+                                      marginBottom: "1em",
+                                      marginLeft: "0",
+                                      marginRight: "0",
+                                      fontWeight: "bold",
+                                      minWidth: "5%",
+                                    }}
+                                    defaultValue={adById.title}
+                                    onChange={(ev) => {
+                                      console.log(ev.target.value);
+                                      // ad.title = ev.target.value;
+                                    }}
+                                  />
+                                </div>
                                 {adById.images.main ? (
                                   <img
                                     src={adById.images.main}
@@ -540,31 +560,45 @@ const AdForm = () => {
                                   />
                                 )}
 
-                                <h4>{maskTemplate(adById.sale.saleValue, "sale")}</h4>
+                                <h4>
+                                  {adById.adType.includes("Venta")
+                                    ? maskTemplate(adById.sale.saleValue, "sale")
+                                    : maskTemplate(adById.rent.rentValue, "rent")}
+                                </h4>
 
                                 <p>REF {adById.adReference}</p>
 
                                 <div className="EmailTemplate__Body__Estates__Item__Properties">
-                                  <div>
-                                    <BiArea />
-                                    <p>{maskValues(adById.plotSurface, "plotSurface")}</p>
-                                  </div>
-                                  <div>
-                                    <AiOutlineHome />
-                                    <p>{maskValues(adById.buildSurface, "buildSurface")}</p>
-                                  </div>
-                                  <div>
-                                    <FaSwimmingPool />
-                                    <p>{adById.quality.outdoorPool}</p>
-                                  </div>
-                                  <div>
-                                    <FaBath />
-                                    <p>{adById.quality.bathrooms}</p>
-                                  </div>
-                                  <div>
-                                    <FaBed />
-                                    <p>{adById.quality.bedrooms}</p>
-                                  </div>
+                                  {adById.plotSurface !== 0 && adById.plotSurface !== 99999 && (
+                                    <div>
+                                      <BiArea />
+                                      <p>{maskValues(adById.plotSurface, "plotSurface")}</p>
+                                    </div>
+                                  )}
+                                  {adById.buildSurface !== 0 && adById.buildSurface !== 9999 && (
+                                    <div>
+                                      <AiOutlineHome />
+                                      <p>{maskValues(adById.buildSurface, "buildSurface")}</p>
+                                    </div>
+                                  )}
+                                  {adById.quality.outdoorPool !== 0 && (
+                                    <div>
+                                      <FaSwimmingPool />
+                                      <p>{adById.quality.outdoorPool}</p>
+                                    </div>
+                                  )}
+                                  {adById.quality.bathrooms !== 0 && (
+                                    <div>
+                                      <FaBath />
+                                      <p>{adById.quality.bathrooms}</p>
+                                    </div>
+                                  )}
+                                  {adById.quality.bedrooms !== 0 && (
+                                    <div>
+                                      <FaBed />
+                                      <p>{adById.quality.bedrooms}</p>
+                                    </div>
+                                  )}
                                 </div>
 
                                 <p>{adById.description.emailPDF}</p>
@@ -603,8 +637,21 @@ const AdForm = () => {
                               />
                               <div>
                                 <p>{user.fullName}</p>
-                                <p>{user.position}</p>
+
+                                {user.profession ? (
+                                  <div>
+                                    <span>{user.position}</span> <span>|</span> <span>{user.profession}</span>
+                                  </div>
+                                ) : (
+                                  <p>{user.position}</p>
+                                )}
+
                                 <p>{user.consultantMobileNumber}</p>
+                                {user.office1 && user.office1 ? (
+                                  <p>{user.office1 + " | " + user.office2}</p>
+                                ) : (
+                                  <p>{user.office1}</p>
+                                )}
                                 <p>{user.consultantEmail}</p>
                               </div>
                             </div>

@@ -15,6 +15,7 @@ import { RiMoneyEuroBoxLine } from "react-icons/ri";
 import { MdHeight } from "react-icons/md";
 import { ImMap2 } from "react-icons/im";
 import InputsGroup from "../../components/InputsGroup/InputsGroup";
+import Checkbox from "../../components/CheckBox/Checkbox";
 import PopUp from "../../components/PopUp/PopUp";
 import useWindowSize from "../../hooks/useWindowSize";
 import { getAdsMatched, sendNewRequest, getRequestById } from "../../api/requests.api";
@@ -280,13 +281,37 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                             placeholder={"Inserte un comentario"}
                             defaultValue={""}
                             onChange={(ev) => (ad.adComment = ev.target.value)}
-                            style={{ minHeight: "5%" }}
+                            style={{ minHeight: "5%"}}
                           />
                         </div>
+                        <Checkbox
+                          label="Enviar dirección completa"
+                          onChange={(ev) =>
+                            console.log(ev)
+                          }
+                        />
                         <h5>
                           <b>{`${ad.adDirection.address.street} ${ad.adDirection.address.directionNumber}, ${ad.adDirection.city}`}</b>
                         </h5>
-                        <h3>{ad.title}</h3>
+                        <div className="EmailTemplate__Body__Title">
+                          <textarea
+                            style={{
+                              display: "block",
+                              fontSize: "1.17em",
+                              marginTop: "1em",
+                              marginBottom: "1em",
+                              marginLeft: "0",
+                              marginRight: "0",
+                              fontWeight: "bold",
+                              minWidth: "5%",
+                            }}
+                            defaultValue={ad.title}
+                            onChange={(ev) => {
+                              console.log(ev.target.value);
+                              // ad.title = ev.target.value;
+                            }}
+                          />
+                        </div>
                         {ad.images.main ? (
                           <img src={ad.images.main} alt="Imagen principal" style={{ width: "76%", marginBottom: 20 }} />
                         ) : (
@@ -303,31 +328,45 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                           />
                         )}
 
-                        <h4>{maskTemplate(ad.sale.saleValue, "sale")}</h4>
+                        <h4>
+                          {ad.adType.includes("Venta")
+                            ? maskTemplate(ad.sale.saleValue, "sale")
+                            : maskTemplate(ad.rent.rentValue, "rent")}
+                        </h4>
 
                         <p>REF {ad.adReference}</p>
 
                         <div className="EmailTemplate__Body__Estates__Item__Properties">
-                          <div>
-                            <BiArea />
-                            <p>{maskValues(ad.plotSurface, "plotSurface")}</p>
-                          </div>
-                          <div>
-                            <AiOutlineHome />
-                            <p>{maskValues(ad.buildSurface, "buildSurface")}</p>
-                          </div>
-                          <div>
-                            <FaSwimmingPool />
-                            <p>{ad.quality.outdoorPool}</p>
-                          </div>
-                          <div>
-                            <FaBath />
-                            <p>{ad.quality.bathrooms}</p>
-                          </div>
-                          <div>
-                            <FaBed />
-                            <p>{ad.quality.bedrooms}</p>
-                          </div>
+                          {ad.plotSurface !== 0 && ad.plotSurface !== 99999 && (
+                            <div>
+                              <BiArea />
+                              <p>{maskValues(ad.plotSurface, "plotSurface")}</p>
+                            </div>
+                          )}
+                          {ad.buildSurface !== 0 && ad.buildSurface !== 9999 && (
+                            <div>
+                              <AiOutlineHome />
+                              <p>{maskValues(ad.buildSurface, "buildSurface")}</p>
+                            </div>
+                          )}
+                          {ad.quality.outdoorPool !== 0 && (
+                            <div>
+                              <FaSwimmingPool />
+                              <p>{ad.quality.outdoorPool}</p>
+                            </div>
+                          )}
+                          {ad.quality.bathrooms !== 0 && (
+                            <div>
+                              <FaBath />
+                              <p>{ad.quality.bathrooms}</p>
+                            </div>
+                          )}
+                          {ad.quality.bedrooms !== 0 && (
+                            <div>
+                              <FaBed />
+                              <p>{ad.quality.bedrooms}</p>
+                            </div>
+                          )}
                         </div>
 
                         <p>{ad.description.emailPDF}.</p>
@@ -368,8 +407,13 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                   />
                   <div>
                     <p>{user.fullName}</p>
-                    <p>{user.position}</p>
+                    <p>{user.profession ? user.position + " | " + user.profession : user.position}</p>
                     <p>{user.consultantMobileNumber}</p>
+                    {user.office1 && user.office1 ? (
+                      <p>{user.office1 + " | " + user.office2}</p>
+                    ) : (
+                      <p>{user.office1}</p>
+                    )}
                     <p>{user.consultantEmail}</p>
                   </div>
                 </div>

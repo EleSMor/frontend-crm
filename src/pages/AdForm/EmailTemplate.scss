@@ -17,20 +17,40 @@
         width: 100%;
         max-width: 100%;
         margin-bottom: 25px;
+        text-align: start;
       }
       textarea:first-child {
         height: 20px;
         margin-top: 20px;
       }
-      textarea:active, textarea:focus {
+      textarea:active,
+      textarea:focus {
         outline: none;
         background-color: rgba(128, 128, 128, 0.082);
       }
     }
-    
+    &__Title {
+      textarea {
+        color: #495057;
+        border-top: none;
+        border-right: none;
+        border-left: none;
+        border-bottom: 1px dashed rgba(0, 0, 0, 0.052);
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 25px;
+        text-align: center;
+        font-size: 1.83em !important;
+      }
+      textarea:active,
+      textarea:focus {
+        outline: none;
+        background-color: rgba(128, 128, 128, 0.082);
+      }
+    }
     &__Estates {
       margin-top: 20px;
-      
+
       &__Item {
         margin-bottom: 25px;
         padding: 35px;
@@ -39,7 +59,9 @@
           text-align: left;
           margin-bottom: 20px;
         }
-        h3, h4, p {
+        h3,
+        h4,
+        p {
           margin-bottom: 15px;
         }
         &__Properties {
@@ -53,11 +75,10 @@
         }
       }
     }
-  
+
     &__Signature {
       padding: 20px;
       border-top: 1px solid rgba(78, 78, 78, 0.521);
     }
-    
   }
 }
