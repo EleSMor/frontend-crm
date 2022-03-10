@@ -55,6 +55,10 @@ const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter,
   };
 
   const checkIfIncludes = (origin, text) => {
+    if (typeof origin === "object") {
+      origin.address = Object.values(origin.address);
+      origin = `${origin.address.join(" ")}`;
+    }
     return origin
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "")
@@ -85,7 +89,7 @@ const SubHeader = ({ title, titleBreadcrumb, underTitle, list, location, setter,
           (ad.consultant !== null && checkIfIncludes(ad.consultant.fullName, text))
         )
           if (filterClass !== "Todos") {
-            if (ad.department.toLowerCase() === filterClass) return ad;
+            if (ad.department === filterClass) return ad;
           } else {
             return ad;
           }
