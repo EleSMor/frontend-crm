@@ -521,19 +521,19 @@ const AdForm = () => {
                                   label="Enviar dirección con número incluido"
                                   onChange={(ev) => {
                                     if (ev.target.checked) {
-                                      adById.adDirectionFull =
+                                      adById.adDirectionSelected =
                                         adById.adDirection.address.street +
                                         " " +
                                         adById.adDirection.address.directionNumber +
                                         ", " +
                                         adById.adDirection.city;
                                     } else {
-                                      adById.adDirectionFull = undefined;
+                                      adById.adDirectionSelected = undefined;
                                     }
                                   }}
                                 />
                                 <h5>
-                                  <b>{adById.adDirection.address.street + ", " + adById.adDirection.city}</b>
+                                  <b>{adById.adDirection.address.street + " " + adById.adDirection.address.directionNumber + ", " + adById.adDirection.city}</b>
                                 </h5>
                                 <div className="EmailTemplate__Body__Title">
                                   <textarea

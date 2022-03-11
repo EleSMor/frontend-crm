@@ -284,24 +284,96 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                             style={{ minHeight: "5%" }}
                           />
                         </div>
-                        <Checkbox
-                          id="sendFullAddress"
-                          label="Enviar dirección con número incluido"
-                          onChange={(ev) => {
-                            if (ev.target.checked) {
-                              ad.adDirectionFull =
-                                ad.adDirection.address.street +
-                                " " +
-                                ad.adDirection.address.directionNumber +
-                                ", " +
-                                ad.adDirection.city;
-                            } else {
-                              ad.adDirectionFull = undefined;
-                            }
-                          }}
-                        />
+                        {/* <div className="EmailTemplate__Body__Introduction--Options">
+                          <p>Envío de dirección</p>
+                          <div style={{display: "flex", verticalAlign: "middle"}}>
+                            <input
+                              type="radio"
+                              id={`Enviar dirección con número incluido-${index}`}
+                              name={`Envío de dirección-${index}`}
+                              onChange={(ev) => {
+                                if (ev.target.checked) {
+                                  ad.adDirectionSelected =
+                                    ad.adDirection.address.street +
+                                    " " +
+                                    ad.adDirection.address.directionNumber +
+                                    ", " +
+                                    ad.adDirection.city;
+                                } else {
+                                  ad.adDirectionSelected = undefined;
+                                }
+                              }}
+                            />
+                            <label htmlFor={`Enviar dirección con número incluido-${index}`}>Enviar dirección con número incluido</label>
+                          </div>
+                          <div>
+                            <input
+                              type="radio"
+                              id={`Enviar dirección sin número-${index}`}
+                              name={`Envío de dirección-${index}`}
+                              onChange={(ev) => {
+                                if (ev.target.checked) {
+                                  ad.adDirectionSelected =
+                                    ad.adDirection.address.street +
+                                    " " +
+                                    ad.adDirection.address.directionNumber +
+                                    ", " +
+                                    ad.adDirection.city;
+                                } else {
+                                  ad.adDirectionSelected = undefined;
+                                }
+                              }}
+                            />
+                            <label htmlFor={`Enviar dirección sin número-${index}`}>Enviar dirección sin número</label>
+                          </div>
+                          <div>
+                            <input
+                              type="radio"
+                              id={`No enviar nada-${index}`}
+                              name={`Envío de dirección-${index}`}
+                              checked
+                              onChange={(ev) => {
+                                if (ev.target.checked) {
+                                  ad.adDirectionSelected =
+                                    ad.adDirection.address.street +
+                                    " " +
+                                    ad.adDirection.address.directionNumber +
+                                    ", " +
+                                    ad.adDirection.city;
+                                } else {
+                                  ad.adDirectionSelected = undefined;
+                                }
+                              }}
+                            />
+                            <label htmlFor={`No enviar nada-${index}`}>No enviar nada</label>
+                          </div> 
+                        </div>*/}
+                        <div>
+                          <Checkbox
+                            id="Enviar de dirección con número incluido"
+                            label="Enviar de dirección con número incluido"
+                            onChange={(ev) => {
+                              if (ev.target.checked) {
+                                ad.adDirectionSelected =
+                                  ad.adDirection.address.street +
+                                  " " +
+                                  ad.adDirection.address.directionNumber +
+                                  ", " +
+                                  ad.adDirection.city;
+                              } else {
+                                ad.adDirectionSelected = undefined;
+                              }
+                            }}
+                          />
+                        </div>
                         <h5>
-                          <b>{ad.adDirection.address.street + ", " + ad.adDirection.city}</b>
+                          <b>
+                            {ad.adDirection.address.street +
+                              " " +
+                              ad.adDirection.address.directionNumber +
+                              ", " +
+                              ad.adDirection.city}
+                          </b>
                         </h5>
                         <div className="EmailTemplate__Body__Title">
                           <textarea

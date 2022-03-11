@@ -27,6 +27,20 @@
         outline: none;
         background-color: rgba(128, 128, 128, 0.082);
       }
+      &--Options {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 10px;
+        div {
+          display: flex;
+          align-items: center;
+          vertical-align: middle;
+          label, input{
+            margin: 4px;
+          }
+        }
+      }
     }
     &__Title {
       textarea {
@@ -52,7 +66,7 @@
 
       &__Item {
         margin-bottom: 25px;
-        padding: 35px;
+        padding: 0 35px 35px 35px;
         border-bottom: 1px solid rgba(78, 78, 78, 0.521);
         h5 {
           text-align: left;
