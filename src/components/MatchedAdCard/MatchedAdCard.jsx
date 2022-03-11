@@ -420,7 +420,7 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                       {user.profession ? (
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%" }}>
                           <div style={{ float: "left", width: "100%", textAlign: "end" }}>{user.position}</div>
-                          <div style={{ float: "none", textAlign: "end", padding: "0 8px 0 8px" }}>|</div>
+                          <div style={{ float: "none", textAlign: "end", padding: "0 4px 0 4px" }}>|</div>
                           <div style={{ float: "right", width: "100%", textAlign: "start" }}>{user.profession}</div>
                         </div>
                       ) : (
@@ -433,7 +433,7 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                           <div style={{ float: "left", width: "100%", textAlign: "end" }}>
                             {user.consultantMobileNumber}
                           </div>
-                          <div style={{ float: "none", textAlign: "end", padding: "0 8px 0 8px" }}>|</div>
+                          <div style={{ float: "none", textAlign: "end", padding: "0 4px 0 4px" }}>|</div>
                           <div style={{ float: "right", width: "100%", textAlign: "start" }}>
                             {user.consultantPhoneNumber}
                           </div>
@@ -445,7 +445,7 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                     {user.office2 ? (
                       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%" }}>
                         <div style={{ float: "left", width: "100%", textAlign: "end" }}>{user.office1}</div>
-                        <div style={{ float: "none", textAlign: "end", padding: "0 8px 0 8px" }}>|</div>
+                        <div style={{ float: "none", textAlign: "end", padding: "0 4px 0 4px" }}>|</div>
                         <div style={{ float: "right", width: "100%", textAlign: "start" }}>{user.office2}</div>
                       </div>
                     ) : (
