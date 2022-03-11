@@ -6,7 +6,7 @@ import Layout from "../Layout/Layout";
 import Spinner from "../../components/Spinner/Spinner";
 import Pagination from "../../components/Pagination/Pagination";
 import { UserContext } from "../../components/Context/AuthUser";
-import { checkSession } from "../../api/auth.api"
+import { checkSession } from "../../api/auth.api";
 
 const RequestsList = () => {
   const [requests, setRequests] = useState([]);
@@ -39,7 +39,16 @@ const RequestsList = () => {
 
   const indexOfLastRequest = currentPage * qPerPage;
   const indexOfFirstRequest = indexOfLastRequest - qPerPage;
-  let currentRequests = requestsFiltered?.slice(indexOfFirstRequest, indexOfLastRequest);
+  let currentRequests = requestsFiltered
+    ?.sort(function (a, b) {
+      var keyA = new Date(a.updatedAt),
+        keyB = new Date(b.updatedAt);
+      // Compare the 2 dates
+      if (keyA < keyB) return 1;
+      if (keyA > keyB) return -1;
+      return 0;
+    })
+    .slice(indexOfFirstRequest, indexOfLastRequest);
   let requestsLength = requestsFiltered?.length;
 
   const paginate = (n) => {

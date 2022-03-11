@@ -6,7 +6,7 @@ import { UserContext } from "../../components/Context/AuthUser";
 import Layout from "../Layout/Layout";
 import Spinner from "../../components/Spinner/Spinner";
 import Pagination from "../../components/Pagination/Pagination";
-import { checkSession } from "../../api/auth.api"
+import { checkSession } from "../../api/auth.api";
 
 const AdsList = () => {
   const [ads, setAds] = useState([]);
@@ -38,7 +38,14 @@ const AdsList = () => {
 
   const indexOfLastAd = currentPage * qPerPage;
   const indexOfFirstAd = indexOfLastAd - qPerPage;
-  let currentAds = adsFiltered?.slice(indexOfFirstAd, indexOfLastAd);
+  let currentAds = adsFiltered?.sort(function (a, b) {
+    var keyA = new Date(a.updatedAt),
+      keyB = new Date(b.updatedAt);
+    // Compare the 2 dates
+    if (keyA < keyB) return 1;
+    if (keyA > keyB) return -1;
+    return 0;
+  }).slice(indexOfFirstAd, indexOfLastAd);
   let adsLength = adsFiltered?.length;
 
   const paginate = (n) => {
