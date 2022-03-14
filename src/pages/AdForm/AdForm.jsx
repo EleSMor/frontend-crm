@@ -516,24 +516,68 @@ const AdForm = () => {
                                     style={{ minHeight: "5%" }}
                                   />
                                 </div>
-                                <Checkbox
-                                  id="sendFullAddress"
-                                  label="Enviar dirección con número incluido"
-                                  onChange={(ev) => {
-                                    if (ev.target.checked) {
-                                      adById.adDirectionSelected =
-                                        adById.adDirection.address.street +
-                                        " " +
-                                        adById.adDirection.address.directionNumber +
-                                        ", " +
-                                        adById.adDirection.city;
-                                    } else {
-                                      adById.adDirectionSelected = undefined;
-                                    }
-                                  }}
-                                />
+                                <div className="EmailTemplate__Body__Introduction--Options">
+                                  <p>Envío de dirección</p>
+                                  <div>
+                                    <input
+                                      type="radio"
+                                      id={`No enviar dirección`}
+                                      name={`Direction`}
+                                      onChange={() => {
+                                        adById.adDirectionSelected = undefined;
+                                      }}
+                                    />
+                                    <label htmlFor={`No enviar dirección`}>No enviar dirección</label>
+                                  </div>
+                                  <div style={{ display: "flex", verticalAlign: "middle" }}>
+                                    <input
+                                      type="radio"
+                                      id={`Incluir dirección con número incluido`}
+                                      name={`Direction`}
+                                      onChange={(ev) => {
+                                        if (ev.target.checked) {
+                                          adById.adDirectionSelected =
+                                            adById.adDirection.address.street +
+                                            " " +
+                                            adById.adDirection.address.directionNumber +
+                                            ", " +
+                                            adById.adDirection.city;
+                                        } else {
+                                          adById.adDirectionSelected = undefined;
+                                        }
+                                      }}
+                                    />
+                                    <label htmlFor={`Incluir dirección con número incluido`}>
+                                      Incluir dirección con número incluido
+                                    </label>
+                                  </div>
+                                  <div>
+                                    <input
+                                      type="radio"
+                                      id={`Incluir dirección sin número`}
+                                      name={`Direction`}
+                                      onChange={(ev) => {
+                                        if (ev.target.checked) {
+                                          adById.adDirectionSelected =
+                                            adById.adDirection.address.street + ", " + adById.adDirection.city;
+                                        } else {
+                                          adById.adDirectionSelected = undefined;
+                                        }
+                                      }}
+                                    />
+                                    <label htmlFor={`Incluir dirección sin número`}>
+                                      Incluir dirección sin número
+                                    </label>
+                                  </div>
+                                </div>
                                 <h5>
-                                  <b>{adById.adDirection.address.street + " " + adById.adDirection.address.directionNumber + ", " + adById.adDirection.city}</b>
+                                  <b>
+                                    {adById.adDirection.address.street +
+                                      " " +
+                                      adById.adDirection.address.directionNumber +
+                                      ", " +
+                                      adById.adDirection.city}
+                                  </b>
                                 </h5>
                                 <div className="EmailTemplate__Body__Title">
                                   <textarea
