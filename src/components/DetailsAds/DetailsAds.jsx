@@ -468,7 +468,7 @@ const DetailsAds = ({
                       label: "Alquiler",
                       type: "text",
                       placeholder: "Escribe aquí",
-                      value: formProps.values.rentValue === 0 ? "" : formatCurrency(formProps.values.rentValue),
+                      value: formProps.values.rentValue === 0 ? "" : formatCurrency(Math.round(formProps.values.rentValue)),
                       lang: "es-ES",
                       onBlur: (ev) => {
                         ev.target.type = "text";
@@ -508,7 +508,7 @@ const DetailsAds = ({
                   value={formProps.values.buildSurface}
                   onChange={(ev) => {
                     formProps.setFieldValue(ev.target.name, ev.target.value);
-                    formProps.setFieldValue("rentValue", ev.target.value * formProps.values.monthlyRent);
+                    formProps.setFieldValue("rentValue", ev.target.value * Math.round(formProps.values.monthlyRent));
                   }}
                 />
                 <span style={{ position: "absolute", right: "0.5%", top: "72%" }}>
@@ -542,12 +542,21 @@ const DetailsAds = ({
                       step: "0.01",
                       onChange: (ev) => {
                         formProps.setFieldValue(ev.target.name, ev.target.value);
-                        formProps.setFieldValue("rentValue", ev.target.value * formProps.values.buildSurface);
+                        formProps.setFieldValue(
+                          "rentValue",
+                          ev.target.value * formProps.values.buildSurface
+                        );
                         formProps.setFieldValue(
                           "expensesIncluded",
                           ev.target.value * formProps.values.buildSurface +
                             formProps.values.expenses * formProps.values.buildSurface
                         );
+                      },
+                      onBlur: (ev) => {
+                        if (ev.target.value) {
+                          ev.target.value = Math.round(ev.target.value);
+                          formProps.setFieldValue(ev.target.name, ev.target.value);
+                        }
                       },
                       span: (
                         <span style={{ position: "absolute", right: "0.5%", top: "52%" }}>
@@ -572,6 +581,12 @@ const DetailsAds = ({
                             formProps.values.buildSurface * ev.target.value
                         );
                       },
+                      onBlur: (ev) => {
+                        if (ev.target.value) {
+                          ev.target.value = Math.round(ev.target.value);
+                          formProps.setFieldValue(ev.target.name, ev.target.value);
+                        }
+                      },
                       span: (
                         <span style={{ position: "absolute", right: "0.5%", top: "52%" }}>
                           €/m<sup>2</sup>/mes
@@ -584,11 +599,15 @@ const DetailsAds = ({
                       label: "Alquiler con gastos incluidos",
                       type: "number",
                       value:
-                        formProps.values.buildSurface * formProps.values.monthlyRent +
-                        formProps.values.buildSurface * formProps.values.expenses,
+                        formProps.values.expensesIncluded !== ""
+                          ? Math.round(
+                              formProps.values.buildSurface * formProps.values.monthlyRent +
+                                formProps.values.buildSurface * formProps.values.expenses
+                            )
+                          : "",
                       lang: "es-ES",
                       step: "0.01",
-                      onChange: () => "",
+                      onChange: (ev) => "",
                       required: true,
                       span: <span style={{ position: "absolute", right: "0.5%", top: "52%" }}>€/mes</span>,
                       errors: "",
