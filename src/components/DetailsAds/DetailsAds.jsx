@@ -558,12 +558,6 @@ const DetailsAds = ({
                             formProps.values.expenses * formProps.values.buildSurface
                         );
                       },
-                      onBlur: (ev) => {
-                        if (ev.target.value) {
-                          ev.target.value = Math.round(ev.target.value);
-                          formProps.setFieldValue(ev.target.name, ev.target.value);
-                        }
-                      },
                       span: (
                         <span style={{ position: "absolute", right: "0.5%", top: "52%" }}>
                           €/m<sup>2</sup>/mes
@@ -580,18 +574,13 @@ const DetailsAds = ({
                       lang: "es-ES",
                       step: "0.01",
                       onChange: (ev) => {
+                        console.log(ev.target.value);
                         formProps.setFieldValue(ev.target.name, ev.target.value);
                         formProps.setFieldValue(
                           "expensesIncluded",
                           formProps.values.monthlyRent * formProps.values.buildSurface +
                             formProps.values.buildSurface * ev.target.value
                         );
-                      },
-                      onBlur: (ev) => {
-                        if (ev.target.value) {
-                          ev.target.value = Math.round(ev.target.value);
-                          formProps.setFieldValue(ev.target.name, ev.target.value);
-                        }
                       },
                       span: (
                         <span style={{ position: "absolute", right: "0.5%", top: "52%" }}>

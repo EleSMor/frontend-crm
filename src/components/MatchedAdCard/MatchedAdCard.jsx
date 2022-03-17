@@ -419,7 +419,7 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                           )}
                         </div>
 
-                        <p>{ad.description.emailPDF}.</p>
+                        <p>{ad.description.emailPDF}</p>
 
                         <div className="EmailTemplate__Body__Estates__Item__Button">
                           <button
