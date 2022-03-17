@@ -132,6 +132,7 @@ const DetailsAds = ({
                 },
                 {
                   name: "directionNumber",
+                  type: "text",
                   label: "Número",
                   value: formProps.values.directionNumber,
                   onChange: (ev) => formProps.setFieldValue(ev.target.name, ev.target.value),
@@ -220,7 +221,11 @@ const DetailsAds = ({
           <div>
             <Select
               label="Propietario"
-              list={owners}
+              list={owners.sort((a, b) => {
+                if (a.createdAt < b.createdAt) {
+                  return -1;
+                } else return 1;
+              })}
               fields={{ groupBy: "", text: "fullName", value: "_id" }}
               filter={(e) => {
                 const searchData = owners.filter((owner) => {
@@ -244,7 +249,10 @@ const DetailsAds = ({
           <div>
             <Select
               label="Consultor"
-              list={consultants}
+              list={consultants.sort((a, b) => {
+                if (a.fullName.toLowerCase() < b.fullName.toLowerCase()) return -1;
+                else return 1;
+              })}
               filter={(e) => {
                 const searchData = consultants.filter((consultant) => {
                   if (
@@ -468,7 +476,8 @@ const DetailsAds = ({
                       label: "Alquiler",
                       type: "text",
                       placeholder: "Escribe aquí",
-                      value: formProps.values.rentValue === 0 ? "" : formatCurrency(Math.round(formProps.values.rentValue)),
+                      value:
+                        formProps.values.rentValue === 0 ? "" : formatCurrency(Math.round(formProps.values.rentValue)),
                       lang: "es-ES",
                       onBlur: (ev) => {
                         ev.target.type = "text";
@@ -542,10 +551,7 @@ const DetailsAds = ({
                       step: "0.01",
                       onChange: (ev) => {
                         formProps.setFieldValue(ev.target.name, ev.target.value);
-                        formProps.setFieldValue(
-                          "rentValue",
-                          ev.target.value * formProps.values.buildSurface
-                        );
+                        formProps.setFieldValue("rentValue", ev.target.value * formProps.values.buildSurface);
                         formProps.setFieldValue(
                           "expensesIncluded",
                           ev.target.value * formProps.values.buildSurface +

@@ -29,6 +29,8 @@ const ContactForm = () => {
   const [selTag, setSelTag] = useState([]);
   const [loader, setLoader] = useState(false);
   let { name, phone, email } = useParams();
+  if (name === "Sin nombre") name = "";
+  if (phone === "Sin teléfono") phone = "";
   const size = useWindowSize();
 
   const history = useHistory();

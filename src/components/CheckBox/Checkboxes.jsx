@@ -3,11 +3,13 @@ import "./Checkbox.scss";
 const Checkboxes = ({
   label,
   textA,
+  nameA,
   valueA,
   onChangeA,
   checkedA,
   required,
   textB,
+  nameB,
   valueB,
   onChangeB,
   checkedB,
@@ -24,6 +26,7 @@ const Checkboxes = ({
 
         <div className="Checkboxes__checks">
           <input
+            name={nameA}
             type={type ? type : "checkbox"}
             value={valueA}
             onChange={onChangeA}
@@ -33,6 +36,7 @@ const Checkboxes = ({
           <span style={{ marginLeft: 5 }}>{textA}</span>
 
           <input
+            name={nameB}
             type={type ? type : "checkbox"}
             value={valueB}
             onChange={onChangeB}

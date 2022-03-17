@@ -32,6 +32,14 @@ const ContactValidation = ({ list }) => {
    * 4º Si borramos todos los campos, borramos el resultado
    */
 
+  const buildQueryParams = () => {
+    let query = `/contactos/crear/`;
+    if (fullName && email && contactMobileNumber) return query + `${fullName}/${email}/${contactMobileNumber}`;
+    else if (!fullName && email && contactMobileNumber) return query + `Sin nombre/${email}/${contactMobileNumber}`;
+    else if (fullName && email && !contactMobileNumber) return query + `${fullName}/${email}/Sin teléfono`;
+    else if (!fullName && email && !contactMobileNumber) return query + `Sin nombre/${email}/Sin teléfono`;
+  };
+
   const searchContacts = () => {
     let search = [];
     const fullNameValue = document.querySelector('input[name="fullName"]').value;
@@ -110,7 +118,7 @@ const ContactValidation = ({ list }) => {
         (contacts.length === 0 && email && isValidEmail) ? (
           <Link
             className="ContactValidation--button--button__active"
-            to={`/contactos/crear/${fullName}/${email}/${contactMobileNumber}`}
+            to={buildQueryParams()}
           >
             Crear
           </Link>

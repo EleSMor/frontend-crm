@@ -364,18 +364,22 @@ const AdForm = () => {
                     data.zone = [];
                   }
 
-                  if (data.department) {
-                    if (!id) {
-                      createAd(data).then((res) => {
-                        alert(`El anuncio ${res.adReference} ha sido creado`);
-                        history.push(`/anuncios`);
-                      });
-                    } else
-                      updateAd(data).then((res) => {
-                        alert(`El anuncio ${res.adReference} ha sido actualizado`);
-                      });
+                  if (data.owner && data.consultant) {
+                    if (data.department) {
+                      if (!id) {
+                        createAd(data).then((res) => {
+                          alert(`El anuncio ${res.adReference} ha sido creado`);
+                          history.push(`/anuncios`);
+                        });
+                      } else
+                        updateAd(data).then((res) => {
+                          alert(`El anuncio ${res.adReference} ha sido actualizado`);
+                        });
+                    } else {
+                      alert("Debe indicar el departamento del anuncio");
+                    }
                   } else {
-                    alert("Debe indicar el departamento del anuncio");
+                    alert("Debe completar los campos de propietario y consultor");
                   }
                 }}
               >
@@ -565,9 +569,7 @@ const AdForm = () => {
                                         }
                                       }}
                                     />
-                                    <label htmlFor={`Incluir dirección sin número`}>
-                                      Incluir dirección sin número
-                                    </label>
+                                    <label htmlFor={`Incluir dirección sin número`}>Incluir dirección sin número</label>
                                   </div>
                                 </div>
                                 <h5>

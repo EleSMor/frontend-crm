@@ -83,7 +83,7 @@ const SurfacesBox = ({ formProps }) => {
         />
         <Column
           field="metersPrice"
-          header="Precio (€)"
+          header="Precio"
           editor={(options) => textEditor(options)}
           style={{ width: "20%" }}
         />

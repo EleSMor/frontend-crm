@@ -181,7 +181,7 @@ const ConsultantForm = () => {
                   initialValues={{
                     role: consultantById ? consultantById.role : "Consultor",
                     consultantEmail: consultantById ? consultantById.consultantEmail : "",
-                    showOnWeb: consultantById ? consultantById.showOnWeb : "true",
+                    showOnWeb: consultantById ? consultantById.showOnWeb : "Yes",
                     consultantPassword: consultantById ? consultantById.consultantPassword : "",
                     fullName: consultantById ? consultantById.fullName : "",
                     avatar: "",
@@ -201,8 +201,6 @@ const ConsultantForm = () => {
                       data.append(key, values[key]);
                     }
                     data.append("id", id);
-                    if (data.showOnWeb === "true") data.showOnWeb = true;
-                    else if (data.showOnWeb === "false") data.showOnWeb = false;
 
                     if (!id) {
                       createConsultant(data).then((res) => {
@@ -342,17 +340,19 @@ const ConsultantForm = () => {
                                   label="Mostrar en la web"
                                   type="radio"
                                   textA="Si"
-                                  valueA={true}
+                                  nameA="showOnWeb"
+                                  valueA="Yes"
                                   onChangeA={(ev) => {
                                     formProps.setFieldValue("showOnWeb", ev.target.value);
                                   }}
-                                  checkedA={formProps.values.showOnWeb === "true" && true}
+                                  checkedA={formProps.values.showOnWeb === "Yes" && true}
                                   textB="No"
-                                  valueB={false}
+                                  nameB="showOnWeb"
+                                  valueB="No"
                                   onChangeB={(ev) => {
                                     formProps.setFieldValue("showOnWeb", ev.target.value);
                                   }}
-                                  checkedB={formProps.values.showOnWeb === "false" && true}
+                                  checkedB={formProps.values.showOnWeb === "No" && true}
                                 />
                               </div>
                               <div className="ConsultantForm__form--col">
