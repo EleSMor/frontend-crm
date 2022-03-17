@@ -36,9 +36,8 @@ const AdMatchedRequestsTable = () => {
         <Column field="requestContact.company" header="Empresa" sortable style={{ width: "10%" }}></Column>
         <Column field="requestContact.email" header="Email" sortable style={{ width: "15%" }}></Column>
         <Column
-          field="requestContact.consultantComments"
+          field="requestContact.contactComments"
           header="Comentarios"
-          sortable
           style={{ width: "50%" }}
         ></Column>
       </DataTable>

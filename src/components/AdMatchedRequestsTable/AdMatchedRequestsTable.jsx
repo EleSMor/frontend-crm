@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { getMatchedRequests } from "../../api/ads.api.js";
-import "./AdMatchedRequestsTable.scss"
+import "./AdMatchedRequestsTable.scss";
 
 const AdMatchedRequestsTable = ({ requestsToSend, setRequestsToSend }) => {
   const { id } = useParams();
@@ -42,12 +42,7 @@ const AdMatchedRequestsTable = ({ requestsToSend, setRequestsToSend }) => {
         <Column field="requestContact.fullName" header="Nombre Completo" sortable style={{ width: "12%" }}></Column>
         <Column field="requestContact.company" header="Empresa" sortable style={{ width: "12%" }}></Column>
         <Column field="requestContact.email" header="Email" sortable style={{ width: "10%" }}></Column>
-        <Column
-          field="requestContact.consultantComments"
-          header="Comentarios"
-          sortable
-          style={{ width: "50%" }}
-        ></Column>
+        <Column field="requestContact.contactComments" header="Comentarios" style={{ width: "50%" }}></Column>
       </DataTable>
     </div>
   );
