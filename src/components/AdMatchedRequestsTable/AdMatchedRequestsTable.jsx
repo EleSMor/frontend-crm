@@ -42,7 +42,7 @@ const AdMatchedRequestsTable = ({ requestsToSend, setRequestsToSend }) => {
         <Column field="requestContact.fullName" header="Nombre Completo" sortable style={{ width: "12%" }}></Column>
         <Column field="requestContact.company" header="Empresa" sortable style={{ width: "12%" }}></Column>
         <Column field="requestContact.email" header="Email" sortable style={{ width: "10%" }}></Column>
-        <Column field="requestContact.contactComments" header="Comentarios" style={{ width: "50%" }}></Column>
+        <Column field="requestComment" header="Comentarios" style={{ width: "50%" }}></Column>
       </DataTable>
     </div>
   );
