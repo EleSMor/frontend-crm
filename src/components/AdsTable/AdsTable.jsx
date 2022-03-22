@@ -38,7 +38,7 @@ const AdsTable = ({ ads }) => {
     { name: "Edificio" },
     { name: "Local" },
     { name: "Campo Rústico" },
-    { name: "Activos Singulares" },
+    { name: "Activos singulares" },
     { name: "Costa" },
   ];
 
