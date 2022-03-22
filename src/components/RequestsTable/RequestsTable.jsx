@@ -32,7 +32,7 @@ const RequestsTable = ({ requests }) => {
     { name: "Edificio" },
     { name: "Local" },
     { name: "Campo Rústico" },
-    { name: "Activos Singulares" },
+    { name: "Activos singulares" },
     { name: "Costa" },
   ];
 
