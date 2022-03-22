@@ -6,6 +6,7 @@ import Layout from "../Layout/Layout";
 import Spinner from "../../components/Spinner/Spinner";
 import Pagination from "../../components/Pagination/Pagination";
 import { UserContext } from "../../components/Context/AuthUser";
+import { checkSession } from "../../api/auth.api";
 
 const RequestsList = () => {
   const [requests, setRequests] = useState([]);
@@ -16,22 +17,38 @@ const RequestsList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [qPerPage] = useState(100);
 
-  const { user } = useContext(UserContext);
+  const { user, deleteUser } = useContext(UserContext);
   const history = useHistory();
 
-  useEffect(
-    () =>
-      getAllRequests().then((res) => {
-        setRequests(res);
-        setRequestsFiltered(res);
-        setLoader(false);
-      }),
-    []
-  );
+  // useEffect(() => {
+  //   checkSession().then((res) => {
+  //     if (res === "Acceso restringido") {
+  //       deleteUser();
+  //       history.push("/");
+  //     }
+  //   });
+  // }, []);
+
+  useEffect(() => {
+    getAllRequests().then((res) => {
+      setRequests(res);
+      setRequestsFiltered(res);
+      setLoader(false);
+    });
+  }, []);
 
   const indexOfLastRequest = currentPage * qPerPage;
   const indexOfFirstRequest = indexOfLastRequest - qPerPage;
-  let currentRequests = requestsFiltered?.slice(indexOfFirstRequest, indexOfLastRequest);
+  let currentRequests = requestsFiltered
+    ?.sort(function (a, b) {
+      var keyA = new Date(a.updatedAt),
+        keyB = new Date(b.updatedAt);
+      // Compare the 2 dates
+      if (keyA < keyB) return 1;
+      if (keyA > keyB) return -1;
+      return 0;
+    })
+    .slice(indexOfFirstRequest, indexOfLastRequest);
   let requestsLength = requestsFiltered?.length;
 
   const paginate = (n) => {
@@ -49,7 +66,7 @@ const RequestsList = () => {
       <Layout
         subTitle="Peticiones"
         subList={requests}
-        subLocation="/peticiones/crear"
+        subLocation={() => history.push("/peticiones/crear")}
         subSetter={setRequestsFiltered}
         footContent={<RequestsListFooter />}
       >

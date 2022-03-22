@@ -7,25 +7,29 @@ class Storage {
         if (!arguments.length) {
             throw new Error('You have to indicate the key you want to recover');
         };
-        
+
         return JSON.parse(this._storage.getItem(item)) || [];
     };
 
     set(key, value) {
-        if(arguments.length < 2) {
+        if (arguments.length < 2) {
             throw new Error('An argument is missing');
         };
 
         this._storage.setItem(key, JSON.stringify(value));
     };
-    
-    clear(){
+
+    removeItem(key) {
+        this._storage.removeItem(key);
+    };
+
+    clear() {
         this._storage.clear();
     };
-    
-    setProperty(key, value, propertyName){
+
+    setProperty(key, value, propertyName) {
         const item = this.get(key);
-        const newItem = {...item, [propertyName]: value};
+        const newItem = { ...item, [propertyName]: value };
         this.set(key, newItem);
     };
 };

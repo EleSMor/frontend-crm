@@ -2,6 +2,8 @@
 
 .InputsGroup {
   text-align: left;
+  width: 100%;
+
   > p {
     font-size: 14px;
     margin-bottom: 15px;
@@ -9,28 +11,92 @@
   }
 
   &__inputs {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
     padding-left: 8px;
     border-left: 2px solid $c-background-dark;
+    width: 100%;
 
-    > label {
-      display: block;
-      font-size: 14px;
-      margin-bottom: 15px;
-    }
-  
     &-input {
+      position: relative;
+      width: 100%;
+      &:nth-child(even) {
+        margin: 16px 0;
+      }
+      > label {
+        font-size: 12px;
+      }
       > input {
         background-color: #fff;
         border: none;
         outline: none;
-        border-bottom: 1px solid #B0B0B0;
+        border-bottom: 1px solid #b0b0b0;
         width: 100%;
         padding-left: 5px;
-        margin-bottom: 18px;
-    
+        margin-bottom: 8px;
+
         &::placeholder {
-          font-size: 12px;
+          font-size: 11px;
           color: #bebebe;
+        }
+      }
+      & input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+      &--flex {
+        display: flex;
+        align-items: center;
+        vertical-align: middle;
+        &:nth-child(even) {
+          padding-bottom: 14px;
+        }
+        > label {
+          padding-left: 5px;
+          padding-top: 8px;
+        }
+      }
+    }
+  }
+  &__direction {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    padding-left: 8px;
+    border-left: 2px solid $c-background-dark;
+    @media (min-width: 1145px) {
+      flex-direction: row;
+    }
+
+    &-input {
+      position: relative;
+      width: 100%;
+      > label {
+        font-size: 12px;
+      }
+      > input {
+        background-color: #fff;
+        border: none;
+        outline: none;
+        border-bottom: 1px solid #b0b0b0;
+        width: 100%;
+        padding-left: 5px;
+
+        &::placeholder {
+          font-size: 11px;
+          color: #bebebe;
+        }
+      }
+      &--flex {
+        display: flex;
+        align-items: center;
+        vertical-align: middle;
+        padding-top: 4px;
+        > label {
+          padding-left: 5px;
+          padding-top: 8px;
         }
       }
     }

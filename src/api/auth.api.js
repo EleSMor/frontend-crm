@@ -3,6 +3,7 @@ import { BASE_URL } from "./constants"
 const registerUrl = `${BASE_URL}/auth/register`;
 const loginUrl = `${BASE_URL}/auth/login`;
 const logoutUrl = `${BASE_URL}/auth/logout`;
+const checkSessionUrl = `${BASE_URL}/auth/check-session`;
 
 export const registerApi = async (form) => {
   const request = await fetch(registerUrl, {
@@ -36,17 +37,19 @@ export const loginApi = async (form) => {
       "Access-Control-Allow-Origin": "*",
     },
   });
-  const response = await request.json();
+  let response = {};
+  if (request.status === 200) response = await request.json();
+  else response.message = "Email o contraseña incorrectos"
 
   if (!request.ok) {
-    throw new Error("Error en la petición", response.message);
+    throw new Error("Email o contraseña incorrectos", response.message);
   }
 
   return response
 
 };
 
-export const logout = async () => {
+export const logoutApi = async () => {
   const request = await fetch(logoutUrl, {
     method: 'POST',
     headers: {
@@ -61,6 +64,26 @@ export const logout = async () => {
 
   if (!request.ok) {
     throw new Error(response.message);
+  }
+
+  return response;
+}
+
+export const checkSession = async () => {
+  const request = await fetch(checkSessionUrl, {
+    method: 'GET',
+    headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*"
+    },
+    credentials: 'include',
+  });
+
+  const response = await request.json();
+
+  if (!request.ok) {
+    return (response.message);
   }
 
   return response;

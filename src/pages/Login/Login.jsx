@@ -1,13 +1,15 @@
 import React, { useContext, useState } from "react";
 import { UserContext } from "../../components/Context/AuthUser";
-import { loginApi } from "../../api/auth.api";
 import { useHistory } from "react-router-dom";
-import "./Login.scss";
 import { GvreLogo, AttomoLogo } from "../../icons";
-import storage from "../../services/storage";
+import { MdOutlineAlternateEmail } from "react-icons/md";
+import { BiKey } from "react-icons/bi";
+import { AiOutlineLogout, AiOutlineHome } from "react-icons/ai";
+import { loginApi, logoutApi } from "../../api/auth.api";
+import "./Login.scss";
 
 const Login = () => {
-  const { storeUser } = useContext(UserContext);
+  const { user, storeUser, deleteUser } = useContext(UserContext);
   const history = useHistory();
   const [error, setError] = useState();
 
@@ -24,44 +26,82 @@ const Login = () => {
       const user = await loginApi(form);
       storeUser(user);
       history.push("/anuncios");
-      storage.set("user", user);
     } catch (error) {
       setError(error.message);
     }
   };
 
+  const logout = async (ev) => {
+    ev.preventDefault();
+    setError("");
+
+    try {
+      await logoutApi();
+      deleteUser("user");
+    } catch (error) {
+      setError(error.message);
+    }
+    history.go(0);
+  };
+
   return (
-    <form autoComplete="off" onSubmit={submitForm}>
-      <div className="login">
-        <div className="login__box">
-          <GvreLogo className="login__box-logo" />
+    <>
+      {user.length === 0 ? (
+        <form onSubmit={submitForm}>
+          <div className="login">
+            <div className="login__box">
+              <GvreLogo className="login__box-logo" />
 
-          <div className="login__box-form">
-            <div className="login__box-field">
-              <label className="login__box-title" htmlFor="identity">
-                Email o teléfono
-              </label>
-              <input className="login__box-text" type="text" name="identity" />
+              <div className="login__box-form">
+                <div className="login__box-field">
+                  <label className="login__box-title" htmlFor="identity">
+                    <MdOutlineAlternateEmail /> Email
+                  </label>
+                  <input className="login__box-text" type="text" name="identity" />
+                </div>
+                <div className="login__box-field">
+                  <label className="login__box-title" htmlFor="password">
+                    <BiKey /> Password
+                  </label>
+                  <input className="login__box-text" type="password" name="password" />
+                </div>
+                {error && <div style={{ color: "red" }}>{error}</div>}
+              </div>
+
+              <button className="login__submit" type="submit">
+                Acceder
+              </button>
             </div>
-            <div className="login__box-field">
-              <label className="login__box-title" htmlFor="password">
-                Contraseña
-              </label>
-              <input className="login__box-text" type="password" name="password" />
+            <div className="login__footer">
+              <span>Powered by</span>
+              <AttomoLogo className="login__footer-logo" />
             </div>
-            {error && <div style={{ color: "red" }}>{error}</div>}
           </div>
-
-          <button className="login__submit" type="submit">
-            Acceder
-          </button>
+        </form>
+      ) : (
+        <div className="login">
+          <div className="login__box">
+            <GvreLogo className="login__box-logo" />
+            <div className="login__box-field">
+              <div className="login__submit login__submit" onClick={() => history.push('/anuncios')}>
+                <AiOutlineHome style={{ transform: "scale(200%)", marginRight: 20 }} />
+                Inicio
+              </div>
+            </div>
+            <div className="login__box-field">
+              <div className="login__submit login__submit--logout" onClick={logout}>
+                <AiOutlineLogout style={{ transform: "scale(200%)", marginRight: 20 }} />
+                Desconectar
+              </div>
+            </div>
+            <div className="login__footer">
+              <span>Powered by</span>
+              <AttomoLogo className="login__footer-logo" />
+            </div>
+          </div>
         </div>
-        <div className="login__footer">
-          <span>Powered by</span>
-          <AttomoLogo className="login__footer-logo" />
-        </div>
-      </div>
-    </form>
+      )}
+    </>
   );
 };
 

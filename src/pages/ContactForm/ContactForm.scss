@@ -3,23 +3,48 @@
 .buttonForm {
   @include button-dark;
   font-size: 12px;
-  padding: 4px 40px;
+  padding: 4px 30px;
 }
 
 .buttonFormCancel {
   @include button-light-sm;
-  background-color: #B0B0B0;
+  background-color: #b0b0b0;
   color: $c-text-dark;
-  padding: 4px 40px;
-  margin-right: 20px;
+  padding: 4px 20px;
+  margin-left: 8px;
+}
+
+.buttonFormDelete {
+  @include button-dark;
+  background-color: #aa2c2c;
+  color: $c-text;
+  font-size: 12px;
+  padding: 4px 30px;
+  margin-left: 8px;
+}
+
+.Input, .Checkboxes, .CheckBox, .Textarea {
+  margin: 20px 0px;
+}
+
+.Textarea {
+  margin-bottom: 40px;
 }
 
 .ContactForm {
   background-color: #fff;
-  padding: 40px 32px;
+  padding: 10px 10px;
   border-radius: 3px;
   box-shadow: rgba(0, 0, 0, 0.046) 0px 1px 4px;
   border: 1px solid rgba(0, 0, 0, 0.089);
+
+  &__header {
+    display: none;
+  }
+}
+@media (min-width: $break-point) {
+.ContactForm {
+  padding: 40px 32px;
 
   &__header {
     display: flex;
@@ -50,7 +75,7 @@
     }
 
     &--info {
-      margin-left: 30px;
+      margin-left: 12px;
       display: flex;
       flex-direction: column;
       text-align: left;
@@ -74,11 +99,4 @@
     }
   }
 }
-
-.Input, .Checkboxes, .CheckBox, .Textarea {
-  margin: 20px 0px;
-}
-
-.Textarea {
-  margin-bottom: 40px;
 }

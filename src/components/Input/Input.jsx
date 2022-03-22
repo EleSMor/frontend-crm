@@ -1,4 +1,4 @@
-import "./Input.scss"
+import "./Input.scss";
 
 const Input = ({
   label,
@@ -11,7 +11,8 @@ const Input = ({
   onChange,
   onFocus,
   autoComplete,
-  error
+  error,
+  readOnly,
 }) => {
   return (
     <div className="Input">
@@ -28,13 +29,23 @@ const Input = ({
           onBlur={onBlur}
           onFocus={onFocus}
           autoComplete={autoComplete}
+          readOnly={readOnly}
+          min="0"
+          onWheel={(e) => e.target.blur()}
+          onKeyUp={(e) => {
+            if (e.key === "ArrowUp" || e.key === "ArrowDown") e.preventDefault();
+          }}
+          onKeyDown={(e) => {
+           if (e.key === "ArrowUp" || e.key === "ArrowDown") e.preventDefault();
+          }}
         />
       </div>
 
       <p className="Input-errors">
-        <small><i>{error}</i></small>
+        <small>
+          <i>{error}</i>
+        </small>
       </p>
-
     </div>
   );
 };

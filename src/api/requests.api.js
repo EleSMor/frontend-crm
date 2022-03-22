@@ -131,8 +131,22 @@ const updateRequest = async (form) => {
     return newRequest;
 };
 
+const deleteRequest = async (id) => {
+    const request = await fetch(`${requestsURL}/delete/${id}`, {
+        method: 'DELETE',
+        credentials: 'include',
+    });
+
+    const deleteRequest = await request.json();
+
+    if (!request.ok) {
+        throw new Error('Error creating new Request', deleteRequest.message);
+    };
+    return deleteRequest;
+};
+
 const sendNewRequest = async (form) => {
-    const request = await fetch(`${requestsURL}/create`, {
+    const request = await fetch(`${requestsURL}/matching/new`, {
         method: 'POST',
         credentials: 'include',
         body: JSON.stringify(form),
@@ -159,5 +173,6 @@ export {
     getAdsMatched,
     createRequest,
     updateRequest,
+    deleteRequest,
     sendNewRequest
 }

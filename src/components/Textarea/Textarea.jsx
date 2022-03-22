@@ -1,12 +1,12 @@
 import "./Textarea.scss";
 
-const Textarea = ({ label, name, value, onChange, error }) => {
+const Textarea = ({ label, name, value, onChange, error, placeholder }) => {
   return (
     <>
       <div className={`Textarea`}>
         <label htmlFor={name}>{label}</label>
         <div className={`Textarea-input ${error && "error"}`}>
-          <textarea name={name} value={value} onChange={onChange} />
+          <textarea name={name} value={value} onChange={onChange} placeholder={placeholder}/>
         </div>
       </div>
       <p className="errors">

@@ -81,7 +81,6 @@ const updateAd = async (form) => {
     });
 
     const updatedAd = await request.json();
-    console.log(updatedAd)
 
     if (!request.ok) {
         throw new Error('Error creating new Contact', updatedAd.message);
@@ -114,12 +113,29 @@ const deleteImage = async (id, form, from) => {
         }
     });
 
-    const uploadedMain = await request.json();
+    const deletedImage = await request.json();
 
     if (!request.ok) {
-        throw new Error('Error creating new Contact', uploadedMain.message);
+        throw new Error('Error creating new Contact', deletedImage.message);
     };
-    return uploadedMain;
+    return deletedImage;
+};
+
+const deleteAd = async (id) => {
+    const request = await fetch(`${adsURL}/delete/${id}`, {
+        method: 'DELETE',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    const deletedAd = await request.json();
+
+    if (!request.ok) {
+        throw new Error('Error creating new Contact', deletedAd.message);
+    };
+    return deletedAd;
 };
 
 export {
@@ -129,5 +145,6 @@ export {
     updateAd,
     uploadImage,
     deleteImage,
-    getMatchedRequests
+    getMatchedRequests,
+    deleteAd
 }

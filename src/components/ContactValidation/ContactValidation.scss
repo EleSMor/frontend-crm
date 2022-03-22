@@ -2,11 +2,11 @@
 
 .ContactValidation {
   p {
-    text-align: left;
+    text-align: center;
   }
 
   &--inputs {
-    margin: 15px 0px;
+    margin: 0px 0px;
 
     > div {
       margin-bottom: 35px;
@@ -14,32 +14,46 @@
   }
 
   &--results {
-
     p {
       text-align: center;
       color: $c-red;
+      margin-bottom: 15px;
     }
-
+    &__valid {
+      text-align: center;
+      color: $c-green !important;
+      margin-bottom: 15px;
+    }
+    
     &--card {
-      display: flex;
-      justify-content: space-between;
-      margin: 40px 0px;
       width: 100%;
-      
+      text-align: left;
+      margin-bottom: 30px;
+
       > div {
         display: flex;
         flex-direction: column;
-        text-align: left;
-        width: calc(100% / 3);
+        > span {
+          margin-bottom: 3px;
+        }
       }
       &--buttItem {
         display: flex;
-        justify-content: start;
+        justify-content: flex-start;
         align-items: flex-end;
+        & a {
+          text-decoration: none;
+          color: inherit;
+          &:hover {
+            font-weight: bold;  
+          }
+        }
         
         > button {
           @include button-dark-sm;
-          width: 50%;
+          width: 75px;
+          height: 24px;
+          margin-top: -29px;
         }
       }
     }
@@ -48,8 +62,62 @@
   &--button {
     margin: 40px !important;
     &--button {
-      //@include button-dark;
       @include button-disabled;
+      &__active{
+        @include button-dark;
+      }
+    }
+  }
+}
+
+@media (min-width: $break-point) {
+  .ContactValidation {
+    p {
+      text-align: left;
+    }
+
+    &--results {
+      p {
+        text-align: center;
+        color: $c-red;
+      }
+      p-valid {
+        text-align: center;
+        color: $c-green;
+      }
+  
+      &--card {
+        display: flex;
+        justify-content: space-between;
+        margin: 40px 0px;
+        width: 100%;
+        
+        > div {
+          display: flex;
+          flex-direction: column;
+          text-align: left;
+          width: calc(100% / 3);
+        }
+        &--buttItem {
+          display: flex;
+          justify-content: flex-start;
+          align-items: flex-end;
+          
+          > button {
+            @include button-dark-sm;
+            width: 50%;
+            margin-top: 0px;
+          }
+        }
+      }
+    }
+  
+    &--button {
+      margin: 40px !important;
+      &--button {
+        //@include button-dark;
+        @include button-disabled;
+      }
     }
   }
 }

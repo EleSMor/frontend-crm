@@ -11,9 +11,53 @@
   max-width: 100%;
   padding: $all-margins;
 
+  &__filter-box {
+    display: flex;
+    font-size: 12px;
+    border-radius: 4px;
+    border: 1px solid $c-background-light;
+
+    &--item {
+      padding: 0.5rem 2.5rem;
+      border-radius: 4px;
+      background-color: #dfdfdf;
+      &__border {
+        padding: 0.5rem 0px;
+        & p {
+          align-self: center;
+          border-radius: 0;
+          margin: 0;
+          padding: 0 2.5rem;
+          border-left: 0.7px solid #5c5c5c;
+          border-right: 0.7px solid #5c5c5c;
+        }
+        &__active {
+          color: #ffffff;
+          background: #2b363d;
+          cursor: pointer;
+        }
+      }
+      &__active {
+        padding: 0.5rem 2.5rem;
+        border-radius: 4px;
+        color: #ffffff;
+        background: #2b363d;
+        cursor: pointer;
+      }
+    }
+
+    & div:focus,
+    div:hover {
+      text-decoration: none;
+      color: #ffffff;
+      background: #2b363d;
+      cursor: pointer;
+    }
+  }
+
   &__title {
     text-align: left;
-    margin-top:5px;
+    margin-top: 5px;
     margin-bottom: 8px;
     display: flex;
     align-items: flex-end;
@@ -27,20 +71,37 @@
       display: flex;
       align-items: center;
       margin-left: 10px;
+      font-weight: bold;
     }
   }
-  
+
   &__subtitle {
     text-align: left;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     font-size: 12px;
+    &-item {
+      margin-right: 6rem;
+    }
   }
-  
+
   &__btn {
     @include button-dark-sm;
     padding: 8px 24px;
     margin-right: 12px;
+    width: 10rem;
+  }
+}
+
+@media (max-width: $break-point) {
+  .subHeader {
+    display: flex;
+    justify-content: center;
+    top: calc($subHeader-height - 15px);
+    height: calc($navbar-height + $navBar-margin-top + 15px);
+  }
+  .noDisplay {
+    display: none;
   }
 }

@@ -44,8 +44,6 @@ const createConsultant = async (form) => {
     });
 
     const newConsultant = await request.json();
-
-    console.log(newConsultant)
     if (!request.ok) {
         throw new Error('Error creating new Consultant', newConsultant.message);
     };
@@ -60,7 +58,6 @@ const updateConsultant = async (form) => {
     });
 
     const updatedConsultant = await request.json();
-    console.log(updatedConsultant)
 
     if (!request.ok) {
         throw new Error('Error creating new Contact', updatedConsultant.message);
@@ -68,9 +65,23 @@ const updateConsultant = async (form) => {
     return updatedConsultant;
 };
 
+const deleteConsultant = async (id) => {
+    const request = await fetch(`${consultantsURL}/delete/${id}`, {
+        method: 'DELETE',
+        credentials: 'include',
+    });
+
+    const deletedConsultant = await request.json();
+    if (!request.ok) {
+        throw new Error('Error creating new Contact', deletedConsultant.message);
+    }
+    return deletedConsultant;
+}
+
 export {
     getAllConsultants,
     getConsultantById,
     updateConsultant,
     createConsultant,
+    deleteConsultant
 }

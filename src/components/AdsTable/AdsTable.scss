@@ -1,6 +1,12 @@
 @use "src/styles/utils.scss" as *;
 
-.p-datatable-resizable .p-resizable-column {
+.p-datatable-resizable .p-resizable-column .p-sortable-column .p-highlight {
+  background-color: rgba(133, 132, 132, 0.151) !important;
+  border: 1px solid rgba(182, 177, 177, 0.774) !important;
+  color: $c-dark-grey !important;
+}
+
+.p-datatable .p-datatable-thead > tr > th {
   background-color: rgba(133, 132, 132, 0.151) !important;
   border: 1px solid rgba(182, 177, 177, 0.774) !important;
   color: $c-dark-grey !important;
@@ -50,7 +56,7 @@
     box-sizing: border-box;
     border: 1px solid black;
     background-color: #e5e5e5;
-    text-align: center;
+    text-align: end;
   }
 
   & td {

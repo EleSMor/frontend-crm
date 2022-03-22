@@ -1,0 +1,97 @@
+@use "src/styles/utils.scss" as *;
+
+.EmailTemplate {
+  &__Header {
+    background-color: $c-background-dark;
+  }
+
+  &__Body {
+    padding: 10px 8%;
+    &__Introduction {
+      textarea {
+        color: rgb(0, 0, 0);
+        border-top: none;
+        border-right: none;
+        border-left: none;
+        border-bottom: 1px dashed rgba(0, 0, 0, 0.052);
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 25px;
+      }
+      textarea:first-child {
+        height: 20px;
+        margin-top: 20px;
+      }
+      textarea:active,
+      textarea:focus {
+        outline: none;
+        background-color: rgba(128, 128, 128, 0.082);
+      }
+      &--Options {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 10px;
+        div {
+          display: flex;
+          align-items: center;
+          vertical-align: middle;
+          label, input{
+            margin: 4px;
+          }
+        }
+      }
+    }
+    &__Title {
+      textarea {
+        color: #495057;
+        border-top: none;
+        border-right: none;
+        border-left: none;
+        border-bottom: 1px dashed rgba(0, 0, 0, 0.052);
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 25px;
+        text-align: center;
+        font-size: 1.83em !important;
+      }
+      textarea:active,
+      textarea:focus {
+        outline: none;
+        background-color: rgba(128, 128, 128, 0.082);
+      }
+    }
+    &__Estates {
+      margin-top: 20px;
+
+      &__Item {
+        margin-bottom: 25px;
+        padding: 0 35px 35px 35px;
+        border-bottom: 1px solid rgba(78, 78, 78, 0.521);
+        h5 {
+          text-align: left;
+          margin-bottom: 20px;
+        }
+        h3,
+        h4,
+        p {
+          margin-bottom: 15px;
+        }
+        &__Properties {
+          display: flex;
+          justify-content: space-evenly;
+        }
+        &__Button {
+          button {
+            @include button-dark-sm;
+          }
+        }
+      }
+    }
+
+    &__Signature {
+      padding: 20px;
+      border-top: 1px solid rgba(78, 78, 78, 0.521);
+    }
+  }
+}

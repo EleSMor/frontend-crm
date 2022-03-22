@@ -11,19 +11,25 @@ const ContactCard = ({ contact }) => {
   const [requests, setRequests] = useState(0);
 
   useEffect(() => {
-    getRequestByContacts(contact._id).then((data) => setRequests(data.length), [contact]);
-  });
+    getRequestByContacts(contact._id).then((data) => setRequests(data.length));
+  }, [contact]);
 
   const renderDirection = (contact) => {
     return (
-      <p>
-        <HiOutlineLocationMarker fontSize="1.2em" color="#47535B" style={{ marginRight: 5 }} />{" "}
-        {contact.contactDirection.address.directionNumber
-          ? contact.contactDirection.address.directionFloor
-            ? ` ${contact.contactDirection.address.street}, ${contact.contactDirection.address.directionNumber}, ${contact.contactDirection.address.directionFloor}`
-            : ` ${contact.contactDirection.address.street}, ${contact.contactDirection.address.directionNumber}`
-          : ` ${contact.contactDirection.address.street}`}
-      </p>
+      <>
+        {contact.contactDirection.address.street ? (
+          <p>
+            <HiOutlineLocationMarker fontSize="1.2em" color="#47535B" style={{ marginRight: 5 }} />{" "}
+            {contact.contactDirection.address.directionNumber
+              ? contact.contactDirection.address.directionFloor
+                ? ` ${contact.contactDirection.address.street}, ${contact.contactDirection.address.directionNumber}, ${contact.contactDirection.address.directionFloor}`
+                : ` ${contact.contactDirection.address.street}, ${contact.contactDirection.address.directionNumber}`
+              : ` ${contact.contactDirection.address.street}`}
+          </p>
+        ) : (
+          ""
+        )}
+      </>
     );
   };
 
@@ -31,16 +37,13 @@ const ContactCard = ({ contact }) => {
     <div className="ContactCards">
       <div className="ContactCard__Card" id={contact._id}>
         <div className="ContactCard__Card--item ContactCard__Card--item-genInfo">
-          <h3>{contact.fullName}</h3>
+          <h3>
+            <Link to={`/contactos/${contact._id}`}>{contact.fullName}</Link>
+          </h3>
           {renderDirection(contact)}
-          <p>
-            {contact.contactDirection.postalCode
-              ? `${contact.contactDirection.postalCode} ${contact.contactDirection.city}, ${contact.contactDirection.country}`
-              : "España"}
-          </p>
           <p>{contact.company}</p>
 
-          <div className="ContactCard__Card--item__tags">
+          <div className="ContactCard__Card--item__tags displayElements">
             {contact.tag.map((tag, index) => {
               return (
                 <span key={`${index}-${tag}`} className="ContactCard__Card--item__tags__tag">
@@ -54,7 +57,7 @@ const ContactCard = ({ contact }) => {
         <div className="ContactCard__Card--item ContactCard__Card--item-iconsInfo">
           <p>
             <FaPhoneAlt fontSize="0.85em" color="#47535B" style={{ marginRight: 9 }} />
-            {contact.contactMobileNumber} | {contact.contactPhoneNumber}
+            {contact.contactMobileNumber} {contact.contactPhoneNumber && `| ${contact.contactPhoneNumber}`}
           </p>
           <p>
             <HiOutlineMail fontSize="1.1em" color="#47535B" style={{ marginRight: 9 }} />
@@ -62,7 +65,9 @@ const ContactCard = ({ contact }) => {
           </p>
           <p>
             <BsPersonCircle fontSize="1.1em" color="#47535B" style={{ marginRight: 9 }} />
-            <span className="ContactCard__Card--item--border">Luis</span>
+            <span className="ContactCard__Card--item--border">
+              {contact.consultant?.fullName ? contact.consultant?.fullName : "Sin consultor definido"}
+            </span>
           </p>
           <p>
             <BsPencilSquare fontSize="1.1em" color="#47535B" style={{ marginRight: 9 }} />
@@ -70,17 +75,27 @@ const ContactCard = ({ contact }) => {
           </p>
         </div>
 
-        <div className="ContactCard__Card--item ContactCard__Card--item-textArea">
+        <div className="ContactCard__Card--item ContactCard__Card--item-textArea displayElements">
           <p>Comentarios</p>
-          <textarea defaultValue={contact.contactComments}></textarea>
+          <textarea readOnly value={contact.contactComments}></textarea>
         </div>
 
+        <div className="ContactCard__Card--item__tags notDisplayElements">
+          {contact.tag.map((tag, index) => {
+            return (
+              <span key={`${index}-${tag}`} className="ContactCard__Card--item__tags__tag">
+                {tag}{" "}
+              </span>
+            );
+          })}
+        </div>
         <div className="ContactCard__Card--item ContactCard__Card--item-cta">
-          <span>Creado el {moment(contact.createdAt).format("L")}</span>
+          <span className="displayElements">Creado el {moment(contact.createdAt).format("L")}</span>
           <Link className="ContactCard__Card--item-cta--button" to={`/contactos/${contact._id}`}>
             Abrir Ficha
           </Link>
         </div>
+        <span className="notDisplayElements createdAt">Creado el {moment(contact.createdAt).format("L")}</span>
       </div>
     </div>
   );

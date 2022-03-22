@@ -8,6 +8,8 @@ import Layout from "../Layout/Layout";
 import Spinner from "../../components/Spinner/Spinner";
 import Pagination from "../../components/Pagination/Pagination";
 import ContactValidation from "../../components/ContactValidation/ContactValidation";
+import { MdOutlineSearchOff } from "react-icons/md";
+import { checkSession } from "../../api/auth.api"
 
 const ContactsList = () => {
   const [contacts, setContacts] = useState([]);
@@ -15,15 +17,24 @@ const ContactsList = () => {
   const [popUp, setPopUp] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [qPerPage] = useState(10);
+  const [qPerPage] = useState(100);
   const [loader, setLoader] = useState(true);
 
-  const { user } = useContext(UserContext);
+  const { user, deleteUser } = useContext(UserContext);
   const history = useHistory();
 
   const handlePopUp = () => {
     setPopUp(!popUp);
   };
+
+  // useEffect(() => {
+  //   checkSession().then((res) => {
+  //     if (res === "Acceso restringido") {
+  //       deleteUser();
+  //       history.push("/");
+  //     }
+  //   });
+  // }, []);
 
   useEffect(() => {
     getAllContacts().then((res) => {
@@ -49,22 +60,29 @@ const ContactsList = () => {
 
   return (
     <>
-      {!user && history.push("/")}
+      {user.length === 0 && history.push("/")}
       <Layout
         subTitle="Contactos"
         subList={contacts}
-        subLocation={() => handlePopUp()}
+        subLocation={() => handlePopUp(contacts)}
         subSetter={setContactsFiltered}
         footContent={<ContactListFooter />}
-        //subBreadcrumbs="Nuevo crear"
       >
-        
         {popUp && (
-          <PopUp handlePopUp={handlePopUp} height="68%" width="50%" title="Crear un nuevo contacto">
-            <ContactValidation />
+          <PopUp handlePopUp={handlePopUp} height="90%" mobileHeight="90%" width="45%" title="Crear contacto nuevo">
+            <ContactValidation list={contacts} />
           </PopUp>
         )}
-        {loader ? <Spinner /> : currentContacts.map((contact) => <ContactCard contact={contact} />)}
+        {loader ? (
+          <Spinner />
+        ) : currentContacts.length === 0 ? (
+          <div style={{ height: 200 }}>
+            <p style={{ lineHeight: 4 }}>No se ha encontrado ningún contacto</p>
+            <MdOutlineSearchOff fontSize="2.5em" />
+          </div>
+        ) : (
+          currentContacts.map((contact, index) => <ContactCard key={`${contact._id}-${index}`} contact={contact} />)
+        )}
       </Layout>
     </>
   );

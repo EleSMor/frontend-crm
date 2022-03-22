@@ -4,3 +4,17 @@
     display: flex;
   }
 }
+
+.preview {
+  margin-right: 3%;
+  margin-top: 20px;
+  margin-bottom: 40px;
+  width: 284px;
+  height: 246px;
+  max-width: 100%;
+  > img {
+    max-width: 100%;
+    width: 284px;
+    height: 246px;
+  }
+}
