@@ -332,7 +332,9 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                                 }
                               }}
                             />
-                            <label htmlFor={`Incluir dirección sin número-${index}`}>Incluir dirección sin número</label>
+                            <label htmlFor={`Incluir dirección sin número-${index}`}>
+                              Incluir dirección sin número
+                            </label>
                           </div>
                         </div>
                         <h5>
@@ -457,41 +459,13 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                   />
                   <div>
                     <p>{user.fullName}</p>
+                    <p>{user.profession ? `${user.position} | ${user.profession}` : `${user.position}`}</p>
                     <p>
-                      {user.profession ? (
-                        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%" }}>
-                          <div style={{ float: "left", width: "100%", textAlign: "end" }}>{user.position}</div>
-                          <div style={{ float: "none", textAlign: "end", padding: "0 4px 0 4px" }}>|</div>
-                          <div style={{ float: "right", width: "100%", textAlign: "start" }}>{user.profession}</div>
-                        </div>
-                      ) : (
-                        user.position
-                      )}
+                      {user.consultantPhoneNumber
+                        ? `${user.consultantMobileNumber} | ${user.consultantPhoneNumber}`
+                        : `${user.consultantMobileNumber}`}
                     </p>
-                    <p>
-                      {user.consultantPhoneNumber ? (
-                        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%" }}>
-                          <div style={{ float: "left", width: "100%", textAlign: "end" }}>
-                            {user.consultantMobileNumber}
-                          </div>
-                          <div style={{ float: "none", textAlign: "end", padding: "0 4px 0 4px" }}>|</div>
-                          <div style={{ float: "right", width: "100%", textAlign: "start" }}>
-                            {user.consultantPhoneNumber}
-                          </div>
-                        </div>
-                      ) : (
-                        user.consultantMobileNumber
-                      )}
-                    </p>
-                    {user.office2 ? (
-                      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%" }}>
-                        <div style={{ float: "left", width: "100%", textAlign: "end" }}>{user.office1}</div>
-                        <div style={{ float: "none", textAlign: "end", padding: "0 4px 0 4px" }}>|</div>
-                        <div style={{ float: "right", width: "100%", textAlign: "start" }}>{user.office2}</div>
-                      </div>
-                    ) : (
-                      user.office1
-                    )}
+                    {user.office2 ? `${user.office1} | ${user.office2}` : `${user.office1}`}
                     <p>{user.consultantEmail}</p>
                   </div>
                 </div>
