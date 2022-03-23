@@ -25,7 +25,14 @@ const AdMatchedRequestsTable = ({ requestsToSend, setRequestsToSend }) => {
         selectionMode="checkbox"
         selection={requestsToSend}
         onSelectionChange={(ev) => {
-          setRequestsToSend(ev.value);
+          let requests = [];
+          requests = ev.value.filter((request) => {
+            if (request.requestContact.notReceiveCommunications !== true) {
+              return request;
+            } else
+              alert(`El usuario ${request.requestContact.fullName} tiene el envío automático de mails desactivado`);
+          });
+          setRequestsToSend(requests);
         }}
         columnResizeMode="fit"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"

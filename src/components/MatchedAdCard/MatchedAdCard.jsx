@@ -865,7 +865,11 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
               selectionMode="checkbox"
               selection={adsToSend}
               onSelectionChange={(ev) => {
-                setAdsToSend(ev.value);
+                if (!requestById.requestContact?.notReceiveCommunications) {
+                  setAdsToSend(ev.value);
+                } else {
+                  alert(`El usuario ${requestById.requestContact.fullName} tiene el envío automático de mails desactivado`)
+                }
               }}
               responsiveLayout="scroll"
               emptyMessage="La petición no coincide con ningún anuncio."
