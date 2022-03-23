@@ -45,6 +45,7 @@ const AdForm = () => {
   const [patrimonials, setPatrimonial] = useState([]);
   const [department, setDepartment] = useState("");
   const [adStatus, setAdStatus] = useState("En preparación");
+  const [adShowOnWeb, setAdShowOnWeb] = useState(true);
   const [validateForm, setValidateForm] = useState(false);
   const [firstLoad, setFirstLoad] = useState(true);
   const [owners, setOwners] = useState([]);
@@ -208,6 +209,7 @@ const AdForm = () => {
                   className={adStatus === "Inactivo" ? "adForm__filter-box--item__active" : "adForm__filter-box--item"}
                   onClick={() => {
                     setAdStatus("Inactivo");
+                    setAdShowOnWeb(false);
                     setActiveIndex(0);
                   }}
                 >
@@ -270,7 +272,7 @@ const AdForm = () => {
                   title: adById ? adById.title : "",
                   adReference: adById ? adById.adReference : "",
                   adStatus: adById ? adById.adStatus : "En preparación",
-                  showOnWeb: adById ? adById.showOnWeb : true,
+                  showOnWeb: adById ? adById.showOnWeb : adShowOnWeb,
                   featuredOnMain: adById ? adById.featuredOnMain : false,
                   street: adById ? adById.adDirection.address.street : "",
                   directionNumber: adById ? adById.adDirection.address.directionNumber : "",
@@ -408,6 +410,8 @@ const AdForm = () => {
                       setDepartment={setDepartment}
                       adStatus={adStatus}
                       setAdStatus={setAdStatus}
+                      adShowOnWeb={adShowOnWeb}
+                      setAdShowOnWeb={setAdShowOnWeb}
                     />
                   </Form>
                 )}

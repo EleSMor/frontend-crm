@@ -48,6 +48,9 @@ const DetailsAds = ({
   adType,
   setAdType,
   setDepartment,
+  adStatus,
+  adShowOnWeb,
+  setAdShowOnWeb,
 }) => {
   const [zone, setZone] = useState(formProps.values.department);
   const size = useWindowSize();
@@ -92,8 +95,11 @@ const DetailsAds = ({
             <Checkbox
               label="Mostrar en la web"
               name="showOnWeb"
-              checked={formProps.values.showOnWeb}
-              onChange={(ev) => formProps.setFieldValue(ev.target.name, !formProps.values.showOnWeb)}
+              checked={adShowOnWeb}
+              onChange={(ev) => {
+                formProps.setFieldValue(ev.target.name, !adShowOnWeb);
+                setAdShowOnWeb(!adShowOnWeb);
+              }}
             />
           </div>
           <div>
@@ -629,7 +635,7 @@ const DetailsAds = ({
                       name: "expensesShowOnWeb",
                       label: "Mostrar Web",
                       type: "checkbox",
-                      value: formProps.values.expensesShowOnWeb,
+                      checked: formProps.values.expensesShowOnWeb,
                       onChange: (ev) => formProps.setFieldValue(ev.target.name, !formProps.values.expensesShowOnWeb),
                       errors: "",
                     },
@@ -655,7 +661,7 @@ const DetailsAds = ({
                       name: "ibiShowOnWeb",
                       label: "Mostrar Web",
                       type: "checkbox",
-                      value: formProps.values.ibiShowOnWeb,
+                      checked: formProps.values.ibiShowOnWeb,
                       onChange: (ev) => formProps.setFieldValue(ev.target.name, !formProps.values.ibiShowOnWeb),
                       errors: "",
                     },
