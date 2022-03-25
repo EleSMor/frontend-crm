@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { unmountComponentAtNode } from "react-dom";
 import { Formik, Form } from "formik";
 import { Button } from "primereact/button";
 import { FileUpload } from "primereact/fileupload";
 import { DefaultImage } from "../../icons";
 import { uploadImage, deleteImage } from "../../api/ads.api";
 import Lightbox from "react-image-lightbox";
+import VideoPlayer from "react-video-js-player";
 import "react-image-lightbox/style.css";
 import "./ImagesAds.scss";
 
@@ -12,6 +14,7 @@ const ImagesAds = ({ id, adById }) => {
   const [mainPreview, setMainPreview] = useState("");
   const [blueprintPreview, setBlueprintPreview] = useState([]);
   const [othersPreview, setOthersPreview] = useState([]);
+  const [mediaPreview, setMediaPreview] = useState("");
   const [photoIndex, setPhotoIndex] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const [images, setImages] = useState([]);
@@ -21,12 +24,13 @@ const ImagesAds = ({ id, adById }) => {
       setMainPreview(adById.images.main);
       setBlueprintPreview(adById.images.blueprint);
       setOthersPreview(adById.images.others);
+      setMediaPreview(adById.images.media);
     }
-  }, [id]);
+  }, [adById]);
 
   const upload = (e) => {
     let data = new FormData();
-    if (e.options.props.name === "others" | e.options.props.name === "blueprint") {
+    if ((e.options.props.name === "others") | (e.options.props.name === "blueprint")) {
       for (let file of e.files) {
         data.append(e.options.props.name, file);
       }
@@ -36,10 +40,12 @@ const ImagesAds = ({ id, adById }) => {
 
     uploadImage(id, data, e.options.props.name)
       .then((res) => {
+        console.log(res);
         alert(`Imagen subida al anuncio ${res.title}`);
         if (e.options.props.name === "main") setMainPreview(res.images.main);
         if (e.options.props.name === "blueprint") setBlueprintPreview(res.images.blueprint);
         if (e.options.props.name === "others") setOthersPreview(res.images.others);
+        if (e.options.props.name === "media") setMediaPreview(res.images.media);
       })
       .then(e.options.clear());
   };
@@ -48,6 +54,10 @@ const ImagesAds = ({ id, adById }) => {
     let data = { toDelete: url };
 
     deleteImage(id, data, from).then((res) => {
+      if (from === "media") {
+        unmountComponentAtNode(document.getElementById("video-player"));
+        setMediaPreview("");
+      }
       alert(`Imagen borrada del anuncio ${res.title}`);
     });
   };
@@ -64,7 +74,6 @@ const ImagesAds = ({ id, adById }) => {
 
   const handleChangeFiles = (images, previewField, setter) => {
     if (images) {
-      
       for (let image of images) {
         previewField.push(image.objectURL);
       }
@@ -98,6 +107,42 @@ const ImagesAds = ({ id, adById }) => {
         >
           <DefaultImage />
         </div>
+      </div>
+    );
+  };
+
+  const mediaTemplate = () => {
+    return mediaPreview ? (
+      <div id="video-player" className="preview">
+        <VideoPlayer src={mediaPreview} alt="Vídeo" width={284} height={246} />
+        <Button
+          type="button"
+          icon="pi pi-trash p-ml-auto"
+          style={{
+            width: "100%",
+            background: "#2b363d",
+            border: "none",
+            borderRadius: "0",
+            paddingRight: "5%",
+            marginTop: "1%",
+          }}
+          onClick={() => {
+            deleteImg(mediaPreview, "media");
+          }}
+        />
+      </div>
+    ) : (
+      <div
+        style={{
+          border: "1px solid lightgrey",
+          padding: "45px",
+          width: "176px",
+          height: "154px",
+          margin: "0.5%",
+          marginTop: "2.5%",
+        }}
+      >
+        <DefaultImage />
       </div>
     );
   };
@@ -271,35 +316,30 @@ const ImagesAds = ({ id, adById }) => {
                 }}
                 headerTemplate={headerTemplate}
               />
-              {blueprintPreview.length !== 0 ? renderMultiple(blueprintPreview, setBlueprintPreview, "blueprint") : emptyTemplate()}
-              {/* <div className="preview">
-                  <img
-                    src={blueprintPreview}
-                    alt="Planos"
-                    width={200}
-                    height={200}
-                    onClick={() => {
-                      setIsOpen(true);
-                      setImages([blueprintPreview]);
-                    }}
-                  />
-                  <Button
-                    type="button"
-                    icon="pi pi-trash p-ml-auto"
-                    style={{
-                      width: "100%",
-                      background: "#2b363d",
-                      border: "none",
-                      borderRadius: "0",
-                      paddingRight: "5%",
-                      marginTop: "1%",
-                    }}
-                    onClick={() => {
-                      setBlueprintPreview("");
-                      deleteImg(blueprintPreview, "blueprint");
-                    }}
-                  />
-                </div> */}
+              {blueprintPreview.length !== 0
+                ? renderMultiple(blueprintPreview, setBlueprintPreview, "blueprint")
+                : emptyTemplate()}
+
+              <h4 style={{ textAlign: "start", margin: "10px 0px", marginTop: "20px", color: "black" }}>Vídeo</h4>
+              <div>
+                <FileUpload
+                  name="media"
+                  chooseLabel="Cargar vídeo"
+                  uploadHandler={upload}
+                  customUpload={true}
+                  accept="video/*"
+                  maxFileSize={20971520}
+                  onUpload={(props) => props.onClear()}
+                  onRemove={() => setMediaPreview(adById?.images.media ? adById.images.media : "")}
+                  onSelect={(e) => {
+                    formProps.setFieldValue("media", e.files[0]);
+                    unmountComponentAtNode(document.getElementById("video-player"));
+                    setMediaPreview("");
+                  }}
+                  headerTemplate={headerTemplate}
+                />
+                {mediaTemplate()}
+              </div>
             </div>
           </div>
         </Form>
