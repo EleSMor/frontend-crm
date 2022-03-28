@@ -10,7 +10,7 @@ import VideoPlayer from "react-video-js-player";
 import "react-image-lightbox/style.css";
 import "./ImagesAds.scss";
 
-const ImagesAds = ({ id, adById }) => {
+const ImagesAds = ({ id, setActiveIndex, adById }) => {
   const [mainPreview, setMainPreview] = useState("");
   const [blueprintPreview, setBlueprintPreview] = useState([]);
   const [othersPreview, setOthersPreview] = useState([]);
@@ -128,6 +128,7 @@ const ImagesAds = ({ id, adById }) => {
           }}
           onClick={() => {
             deleteImg(mediaPreview, "media");
+            window.location.reload();
           }}
         />
       </div>
@@ -330,11 +331,11 @@ const ImagesAds = ({ id, adById }) => {
                   accept="video/*"
                   maxFileSize={20971520}
                   onUpload={(props) => props.onClear()}
-                  onRemove={() => setMediaPreview(adById?.images.media ? adById.images.media : "")}
+                  onRemove={() => {
+                    setMediaPreview(adById?.images.media ? adById.images.media : "");
+                  }}
                   onSelect={(e) => {
                     formProps.setFieldValue("media", e.files[0]);
-                    unmountComponentAtNode(document.getElementById("video-player"));
-                    setMediaPreview("");
                   }}
                   headerTemplate={headerTemplate}
                 />
