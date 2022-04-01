@@ -149,6 +149,26 @@ const updateContact = async (form) => {
     return updatedContact;
 };
 
+const contactReceiveEmail = async (form) => {
+    const request = await fetch(`${contactsURL}/receiveEmails`, {
+        method: 'PUT',
+        credentials: 'include',
+        body: JSON.stringify(form),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+        },
+    });
+
+    const updatedContact = await request.json();
+
+    if (!request.ok) {
+        throw new Error('Error creating new Contact', updatedContact.message);
+    };
+    return updatedContact;
+};
+
 const deleteContact = async (id) => {
     const request = await fetch(`${contactsURL}/delete/${id}`, {
         method: 'DELETE',
@@ -172,5 +192,6 @@ export {
     getAllOwners,
     createContact,
     updateContact,
+    contactReceiveEmail,
     deleteContact,
 }

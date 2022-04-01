@@ -20,6 +20,7 @@ import PopUp from "../../components/PopUp/PopUp";
 import useWindowSize from "../../hooks/useWindowSize";
 import { getAdsMatched, sendNewRequest, getRequestById } from "../../api/requests.api";
 import { sendAdsToContact } from "../../api/mails.api";
+import { contactReceiveEmail } from "../../api/contacts.api";
 import { GvreLogo } from "../../icons/index";
 import "reactjs-popup/dist/index.css";
 import "moment/locale/es";
@@ -226,6 +227,13 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                       ads: adsToSend,
                     }).then((res) => {
                       alert(`${res}`);
+                      adsToSend.map((ad) => {
+                        contactReceiveEmail({
+                          contact: requestById.requestContact,
+                          consultant: user,
+                          ad: ad,
+                        });
+                      });
                       handlePopUp();
                       adsToSend.map((ad) => {
                         ad.adComment = "";
@@ -868,7 +876,9 @@ const MatchedAdCard = ({ patrimonials, residentials }) => {
                 if (!requestById.requestContact?.notReceiveCommunications) {
                   setAdsToSend(ev.value);
                 } else {
-                  alert(`El usuario ${requestById.requestContact.fullName} tiene el envío automático de mails desactivado`)
+                  alert(
+                    `El usuario ${requestById.requestContact.fullName} tiene el envío automático de mails desactivado`
+                  );
                 }
               }}
               responsiveLayout="scroll"
