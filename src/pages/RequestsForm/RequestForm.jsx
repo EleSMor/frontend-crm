@@ -15,6 +15,7 @@ import Textarea from "../../components/Textarea/Textarea";
 import InputsGroup from "../../components/InputsGroup/InputsGroup";
 import Multicheckbox from "../../components/CheckBox/Multicheckbox";
 import MatchedAdCard from "../../components/MatchedAdCard/MatchedAdCard";
+import SendedEmailsHistory from "../../components/SendedEmailsHistory/SendedEmailsHistory";
 import { AiOutlineLeft } from "react-icons/ai";
 import { FiSave } from "react-icons/fi";
 import { FaTrash } from "react-icons/fa";
@@ -975,6 +976,9 @@ const RequestForm = () => {
                   </Form>
                 )}
               </Formik>
+            </TabPanel>
+            <TabPanel header="Historial">
+              <SendedEmailsHistory requestById={requestById} />
             </TabPanel>
             <TabPanel header="Matching">
               <MatchedAdCard patrimonials={patrimonials} residentials={residentials} requestById={requestById} />
