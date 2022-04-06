@@ -81,7 +81,7 @@ const SendedEmailsHistory = ({ requestById }) => {
                         style={{ width: 81, height: 75, borderRadius: "4px" }}
                       />
                     )}
-                    <Link to={`/anuncios/${ev._id}`} className="AdCard AdCard__row__title">
+                    <Link to={`/anuncios/${ev.ad._id}`} className="AdCard AdCard__row__title">
                       <p>{ev.ad.title}</p>
                     </Link>
                   </>
