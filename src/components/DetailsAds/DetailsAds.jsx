@@ -97,8 +97,8 @@ const DetailsAds = ({
               name="showOnWeb"
               checked={adShowOnWeb}
               onChange={(ev) => {
-                formProps.setFieldValue(ev.target.name, !adShowOnWeb);
-                setAdShowOnWeb(!adShowOnWeb);
+                formProps.setFieldValue(ev.target.name, ev.target.checked);
+                setAdShowOnWeb(ev.target.checked);
               }}
             />
           </div>

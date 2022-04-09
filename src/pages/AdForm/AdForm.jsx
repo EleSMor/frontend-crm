@@ -88,6 +88,7 @@ const AdForm = () => {
         if (id) {
           getAdById(id).then((res) => {
             setAdById(res);
+            setAdShowOnWeb(res.showOnWeb);
             setSelectedOwner(res.owner);
             setSelectedConsultant(res.consultant);
             setAdStatus(res.adStatus);
@@ -272,7 +273,7 @@ const AdForm = () => {
                   title: adById ? adById.title : "",
                   adReference: adById ? adById.adReference : "",
                   adStatus: adById ? adById.adStatus : "En preparación",
-                  showOnWeb: adById ? adById.showOnWeb : adShowOnWeb,
+                  showOnWeb: adById ? adById.showOnWeb : true,
                   featuredOnMain: adById ? adById.featuredOnMain : false,
                   street: adById ? adById.adDirection.address.street : "",
                   directionNumber: adById ? adById.adDirection.address.directionNumber : "",
@@ -345,6 +346,8 @@ const AdForm = () => {
                 }}
                 onSubmit={(data) => {
                   setValidateForm(true);
+                  data.showOnWeb = adShowOnWeb;
+
                   if (id) data.id = id;
                   data.owner = selectedOwner;
                   data.consultant = selectedConsultant;

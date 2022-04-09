@@ -1,6 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { UserContext } from "../Context/AuthUser";
-import { useParams, Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Spinner from "../Spinner/Spinner";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
@@ -13,10 +12,7 @@ import "./SendedEmailsHistory.scss";
 const SendedEmailsHistory = ({ requestById }) => {
   const [emailsSends, setEmailsSends] = useState([]);
   const [loader, setLoader] = useState(true);
-  const { user } = useContext(UserContext);
-  const { id } = useParams();
   const size = useWindowSize();
-  const history = useHistory();
 
   useEffect(() => {
     getContactById(requestById.requestContact._id).then((res) => {
