@@ -60,14 +60,14 @@ const AdForm = () => {
 
   const [loader, setLoader] = useState(true);
 
-  useEffect(() => {
-    checkSession().then((res) => {
-      if (res === "Acceso restringido") {
-        deleteUser();
-        history.push("/");
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   checkSession().then((res) => {
+  //     if (res === "Acceso restringido") {
+  //       deleteUser();
+  //       history.push("/");
+  //     }
+  //   });
+  // }, []);
 
   useEffect(() => {
     getAllAds()

@@ -19,14 +19,14 @@ const AdsList = () => {
   const { user, deleteUser } = useContext(UserContext);
   const history = useHistory();
 
-  useEffect(() => {
-    checkSession().then((res) => {
-      if (res === "Acceso restringido") {
-        deleteUser();
-        history.push("/");
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   checkSession().then((res) => {
+  //     if (res === "Acceso restringido") {
+  //       deleteUser();
+  //       history.push("/");
+  //     }
+  //   });
+  // }, []);
 
   useEffect(() => {
     getAllAds().then((res) => {
