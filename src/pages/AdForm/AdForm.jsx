@@ -465,6 +465,7 @@ const AdForm = () => {
                               onClick={() => {
                                 sendAdToContacts({
                                   consultant: user,
+                                  subject: document.getElementById("subject").value,
                                   messageP1: document.getElementById("mailMessage1").value,
                                   messageP2: document.getElementById("mailMessage2").value,
                                   messageP3: document.getElementById("mailMessage3").value,
@@ -500,6 +501,14 @@ const AdForm = () => {
                           <div className="EmailTemplate__Body">
                             {/* INTRO */}
                             <div className="EmailTemplate__Body__Introduction">
+                              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                                <h5 style={{ marginRight: 12 }}>Asunto:</h5>
+                                <textarea
+                                  id="subject"
+                                  defaultValue={`Estimado/a ${requestsToSend[0].requestContact.fullName}, desde GV Real Estate te recomendamos el siguiente inmueble`}
+                                  onChange={(ev) => console.log(ev.target.value)}
+                                />
+                              </div>
                               <textarea
                                 id="mailMessage1"
                                 defaultValue={`Buenos días ${requestsToSend[0].requestContact.fullName}`}
