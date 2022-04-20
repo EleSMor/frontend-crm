@@ -462,21 +462,22 @@ const AdForm = () => {
                             </button>
                             <button
                               className="buttonForm"
-                              onClick={() => {
-                                sendAdToContacts({
-                                  consultant: user,
-                                  subject: document.getElementById("subject").value,
-                                  messageP1: document.getElementById("mailMessage1").value,
-                                  messageP2: document.getElementById("mailMessage2").value,
-                                  messageP3: document.getElementById("mailMessage3").value,
-                                  messageGoodbyeP1: document.getElementById("mailMessage4").value,
-                                  messageGoodbyeP2: document.getElementById("mailMessage5").value,
-                                  requests: requestsToSend,
-                                  ad: adById,
-                                }).then((res) => {
-                                  alert(`${res}`);
-                                  handlePopUp();
+                              onClick={ () => {
+                                requestsToSend.map((request) => {
+                                  sendAdToContacts({
+                                    consultant: user,
+                                    subject: document.getElementById("subject").value,
+                                    messageP1: document.getElementById("mailMessage1").value,
+                                    messageP2: document.getElementById("mailMessage2").value,
+                                    messageP3: document.getElementById("mailMessage3").value,
+                                    messageGoodbyeP1: document.getElementById("mailMessage4").value,
+                                    messageGoodbyeP2: document.getElementById("mailMessage5").value,
+                                    request: request,
+                                    ad: adById,
+                                  });
                                 });
+                                alert(`Mensajes enviados`);
+                                handlePopUp();
                               }}
                             >
                               Enviar
