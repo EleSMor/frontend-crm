@@ -145,14 +145,14 @@ const RequestForm = () => {
       });
   };
 
-  // useEffect(() => {
-  //   checkSession().then((res) => {
-  //     if (res === "Acceso restringido") {
-  //       deleteUser();
-  //       history.push("/");
-  //     }
-  //   });
-  // }, []);
+  useEffect(() => {
+    checkSession().then((res) => {
+      if (res === "Acceso restringido") {
+        deleteUser();
+        history.push("/");
+      }
+    });
+  }, []);
 
   useEffect(() => {
     getFetchs();

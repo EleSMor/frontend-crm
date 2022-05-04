@@ -45,6 +45,15 @@ const ConsultantForm = () => {
   const [loader, setLoader] = useState(false);
 
   useEffect(() => {
+    checkSession().then((res) => {
+      if (res === "Acceso restringido") {
+        deleteUser();
+        history.push("/");
+      }
+    });
+  }, []);
+
+  useEffect(() => {
     if (id && user.length !== 0) {
       getConsultantById(id).then((res) => {
         setAvatar(res.avatar);
@@ -66,15 +75,6 @@ const ConsultantForm = () => {
       });
     }
   }, [activeIndex]);
-
-  // useEffect(() => {
-  //   checkSession().then((res) => {
-  //     if (res === "Acceso restringido") {
-  //       deleteUser();
-  //       history.push("/");
-  //     }
-  //   });
-  // }, []);
   
   const handleChangeFile = (e, setter) => {
     let reader = new FileReader();
