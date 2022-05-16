@@ -59,6 +59,7 @@ const RequestsTable = ({ requests }) => {
         if (request.requestBuildingType && loader)
           request.requestBuildingType = request.requestBuildingType.sort().join(", ");
         if (request.requestAdType && loader) request.requestAdType = request.requestAdType.sort().join(", ");
+        console.log(request)
         return request;
       });
       setRequestsFormated(newRequests);
